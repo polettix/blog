@@ -1,3 +1,3 @@
 # Polettix Blog
 
-This is my personal blog. You can look at it at [http://polettix.github.io/blog](http://polettix.github.io/blog).
+This is my personal blog. You can look at it at [http://blog.polettix.it/](http://blog.polettix.it/).
