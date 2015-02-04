@@ -635,7 +635,7 @@ $button-size: 1.5rem;
 	h5,
 	h6,
 	span {
-		@include font-rem(10);
+		@include font-rem(14);
 	}
 	footer {
 		@include grid(12,10);
@@ -651,6 +651,16 @@ $button-size: 1.5rem;
 			@include prefix(12,4);
 			@include suffix(12,3.5);
 		}
+      a,
+      a:active,
+      a:visited,
+      p,
+      h4,
+      h5,
+      h6,
+      span {
+         @include font-rem(10);
+      }
 	}
 }
 
