@@ -12,3 +12,4 @@ old-favicon.*
 .jshintrc
 _posts
 _drafts
+_keep
