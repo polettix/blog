@@ -1,0 +1,507 @@
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if (IE 7)&!(IEMobile)]><html class="no-js lt-ie9 lt-ie8" lang="en"><![endif]-->
+<!--[if (IE 8)&!(IEMobile)]><html class="no-js lt-ie9" lang="en"><![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"><!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<title>RRDtool - Sparse Notes &#8211; PolettiX!</title>
+<meta name="description" content="RRDtool is a wonderful tool for collecting and graphing data.
+
+">
+<meta name="keywords" content="">
+
+
+
+<!-- Twitter Cards -->
+<meta name="twitter:title" content="RRDtool - Sparse Notes">
+<meta name="twitter:description" content="RRDtool is a wonderful tool for collecting and graphing data.
+
+">
+<meta name="twitter:site" content="@polettix">
+<meta name="twitter:creator" content="@polettix">
+
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="/images/default-thumb.png">
+
+<!-- Open Graph -->
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:title" content="RRDtool - Sparse Notes">
+<meta property="og:description" content="RRDtool is a wonderful tool for collecting and graphing data.
+
+">
+<meta property="og:url" content="/rrdtool/">
+<meta property="og:site_name" content="PolettiX!">
+
+
+
+
+
+<link rel="canonical" href="/rrdtool/">
+<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="PolettiX! Feed">
+
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+
+<meta http-equiv="cleartype" content="on">
+
+<!-- HTML5 Shiv and Media Query Support -->
+<!--[if lt IE 9]>
+	<script src="/assets/js/vendor/html5shiv.min.js"></script>
+	<script src="/assets/js/vendor/respond.min.js"></script>
+<![endif]-->
+
+<!-- Modernizr -->
+<script src="/assets/js/vendor/modernizr-2.7.1.custom.min.js"></script>
+
+<link href='//fonts.googleapis.com/css?family=PT+Sans+Narrow:400,700%7CPT+Serif:400,700,400italic' rel='stylesheet' type='text/css'>
+
+<!-- Icons -->
+<!-- 16x16 -->
+<link rel="shortcut icon" href="/favicon.ico?whatever">
+<!-- 32x32 -->
+<link rel="shortcut icon" href="/favicon.png?whatever">
+<!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
+<link rel="apple-touch-icon-precomposed" href="/images/apple-touch-icon-precomposed.png">
+<!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="/images/apple-touch-icon-72x72-precomposed.png">
+<!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="/images/apple-touch-icon-114x114-precomposed.png">
+<!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/images/apple-touch-icon-144x144-precomposed.png">
+
+</head>
+
+<body class="post">
+
+<!--[if lt IE 9]><div class="browser-upgrade alert alert-info">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</div><![endif]-->
+
+<div class="navigation-wrapper">
+	<div class="site-name">
+		<a href="/">PolettiX!</a>
+	</div><!-- /.site-name -->
+	<div class="top-navigation">
+		<nav role="navigation" id="site-nav" class="nav">
+		    <ul>
+		        
+				    
+				        
+				    
+				    <li><a href="/about/" >About</a></li>
+				
+		    </ul>
+		</nav>
+	</div><!-- /.top-navigation -->
+</div><!-- /.navigation-wrapper -->
+
+
+
+<div id="main" role="main">
+  <div class="article-author-side">
+    
+
+
+<div itemscope itemtype="http://schema.org/Person">
+
+
+	<img src="/images/flavio-self-color.png" class="bio-photo" alt="Flavio Poletti bio photo">
+
+
+  <h3 itemprop="name">Flavio Poletti</h3>
+  <p>Irreducible Perler.</p>
+  <a href="mailto:flavio@polettix.it" class="author-social" target="_blank"><i class="fa fa-fw fa-envelope-square"></i>Email</a>
+  <a href="http://twitter.com/polettix" class="author-social" target="_blank"><i class="fa fa-fw fa-twitter-square"></i> Twitter</a>
+  
+  
+  <a href="http://linkedin.com/in/flaviopoletti" class="author-social" target="_blank"><i class="fa fa-fw fa-linkedin-square"></i> LinkedIn</a>
+  
+  
+  <a href="https://metacpan.org/author/polettix" class="author-social" target="_blank"><i class="fa fa-fw fa-th-large"></i> MetaCPAN</a>
+  <a href="http://github.com/polettix" class="author-social" target="_blank"><i class="fa fa-fw fa-github"></i> Github</a>
+  
+  
+  
+  <a href="http://www.pinterest.com/polettix" class="author-social" target="_blank"><i class="fa fa-fw fa-pinterest"></i> Pinterest</a>
+  
+  
+  
+  
+  
+  
+</div>
+
+  </div>
+  <article class="post">
+    <div class="headline-wrap">
+      
+        <h1><a href="/rrdtool/" rel="bookmark" title="RRDtool - Sparse Notes">RRDtool - Sparse Notes</a></h1>
+      
+    </div><!--/ .headline-wrap -->
+    <div class="article-wrap">
+      <p><a href="http://oss.oetiker.ch/rrdtool/index.en.html">RRDtool</a> is a wonderful tool for collecting and graphing data.</p>
+
+<blockquote>
+  <p>RRDtool is the OpenSource industry standard, high performance data logging
+  and graphing system for time series data. RRDtool can be easily integrated
+  in shell scripts, perl, python, ruby, lua or tcl applications.</p>
+</blockquote>
+
+<p>Take a look at the website for additional information… and read on for
+some things that I find useful.</p>
+
+<h2 id="data-collection">Data collection</h2>
+
+<p>Data are collected into the database and fetched from it. The collection is
+split into two parts: how they are read, and how they are stored.</p>
+
+<p>Reading of data is specified through the description of a <em>Data Source</em>, or
+<code>DS</code>. See the docs about <a href="http://oss.oetiker.ch/rrdtool/doc/rrdcreate.en.html">rrdtool create</a> for the details, but it’s useful
+to know that:</p>
+
+<ul>
+  <li><strong>GAUGE</strong>s are inputs that can go up and down. Like a temperature, the
+voltage at some pin or the amount of money in a bank account.</li>
+  <li><strong>COUNTER</strong> is for meters that can only increase, like e.g. the number of
+times that you a light turns on, the quantity of bits that enter an interface
+or that the sun rises in the morning.</li>
+  <li><strong>DERIVE</strong> can be used for the same kind of data that a GAUGE is for, but
+focuses on the difference with respect to the previous read instead of the
+absolute value. This can be useful e.g. if you want to track an increase or
+decrease rate for a quantity. The docs page about <a href="http://oss.oetiker.ch/rrdtool/doc/rrdcreate.en.html">rrdtool create</a> also has
+additional remarks about the relation between DERIVE and COUNTER, so give it
+a try if you’re having trouble with your COUNTERs.</li>
+  <li><strong>ABSOLUTE</strong> is for counters that get reset upon reading. So, each time
+you read the value you reset the counter, do you?</li>
+</ul>
+
+<p>RRDtool is mostly interested into rates, so all of the above are actually
+translated into a rate, except for GAUGEs that are stored as-is (so that
+you can track things that actually have little to do with rates). If you
+want to graph the stock market, use GAUGE.</p>
+
+<h2 id="times">Times</h2>
+
+<p>Time handling in RRDtool is quite interesting. It is assumed that you will
+feed a new set of values every <em>step</em>, where the step is specified
+in seconds. The default is 300, so you’re supposed to feed a new set of
+values every 5 minutes, but of course you can set what you see fit.</p>
+
+<p>The relevant concepts for times in RRDtool are:</p>
+
+<ul>
+  <li><strong>step</strong>, i.e. the length of the time range</li>
+  <li><strong>start</strong>, i.e. when a time range starts</li>
+  <li><strong>end</strong>, i.e. when a time range ends</li>
+</ul>
+
+<p>You can set a start time when you create a database, but the <em>real</em> start
+time will be set depending on the step - in particular, as an integer
+multiple of the step.</p>
+
+<p>It’s useful to think the line of time as a sequence of time intervals:
+interval 1, interval 2, …, interval N. The real start is 0, corresponding
+to when the epoch starts (January 1st, 1970), but time is actually a
+sequence of intervals and not of points.</p>
+
+<p>Values stored in the database are always referred to one interval, not to
+a point in time.</p>
+
+<p>So, what do start and end mean actually? They are used as ways to specify
+the intervals we are interested into. Each is first framed into one
+interval, then the sequence of intervals from the start’s to the end’s
+(included) are considered.</p>
+
+<p>When we specify a point in time that separates two intervals, it is
+assigned to the following one. So, if the step is equal to 60 and start
+is 600 (separating the two intervals 540-600 and 600-660), the interval
+considered is 600-660. This is the same as saying that intervals are
+closed on the left and open on the right.</p>
+
+<p>Intervals are represented with the end time of the interval. so, in the
+example above, if you specify start as 600, the related interval that
+you will get first is the one marked with 660.</p>
+
+<p>Example: consider a database with a step of 60 seconds and capable of
+collecting up to three values. The start time has to be “quite high” to
+avoid incurring in some <em>do what I mean</em> behaviour of RRDtool.</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">start</span><span class="o">=</span>600000000
+<span class="nv">items</span><span class="o">=</span>3
+<span class="nv">step</span><span class="o">=</span>60
+
+rrdtool create test.rrd <span class="se">\</span>
+   --step <span class="nv">$step</span> <span class="se">\</span>
+   --start <span class="nv">$start</span> <span class="se">\</span>
+   DS:testdata:GAUGE:120:U:U <span class="se">\</span>
+   RRA:MAX:0.5:1:<span class="nv">$items</span>
+
+<span class="k">for</span> i in <span class="m">1</span> <span class="m">2</span> <span class="m">3</span> <span class="p">;</span> <span class="k">do</span>
+   <span class="nb">time</span><span class="o">=</span><span class="k">$((</span><span class="nv">$start</span> <span class="o">+</span> <span class="nv">$i</span> <span class="o">*</span> <span class="nv">$step</span><span class="k">))</span>
+   rrdtool update test.rrd <span class="nv">$time</span>:<span class="nv">$i</span>
+<span class="k">done</span>
+
+<span class="nv">end</span><span class="o">=</span><span class="k">$(</span>rrdtool last test.rrd<span class="k">)</span>
+
+rrdtool fetch test.rrd MAX --start<span class="o">=</span><span class="nv">$start</span> --end<span class="o">=</span>start+180</code></pre></div>
+
+<p>The output is:</p>
+
+<pre><code> 600000060: 1.0000000000e+00
+ 600000120: 2.0000000000e+00
+ 600000180: 3.0000000000e+00
+ 600000240: -nan
+</code></pre>
+
+<p>which shows how both start, end and the marker for an interval are chosen
+according to what described above.</p>
+
+<p>As an additional note, it has to be considered that real intervals might be
+compound of multiples of the configured step. For example, if you have a
+round robin archive (RRA) that aggregates 5 values with a step of 60, each
+data point actually refers to 300 seconds (5 minutes). When this RRA is
+accessed, the relevant start and stops will yield time intervals that align
+to a 300-seconds chunking of the time line starting from the origin of the
+epochs.</p>
+
+<h2 id="getting-the-right-data">Getting the right data</h2>
+
+<p>If you want to be sure to get the right data out of an RRD database, you
+have to ensure some things:</p>
+
+<ul>
+  <li>you know which round robin archive you’re looking at</li>
+  <li>you know how many data points to ask</li>
+</ul>
+
+<p>RRDtool will try to give you the best available data, but e.g. if you have
+fine grained data for the last week and you ask for data in the last ten
+days, you’ll hit a different RRA (if available).</p>
+
+<p>To get exactly all the data in a RRA you can do as follows (assuming the
+database file is <code>test.rrd</code>):</p>
+
+<ol>
+  <li>
+    <p>run <code>rrdtool info test.rrd</code> to get the relevant data. You
+will find something like this:</p>
+
+    <pre><code>filename = "test.rrd"
+rrd_version = "0003"
+step = 60
+last_update = 600018000
+header_size = 736
+ds[testdata].index = 0
+ds[testdata].type = "GAUGE"
+ds[testdata].minimal_heartbeat = 120
+ds[testdata].min = NaN
+ds[testdata].max = NaN
+ds[testdata].last_ds = "300"
+ds[testdata].value = 0.0000000000e+00
+ds[testdata].unknown_sec = 0
+rra[0].cf = "MAX"
+rra[0].rows = 300
+rra[0].cur_row = 157
+rra[0].pdp_per_row = 1
+rra[0].xff = 5.0000000000e-01
+rra[0].cdp_prep[0].value = NaN
+rra[0].cdp_prep[0].unknown_datapoints = 0
+rra[1].cf = "MAX"
+rra[1].rows = 300
+rra[1].cur_row = 66
+rra[1].pdp_per_row = 20
+rra[1].xff = 5.0000000000e-01
+rra[1].cdp_prep[0].value = -inf
+rra[1].cdp_prep[0].unknown_datapoints = 0
+</code></pre>
+  </li>
+  <li>detect the RRA - there might be many in a database, so pick your
+favourite. We will assume that you want to focus on <code>rra[1]</code> in the
+example above;</li>
+  <li>
+    <p>identify the following basic variables:</p>
+
+    <ul>
+      <li><code>step</code></li>
+      <li><code>last_update</code></li>
+      <li><code>pdp_per_row</code> (<code>rra[1].pdp_per_row</code> in the example)</li>
+      <li><code>rows</code> (<code>rra[1].rows</code> in the example)</li>
+    </ul>
+  </li>
+  <li>calculate the RRA interval length as <code>superstep = step * pdp_per_row</code></li>
+  <li>calculate the end time of the last interval with meaningful data as
+<code>real_end = last_update % superstep</code> (<code>%</code> representing the modulus
+function)</li>
+  <li>consider <code>start = real_end - superstep * rows + 1</code> and
+<code>end = real_end - 1</code>. The addition/subtraction of one second is to be
+sure to fall <em>inside</em> an interval instead of being at one border, just
+to avoid surprises (this is actually needed for end only)</li>
+</ol>
+
+<p>You can then consider <code>start</code>, <code>end</code> and <code>superstep</code> for usage in
+<a href="http://oss.oetiker.ch/rrdtool/doc/rrdfetch.en.html">rrdtool fetch</a> (respectively for <code>--start</code>, <code>--end</code> and <code>--resolution</code>)
+and in <a href="http://oss.oetiker.ch/rrdtool/doc/rrdgraph.en.html">rrdtool graph</a> (respectively for <code>--start</code>, <code>--end</code> and <code>--step</code>).</p>
+
+<p>The above is implemented in the following Perl program
+<code>get-full-interval.pl</code>:</p>
+
+<div class="highlight"><pre><code class="language-perl" data-lang="perl"><span class="c1">#!/usr/bin/env perl</span>
+<span class="k">use</span> <span class="n">strict</span><span class="p">;</span>
+<span class="k">use</span> <span class="n">warnings</span><span class="p">;</span>
+<span class="k">use</span> <span class="n">English</span> <span class="sx">qw&lt; -no_match_vars &gt;</span><span class="p">;</span>
+<span class="k">use</span> <span class="nn">List::</span><span class="n">Util</span> <span class="sx">qw&lt; reduce &gt;</span><span class="p">;</span>
+<span class="k">use</span> <span class="nn">Data::</span><span class="n">Dumper</span><span class="p">;</span>
+
+<span class="k">use</span> <span class="n">RRDs</span><span class="p">;</span>
+
+<span class="nv">$OUTPUT_AUTOFLUSH</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+<span class="k">my</span> <span class="p">(</span><span class="nv">$db</span><span class="p">,</span> <span class="nv">$rra_id</span><span class="p">)</span> <span class="o">=</span> <span class="nv">@ARGV</span><span class="p">;</span>
+<span class="k">my</span> <span class="nv">$info</span> <span class="o">=</span> <span class="n">rrd_info</span><span class="p">(</span><span class="nv">$db</span><span class="p">);</span>
+
+<span class="k">my</span> <span class="nv">$step</span> <span class="o">=</span> <span class="nv">$info</span><span class="o">-&gt;</span><span class="p">{</span><span class="n">step</span><span class="p">};</span>
+<span class="k">my</span> <span class="nv">$last</span> <span class="o">=</span> <span class="nv">$info</span><span class="o">-&gt;</span><span class="p">{</span><span class="n">last_update</span><span class="p">};</span>
+
+<span class="k">my</span> <span class="nv">$rra</span>       <span class="o">=</span> <span class="nv">$info</span><span class="o">-&gt;</span><span class="p">{</span><span class="n">rra</span><span class="p">}[</span><span class="nv">$rra_id</span><span class="p">];</span>
+<span class="k">my</span> <span class="nv">$superstep</span> <span class="o">=</span> <span class="nv">$step</span> <span class="o">*</span> <span class="nv">$rra</span><span class="o">-&gt;</span><span class="p">{</span><span class="n">pdp_per_row</span><span class="p">};</span>
+
+<span class="k">my</span> <span class="nv">$real_end</span> <span class="o">=</span> <span class="nv">$last</span> <span class="o">-</span> <span class="p">(</span><span class="nv">$last</span> <span class="nv">%</span> <span class="err">$</span><span class="nv">superstep</span><span class="p">);</span>
+<span class="k">my</span> <span class="nv">$end</span>      <span class="o">=</span> <span class="nv">$real_end</span> <span class="o">-</span> <span class="mi">1</span><span class="p">;</span>
+<span class="k">my</span> <span class="nv">$start</span>    <span class="o">=</span> <span class="nv">$real_end</span> <span class="o">-</span> <span class="p">(</span><span class="nv">$superstep</span> <span class="o">*</span> <span class="nv">$rra</span><span class="o">-&gt;</span><span class="p">{</span><span class="n">rows</span><span class="p">})</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
+
+<span class="k">print</span> <span class="s">&quot;$start $end $superstep $rra-&gt;{rows}\n&quot;</span><span class="p">;</span>
+
+<span class="k">sub </span><span class="nf">rrd_info</span> <span class="p">{</span>
+   <span class="k">my</span> <span class="p">(</span><span class="nv">$db</span><span class="p">)</span> <span class="o">=</span> <span class="nv">@_</span><span class="p">;</span>
+   <span class="k">my</span> <span class="nv">$raw</span> <span class="o">=</span> <span class="nn">RRDs::</span><span class="n">info</span><span class="p">(</span><span class="nv">$db</span><span class="p">);</span>
+   <span class="k">my</span> <span class="nv">%retval</span><span class="p">;</span>
+
+   <span class="k">while</span> <span class="p">(</span><span class="k">my</span> <span class="p">(</span><span class="nv">$key</span><span class="p">,</span> <span class="nv">$value</span><span class="p">)</span> <span class="o">=</span> <span class="nb">each</span> <span class="nv">%$raw</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">my</span> <span class="nv">$ref</span> <span class="o">=</span> <span class="n">path_to_pointer</span><span class="p">(</span><span class="o">\</span><span class="nv">%retval</span><span class="p">,</span> <span class="n">name_to_path</span><span class="p">(</span><span class="nv">$key</span><span class="p">));</span>
+      <span class="nv">$$ref</span> <span class="o">=</span> <span class="nv">$value</span><span class="p">;</span>
+   <span class="p">}</span>
+
+   <span class="k">return</span> <span class="o">\</span><span class="nv">%retval</span><span class="p">;</span>
+<span class="p">}</span> <span class="c1">## end sub rrd_info</span>
+
+<span class="k">sub </span><span class="nf">name_to_path</span> <span class="p">{</span>
+   <span class="k">my</span> <span class="p">(</span><span class="nv">$name</span><span class="p">)</span> <span class="o">=</span> <span class="nv">@_</span><span class="p">;</span>
+   <span class="k">return</span> <span class="nb">map</span> <span class="p">{</span>
+      <span class="k">if</span> <span class="p">(</span><span class="k">my</span> <span class="p">(</span><span class="nv">$name</span><span class="p">,</span> <span class="nv">$id</span><span class="p">)</span> <span class="o">=</span> <span class="sr">m{^(.+?)\[(.+)\]$}mxs</span><span class="p">)</span> <span class="p">{</span>
+         <span class="p">(</span><span class="nv">$name</span><span class="p">,</span> <span class="p">(</span><span class="nv">$name</span> <span class="o">=~</span> <span class="sr">m{^(?:rra|cdp_prep)$}mxs</span><span class="p">)</span> <span class="p">?</span> <span class="p">[</span><span class="nv">$id</span><span class="p">]</span> <span class="p">:</span> <span class="nv">$id</span><span class="p">);</span>
+      <span class="p">}</span>
+      <span class="k">else</span> <span class="p">{</span>
+         <span class="nv">$_</span><span class="p">;</span>
+      <span class="p">}</span>
+   <span class="p">}</span> <span class="nb">split</span> <span class="sr">/\./</span><span class="p">,</span> <span class="nv">$name</span><span class="p">;</span>
+<span class="p">}</span> <span class="c1">## end sub name_to_path</span>
+
+<span class="k">sub </span><span class="nf">path_to_pointer</span> <span class="p">{</span>    <span class="c1"># see http://www.perlmonks.org/?node_id=443584</span>
+   <span class="k">return</span> <span class="n">reduce</span><span class="p">(</span><span class="k">sub </span><span class="p">{</span> <span class="nb">ref</span><span class="p">(</span><span class="nv">$b</span><span class="p">)</span> <span class="p">?</span> <span class="o">\</span><span class="p">(</span><span class="nv">$$a</span><span class="o">-&gt;</span><span class="p">[</span><span class="nv">$b</span><span class="o">-&gt;</span><span class="p">[</span><span class="mi">0</span><span class="p">]])</span> <span class="p">:</span> <span class="o">\</span><span class="p">(</span><span class="nv">$$a</span><span class="o">-&gt;</span><span class="p">{</span><span class="nv">$b</span><span class="p">})</span> <span class="p">},</span>
+      <span class="o">\</span><span class="nb">shift</span><span class="p">,</span> <span class="nv">@_</span><span class="p">);</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Call this program as:</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>get-full-interval.pl test.rrd 1</code></pre></div>
+
+<p>where the first parameter is the name of the RRD database and the second
+parametrs is the identifier of the RRA you are interested into. The program
+will output, in order, the following parameters:</p>
+
+<ul>
+  <li>value for <code>--start</code></li>
+  <li>value for <code>--end</code></li>
+  <li>the length of the interval (to be used as <code>--step</code> or <code>--resolution</code>
+where these parameters make sense)</li>
+  <li>the number of data points you will get (useful for setting the right
+<code>--width</code> if you want to produce a graph)</li>
+</ul>
+
+<h2 id="graphing-a-whole-database">Graphing a whole database</h2>
+
+<p>The following program produces a graph for each variable and each RRA you
+have in your database, according to the hints provided in the previous
+section:</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="c">#!/bin/bash</span>
+
+<span class="nv">db</span><span class="o">=</span><span class="nv">$1</span>
+<span class="nv">root</span><span class="o">=</span><span class="k">$(</span>basename <span class="s2">&quot;$db&quot;</span> .rrd<span class="k">)</span>
+<span class="nv">variables</span><span class="o">=</span><span class="k">$(</span>rrdtool info <span class="s2">&quot;$db&quot;</span> <span class="p">|</span> sed -n <span class="s1">&#39;s/^ds\[\(.*\)\]\.index.*/\1/p&#39;</span><span class="k">)</span>
+rrdtool info <span class="s2">&quot;$db&quot;</span> <span class="se">\</span>
+<span class="p">|</span> sed -n <span class="s1">&#39;s/^rra\[\(.*\)\]\.cf.*&quot;\(.*\)&quot;$/\1 \2/p&#39;</span> <span class="se">\</span>
+<span class="p">|</span> <span class="k">while</span> <span class="nb">read </span>rra cf <span class="p">;</span> <span class="k">do</span>
+      ./get-full-interval.pl <span class="s2">&quot;$db&quot;</span> <span class="nv">$rra</span> <span class="p">|</span> <span class="o">(</span>
+         <span class="nb">read </span>start end step rows
+         <span class="k">for</span> variable in <span class="nv">$variables</span> <span class="p">;</span> <span class="k">do</span>
+            rrdtool graph <span class="s2">&quot;$root-$variable-$rra-$cf.png&quot;</span> <span class="se">\</span>
+               --start <span class="nv">$start</span> <span class="se">\</span>
+               --end <span class="nv">$end</span> <span class="se">\</span>
+               --step <span class="nv">$step</span> <span class="se">\</span>
+               --width <span class="nv">$rows</span> <span class="se">\</span>
+               --disable-rrdtool-tag <span class="se">\</span>
+               <span class="s2">&quot;DEF:v=$db:$variable:$cf&quot;</span> <span class="se">\</span>
+               LINE1:v#000
+         <span class="k">done</span>
+      <span class="o">)</span>
+   <span class="k">done</span></code></pre></div>
+
+<p>Of course this is one graph per variable without any fancy bell or
+whistle… start from <a href="http://oss.oetiker.ch/rrdtool/doc/rrdgraph.en.html">rrdtool graph</a> to learn all the masters’ tricks!</p>
+
+      <hr />
+      <footer role="contentinfo">
+        <div class="social-share">
+  <h4>Share on</h4>
+  <ul>
+    <li>
+      <a href="https://twitter.com/intent/tweet?text=/rrdtool/" class="twitter" title="Share on Twitter"><i class="fa fa-twitter"></i><span> Twitter</span></a>
+    </li>
+    <li>
+      <a href="https://www.facebook.com/sharer/sharer.php?u=/rrdtool/" class="facebook" title="Share on Facebook"><i class="fa fa-facebook"></i><span> Facebook</span></a>
+    </li>
+    <li>
+      <a href="https://plus.google.com/share?url=/rrdtool/" class="google-plus" title="Share on Google Plus"><i class="fa fa-google-plus"></i><span> Google+</span></a>
+    </li>
+  </ul>
+</div><!-- /.social-share -->
+        <p class="byline"><strong>RRDtool - Sparse Notes</strong> was published on <time datetime="2013-11-02T00:00:00+01:00">November 02, 2013</time>.</p>
+      </footer>
+    </div><!-- /.article-wrap -->
+  
+  </article>
+</div><!-- /#main -->
+
+<div class="footer-wrap">
+  <div class="related-articles">
+  <h4>You might also enjoy <small class="pull-right">(<a href="/posts/">View all posts</a>)</small></h4>
+    <ul>
+    
+      <li><a href="/bittorrent/" title="BitTorrent for personal file sharing">BitTorrent for personal file sharing</a></li>
+    
+      <li><a href="/git-remote-repository/" title="Set up a remote git repository">Set up a remote git repository</a></li>
+    
+    </ul>
+    <hr />
+  </div><!-- /.related-articles -->
+  <footer>
+    
+
+<span>&copy; 2015 Flavio Poletti. Powered by <a href="http://jekyllrb.com" rel="nofollow">Jekyll</a> using the <a href="http://mademistakes.com/minimal-mistakes/" rel="nofollow">Minimal Mistakes</a> theme.</span>
+
+  </footer>
+</div><!-- /.footer-wrap -->
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script src="/assets/js/scripts.min.js"></script>
+
+	        
+
+</body>
+</html>
