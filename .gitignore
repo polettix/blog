@@ -10,3 +10,5 @@ _asset_bundler_cache
 _octopress.yml
 old-favicon.*
 .jshintrc
+_posts
+_drafts
