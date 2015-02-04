@@ -4,13 +4,39 @@
 <generator uri="https://github.com/jekyll/jekyll">Jekyll</generator>
 <link rel="self" type="application/atom+xml" href="/feed.xml" />
 <link rel="alternate" type="text/html" href="" />
-<updated>2015-02-04T13:56:28+01:00</updated>
+<updated>2015-02-04T14:16:41+01:00</updated>
 <id>/</id>
 <author>
   <name>Flavio Poletti</name>
   <uri>/</uri>
   <email>flavio@polettix.it</email>
 </author>
+
+
+  
+
+<entry>
+  <title type="html"><![CDATA[Github Pages]]></title>
+  <link rel="alternate" type="text/html" href="/github-pages/" />
+  <id>/github-pages</id>
+  <published>2015-02-04T00:00:00+01:00</published>
+  <updated>2015-02-04T00:00:00+01:00</updated>
+  <author>
+    <name>Flavio Poletti</name>
+    <uri></uri>
+    <email>flavio@polettix.it</email>
+  </author>
+  <content type="html">
+    &lt;p&gt;–
+layout: post
+title: GitHub Pages
+–&lt;/p&gt;
+
+&lt;p&gt;whatever&lt;/p&gt;
+
+    &lt;p&gt;&lt;a href=&quot;/github-pages/&quot;&gt;Github Pages&lt;/a&gt; was originally published by Flavio Poletti at &lt;a href=&quot;&quot;&gt;PolettiX!&lt;/a&gt; on February 04, 2015.&lt;/p&gt;
+  </content>
+</entry>
 
 
   
@@ -569,6 +595,7 @@ rrdtool info &lt;span class=&quot;s2&quot;&gt;&amp;quot;$db&amp;quot;&lt;/span&g
 
 &lt;p&gt;Of course this is one graph per variable without any fancy bell or
 whistle… start from &lt;a href=&quot;http://oss.oetiker.ch/rrdtool/doc/rrdgraph.en.html&quot;&gt;rrdtool graph&lt;/a&gt; to learn all the masters’ tricks!&lt;/p&gt;
+
 
     &lt;p&gt;&lt;a href=&quot;/rrdtool/&quot;&gt;RRDtool - Sparse Notes&lt;/a&gt; was originally published by Flavio Poletti at &lt;a href=&quot;&quot;&gt;PolettiX!&lt;/a&gt; on November 02, 2013.&lt;/p&gt;
   </content>
