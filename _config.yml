@@ -3,6 +3,8 @@
 title: PolettiX!
 locale: en_US
 #url: "http://polettix.it/" # the base hostname & protocol for your site
+url: '/blog'
+baseurl: '/blog'
 encoding: 'utf-8'
 twitter_username: polettix
 github_username:  polettix
