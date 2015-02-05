@@ -165,3 +165,51 @@ particular, it will not take into consideration things that you *delete*,
 because all items will be added to what is already saved and committed.
 In general this should not be a problem though, because you will mostly
 be adding things, will you not?
+
+A better strategy is to use `git ls-files` to list all files and remove
+most of them before doing the copy with `tar`. We should not get rid of
+all of them though, because some might be important for the generic
+*management* of the pages (e.g. the `.gitignore` file). We will assume
+that there are no files with spaces, so this will work:
+
+{% highlight bash %}
+bundle exec jekyll build
+git checkout gh-pages
+rm $(git ls-files | grep -v '^\.gitignore$')
+tar cf - -C _sites . | tar xvf -
+git add .
+git commit -m $(date '+blog status at %Y%m%d-%H%M%S')
+git push origin gh-pages:gh-pages
+git checkout master
+{% endhighlight %}
+
+I eventually put the commands above in `publish.sh` file:
+
+{% highlight bash %}
+#!/bin/bash
+MYDIR=$(dirname "$0")
+FULLME=$(readlink -f "$0")
+BAREME=$(basename "$0")
+
+die() {
+   echo "$*" >&2
+   exit 1
+}
+
+main() {
+   cd "$MYDIR" || die "unable to go in $MYDIR"
+   cd .. || die "unable to go in parent directory of $MYDIR"
+   echo "in $PWD now"
+
+   git checkout master || die 'unable to switch to master'
+   bundle exec jekyll build || die "unable to update contents"
+   git checkout gh-pages || die 'unable to switch to gh-pages'
+   tar cf - -C _site . | tar xvf - \
+   && git add . \
+   && git commit -m "$(date '+update at %Y%m%d-%H%M%S')" \
+   && git push origin gh-pages
+   git checkout master || die 'unable to switch to master'
+}
+
+main
+{% endhighlight %}

@@ -9,7 +9,6 @@ die() {
 }
 
 main() {
-
    cd "$MYDIR" || die "unable to go in $MYDIR"
    cd .. || die "unable to go in parent directory of $MYDIR"
    echo "in $PWD now"
