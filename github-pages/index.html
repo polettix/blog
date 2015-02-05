@@ -306,6 +306,55 @@ because all items will be added to what is already saved and committed.
 In general this should not be a problem though, because you will mostly
 be adding things, will you not?</p>
 
+<p>A better strategy is to use <code>git ls-files</code> to list all files and remove
+most of them before doing the copy with <code>tar</code>. We should not get rid of
+all of them though, because some might be important for the generic
+<em>management</em> of the pages (e.g. the <code>.gitignore</code> file). We will assume
+that there are no files with spaces, so this will work:</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">bundle <span class="nb">exec </span>jekyll build
+git checkout gh-pages
+rm <span class="k">$(</span>git ls-files <span class="p">|</span> grep -v <span class="s1">&#39;^\.gitignore$&#39;</span><span class="k">)</span>
+tar cf - -C _sites . <span class="p">|</span> tar xvf -
+git add .
+git commit -m <span class="k">$(</span>date <span class="s1">&#39;+blog status at %Y%m%d-%H%M%S&#39;</span><span class="k">)</span>
+git push origin gh-pages:gh-pages
+git checkout master</code></pre></div>
+
+<p>I eventually put the commands above in <code>publish.sh</code> file:</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="c">#!/bin/bash</span>
+<span class="nv">MYDIR</span><span class="o">=</span><span class="k">$(</span>dirname <span class="s2">&quot;$0&quot;</span><span class="k">)</span>
+<span class="nv">FULLME</span><span class="o">=</span><span class="k">$(</span>readlink -f <span class="s2">&quot;$0&quot;</span><span class="k">)</span>
+<span class="nv">BAREME</span><span class="o">=</span><span class="k">$(</span>basename <span class="s2">&quot;$0&quot;</span><span class="k">)</span>
+
+die<span class="o">()</span> <span class="o">{</span>
+   <span class="nb">echo</span> <span class="s2">&quot;$*&quot;</span> &gt;<span class="p">&amp;</span>2
+   <span class="nb">exit </span>1
+<span class="o">}</span>
+
+main<span class="o">()</span> <span class="o">{</span>
+   <span class="nb">cd</span> <span class="s2">&quot;$MYDIR&quot;</span> <span class="o">||</span> die <span class="s2">&quot;unable to go in $MYDIR&quot;</span>
+   <span class="nb">cd</span> .. <span class="o">||</span> die <span class="s2">&quot;unable to go in parent directory of $MYDIR&quot;</span>
+   <span class="nb">echo</span> <span class="s2">&quot;in $PWD now&quot;</span>
+
+   git checkout master <span class="o">||</span> die <span class="s1">&#39;unable to switch to master&#39;</span>
+   bundle <span class="nb">exec </span>jekyll build <span class="o">||</span> die <span class="s2">&quot;unable to update contents&quot;</span>
+   git checkout gh-pages <span class="o">||</span> die <span class="s1">&#39;unable to switch to gh-pages&#39;</span>
+   tar cf - -C _site . <span class="p">|</span> tar xvf - <span class="se">\</span>
+   <span class="o">&amp;&amp;</span> git add . <span class="se">\</span>
+   <span class="o">&amp;&amp;</span> git commit -m <span class="s2">&quot;$(date &#39;+update at %Y%m%d-%H%M%S&#39;)&quot;</span> <span class="se">\</span>
+   <span class="o">&amp;&amp;</span> git push origin gh-pages
+   git checkout master <span class="o">||</span> die <span class="s1">&#39;unable to switch to master&#39;</span>
+<span class="o">}</span>
+
+main</code></pre></div>
+
+<p>I’m not an expert on this, but it’s very probable that without resorting to
+the trick of defining a function <code>main</code> and calling it, things might go
+very wrong in the execution of the script, because the script will live
+in the <code>master</code> branch but it might be unavailable in branch <code>gh-pages</code>.</p>
+
       <hr />
       <footer role="contentinfo">
         <div class="social-share">

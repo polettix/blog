@@ -4,7 +4,7 @@
 <generator uri="https://github.com/jekyll/jekyll">Jekyll</generator>
 <link rel="self" type="application/atom+xml" href="/feed.xml" />
 <link rel="alternate" type="text/html" href="" />
-<updated>2015-02-05T02:04:51+01:00</updated>
+<updated>2015-02-05T02:11:25+01:00</updated>
 <id>/</id>
 <author>
   <name>Flavio Poletti</name>
@@ -176,6 +176,55 @@ particular, it will not take into consideration things that you &lt;em&gt;delete
 because all items will be added to what is already saved and committed.
 In general this should not be a problem though, because you will mostly
 be adding things, will you not?&lt;/p&gt;
+
+&lt;p&gt;A better strategy is to use &lt;code&gt;git ls-files&lt;/code&gt; to list all files and remove
+most of them before doing the copy with &lt;code&gt;tar&lt;/code&gt;. We should not get rid of
+all of them though, because some might be important for the generic
+&lt;em&gt;management&lt;/em&gt; of the pages (e.g. the &lt;code&gt;.gitignore&lt;/code&gt; file). We will assume
+that there are no files with spaces, so this will work:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;bundle &lt;span class=&quot;nb&quot;&gt;exec &lt;/span&gt;jekyll build
+git checkout gh-pages
+rm &lt;span class=&quot;k&quot;&gt;$(&lt;/span&gt;git ls-files &lt;span class=&quot;p&quot;&gt;|&lt;/span&gt; grep -v &lt;span class=&quot;s1&quot;&gt;&amp;#39;^\.gitignore$&amp;#39;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;)&lt;/span&gt;
+tar cf - -C _sites . &lt;span class=&quot;p&quot;&gt;|&lt;/span&gt; tar xvf -
+git add .
+git commit -m &lt;span class=&quot;k&quot;&gt;$(&lt;/span&gt;date &lt;span class=&quot;s1&quot;&gt;&amp;#39;+blog status at %Y%m%d-%H%M%S&amp;#39;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;)&lt;/span&gt;
+git push origin gh-pages:gh-pages
+git checkout master&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;I eventually put the commands above in &lt;code&gt;publish.sh&lt;/code&gt; file:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;c&quot;&gt;#!/bin/bash&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;MYDIR&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;$(&lt;/span&gt;dirname &lt;span class=&quot;s2&quot;&gt;&amp;quot;$0&amp;quot;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;FULLME&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;$(&lt;/span&gt;readlink -f &lt;span class=&quot;s2&quot;&gt;&amp;quot;$0&amp;quot;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;BAREME&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;$(&lt;/span&gt;basename &lt;span class=&quot;s2&quot;&gt;&amp;quot;$0&amp;quot;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;)&lt;/span&gt;
+
+die&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+   &lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;$*&amp;quot;&lt;/span&gt; &amp;gt;&lt;span class=&quot;p&quot;&gt;&amp;amp;&lt;/span&gt;2
+   &lt;span class=&quot;nb&quot;&gt;exit &lt;/span&gt;1
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+
+main&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+   &lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;$MYDIR&amp;quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;||&lt;/span&gt; die &lt;span class=&quot;s2&quot;&gt;&amp;quot;unable to go in $MYDIR&amp;quot;&lt;/span&gt;
+   &lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; .. &lt;span class=&quot;o&quot;&gt;||&lt;/span&gt; die &lt;span class=&quot;s2&quot;&gt;&amp;quot;unable to go in parent directory of $MYDIR&amp;quot;&lt;/span&gt;
+   &lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;in $PWD now&amp;quot;&lt;/span&gt;
+
+   git checkout master &lt;span class=&quot;o&quot;&gt;||&lt;/span&gt; die &lt;span class=&quot;s1&quot;&gt;&amp;#39;unable to switch to master&amp;#39;&lt;/span&gt;
+   bundle &lt;span class=&quot;nb&quot;&gt;exec &lt;/span&gt;jekyll build &lt;span class=&quot;o&quot;&gt;||&lt;/span&gt; die &lt;span class=&quot;s2&quot;&gt;&amp;quot;unable to update contents&amp;quot;&lt;/span&gt;
+   git checkout gh-pages &lt;span class=&quot;o&quot;&gt;||&lt;/span&gt; die &lt;span class=&quot;s1&quot;&gt;&amp;#39;unable to switch to gh-pages&amp;#39;&lt;/span&gt;
+   tar cf - -C _site . &lt;span class=&quot;p&quot;&gt;|&lt;/span&gt; tar xvf - &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+   &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; git add . &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+   &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; git commit -m &lt;span class=&quot;s2&quot;&gt;&amp;quot;$(date &amp;#39;+update at %Y%m%d-%H%M%S&amp;#39;)&amp;quot;&lt;/span&gt; &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+   &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; git push origin gh-pages
+   git checkout master &lt;span class=&quot;o&quot;&gt;||&lt;/span&gt; die &lt;span class=&quot;s1&quot;&gt;&amp;#39;unable to switch to master&amp;#39;&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+
+main&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;I’m not an expert on this, but it’s very probable that without resorting to
+the trick of defining a function &lt;code&gt;main&lt;/code&gt; and calling it, things might go
+very wrong in the execution of the script, because the script will live
+in the &lt;code&gt;master&lt;/code&gt; branch but it might be unavailable in branch &lt;code&gt;gh-pages&lt;/code&gt;.&lt;/p&gt;
 
     &lt;p&gt;&lt;a href=&quot;/github-pages/&quot;&gt;GitHub Pages&lt;/a&gt; was originally published by Flavio Poletti at &lt;a href=&quot;&quot;&gt;PolettiX!&lt;/a&gt; on February 04, 2015.&lt;/p&gt;
   </content>
