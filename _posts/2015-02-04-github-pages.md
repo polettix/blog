@@ -213,3 +213,8 @@ main() {
 
 main
 {% endhighlight %}
+
+I'm not an expert on this, but it's very probable that without resorting to
+the trick of defining a function `main` and calling it, things might go
+very wrong in the execution of the script, because the script will live
+in the `master` branch but it might be unavailable in branch `gh-pages`.
