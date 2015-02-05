@@ -6,7 +6,8 @@
 <head>
 <meta charset="utf-8">
 <title>GitHub Pages &#8211; PolettiX!</title>
-<meta name="description" content="Will add stuff later
+<meta name="description" content="I recently decided that I should probably write more. GitHub Pages
+is a good place where to store what I write.
 
 ">
 <meta name="keywords" content="">
@@ -15,20 +16,22 @@
 
 <!-- Twitter Cards -->
 <meta name="twitter:title" content="GitHub Pages">
-<meta name="twitter:description" content="Will add stuff later
+<meta name="twitter:description" content="I recently decided that I should probably write more. GitHub Pages
+is a good place where to store what I write.
 
 ">
 <meta name="twitter:site" content="@polettix">
 <meta name="twitter:creator" content="@polettix">
 
-<meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="/images/default-thumb.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="/images/yellow-river.jpg">
 
 <!-- Open Graph -->
 <meta property="og:locale" content="en_US">
 <meta property="og:type" content="article">
 <meta property="og:title" content="GitHub Pages">
-<meta property="og:description" content="Will add stuff later
+<meta property="og:description" content="I recently decided that I should probably write more. GitHub Pages
+is a good place where to store what I write.
 
 ">
 <meta property="og:url" content="/github-pages/">
@@ -101,6 +104,15 @@
 </div><!-- /.navigation-wrapper -->
 
 
+  <div class="image-wrap">
+  <img src=
+    
+      "/images/yellow-river.jpg"
+    
+  alt="GitHub Pages feature image">
+  
+  </div><!-- /.image-wrap -->
+
 
 <div id="main" role="main">
   <div class="article-author-side">
@@ -144,7 +156,155 @@
       
     </div><!--/ .headline-wrap -->
     <div class="article-wrap">
-      <p>Will add stuff later</p>
+      <p>I recently decided that I should probably write more. <a href="https://pages.github.com/">GitHub Pages</a>
+is a good place where to store what I write.</p>
+
+<h2 id="what-is-github-pages">What Is GitHub Pages</h2>
+
+<p><a href="https://pages.github.com/">GitHub Pages</a> is a service provided by GitHub to host… pages. It is
+a great way to add a website to a project hosted on GitHub, and also
+quite simple to do by using git. The idea is that you create a
+dedicated <em>branch</em> in your project repository, called <code>gh-pages</code>, and
+put the website there. GitHub is then smart enough to take the contents
+from that branch and expose them on the Internet at the right address.</p>
+
+<p>If your nickname on GitHub is <code>mynick</code>, and the project is called
+<code>myproject</code>, then:</p>
+
+<ul>
+  <li>the project will be at <code>https://github.com/mynick/myproject</code></li>
+  <li>its pages will be at <code>http://mynick.github.io/myproject</code></li>
+</ul>
+
+<p>For example, my repository for the <a href="https://github.com/polettix/Graphics-Potrace">Potrace</a> Perl bindings has:</p>
+
+<ul>
+  <li>project repository at address
+<a href="https://github.com/polettix/Graphics-Potrace"><code>https://github.com/polettix/Graphics-Potrace</code></a></li>
+  <li>its associated page(s) at address
+<a href="http://polettix.github.io/Graphics-Potrace"><code>http://polettix.github.io/Graphics-Potrace</code></a></li>
+</ul>
+
+<h2 id="project-or-userassociation">Project or User/Association?</h2>
+
+<p>What written above is fine for projects hosted on GitHub. As a matter
+of fact, there is also a <em>standardized</em> way to have similar pages for
+a user or an organization.</p>
+
+<p>There is a slight inconsistency in how the thing is handled though:</p>
+
+<ul>
+  <li>it still relies on a GitHub project - good</li>
+  <li>the GitHub project MUST have a specific name, e.g.
+<code>mynick.github.io</code> - still good</li>
+  <li>the pages are hosted in the <code>master</code> branch instead of
+<code>gh-pages</code> - this is a bummer!</li>
+</ul>
+
+<h2 id="blog">Blog?</h2>
+
+<p>With the tools above - especially considering the pages for a user
+or an association - it is easy to think about hosting a blog on GitHub.
+We will assume that it is hosted as a project by itself, not the one
+for the user/association above (although you can easily tweak the
+instructions below to make it happen).</p>
+
+<p>The basic idea is that keeping a blog’s pages is too cumbersome to
+be done manually. You will probably want to provide a consistent look,
+with all headers, navigation, sides, footers… all the bells and
+whistles.</p>
+
+<p>One of the best approaches to take is to use some blog
+generation system - we’ll use <a href="http://jekyllrb.com/">Jekyll</a> here - so that we can concentrate
+on writing the stuff, and let the system do the heavy lifting to generate
+the final pages. Hence, it makes sense to consider the blog from two
+points of view:</p>
+
+<ul>
+  <li>the generating system where you put your articles in</li>
+  <li>the final generated site</li>
+</ul>
+
+<p>This fits perfectly with GitHub: you can keep the generating system
+as <em>the project</em>, and its associated GitHub Pages as the real blog that
+is served on the Internet.</p>
+
+<h2 id="lets-start">Let’s Start!</h2>
+
+<p>I set up my blog infrastructure using <a href="http://jekyllrb.com/">Jekyll</a>. After installing it,
+create your new blog like this:</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">jekyll new myblog
+<span class="nb">cd </span>myblog
+git init
+git add .
+git commit -m <span class="s1">&#39;initial import&#39;</span></code></pre></div>
+
+<p>Now you have your local repository for the blog. At this point, you
+are ready for creating a new repository in GitHub (let’s call it
+<code>myblog</code> in user <code>mynick</code>) and tie them up:</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">git remote add origin git@github.com:mynick/myblog.git
+git push -u origin master</code></pre></div>
+
+<p>It’s time to start generating pages at this point. Depending on how
+you installed <a href="http://jekyllrb.com/">Jekyll</a> or whatever different, you might have to use
+<code>bundle</code>, which is what we will assume here:</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">bundle <span class="nb">exec </span>jekyll build</code></pre></div>
+
+<p>Now the generated stuff will live inside the <code>_site</code> subdirectory. This
+should be already included inside the <code>.gitignore</code> file generated by
+Jekyll automatically, but in case it’s a good moment for doing this.</p>
+
+<p>The suggestion is that the <code>master</code> and <code>gh-pages</code> branches are really
+separated from one another. Again, there might be many ways to do this,
+I’m just providing you one here:</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">git checkout master
+git checkout --orphan gh-pages
+git rm -rf .</code></pre></div>
+
+<p>At this point you should still have the <code>_site</code> directory lying around,
+and this is where the real contents of your site actually are. A basic
+strategy can be to just copy the contents of that directory inside the
+root directory of the repository:</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">tar cf - -C _sites . <span class="p">|</span> tar xvf -
+git add .
+git commit -m <span class="s1">&#39;gh-pages initial import&#39;</span>
+git push origin gh-pages:gh-pages</code></pre></div>
+
+<p>There you go, your blog is online!</p>
+
+<h2 id="routine-workflow">Routine Workflow</h2>
+
+<p>What’s the workflow from now on? You will normally work in the <code>master</code>
+branch - we set all this up for this reason, actually - and will switch
+on the <code>gh-pages</code> branch only when needed.</p>
+
+<p>Adding posts or pages in Jekyll is quite easy and there is plenty of
+documentation. When you’re done, make sure you are in the <code>master</code>
+branch and that changes are committed, otherwise you will not be able
+to switch to the <code>gh-pages</code> branch later on. It’s OK to have files that
+are not yet onboarded in GitHub though, <code>git</code> will not complain about
+them.</p>
+
+<p>At this point, you have to follow these steps:</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">bundle <span class="nb">exec </span>jekyll build
+git checkout gh-pages
+tar cf - -C _sites . <span class="p">|</span> tar xvf -
+git add .
+git commit -m <span class="k">$(</span>date <span class="s1">&#39;+blog status at %Y%m%d-%H%M%S&#39;</span><span class="k">)</span>
+git push origin gh-pages:gh-pages
+git checkout master</code></pre></div>
+
+<p>The copy using <code>tar</code> is effective although not completely correct. In
+particular, it will not take into consideration things that you <em>delete</em>,
+because all items will be added to what is already saved and committed.
+In general this should not be a problem though, because you will mostly
+be adding things, will you not?</p>
 
       <hr />
       <footer role="contentinfo">
