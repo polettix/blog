@@ -1,6 +1,9 @@
 ---
+# vim: ts=4 sw=4 expandtab syn=off
 layout: post
 title: BitTorrent for personal file sharing
+image:
+   feature: yellow-river.jpg
 ---
 
 I sometimes what to transfer a file from A to B and this file might be big.

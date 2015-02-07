@@ -1,6 +1,9 @@
 ---
+# vim: ts=4 sw=4 expandtab syn=off
 layout: post
 title: Set up a remote git repository
+image:
+   feature: yellow-river.jpg
 ---
 
 I sometimes happen to start a local repository that then I want to
