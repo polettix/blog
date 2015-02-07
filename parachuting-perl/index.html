@@ -1,0 +1,712 @@
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if (IE 7)&!(IEMobile)]><html class="no-js lt-ie9 lt-ie8" lang="en"><![endif]-->
+<!--[if (IE 8)&!(IEMobile)]><html class="no-js lt-ie9" lang="en"><![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"><!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<title>Parachuting Perl &#8211; PolettiX!</title>
+<meta name="description" content="I&#8217;m probably not the only one in the world to work in an Enterprise-like
+world. Which basically boils down to little Perl knowledge (at least
+in the admittedly few Enteprises I got in contact with) and usage of
+streamline Linux distribution with horribly old Perl versions.
+
+">
+<meta name="keywords" content="">
+
+
+
+<!-- Twitter Cards -->
+<meta name="twitter:title" content="Parachuting Perl">
+<meta name="twitter:description" content="I&#8217;m probably not the only one in the world to work in an Enterprise-like
+world. Which basically boils down to little Perl knowledge (at least
+in the admittedly few Enteprises I got in contact with) and usage of
+streamline Linux distribution with horribly old Perl versions.
+
+">
+<meta name="twitter:site" content="@polettix">
+<meta name="twitter:creator" content="@polettix">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="/images/yellow-river.jpg">
+
+<!-- Open Graph -->
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Parachuting Perl">
+<meta property="og:description" content="I&#8217;m probably not the only one in the world to work in an Enterprise-like
+world. Which basically boils down to little Perl knowledge (at least
+in the admittedly few Enteprises I got in contact with) and usage of
+streamline Linux distribution with horribly old Perl versions.
+
+">
+<meta property="og:url" content="/parachuting-perl/">
+<meta property="og:site_name" content="PolettiX!">
+
+
+
+
+
+<link rel="canonical" href="/parachuting-perl/">
+<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="PolettiX! Feed">
+
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+
+<meta http-equiv="cleartype" content="on">
+
+<!-- HTML5 Shiv and Media Query Support -->
+<!--[if lt IE 9]>
+	<script src="/assets/js/vendor/html5shiv.min.js"></script>
+	<script src="/assets/js/vendor/respond.min.js"></script>
+<![endif]-->
+
+<!-- Modernizr -->
+<script src="/assets/js/vendor/modernizr-2.7.1.custom.min.js"></script>
+
+<link href='//fonts.googleapis.com/css?family=PT+Sans+Narrow:400,700%7CPT+Serif:400,700,400italic' rel='stylesheet' type='text/css'>
+
+<!-- Icons -->
+<!-- 16x16 -->
+<link rel="shortcut icon" href="/favicon.ico?whatever">
+<!-- 32x32 -->
+<link rel="shortcut icon" href="/favicon.png?whatever">
+<!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
+<link rel="apple-touch-icon-precomposed" href="/images/apple-touch-icon-precomposed.png">
+<!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="/images/apple-touch-icon-72x72-precomposed.png">
+<!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="/images/apple-touch-icon-114x114-precomposed.png">
+<!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/images/apple-touch-icon-144x144-precomposed.png">
+
+</head>
+
+<body class="post">
+
+<!--[if lt IE 9]><div class="browser-upgrade alert alert-info">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</div><![endif]-->
+
+<div class="navigation-wrapper">
+	<div class="site-name">
+		<a href="/">PolettiX!</a>
+	</div><!-- /.site-name -->
+	<div class="top-navigation">
+		<nav role="navigation" id="site-nav" class="nav">
+		    <ul>
+		        
+				    
+				        
+				    
+				    <li><a href="/about/" >About</a></li>
+				
+		    </ul>
+		</nav>
+	</div><!-- /.top-navigation -->
+</div><!-- /.navigation-wrapper -->
+
+
+  <div class="image-wrap">
+  <img src=
+    
+      "/images/yellow-river.jpg"
+    
+  alt="Parachuting Perl feature image">
+  
+  </div><!-- /.image-wrap -->
+
+
+<div id="main" role="main">
+  <div class="article-author-side">
+    
+
+
+<div itemscope itemtype="http://schema.org/Person">
+
+
+	<img src="/images/flavio-self-color.png" class="bio-photo" alt="Flavio Poletti bio photo">
+
+
+  <h3 itemprop="name">Flavio Poletti</h3>
+  <p>Irreducible Perler.</p>
+  <a href="mailto:flavio@polettix.it" class="author-social" target="_blank"><i class="fa fa-fw fa-envelope-square"></i>Email</a>
+  <a href="http://twitter.com/polettix" class="author-social" target="_blank"><i class="fa fa-fw fa-twitter-square"></i> Twitter</a>
+  
+  
+  <a href="http://linkedin.com/in/flaviopoletti" class="author-social" target="_blank"><i class="fa fa-fw fa-linkedin-square"></i> LinkedIn</a>
+  
+  
+  <a href="https://metacpan.org/author/polettix" class="author-social" target="_blank"><i class="fa fa-fw fa-th-large"></i> MetaCPAN</a>
+  <a href="http://github.com/polettix" class="author-social" target="_blank"><i class="fa fa-fw fa-github"></i> Github</a>
+  
+  
+  
+  <a href="http://www.pinterest.com/polettix" class="author-social" target="_blank"><i class="fa fa-fw fa-pinterest"></i> Pinterest</a>
+  
+  
+  
+  
+  
+  
+</div>
+
+  </div>
+  <article class="post">
+    <div class="headline-wrap">
+      
+        <h1><a href="/parachuting-perl/" rel="bookmark" title="Parachuting Perl">Parachuting Perl</a></h1>
+      
+    </div><!--/ .headline-wrap -->
+    <div class="article-wrap">
+      <p>I’m probably not the only one in the world to work in an Enterprise-like
+world. Which basically boils down to little Perl knowledge (at least
+in the admittedly few Enteprises I got in contact with) and usage of
+streamline Linux distribution with horribly old Perl versions.</p>
+
+<p>What I’m probably, again, not the only one in the world to do is to
+just set up <em>my</em> own <code>perl</code> installation for usage by my applications. This
+makes me comfortable about what I’m going to use, without messing with
+the system’s <code>perl</code>. After that, of course, there comes the problem of
+many possible applications living together… so I have to cope with
+this as well.</p>
+
+<p>One additional problem that might kick-in is when I have to use a different
+<code>perl</code> version for an application. As an example, I recently discovered
+<a href="https://metacpan.org/pod/Regexp::Grammars">Regexp::Grammars</a> is compatible with <code>perl</code> starting from version 5.10, but
+only if different from 5.18… so what if my environment is 5.18? There might
+be the need to handle different <code>perl</code> installations too, then.</p>
+
+<p>There are currently a lot of tools that simplify the task of having
+one’s own <code>perl</code>, keeping a private library for an application, possibly
+shipping also the modules because there’s no connectivity to the
+Internet… let’s see one possible workflow.</p>
+
+<h2 id="the-plan">The Plan</h2>
+
+<p>The plan is very simple:</p>
+
+<ol>
+  <li>install <a href="https://github.com/tokuhirom/plenv">plenv</a> to address the possibility of multiple Perl versions. It
+is quite lean and it seems to do its work without getting too much in
+the way</li>
+  <li>build a private <code>perl</code> through <a href="https://metacpan.org/pod/distribution/Perl-Build/script/perl-build">perl-build</a>, which can be installed as
+a plugin of <a href="https://github.com/tokuhirom/plenv">plenv</a>, so that we can use <code>plenv</code> only</li>
+  <li>install <a href="https://github.com/miyagawa/cpanminus">cpanminus</a> (a.k.a. <code>cpanm</code>) to easily handle module installation
+later. Again, this can be handled as a plugin of <code>plenv</code>, we’ll see how</li>
+  <li>declare the dependencies of our application in the root directory of the
+application itself, through a <code>cpanfile</code> declaration.</li>
+  <li>use <a href="https://metacpan.org/pod/Carton">carton</a> to handle the installation of an application-private library
+of code from the dependencies, so that we will be able to decouple from
+the shared libraries installed in whatever <code>perl</code> we will use. This allows
+e.g. to have two different application use two different versions of a
+library, but leverating on the exact same <code>perl</code> installation. Carton
+will also help us run our application with the right environment, more on
+this later.</li>
+</ol>
+
+<p>Should you have your development and deployment environment equal to each
+other? Yes and no. For example, I already have [perlbrew] installed on my
+dev machine, and the shift to <a href="https://github.com/tokuhirom/plenv">plenv</a> is something to do with a bit of
+calm… so as long as I’m sure that I use the same <code>perl</code> version in the
+two places I should be fine. This means that steps 1..3 above will in
+general be a pre-requisite on the target deployment machine, while
+steps 4 and 5 are more on the development machine.</p>
+
+<p>So let’s start!</p>
+
+<h2 id="deployment-environment-set-up">Deployment Environment Set-Up</h2>
+
+<p>Depending on the target machine you will be using, it might be easy or
+impossible to actually install your own <code>perl</code> and its modules (especially
+when compilation is needed). If this is the case, try to see if you can
+create a compatible environment somewhere else, e.g. in a virtual machine
+in your computer or online, so that you can be pretty sure that when you
+copy things over you will be fine.</p>
+
+<p>In the following, then, we will assume
+that the deployment machine is equipped with all the tools needed to
+compile and install <code>perl</code> and modules, which e.g. for a Debian release
+would mean ensuring that package <code>build-essentials</code> is in place, with
+the addition of a system <code>perl</code>, <code>curl</code> and <code>git</code>. For other
+<em>enterprise</em>-like distributions like RHEL and SLES there are the
+applicable package managers, otherwise you will have to roll your own!</p>
+
+<p>Before starting, we have to note that there is absolutely no need to
+be <code>root</code> here. As a matter of fact, it’s probably better <em>not</em> to be
+<code>root</code> at all.</p>
+
+<h3 id="plenv"><a href="https://github.com/tokuhirom/plenv">plenv</a></h3>
+
+<p>The installation of <a href="https://github.com/tokuhirom/plenv">plenv</a> is (or can be) as simple as cloning its
+repository on GitHub. We’ll also take care to install the other tools
+as suggested by the documentation, that I will blatantly copy here (or so):</p>
+
+<pre><code>cd ~
+git clone git://github.com/tokuhirom/plenv.git .plenv
+</code></pre>
+
+<p>Now it’s time to add <code>~/.plenv/bin</code> to your <code>PATH</code> environment variable.
+Where it is stored/set is actually a matter of the system you are in,
+so your mileage may vary with the suggestion provided in the <a href="https://github.com/tokuhirom/plenv">plenv</a>
+documentation. Good places to look are:</p>
+
+<ul>
+  <li><code>~/.bashrc</code> or <code>~/.bash_profile</code> or <code>~/.profile</code> if you’re using bash</li>
+  <li><code>~/.zshrc</code> if you’re using zsh</li>
+  <li>whatever provided by the other shells</li>
+</ul>
+
+<p>You can either edit the place where <code>PATH</code> is set, or add a line like this
+at the end (file and syntax depend from the shell and considerations above):</p>
+
+<pre><code>echo 'export PATH="$HOME/.plenv/bin:$PATH"' &gt;&gt; ~/.bashrc
+</code></pre>
+
+<p>At this point, you can execute the following and have <a href="https://github.com/tokuhirom/plenv">plenv</a> <em>visible</em>
+in your shell:</p>
+
+<pre><code>exec "$SHELL" -l
+</code></pre>
+
+<p>Time for initializing <a href="https://github.com/tokuhirom/plenv">plenv</a> now. A sub-command tells you what to add
+to the file you modified for the <code>PATH</code> variable, just run:</p>
+
+<pre><code>plenv init -
+</code></pre>
+
+<p>and look carefully at the output. For example, I have (more or less) this:</p>
+
+<pre><code>export PATH="$HOME/.plenv/shims:${PATH}"
+export PLENV_SHELL=bash
+source '$HOME/.plenv/libexec/../completions/plenv.bash'
+plenv() {
+    local command
+    command="$1"
+    if [ "$#" -gt 0 ]; then
+        shift
+    fi
+
+    case "$command" in
+    rehash|shell)
+        eval "`plenv "sh-$command" "$@"`";;
+    *)
+        command plenv "$command" "$@";;
+    esac
+}
+</code></pre>
+
+<p>If it’s OK with your policies, then you can proceed in installing those
+lines like you did for <code>PATH</code> modification above. Actually, what is
+suggested by the author of <a href="https://github.com/tokuhirom/plenv">plenv</a> is to add this:</p>
+
+<pre><code>echo 'eval "$(plenv init -)"' &gt;&gt; ~/.bash_profile
+</code></pre>
+
+<p>which is less save than installing the lines above. Unless you are going
+to update <a href="https://github.com/tokuhirom/plenv">plenv</a> in the future (e.g. with <code>git pull</code> at some time) you’re
+fine, but if you do update you might end up with less secure things
+happening during that <code>init</code> process that would be executed at every
+login… the choice is yours to take. My only consideration is that you
+probably already rely upon work done by complete strangers, and this seems
+more or less the same situation.</p>
+
+<p>Again, to make the changes happen you have to update your shell:</p>
+
+<pre><code>exec "$SHELL" -l
+</code></pre>
+
+<h3 id="plugging-perl-build-in">Plugging <a href="https://metacpan.org/pod/distribution/Perl-Build/script/perl-build">perl-build</a> in</h3>
+
+<p><a href="https://metacpan.org/pod/distribution/Perl-Build/script/perl-build">Perl-build</a> is a separate tool from the same author, and
+is targeted at assisting in the installation of a new <code>perl</code>. Being from
+the same author, anyway, makes it easy to integrate with <a href="https://github.com/tokuhirom/plenv">plenv</a>, which
+is what we will do here:</p>
+
+<pre><code>git clone git://github.com/tokuhirom/Perl-Build.git \
+   ~/.plenv/plugins/perl-build
+</code></pre>
+
+<p>Yes, this is it!</p>
+
+<h3 id="your-first-perl">Your first <code>perl</code></h3>
+
+<p>It’s time for some serious compilation now. Make sure you know which
+<code>perl</code> version you need, and ask <a href="https://github.com/tokuhirom/plenv">plenv</a> to install it (it will use
+<a href="https://metacpan.org/pod/distribution/Perl-Build/script/perl-build">perl-build</a> behind the scenes for the heavy-lifting):</p>
+
+<pre><code>plenv install 5.20.1  # use *your* perl version of course!
+</code></pre>
+
+<p>Wait a few minutes for the installation to complete, then let <a href="https://github.com/tokuhirom/plenv">plenv</a>
+regenerate the <em>shims</em>:</p>
+
+<pre><code>plenv rehash
+</code></pre>
+
+<p>Now, this is written in the documentation and I respect it, but I
+wonder whether this step is really necessary and, if it is, why at
+all. Can’t this be done as the final part of <code>plenv install ...</code>?
+Maybe it is (looking at the contents of <code>~/.plenv/shims</code> it appears
+to be so) and I can’t read the documentation properly, go figure.</p>
+
+<h3 id="installing-cpanminus">Installing <a href="https://github.com/miyagawa/cpanminus">cpanminus</a></h3>
+
+<p>Another capability offered by <a href="https://github.com/tokuhirom/plenv">plenv</a> is to install <a href="https://github.com/miyagawa/cpanminus">cpanminus</a>. I think
+most know it today, so I’ll not add anything on it.</p>
+
+<p>I don’t really like do to this using <a href="https://github.com/tokuhirom/plenv">plenv</a> though, because especially
+in deployment machines I prefer to use the <em>fatpacked</em> self-containing
+version. We already added a couple of directories to the <code>PATH</code>, so
+we will install it in one of them:</p>
+
+<pre><code># you can do this with wget as well, of course
+curl -L 'https://github.com/miyagawa/cpanminus/raw/devel/cpanm' \
+    &gt; ~/.plenv/bin/cpanm
+chmod a+x ~/.plenv/bin/cpanm
+</code></pre>
+
+<p>This should Just Work.</p>
+
+<h3 id="time-to-pack">Time to pack…</h3>
+
+<p>The deployment server is ready at this point. Ok, sort of at least for my
+taste.</p>
+
+<p>First of all there’s a lot of cruft left by <a href="https://github.com/tokuhirom/plenv">plenv</a> after installing
+<code>perl</code>, so I usually get rid of it:</p>
+
+<pre><code>cd ~/.plenv
+rm -rf build cache
+</code></pre>
+
+<p>For perl 5.20.1 this saved me some 170+ MB, which are not bad when you
+eventually have to pack it all for distributing into multiple deployment
+machines. What I ended up was about 66 MB that shrink down to about 17 MB
+after bzip2 compression, so it’s perfectly acceptable to have human
+transfer time (unless your datacenter has shiny gigabit or multi-gigabit
+networking equipment).</p>
+
+<p>Another thing that I like to have around is a script for making the
+changes to the shell initialization when I will carry the whole
+package around (because I usually have to). So I save something like this
+inside `~/.plenv/bin/colonize.sh and provide execution permissions to it:</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="c">#!/bin/bash</span>
+<span class="c">#</span>
+<span class="c"># usually saved as ~/.plenv/bin/colonize.sh</span>
+
+<span class="c"># change the target according to what your system has, e.g.</span>
+<span class="c"># ~/.profile or ~/.bash_profile or ~/.zshrc or...</span>
+<span class="nv">target</span><span class="o">=</span><span class="s2">&quot;$HOME/.bashrc&quot;</span>
+
+<span class="k">if</span> grep <span class="s1">&#39;^export PATH=.*/\.plenv/bin&#39;</span> <span class="s2">&quot;$target&quot;</span> &gt;/dev/null 2&gt;<span class="p">&amp;</span><span class="m">1</span> <span class="p">;</span> <span class="k">then</span>
+    <span class="nb">echo</span> <span class="s2">&quot;plenv already set-up in this system&quot;</span> &gt;<span class="p">&amp;</span>2
+    <span class="nb">exit </span>0
+<span class="k">fi</span>
+
+cat &gt;&gt;<span class="s2">&quot;$target&quot;</span> <span class="s">&lt;&lt;&#39;END&#39;</span>
+
+<span class="s">export PATH=&quot;$HOME/.plenv/bin:$PATH&quot;</span>
+<span class="s">eval &quot;$(plenv init -)&quot;</span>
+<span class="s">END</span></code></pre></div>
+
+<p>At this point we’re really ready to pack (feel free to substitute the <code>j</code>
+with e.g. a <code>z</code> if your system does not have <code>bzip2</code> installed):</p>
+
+<pre><code>cd ~
+tar cvjf myperl.tar.bz2 .plenv
+</code></pre>
+
+<p>To install it into another (equivalent) deployment machine you just
+have to transfer the file, unpack and <em>colonize</em>:</p>
+
+<pre><code>scp myperl.tar.bz2 "$user"@"$remote":/tmp
+ssh "$user"@"$remote" \
+    'cd ~ &amp;&amp; tar xvf /tmp/myperl.tar.bz2 &amp;&amp; ./plenv/bin/colonize.sh'
+</code></pre>
+
+<h2 id="development-environment-set-up">Development Environment Set-Up</h2>
+
+<p>You might have a brand new development machine and follow the steps above
+to set it up exactly like a deployment one: congratulations! Otherwise, you
+should at least ensure that when testing in your dev machine you are
+using the same <code>perl</code> version as you installed in the deployment machines,
+with similar compilation options (e.g. with or without threads).</p>
+
+<p>In the following, we will take the hard way and assume that you don’t have
+<a href="https://github.com/tokuhirom/plenv">plenv</a> in the development machine. This is what I have today, so whatever
+I write here wouldn’t be tested if I assumed that <a href="https://github.com/tokuhirom/plenv">plenv</a> is used in the
+dev machine.</p>
+
+<p>It’s now time to concentrate on the application. Assuming it lives in its
+own directory, with proper version control set up (e.g. <code>git</code>), we have to
+ensure that non-core modules are properly tracked, and <a href="https://metacpan.org/pod/Carton">carton</a> will help
+us out on this.</p>
+
+<h3 id="dependencies-handling-with-carton">Dependencies handling with <a href="https://metacpan.org/pod/Carton">carton</a></h3>
+
+<p>Installing <a href="https://metacpan.org/pod/Carton">carton</a> should not be a problem. You can do it via
+<a href="https://github.com/miyagawa/cpanminus">cpanm</a> on the <code>perl</code> that you use on the development
+machine.</p>
+
+<p>You declare your dependencies in a <code>cpanfile</code> inside the root of your
+project, like this:</p>
+
+<pre><code># This is file "cpanfile"
+requires 'Log::Log4perl::Tiny', '1.2.6';
+requires 'Template::Perlish';
+requires 'JSON', '2.59';
+</code></pre>
+
+<p>As you can see, you can either specify the module version - e.g. because
+you know that the specific version has a particular feature - or not. At
+this point, <a href="https://metacpan.org/pod/Carton">carton</a> helps you install these modules in a local directory
+called <code>local</code>:</p>
+
+<pre><code>carton install
+</code></pre>
+
+<p>The first time you run this it will create the <code>local</code> directory and put
+all installed modules there. Another important file that is created
+is <code>cpanfile.snapshot</code>, that records the <code>cpanfile</code> and the results
+of the installation in a manner that will allow the exact re-creation
+of the environment created here. At this point <code>git</code> will be complaining
+about these new files:</p>
+
+<ul>
+  <li>you definitely want <code>cpanfile</code> and <code>cpanfile.snapshot</code> to be tracked by
+<code>git</code>. The first helps you keep track of what you need, the second will
+allow you to recreate the environment multiple times, and will help
+anyone that wants to collaborate too. We’ll see how in a moment.</li>
+  <li>you definitely do <em>not</em> want to track <code>local</code>. At the point where you
+have the instructions to recreate it with <code>cpanfile.snapshot</code>, it does
+not make sense to move it around. And, as you probably already guessed,
+it will probably be difficult to move compiled modules around, unless
+your development environment matches the deployment one perfectly (or
+so).</li>
+</ul>
+
+<p>Which basically boils down to something like this:</p>
+
+<pre><code>echo local/ &gt;&gt; .gitignore
+git add .gitignore cpanfile cpanfile.snapshot
+git commit -m 'using carton dependencies handling'
+</code></pre>
+
+<h3 id="running-applications">Running applications</h3>
+
+<p>Carton has its own way of helping you start applications with the
+right environment:</p>
+
+<pre><code>carton exec program option option option...
+</code></pre>
+
+<p>It also plays well with <a href="https://github.com/tokuhirom/plenv">plenv</a>, so if you set up a <em>local</em> version of
+<code>perl</code> with it it will use that. My impression is that it fiddles with
+<code>PERL5LIB</code> to point towards the <code>local</code> directory that was created.</p>
+
+<p>Another approach that does not require you to wrap your application
+calls via <a href="https://metacpan.org/pod/Carton">carton</a> - which might get annoying - is to set up usage
+of the <code>local</code> library directly from your application. You probably
+already do something like this if you store most of your code inside
+the <code>lib</code> directory:</p>
+
+<pre><code>use FindBin '$Bin';
+use lib "$Bin/../lib", "$Bin/../local/lib/perl5";
+</code></pre>
+
+<h2 id="workflow">Workflow</h2>
+
+<p>These are my suggestions for the update of the distributions. In my
+case, the deployment machines do not have <code>git</code> installed (it was on
+the first one for installing <a href="https://github.com/tokuhirom/plenv">plenv</a> but it is not a requirement) so
+I do my deployments with good ol’ tarballs (well, I use <a href="http://repo.or.cz/w/deployable.git">deployable</a>
+but it’s another story).</p>
+
+<h3 id="application-deployment-environment">Application Deployment Environment</h3>
+
+<p>I use this kind of layout:</p>
+
+<pre><code>- application-container
+    - application -&gt; distro/application-2.0
+    - distro
+        - application-1.0
+            - etc -&gt; ../../etc
+            - local -&gt; ../../local
+            - vendor -&gt; ../../vendor
+        - application-1.2
+            - etc -&gt; ../../etc
+            - local -&gt; ../../local
+            - vendor -&gt; ../../vendor
+        - application-2.0
+            - etc -&gt; ../../etc
+            - local -&gt; ../../local
+            - vendor -&gt; ../../vendor
+    - etc
+    - local
+    - vendor
+</code></pre>
+
+<p>There is a higher level container directory that will hold the different
+releases and also all local data, i.e. data that are specific to the
+installation in the deployment server. In this example, they will be the
+<code>etc</code>, <code>local</code> and <code>vendor</code> directories, but there might be more of course.</p>
+
+<p>New packages are deposited and expanded inside the <code>distro</code>, where you can
+find the different releases in case quick rollback is needed. Installing
+a new release is as simple as:</p>
+
+<ul>
+  <li>expanding the new tarball inside <code>distro</code></li>
+  <li>create the symbolic links to link back to <code>etc</code>, <code>local</code> and <code>vendor</code>
+(these might be part of the tarball itself)</li>
+  <li>move the <code>application</code> symbolic link to point towards the new release
+from a previous one.</li>
+</ul>
+
+<p>What’s the <code>vendor</code> directory for then? Most of the times the deployment
+machines are not connected to the Internet, and so you have to carry the
+dependencies with you somehow. <a href="https://metacpan.org/pod/Carton">Carton</a> allows you to create a
+bundle of these modules like this:</p>
+
+<pre><code>carton bundle
+</code></pre>
+
+<p>and this will create a <code>vendor</code> sub-directory with all the needed stuff.
+If you go this route, the suggestion is to put <code>vendor/</code> too inside
+<code>.gitignore</code>.</p>
+
+<h3 id="deployment-strategy">Deployment Strategy</h3>
+
+<p>Before the very first deployment, you will have to create the
+directory layout described above:</p>
+
+<pre><code>cd /path/to/application/parent
+mkdir -p application-container/{distro,etc,local,vendor}
+</code></pre>
+
+<p>For your application you create a distribution tarball, e.g.
+<code>application-2.0.tar.bz2</code>, and transfer it into the deployment
+machine inside <code>application-container/distro</code>. You can begin the
+installation then:</p>
+
+<pre><code>tar xvf application-2.0.tar.bz2
+cd application-2.0
+ln -s ../../etc
+ln -s ../../local
+ln -s ../../vendor
+</code></pre>
+
+<p>Most the times you will not need to install new dependencies, but
+sometimes (e.g. the very first time) you will. If this is
+the case, you can generate the bundle of the dependency files
+inside the development machine:</p>
+
+<pre><code>carton bundle
+tar cvjf dependencies.tar.bz2 vendor
+</code></pre>
+
+<p>and then transfer this bundle in the deployment machine and install
+it (we will assume that <code>application-container/distro</code> is going to
+keep all our packages):</p>
+
+<pre><code>cd /path/to/application-container
+tar xvf distro/dependencies.tar.bz2
+cd application-container/distro/application-2.0
+carton install --deployment --cached
+</code></pre>
+
+<p>Last step is to activate the release:</p>
+
+<pre><code>cd /path/to/application-container
+rm -f application
+ln -s distro/application-2.0 application
+</code></pre>
+
+<p>and restart your application, if applicable.</p>
+
+<p>Congratulations! You’re ready to start using your application!</p>
+
+      <hr />
+      <footer role="contentinfo">
+        <div class="social-share">
+  <h4>Share on</h4>
+  <ul>
+    <li>
+      <a href="https://twitter.com/intent/tweet?text=/parachuting-perl/" class="twitter" title="Share on Twitter"><i class="fa fa-twitter"></i><span> Twitter</span></a>
+    </li>
+    <li>
+      <a href="https://www.facebook.com/sharer/sharer.php?u=/parachuting-perl/" class="facebook" title="Share on Facebook"><i class="fa fa-facebook"></i><span> Facebook</span></a>
+    </li>
+    <li>
+      <a href="https://plus.google.com/share?url=/parachuting-perl/" class="google-plus" title="Share on Google Plus"><i class="fa fa-google-plus"></i><span> Google+</span></a>
+    </li>
+  </ul>
+</div><!-- /.social-share -->
+        <p class="byline"><strong>Parachuting Perl</strong> was published on <time datetime="2015-02-07T00:00:00+01:00">February 07, 2015</time>.</p>
+      </footer>
+    </div><!-- /.article-wrap -->
+  
+    <section id="disqus_thread"></section><!-- /#disqus_thread -->
+  
+  </article>
+</div><!-- /#main -->
+
+<div class="footer-wrap">
+  <div class="related-articles">
+  <h4>You might also enjoy <small class="pull-right">(<a href="/posts/">View all posts</a>)</small></h4>
+    <ul>
+    
+      <li><a href="/github-pages/" title="GitHub Pages">GitHub Pages</a></li>
+    
+      <li><a href="/bittorrent/" title="BitTorrent for personal file sharing">BitTorrent for personal file sharing</a></li>
+    
+      <li><a href="/git-remote-repository/" title="Set up a remote git repository">Set up a remote git repository</a></li>
+    
+    </ul>
+    <hr />
+  </div><!-- /.related-articles -->
+  <footer>
+    
+
+<span>&copy; 2015 Flavio Poletti. Powered by <a href="http://jekyllrb.com" rel="nofollow">Jekyll</a> using the <a href="http://mademistakes.com/minimal-mistakes/" rel="nofollow">Minimal Mistakes</a> theme.</span>
+
+  </footer>
+</div><!-- /.footer-wrap -->
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script src="/assets/js/scripts.min.js"></script>
+
+
+  
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'polettix'; // required: replace example with your forum shortname
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = '//' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+	        
+
+</body>
+</html>

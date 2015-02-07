@@ -4,13 +4,501 @@
 <generator uri="https://github.com/jekyll/jekyll">Jekyll</generator>
 <link rel="self" type="application/atom+xml" href="/feed.xml" />
 <link rel="alternate" type="text/html" href="" />
-<updated>2015-02-05T14:12:58+01:00</updated>
+<updated>2015-02-08T00:20:23+01:00</updated>
 <id>/</id>
 <author>
   <name>Flavio Poletti</name>
   <uri>/</uri>
   <email>flavio@polettix.it</email>
 </author>
+
+
+  
+
+<entry>
+  <title type="html"><![CDATA[Parachuting Perl]]></title>
+  <link rel="alternate" type="text/html" href="/parachuting-perl/" />
+  <id>/parachuting-perl</id>
+  <published>2015-02-07T00:00:00+01:00</published>
+  <updated>2015-02-07T00:00:00+01:00</updated>
+  <author>
+    <name>Flavio Poletti</name>
+    <uri></uri>
+    <email>flavio@polettix.it</email>
+  </author>
+  <content type="html">
+    &lt;p&gt;I’m probably not the only one in the world to work in an Enterprise-like
+world. Which basically boils down to little Perl knowledge (at least
+in the admittedly few Enteprises I got in contact with) and usage of
+streamline Linux distribution with horribly old Perl versions.&lt;/p&gt;
+
+&lt;p&gt;What I’m probably, again, not the only one in the world to do is to
+just set up &lt;em&gt;my&lt;/em&gt; own &lt;code&gt;perl&lt;/code&gt; installation for usage by my applications. This
+makes me comfortable about what I’m going to use, without messing with
+the system’s &lt;code&gt;perl&lt;/code&gt;. After that, of course, there comes the problem of
+many possible applications living together… so I have to cope with
+this as well.&lt;/p&gt;
+
+&lt;p&gt;One additional problem that might kick-in is when I have to use a different
+&lt;code&gt;perl&lt;/code&gt; version for an application. As an example, I recently discovered
+&lt;a href=&quot;https://metacpan.org/pod/Regexp::Grammars&quot;&gt;Regexp::Grammars&lt;/a&gt; is compatible with &lt;code&gt;perl&lt;/code&gt; starting from version 5.10, but
+only if different from 5.18… so what if my environment is 5.18? There might
+be the need to handle different &lt;code&gt;perl&lt;/code&gt; installations too, then.&lt;/p&gt;
+
+&lt;p&gt;There are currently a lot of tools that simplify the task of having
+one’s own &lt;code&gt;perl&lt;/code&gt;, keeping a private library for an application, possibly
+shipping also the modules because there’s no connectivity to the
+Internet… let’s see one possible workflow.&lt;/p&gt;
+
+&lt;h2 id=&quot;the-plan&quot;&gt;The Plan&lt;/h2&gt;
+
+&lt;p&gt;The plan is very simple:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;install &lt;a href=&quot;https://github.com/tokuhirom/plenv&quot;&gt;plenv&lt;/a&gt; to address the possibility of multiple Perl versions. It
+is quite lean and it seems to do its work without getting too much in
+the way&lt;/li&gt;
+  &lt;li&gt;build a private &lt;code&gt;perl&lt;/code&gt; through &lt;a href=&quot;https://metacpan.org/pod/distribution/Perl-Build/script/perl-build&quot;&gt;perl-build&lt;/a&gt;, which can be installed as
+a plugin of &lt;a href=&quot;https://github.com/tokuhirom/plenv&quot;&gt;plenv&lt;/a&gt;, so that we can use &lt;code&gt;plenv&lt;/code&gt; only&lt;/li&gt;
+  &lt;li&gt;install &lt;a href=&quot;https://github.com/miyagawa/cpanminus&quot;&gt;cpanminus&lt;/a&gt; (a.k.a. &lt;code&gt;cpanm&lt;/code&gt;) to easily handle module installation
+later. Again, this can be handled as a plugin of &lt;code&gt;plenv&lt;/code&gt;, we’ll see how&lt;/li&gt;
+  &lt;li&gt;declare the dependencies of our application in the root directory of the
+application itself, through a &lt;code&gt;cpanfile&lt;/code&gt; declaration.&lt;/li&gt;
+  &lt;li&gt;use &lt;a href=&quot;https://metacpan.org/pod/Carton&quot;&gt;carton&lt;/a&gt; to handle the installation of an application-private library
+of code from the dependencies, so that we will be able to decouple from
+the shared libraries installed in whatever &lt;code&gt;perl&lt;/code&gt; we will use. This allows
+e.g. to have two different application use two different versions of a
+library, but leverating on the exact same &lt;code&gt;perl&lt;/code&gt; installation. Carton
+will also help us run our application with the right environment, more on
+this later.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Should you have your development and deployment environment equal to each
+other? Yes and no. For example, I already have [perlbrew] installed on my
+dev machine, and the shift to &lt;a href=&quot;https://github.com/tokuhirom/plenv&quot;&gt;plenv&lt;/a&gt; is something to do with a bit of
+calm… so as long as I’m sure that I use the same &lt;code&gt;perl&lt;/code&gt; version in the
+two places I should be fine. This means that steps 1..3 above will in
+general be a pre-requisite on the target deployment machine, while
+steps 4 and 5 are more on the development machine.&lt;/p&gt;
+
+&lt;p&gt;So let’s start!&lt;/p&gt;
+
+&lt;h2 id=&quot;deployment-environment-set-up&quot;&gt;Deployment Environment Set-Up&lt;/h2&gt;
+
+&lt;p&gt;Depending on the target machine you will be using, it might be easy or
+impossible to actually install your own &lt;code&gt;perl&lt;/code&gt; and its modules (especially
+when compilation is needed). If this is the case, try to see if you can
+create a compatible environment somewhere else, e.g. in a virtual machine
+in your computer or online, so that you can be pretty sure that when you
+copy things over you will be fine.&lt;/p&gt;
+
+&lt;p&gt;In the following, then, we will assume
+that the deployment machine is equipped with all the tools needed to
+compile and install &lt;code&gt;perl&lt;/code&gt; and modules, which e.g. for a Debian release
+would mean ensuring that package &lt;code&gt;build-essentials&lt;/code&gt; is in place, with
+the addition of a system &lt;code&gt;perl&lt;/code&gt;, &lt;code&gt;curl&lt;/code&gt; and &lt;code&gt;git&lt;/code&gt;. For other
+&lt;em&gt;enterprise&lt;/em&gt;-like distributions like RHEL and SLES there are the
+applicable package managers, otherwise you will have to roll your own!&lt;/p&gt;
+
+&lt;p&gt;Before starting, we have to note that there is absolutely no need to
+be &lt;code&gt;root&lt;/code&gt; here. As a matter of fact, it’s probably better &lt;em&gt;not&lt;/em&gt; to be
+&lt;code&gt;root&lt;/code&gt; at all.&lt;/p&gt;
+
+&lt;h3 id=&quot;plenv&quot;&gt;&lt;a href=&quot;https://github.com/tokuhirom/plenv&quot;&gt;plenv&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;The installation of &lt;a href=&quot;https://github.com/tokuhirom/plenv&quot;&gt;plenv&lt;/a&gt; is (or can be) as simple as cloning its
+repository on GitHub. We’ll also take care to install the other tools
+as suggested by the documentation, that I will blatantly copy here (or so):&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;cd ~
+git clone git://github.com/tokuhirom/plenv.git .plenv
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Now it’s time to add &lt;code&gt;~/.plenv/bin&lt;/code&gt; to your &lt;code&gt;PATH&lt;/code&gt; environment variable.
+Where it is stored/set is actually a matter of the system you are in,
+so your mileage may vary with the suggestion provided in the &lt;a href=&quot;https://github.com/tokuhirom/plenv&quot;&gt;plenv&lt;/a&gt;
+documentation. Good places to look are:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;code&gt;~/.bashrc&lt;/code&gt; or &lt;code&gt;~/.bash_profile&lt;/code&gt; or &lt;code&gt;~/.profile&lt;/code&gt; if you’re using bash&lt;/li&gt;
+  &lt;li&gt;&lt;code&gt;~/.zshrc&lt;/code&gt; if you’re using zsh&lt;/li&gt;
+  &lt;li&gt;whatever provided by the other shells&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;You can either edit the place where &lt;code&gt;PATH&lt;/code&gt; is set, or add a line like this
+at the end (file and syntax depend from the shell and considerations above):&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;echo 'export PATH=&quot;$HOME/.plenv/bin:$PATH&quot;' &amp;gt;&amp;gt; ~/.bashrc
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;At this point, you can execute the following and have &lt;a href=&quot;https://github.com/tokuhirom/plenv&quot;&gt;plenv&lt;/a&gt; &lt;em&gt;visible&lt;/em&gt;
+in your shell:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;exec &quot;$SHELL&quot; -l
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Time for initializing &lt;a href=&quot;https://github.com/tokuhirom/plenv&quot;&gt;plenv&lt;/a&gt; now. A sub-command tells you what to add
+to the file you modified for the &lt;code&gt;PATH&lt;/code&gt; variable, just run:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;plenv init -
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;and look carefully at the output. For example, I have (more or less) this:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;export PATH=&quot;$HOME/.plenv/shims:${PATH}&quot;
+export PLENV_SHELL=bash
+source '$HOME/.plenv/libexec/../completions/plenv.bash'
+plenv() {
+    local command
+    command=&quot;$1&quot;
+    if [ &quot;$#&quot; -gt 0 ]; then
+        shift
+    fi
+
+    case &quot;$command&quot; in
+    rehash|shell)
+        eval &quot;`plenv &quot;sh-$command&quot; &quot;$@&quot;`&quot;;;
+    *)
+        command plenv &quot;$command&quot; &quot;$@&quot;;;
+    esac
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;If it’s OK with your policies, then you can proceed in installing those
+lines like you did for &lt;code&gt;PATH&lt;/code&gt; modification above. Actually, what is
+suggested by the author of &lt;a href=&quot;https://github.com/tokuhirom/plenv&quot;&gt;plenv&lt;/a&gt; is to add this:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;echo 'eval &quot;$(plenv init -)&quot;' &amp;gt;&amp;gt; ~/.bash_profile
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;which is less save than installing the lines above. Unless you are going
+to update &lt;a href=&quot;https://github.com/tokuhirom/plenv&quot;&gt;plenv&lt;/a&gt; in the future (e.g. with &lt;code&gt;git pull&lt;/code&gt; at some time) you’re
+fine, but if you do update you might end up with less secure things
+happening during that &lt;code&gt;init&lt;/code&gt; process that would be executed at every
+login… the choice is yours to take. My only consideration is that you
+probably already rely upon work done by complete strangers, and this seems
+more or less the same situation.&lt;/p&gt;
+
+&lt;p&gt;Again, to make the changes happen you have to update your shell:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;exec &quot;$SHELL&quot; -l
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&quot;plugging-perl-build-in&quot;&gt;Plugging &lt;a href=&quot;https://metacpan.org/pod/distribution/Perl-Build/script/perl-build&quot;&gt;perl-build&lt;/a&gt; in&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://metacpan.org/pod/distribution/Perl-Build/script/perl-build&quot;&gt;Perl-build&lt;/a&gt; is a separate tool from the same author, and
+is targeted at assisting in the installation of a new &lt;code&gt;perl&lt;/code&gt;. Being from
+the same author, anyway, makes it easy to integrate with &lt;a href=&quot;https://github.com/tokuhirom/plenv&quot;&gt;plenv&lt;/a&gt;, which
+is what we will do here:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;git clone git://github.com/tokuhirom/Perl-Build.git \
+   ~/.plenv/plugins/perl-build
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Yes, this is it!&lt;/p&gt;
+
+&lt;h3 id=&quot;your-first-perl&quot;&gt;Your first &lt;code&gt;perl&lt;/code&gt;&lt;/h3&gt;
+
+&lt;p&gt;It’s time for some serious compilation now. Make sure you know which
+&lt;code&gt;perl&lt;/code&gt; version you need, and ask &lt;a href=&quot;https://github.com/tokuhirom/plenv&quot;&gt;plenv&lt;/a&gt; to install it (it will use
+&lt;a href=&quot;https://metacpan.org/pod/distribution/Perl-Build/script/perl-build&quot;&gt;perl-build&lt;/a&gt; behind the scenes for the heavy-lifting):&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;plenv install 5.20.1  # use *your* perl version of course!
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Wait a few minutes for the installation to complete, then let &lt;a href=&quot;https://github.com/tokuhirom/plenv&quot;&gt;plenv&lt;/a&gt;
+regenerate the &lt;em&gt;shims&lt;/em&gt;:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;plenv rehash
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Now, this is written in the documentation and I respect it, but I
+wonder whether this step is really necessary and, if it is, why at
+all. Can’t this be done as the final part of &lt;code&gt;plenv install ...&lt;/code&gt;?
+Maybe it is (looking at the contents of &lt;code&gt;~/.plenv/shims&lt;/code&gt; it appears
+to be so) and I can’t read the documentation properly, go figure.&lt;/p&gt;
+
+&lt;h3 id=&quot;installing-cpanminus&quot;&gt;Installing &lt;a href=&quot;https://github.com/miyagawa/cpanminus&quot;&gt;cpanminus&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;Another capability offered by &lt;a href=&quot;https://github.com/tokuhirom/plenv&quot;&gt;plenv&lt;/a&gt; is to install &lt;a href=&quot;https://github.com/miyagawa/cpanminus&quot;&gt;cpanminus&lt;/a&gt;. I think
+most know it today, so I’ll not add anything on it.&lt;/p&gt;
+
+&lt;p&gt;I don’t really like do to this using &lt;a href=&quot;https://github.com/tokuhirom/plenv&quot;&gt;plenv&lt;/a&gt; though, because especially
+in deployment machines I prefer to use the &lt;em&gt;fatpacked&lt;/em&gt; self-containing
+version. We already added a couple of directories to the &lt;code&gt;PATH&lt;/code&gt;, so
+we will install it in one of them:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# you can do this with wget as well, of course
+curl -L 'https://github.com/miyagawa/cpanminus/raw/devel/cpanm' \
+    &amp;gt; ~/.plenv/bin/cpanm
+chmod a+x ~/.plenv/bin/cpanm
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This should Just Work.&lt;/p&gt;
+
+&lt;h3 id=&quot;time-to-pack&quot;&gt;Time to pack…&lt;/h3&gt;
+
+&lt;p&gt;The deployment server is ready at this point. Ok, sort of at least for my
+taste.&lt;/p&gt;
+
+&lt;p&gt;First of all there’s a lot of cruft left by &lt;a href=&quot;https://github.com/tokuhirom/plenv&quot;&gt;plenv&lt;/a&gt; after installing
+&lt;code&gt;perl&lt;/code&gt;, so I usually get rid of it:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;cd ~/.plenv
+rm -rf build cache
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;For perl 5.20.1 this saved me some 170+ MB, which are not bad when you
+eventually have to pack it all for distributing into multiple deployment
+machines. What I ended up was about 66 MB that shrink down to about 17 MB
+after bzip2 compression, so it’s perfectly acceptable to have human
+transfer time (unless your datacenter has shiny gigabit or multi-gigabit
+networking equipment).&lt;/p&gt;
+
+&lt;p&gt;Another thing that I like to have around is a script for making the
+changes to the shell initialization when I will carry the whole
+package around (because I usually have to). So I save something like this
+inside `~/.plenv/bin/colonize.sh and provide execution permissions to it:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;c&quot;&gt;#!/bin/bash&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;#&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# usually saved as ~/.plenv/bin/colonize.sh&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# change the target according to what your system has, e.g.&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# ~/.profile or ~/.bash_profile or ~/.zshrc or...&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;target&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;$HOME/.bashrc&amp;quot;&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; grep &lt;span class=&quot;s1&quot;&gt;&amp;#39;^export PATH=.*/\.plenv/bin&amp;#39;&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;$target&amp;quot;&lt;/span&gt; &amp;gt;/dev/null 2&amp;gt;&lt;span class=&quot;p&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;then&lt;/span&gt;
+    &lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;plenv already set-up in this system&amp;quot;&lt;/span&gt; &amp;gt;&lt;span class=&quot;p&quot;&gt;&amp;amp;&lt;/span&gt;2
+    &lt;span class=&quot;nb&quot;&gt;exit &lt;/span&gt;0
+&lt;span class=&quot;k&quot;&gt;fi&lt;/span&gt;
+
+cat &amp;gt;&amp;gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;$target&amp;quot;&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;lt;&amp;lt;&amp;#39;END&amp;#39;&lt;/span&gt;
+
+&lt;span class=&quot;s&quot;&gt;export PATH=&amp;quot;$HOME/.plenv/bin:$PATH&amp;quot;&lt;/span&gt;
+&lt;span class=&quot;s&quot;&gt;eval &amp;quot;$(plenv init -)&amp;quot;&lt;/span&gt;
+&lt;span class=&quot;s&quot;&gt;END&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;At this point we’re really ready to pack (feel free to substitute the &lt;code&gt;j&lt;/code&gt;
+with e.g. a &lt;code&gt;z&lt;/code&gt; if your system does not have &lt;code&gt;bzip2&lt;/code&gt; installed):&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;cd ~
+tar cvjf myperl.tar.bz2 .plenv
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;To install it into another (equivalent) deployment machine you just
+have to transfer the file, unpack and &lt;em&gt;colonize&lt;/em&gt;:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;scp myperl.tar.bz2 &quot;$user&quot;@&quot;$remote&quot;:/tmp
+ssh &quot;$user&quot;@&quot;$remote&quot; \
+    'cd ~ &amp;amp;&amp;amp; tar xvf /tmp/myperl.tar.bz2 &amp;amp;&amp;amp; ./plenv/bin/colonize.sh'
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&quot;development-environment-set-up&quot;&gt;Development Environment Set-Up&lt;/h2&gt;
+
+&lt;p&gt;You might have a brand new development machine and follow the steps above
+to set it up exactly like a deployment one: congratulations! Otherwise, you
+should at least ensure that when testing in your dev machine you are
+using the same &lt;code&gt;perl&lt;/code&gt; version as you installed in the deployment machines,
+with similar compilation options (e.g. with or without threads).&lt;/p&gt;
+
+&lt;p&gt;In the following, we will take the hard way and assume that you don’t have
+&lt;a href=&quot;https://github.com/tokuhirom/plenv&quot;&gt;plenv&lt;/a&gt; in the development machine. This is what I have today, so whatever
+I write here wouldn’t be tested if I assumed that &lt;a href=&quot;https://github.com/tokuhirom/plenv&quot;&gt;plenv&lt;/a&gt; is used in the
+dev machine.&lt;/p&gt;
+
+&lt;p&gt;It’s now time to concentrate on the application. Assuming it lives in its
+own directory, with proper version control set up (e.g. &lt;code&gt;git&lt;/code&gt;), we have to
+ensure that non-core modules are properly tracked, and &lt;a href=&quot;https://metacpan.org/pod/Carton&quot;&gt;carton&lt;/a&gt; will help
+us out on this.&lt;/p&gt;
+
+&lt;h3 id=&quot;dependencies-handling-with-carton&quot;&gt;Dependencies handling with &lt;a href=&quot;https://metacpan.org/pod/Carton&quot;&gt;carton&lt;/a&gt;&lt;/h3&gt;
+
+&lt;p&gt;Installing &lt;a href=&quot;https://metacpan.org/pod/Carton&quot;&gt;carton&lt;/a&gt; should not be a problem. You can do it via
+&lt;a href=&quot;https://github.com/miyagawa/cpanminus&quot;&gt;cpanm&lt;/a&gt; on the &lt;code&gt;perl&lt;/code&gt; that you use on the development
+machine.&lt;/p&gt;
+
+&lt;p&gt;You declare your dependencies in a &lt;code&gt;cpanfile&lt;/code&gt; inside the root of your
+project, like this:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# This is file &quot;cpanfile&quot;
+requires 'Log::Log4perl::Tiny', '1.2.6';
+requires 'Template::Perlish';
+requires 'JSON', '2.59';
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;As you can see, you can either specify the module version - e.g. because
+you know that the specific version has a particular feature - or not. At
+this point, &lt;a href=&quot;https://metacpan.org/pod/Carton&quot;&gt;carton&lt;/a&gt; helps you install these modules in a local directory
+called &lt;code&gt;local&lt;/code&gt;:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;carton install
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The first time you run this it will create the &lt;code&gt;local&lt;/code&gt; directory and put
+all installed modules there. Another important file that is created
+is &lt;code&gt;cpanfile.snapshot&lt;/code&gt;, that records the &lt;code&gt;cpanfile&lt;/code&gt; and the results
+of the installation in a manner that will allow the exact re-creation
+of the environment created here. At this point &lt;code&gt;git&lt;/code&gt; will be complaining
+about these new files:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;you definitely want &lt;code&gt;cpanfile&lt;/code&gt; and &lt;code&gt;cpanfile.snapshot&lt;/code&gt; to be tracked by
+&lt;code&gt;git&lt;/code&gt;. The first helps you keep track of what you need, the second will
+allow you to recreate the environment multiple times, and will help
+anyone that wants to collaborate too. We’ll see how in a moment.&lt;/li&gt;
+  &lt;li&gt;you definitely do &lt;em&gt;not&lt;/em&gt; want to track &lt;code&gt;local&lt;/code&gt;. At the point where you
+have the instructions to recreate it with &lt;code&gt;cpanfile.snapshot&lt;/code&gt;, it does
+not make sense to move it around. And, as you probably already guessed,
+it will probably be difficult to move compiled modules around, unless
+your development environment matches the deployment one perfectly (or
+so).&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Which basically boils down to something like this:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;echo local/ &amp;gt;&amp;gt; .gitignore
+git add .gitignore cpanfile cpanfile.snapshot
+git commit -m 'using carton dependencies handling'
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&quot;running-applications&quot;&gt;Running applications&lt;/h3&gt;
+
+&lt;p&gt;Carton has its own way of helping you start applications with the
+right environment:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;carton exec program option option option...
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;It also plays well with &lt;a href=&quot;https://github.com/tokuhirom/plenv&quot;&gt;plenv&lt;/a&gt;, so if you set up a &lt;em&gt;local&lt;/em&gt; version of
+&lt;code&gt;perl&lt;/code&gt; with it it will use that. My impression is that it fiddles with
+&lt;code&gt;PERL5LIB&lt;/code&gt; to point towards the &lt;code&gt;local&lt;/code&gt; directory that was created.&lt;/p&gt;
+
+&lt;p&gt;Another approach that does not require you to wrap your application
+calls via &lt;a href=&quot;https://metacpan.org/pod/Carton&quot;&gt;carton&lt;/a&gt; - which might get annoying - is to set up usage
+of the &lt;code&gt;local&lt;/code&gt; library directly from your application. You probably
+already do something like this if you store most of your code inside
+the &lt;code&gt;lib&lt;/code&gt; directory:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;use FindBin '$Bin';
+use lib &quot;$Bin/../lib&quot;, &quot;$Bin/../local/lib/perl5&quot;;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&quot;workflow&quot;&gt;Workflow&lt;/h2&gt;
+
+&lt;p&gt;These are my suggestions for the update of the distributions. In my
+case, the deployment machines do not have &lt;code&gt;git&lt;/code&gt; installed (it was on
+the first one for installing &lt;a href=&quot;https://github.com/tokuhirom/plenv&quot;&gt;plenv&lt;/a&gt; but it is not a requirement) so
+I do my deployments with good ol’ tarballs (well, I use &lt;a href=&quot;http://repo.or.cz/w/deployable.git&quot;&gt;deployable&lt;/a&gt;
+but it’s another story).&lt;/p&gt;
+
+&lt;h3 id=&quot;application-deployment-environment&quot;&gt;Application Deployment Environment&lt;/h3&gt;
+
+&lt;p&gt;I use this kind of layout:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;- application-container
+    - application -&amp;gt; distro/application-2.0
+    - distro
+        - application-1.0
+            - etc -&amp;gt; ../../etc
+            - local -&amp;gt; ../../local
+            - vendor -&amp;gt; ../../vendor
+        - application-1.2
+            - etc -&amp;gt; ../../etc
+            - local -&amp;gt; ../../local
+            - vendor -&amp;gt; ../../vendor
+        - application-2.0
+            - etc -&amp;gt; ../../etc
+            - local -&amp;gt; ../../local
+            - vendor -&amp;gt; ../../vendor
+    - etc
+    - local
+    - vendor
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;There is a higher level container directory that will hold the different
+releases and also all local data, i.e. data that are specific to the
+installation in the deployment server. In this example, they will be the
+&lt;code&gt;etc&lt;/code&gt;, &lt;code&gt;local&lt;/code&gt; and &lt;code&gt;vendor&lt;/code&gt; directories, but there might be more of course.&lt;/p&gt;
+
+&lt;p&gt;New packages are deposited and expanded inside the &lt;code&gt;distro&lt;/code&gt;, where you can
+find the different releases in case quick rollback is needed. Installing
+a new release is as simple as:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;expanding the new tarball inside &lt;code&gt;distro&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;create the symbolic links to link back to &lt;code&gt;etc&lt;/code&gt;, &lt;code&gt;local&lt;/code&gt; and &lt;code&gt;vendor&lt;/code&gt;
+(these might be part of the tarball itself)&lt;/li&gt;
+  &lt;li&gt;move the &lt;code&gt;application&lt;/code&gt; symbolic link to point towards the new release
+from a previous one.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;What’s the &lt;code&gt;vendor&lt;/code&gt; directory for then? Most of the times the deployment
+machines are not connected to the Internet, and so you have to carry the
+dependencies with you somehow. &lt;a href=&quot;https://metacpan.org/pod/Carton&quot;&gt;Carton&lt;/a&gt; allows you to create a
+bundle of these modules like this:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;carton bundle
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;and this will create a &lt;code&gt;vendor&lt;/code&gt; sub-directory with all the needed stuff.
+If you go this route, the suggestion is to put &lt;code&gt;vendor/&lt;/code&gt; too inside
+&lt;code&gt;.gitignore&lt;/code&gt;.&lt;/p&gt;
+
+&lt;h3 id=&quot;deployment-strategy&quot;&gt;Deployment Strategy&lt;/h3&gt;
+
+&lt;p&gt;Before the very first deployment, you will have to create the
+directory layout described above:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;cd /path/to/application/parent
+mkdir -p application-container/{distro,etc,local,vendor}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;For your application you create a distribution tarball, e.g.
+&lt;code&gt;application-2.0.tar.bz2&lt;/code&gt;, and transfer it into the deployment
+machine inside &lt;code&gt;application-container/distro&lt;/code&gt;. You can begin the
+installation then:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;tar xvf application-2.0.tar.bz2
+cd application-2.0
+ln -s ../../etc
+ln -s ../../local
+ln -s ../../vendor
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Most the times you will not need to install new dependencies, but
+sometimes (e.g. the very first time) you will. If this is
+the case, you can generate the bundle of the dependency files
+inside the development machine:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;carton bundle
+tar cvjf dependencies.tar.bz2 vendor
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;and then transfer this bundle in the deployment machine and install
+it (we will assume that &lt;code&gt;application-container/distro&lt;/code&gt; is going to
+keep all our packages):&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;cd /path/to/application-container
+tar xvf distro/dependencies.tar.bz2
+cd application-container/distro/application-2.0
+carton install --deployment --cached
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Last step is to activate the release:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;cd /path/to/application-container
+rm -f application
+ln -s distro/application-2.0 application
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;and restart your application, if applicable.&lt;/p&gt;
+
+&lt;p&gt;Congratulations! You’re ready to start using your application!&lt;/p&gt;
+
+    &lt;p&gt;&lt;a href=&quot;/parachuting-perl/&quot;&gt;Parachuting Perl&lt;/a&gt; was originally published by Flavio Poletti at &lt;a href=&quot;&quot;&gt;PolettiX!&lt;/a&gt; on February 07, 2015.&lt;/p&gt;
+  </content>
+</entry>
 
 
   
