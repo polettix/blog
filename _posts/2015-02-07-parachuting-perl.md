@@ -3,7 +3,7 @@
 layout: post
 title: Parachuting Perl
 image:
-   feature: yellow-river.jpg
+   feature: pink-lake.jpg
 comments: true
 ---
 

@@ -3,7 +3,7 @@
 layout: post
 title: Set up a remote git repository
 image:
-   feature: yellow-river.jpg
+   feature: dal-paese.jpg
 ---
 
 I sometimes happen to start a local repository that then I want to

@@ -3,7 +3,7 @@
 layout: post
 title: BitTorrent for personal file sharing
 image:
-   feature: yellow-river.jpg
+   feature: canguro.jpg
 ---
 
 I sometimes what to transfer a file from A to B and this file might be big.

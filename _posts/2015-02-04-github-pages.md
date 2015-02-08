@@ -3,7 +3,7 @@
 layout: post
 title: GitHub Pages
 image:
-   feature: yellow-river.jpg
+   feature: leaves.jpg
 ---
 
 I recently decided that I should probably write more. [GitHub Pages]
