@@ -4,6 +4,8 @@ layout: post
 title: BitTorrent for personal file sharing
 image:
    feature: canguro.jpg
+   credit: Canguro in Australia
+   creditlink: https://en.wikipedia.org/wiki/Kangaroo
 ---
 
 I sometimes what to transfer a file from A to B and this file might be big.

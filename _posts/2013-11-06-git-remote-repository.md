@@ -4,6 +4,8 @@ layout: post
 title: Set up a remote git repository
 image:
    feature: dal-paese.jpg
+   credit: Panorama a Pereto
+   creditlink: https://it.wikipedia.org/wiki/Pereto
 ---
 
 I sometimes happen to start a local repository that then I want to

@@ -4,6 +4,8 @@ layout: post
 title: Parachuting Perl
 image:
    feature: pink-lake.jpg
+   credit: Hutt Lagoon, Pink Lake in Australia
+   creditlink: https://en.wikipedia.org/wiki/Hutt_Lagoon
 comments: true
 ---
 
