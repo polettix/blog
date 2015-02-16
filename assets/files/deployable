@@ -1,0 +1,2484 @@
+#!/usr/bin/env perl
+use strict;
+use warnings;
+use Carp;
+use version; our $VERSION = qv('0.1.1');
+use Fatal qw( close );
+use Pod::Usage qw( pod2usage );
+use Getopt::Long qw( :config gnu_getopt );
+use English qw( -no_match_vars );
+use File::Basename qw( basename dirname );
+use File::Spec::Functions qw( file_name_is_absolute catfile );
+use File::Temp qw( tempfile );
+use POSIX qw( strftime );
+use Cwd qw( cwd realpath );
+use Archive::Tar;
+use Data::Dumper;
+use Encode;
+
+# __MOBUNDLE_INCLUSION__
+BEGIN {
+   my %file_for = (
+
+      'File/Find/Rule.pm' => <<'END_OF_FILE',
+ #       $Id$
+ 
+ package File::Find::Rule;
+ use strict;
+ use File::Spec;
+ use Text::Glob 'glob_to_regex';
+ use Number::Compare;
+ use Carp qw/croak/;
+ use File::Find (); # we're only wrapping for now
+ 
+ our $VERSION = '0.33';
+ 
+ # we'd just inherit from Exporter, but I want the colon
+ sub import {
+     my $pkg = shift;
+     my $to  = caller;
+     for my $sym ( qw( find rule ) ) {
+         no strict 'refs';
+         *{"$to\::$sym"} = \&{$sym};
+     }
+     for (grep /^:/, @_) {
+         my ($extension) = /^:(.*)/;
+         eval "require File::Find::Rule::$extension";
+         croak "couldn't bootstrap File::Find::Rule::$extension: $@" if $@;
+     }
+ }
+ 
+ =head1 NAME
+ 
+ File::Find::Rule - Alternative interface to File::Find
+ 
+ =head1 SYNOPSIS
+ 
+   use File::Find::Rule;
+   # find all the subdirectories of a given directory
+   my @subdirs = File::Find::Rule->directory->in( $directory );
+ 
+   # find all the .pm files in @INC
+   my @files = File::Find::Rule->file()
+                               ->name( '*.pm' )
+                               ->in( @INC );
+ 
+   # as above, but without method chaining
+   my $rule =  File::Find::Rule->new;
+   $rule->file;
+   $rule->name( '*.pm' );
+   my @files = $rule->in( @INC );
+ 
+ =head1 DESCRIPTION
+ 
+ File::Find::Rule is a friendlier interface to File::Find.  It allows
+ you to build rules which specify the desired files and directories.
+ 
+ =cut
+ 
+ # the procedural shim
+ 
+ *rule = \&find;
+ sub find {
+     my $object = __PACKAGE__->new();
+     my $not = 0;
+ 
+     while (@_) {
+         my $method = shift;
+         my @args;
+ 
+         if ($method =~ s/^\!//) {
+             # jinkies, we're really negating this
+             unshift @_, $method;
+             $not = 1;
+             next;
+         }
+         unless (defined prototype $method) {
+             my $args = shift;
+             @args = ref $args eq 'ARRAY' ? @$args : $args;
+         }
+         if ($not) {
+             $not = 0;
+             @args = $object->new->$method(@args);
+             $method = "not";
+         }
+ 
+         my @return = $object->$method(@args);
+         return @return if $method eq 'in';
+     }
+     $object;
+ }
+ 
+ 
+ =head1 METHODS
+ 
+ =over
+ 
+ =item C<new>
+ 
+ A constructor.  You need not invoke C<new> manually unless you wish
+ to, as each of the rule-making methods will auto-create a suitable
+ object if called as class methods.
+ 
+ =cut
+ 
+ sub new {
+     my $referent = shift;
+     my $class = ref $referent || $referent;
+     bless {
+         rules    => [],
+         subs     => {},
+         iterator => [],
+         extras   => {},
+         maxdepth => undef,
+         mindepth => undef,
+     }, $class;
+ }
+ 
+ sub _force_object {
+     my $object = shift;
+     $object = $object->new()
+       unless ref $object;
+     $object;
+ }
+ 
+ =back
+ 
+ =head2 Matching Rules
+ 
+ =over
+ 
+ =item C<name( @patterns )>
+ 
+ Specifies names that should match.  May be globs or regular
+ expressions.
+ 
+  $set->name( '*.mp3', '*.ogg' ); # mp3s or oggs
+  $set->name( qr/\.(mp3|ogg)$/ ); # the same as a regex
+  $set->name( 'foo.bar' );        # just things named foo.bar
+ 
+ =cut
+ 
+ sub _flatten {
+     my @flat;
+     while (@_) {
+         my $item = shift;
+         ref $item eq 'ARRAY' ? push @_, @{ $item } : push @flat, $item;
+     }
+     return @flat;
+ }
+ 
+ sub name {
+     my $self = _force_object shift;
+     my @names = map { ref $_ eq "Regexp" ? $_ : glob_to_regex $_ } _flatten( @_ );
+ 
+     push @{ $self->{rules} }, {
+         rule => 'name',
+         code => join( ' || ', map { "m{$_}" } @names ),
+         args => \@_,
+     };
+ 
+     $self;
+ }
+ 
+ =item -X tests
+ 
+ Synonyms are provided for each of the -X tests. See L<perlfunc/-X> for
+ details.  None of these methods take arguments.
+ 
+   Test | Method               Test |  Method
+  ------|-------------        ------|----------------
+    -r  |  readable             -R  |  r_readable
+    -w  |  writeable            -W  |  r_writeable
+    -w  |  writable             -W  |  r_writable
+    -x  |  executable           -X  |  r_executable
+    -o  |  owned                -O  |  r_owned
+        |                           |
+    -e  |  exists               -f  |  file
+    -z  |  empty                -d  |  directory
+    -s  |  nonempty             -l  |  symlink
+        |                       -p  |  fifo
+    -u  |  setuid               -S  |  socket
+    -g  |  setgid               -b  |  block
+    -k  |  sticky               -c  |  character
+        |                       -t  |  tty
+    -M  |  modified                 |
+    -A  |  accessed             -T  |  ascii
+    -C  |  changed              -B  |  binary
+ 
+ Though some tests are fairly meaningless as binary flags (C<modified>,
+ C<accessed>, C<changed>), they have been included for completeness.
+ 
+  # find nonempty files
+  $rule->file,
+       ->nonempty;
+ 
+ =cut
+ 
+ use vars qw( %X_tests );
+ %X_tests = (
+     -r  =>  readable           =>  -R  =>  r_readable      =>
+     -w  =>  writeable          =>  -W  =>  r_writeable     =>
+     -w  =>  writable           =>  -W  =>  r_writable      =>
+     -x  =>  executable         =>  -X  =>  r_executable    =>
+     -o  =>  owned              =>  -O  =>  r_owned         =>
+ 
+     -e  =>  exists             =>  -f  =>  file            =>
+     -z  =>  empty              =>  -d  =>  directory       =>
+     -s  =>  nonempty           =>  -l  =>  symlink         =>
+                                =>  -p  =>  fifo            =>
+     -u  =>  setuid             =>  -S  =>  socket          =>
+     -g  =>  setgid             =>  -b  =>  block           =>
+     -k  =>  sticky             =>  -c  =>  character       =>
+                                =>  -t  =>  tty             =>
+     -M  =>  modified                                       =>
+     -A  =>  accessed           =>  -T  =>  ascii           =>
+     -C  =>  changed            =>  -B  =>  binary          =>
+    );
+ 
+ for my $test (keys %X_tests) {
+     my $sub = eval 'sub () {
+         my $self = _force_object shift;
+         push @{ $self->{rules} }, {
+             code => "' . $test . ' \$_",
+             rule => "'.$X_tests{$test}.'",
+         };
+         $self;
+     } ';
+     no strict 'refs';
+     *{ $X_tests{$test} } = $sub;
+ }
+ 
+ 
+ =item stat tests
+ 
+ The following C<stat> based methods are provided: C<dev>, C<ino>,
+ C<mode>, C<nlink>, C<uid>, C<gid>, C<rdev>, C<size>, C<atime>,
+ C<mtime>, C<ctime>, C<blksize>, and C<blocks>.  See L<perlfunc/stat>
+ for details.
+ 
+ Each of these can take a number of targets, which will follow
+ L<Number::Compare> semantics.
+ 
+  $rule->size( 7 );         # exactly 7
+  $rule->size( ">7Ki" );    # larger than 7 * 1024 * 1024 bytes
+  $rule->size( ">=7" )
+       ->size( "<=90" );    # between 7 and 90, inclusive
+  $rule->size( 7, 9, 42 );  # 7, 9 or 42
+ 
+ =cut
+ 
+ use vars qw( @stat_tests );
+ @stat_tests = qw( dev ino mode nlink uid gid rdev
+                   size atime mtime ctime blksize blocks );
+ {
+     my $i = 0;
+     for my $test (@stat_tests) {
+         my $index = $i++; # to close over
+         my $sub = sub {
+             my $self = _force_object shift;
+ 
+             my @tests = map { Number::Compare->parse_to_perl($_) } @_;
+ 
+             push @{ $self->{rules} }, {
+                 rule => $test,
+                 args => \@_,
+                 code => 'do { my $val = (stat $_)['.$index.'] || 0;'.
+                   join ('||', map { "(\$val $_)" } @tests ).' }',
+             };
+             $self;
+         };
+         no strict 'refs';
+         *$test = $sub;
+     }
+ }
+ 
+ =item C<any( @rules )>
+ 
+ =item C<or( @rules )>
+ 
+ Allows shortcircuiting boolean evaluation as an alternative to the
+ default and-like nature of combined rules.  C<any> and C<or> are
+ interchangeable.
+ 
+  # find avis, movs, things over 200M and empty files
+  $rule->any( File::Find::Rule->name( '*.avi', '*.mov' ),
+              File::Find::Rule->size( '>200M' ),
+              File::Find::Rule->file->empty,
+            );
+ 
+ =cut
+ 
+ sub any {
+     my $self = _force_object shift;
+     # compile all the subrules to code fragments
+     push @{ $self->{rules} }, {
+         rule => "any",
+         code => '(' . join( ' || ', map '( ' . $_->_compile . ' )', @_ ). ')',
+         args => \@_,
+     };
+     
+     # merge all the subs hashes of the kids into ourself
+     %{ $self->{subs} } = map { %{ $_->{subs} } } $self, @_;
+     $self;
+ }
+ 
+ *or = \&any;
+ 
+ =item C<none( @rules )>
+ 
+ =item C<not( @rules )>
+ 
+ Negates a rule.  (The inverse of C<any>.)  C<none> and C<not> are
+ interchangeable.
+ 
+   # files that aren't 8.3 safe
+   $rule->file
+        ->not( $rule->new->name( qr/^[^.]{1,8}(\.[^.]{0,3})?$/ ) );
+ 
+ =cut
+ 
+ sub not {
+     my $self = _force_object shift;
+ 
+     push @{ $self->{rules} }, {
+         rule => 'not',
+         args => \@_,
+         code => '(' . join ( ' && ', map { "!(". $_->_compile . ")" } @_ ) . ")",
+     };
+     
+     # merge all the subs hashes into us
+     %{ $self->{subs} } = map { %{ $_->{subs} } } $self, @_;
+     $self;
+ }
+ 
+ *none = \&not;
+ 
+ =item C<prune>
+ 
+ Traverse no further.  This rule always matches.
+ 
+ =cut
+ 
+ sub prune () {
+     my $self = _force_object shift;
+ 
+     push @{ $self->{rules} },
+       {
+        rule => 'prune',
+        code => '$File::Find::prune = 1'
+       };
+     $self;
+ }
+ 
+ =item C<discard>
+ 
+ Don't keep this file.  This rule always matches.
+ 
+ =cut
+ 
+ sub discard () {
+     my $self = _force_object shift;
+ 
+     push @{ $self->{rules} }, {
+         rule => 'discard',
+         code => '$discarded = 1',
+     };
+     $self;
+ }
+ 
+ =item C<exec( \&subroutine( $shortname, $path, $fullname ) )>
+ 
+ Allows user-defined rules.  Your subroutine will be invoked with C<$_>
+ set to the current short name, and with parameters of the name, the
+ path you're in, and the full relative filename.
+ 
+ Return a true value if your rule matched.
+ 
+  # get things with long names
+  $rules->exec( sub { length > 20 } );
+ 
+ =cut
+ 
+ sub exec {
+     my $self = _force_object shift;
+     my $code = shift;
+ 
+     push @{ $self->{rules} }, {
+         rule => 'exec',
+         code => $code,
+     };
+     $self;
+ }
+ 
+ =item C<grep( @specifiers )>
+ 
+ Opens a file and tests it each line at a time.
+ 
+ For each line it evaluates each of the specifiers, stopping at the
+ first successful match.  A specifier may be a regular expression or a
+ subroutine.  The subroutine will be invoked with the same parameters
+ as an ->exec subroutine.
+ 
+ It is possible to provide a set of negative specifiers by enclosing
+ them in anonymous arrays.  Should a negative specifier match the
+ iteration is aborted and the clause is failed.  For example:
+ 
+  $rule->grep( qr/^#!.*\bperl/, [ sub { 1 } ] );
+ 
+ Is a passing clause if the first line of a file looks like a perl
+ shebang line.
+ 
+ =cut
+ 
+ sub grep {
+     my $self = _force_object shift;
+     my @pattern = map {
+         ref $_
+           ? ref $_ eq 'ARRAY'
+             ? map { [ ( ref $_ ? $_ : qr/$_/ ) => 0 ] } @$_
+             : [ $_ => 1 ]
+           : [ qr/$_/ => 1 ]
+       } @_;
+ 
+     $self->exec( sub {
+         local *FILE;
+         open FILE, $_ or return;
+         local ($_, $.);
+         while (<FILE>) {
+             for my $p (@pattern) {
+                 my ($rule, $ret) = @$p;
+                 return $ret
+                   if ref $rule eq 'Regexp'
+                     ? /$rule/
+                       : $rule->(@_);
+             }
+         }
+         return;
+     } );
+ }
+ 
+ =item C<maxdepth( $level )>
+ 
+ Descend at most C<$level> (a non-negative integer) levels of directories
+ below the starting point.
+ 
+ May be invoked many times per rule, but only the most recent value is
+ used.
+ 
+ =item C<mindepth( $level )>
+ 
+ Do not apply any tests at levels less than C<$level> (a non-negative
+ integer).
+ 
+ =item C<extras( \%extras )>
+ 
+ Specifies extra values to pass through to C<File::File::find> as part
+ of the options hash.
+ 
+ For example this allows you to specify following of symlinks like so:
+ 
+  my $rule = File::Find::Rule->extras({ follow => 1 });
+ 
+ May be invoked many times per rule, but only the most recent value is
+ used.
+ 
+ =cut
+ 
+ for my $setter (qw( maxdepth mindepth extras )) {
+     my $sub = sub {
+         my $self = _force_object shift;
+         $self->{$setter} = shift;
+         $self;
+     };
+     no strict 'refs';
+     *$setter = $sub;
+ }
+ 
+ 
+ =item C<relative>
+ 
+ Trim the leading portion of any path found
+ 
+ =cut
+ 
+ sub relative () {
+     my $self = _force_object shift;
+     $self->{relative} = 1;
+     $self;
+ }
+ 
+ =item C<not_*>
+ 
+ Negated version of the rule.  An effective shortand related to ! in
+ the procedural interface.
+ 
+  $foo->not_name('*.pl');
+ 
+  $foo->not( $foo->new->name('*.pl' ) );
+ 
+ =cut
+ 
+ sub DESTROY {}
+ sub AUTOLOAD {
+     our $AUTOLOAD;
+     $AUTOLOAD =~ /::not_([^:]*)$/
+       or croak "Can't locate method $AUTOLOAD";
+     my $method = $1;
+ 
+     my $sub = sub {
+         my $self = _force_object shift;
+         $self->not( $self->new->$method(@_) );
+     };
+     {
+         no strict 'refs';
+         *$AUTOLOAD = $sub;
+     }
+     &$sub;
+ }
+ 
+ =back
+ 
+ =head2 Query Methods
+ 
+ =over
+ 
+ =item C<in( @directories )>
+ 
+ Evaluates the rule, returns a list of paths to matching files and
+ directories.
+ 
+ =cut
+ 
+ sub in {
+     my $self = _force_object shift;
+ 
+     my @found;
+     my $fragment = $self->_compile;
+     my %subs = %{ $self->{subs} };
+ 
+     warn "relative mode handed multiple paths - that's a bit silly\n"
+       if $self->{relative} && @_ > 1;
+ 
+     my $topdir;
+     my $code = 'sub {
+         (my $path = $File::Find::name)  =~ s#^(?:\./+)+##;
+         my @args = ($_, $File::Find::dir, $path);
+         my $maxdepth = $self->{maxdepth};
+         my $mindepth = $self->{mindepth};
+         my $relative = $self->{relative};
+ 
+         # figure out the relative path and depth
+         my $relpath = $File::Find::name;
+         $relpath =~ s{^\Q$topdir\E/?}{};
+         my $depth = scalar File::Spec->splitdir($relpath);
+         #print "name: \'$File::Find::name\' ";
+         #print "relpath: \'$relpath\' depth: $depth relative: $relative\n";
+ 
+         defined $maxdepth && $depth >= $maxdepth
+            and $File::Find::prune = 1;
+ 
+         defined $mindepth && $depth < $mindepth
+            and return;
+ 
+         #print "Testing \'$_\'\n";
+ 
+         my $discarded;
+         return unless ' . $fragment . ';
+         return if $discarded;
+         if ($relative) {
+             push @found, $relpath if $relpath ne "";
+         }
+         else {
+             push @found, $path;
+         }
+     }';
+ 
+     #use Data::Dumper;
+     #print Dumper \%subs;
+     #warn "Compiled sub: '$code'\n";
+ 
+     my $sub = eval "$code" or die "compile error '$code' $@";
+     for my $path (@_) {
+         # $topdir is used for relative and maxdepth
+         $topdir = $path;
+         # slice off the trailing slash if there is one (the
+         # maxdepth/mindepth code is fussy)
+         $topdir =~ s{/?$}{}
+           unless $topdir eq '/';
+         $self->_call_find( { %{ $self->{extras} }, wanted => $sub }, $path );
+     }
+ 
+     return @found;
+ }
+ 
+ sub _call_find {
+     my $self = shift;
+     File::Find::find( @_ );
+ }
+ 
+ sub _compile {
+     my $self = shift;
+ 
+     return '1' unless @{ $self->{rules} };
+     my $code = join " && ", map {
+         if (ref $_->{code}) {
+             my $key = "$_->{code}";
+             $self->{subs}{$key} = $_->{code};
+             "\$subs{'$key'}->(\@args) # $_->{rule}\n";
+         }
+         else {
+             "( $_->{code} ) # $_->{rule}\n";
+         }
+     } @{ $self->{rules} };
+ 
+     #warn $code;
+     return $code;
+ }
+ 
+ =item C<start( @directories )>
+ 
+ Starts a find across the specified directories.  Matching items may
+ then be queried using L</match>.  This allows you to use a rule as an
+ iterator.
+ 
+  my $rule = File::Find::Rule->file->name("*.jpeg")->start( "/web" );
+  while ( defined ( my $image = $rule->match ) ) {
+      ...
+  }
+ 
+ =cut
+ 
+ sub start {
+     my $self = _force_object shift;
+ 
+     $self->{iterator} = [ $self->in( @_ ) ];
+     $self;
+ }
+ 
+ =item C<match>
+ 
+ Returns the next file which matches, false if there are no more.
+ 
+ =cut
+ 
+ sub match {
+     my $self = _force_object shift;
+ 
+     return shift @{ $self->{iterator} };
+ }
+ 
+ 1;
+ 
+ __END__
+ 
+ =back
+ 
+ =head2 Extensions
+ 
+ Extension modules are available from CPAN in the File::Find::Rule
+ namespace.  In order to use these extensions either use them directly:
+ 
+  use File::Find::Rule::ImageSize;
+  use File::Find::Rule::MMagic;
+ 
+  # now your rules can use the clauses supplied by the ImageSize and
+  # MMagic extension
+ 
+ or, specify that File::Find::Rule should load them for you:
+ 
+  use File::Find::Rule qw( :ImageSize :MMagic );
+ 
+ For notes on implementing your own extensions, consult
+ L<File::Find::Rule::Extending>
+ 
+ =head2 Further examples
+ 
+ =over
+ 
+ =item Finding perl scripts
+ 
+  my $finder = File::Find::Rule->or
+   (
+    File::Find::Rule->name( '*.pl' ),
+    File::Find::Rule->exec(
+                           sub {
+                               if (open my $fh, $_) {
+                                   my $shebang = <$fh>;
+                                   close $fh;
+                                   return $shebang =~ /^#!.*\bperl/;
+                               }
+                               return 0;
+                           } ),
+   );
+ 
+ Based upon this message http://use.perl.org/comments.pl?sid=7052&cid=10842
+ 
+ =item ignore CVS directories
+ 
+  my $rule = File::Find::Rule->new;
+  $rule->or($rule->new
+                 ->directory
+                 ->name('CVS')
+                 ->prune
+                 ->discard,
+            $rule->new);
+ 
+ Note here the use of a null rule.  Null rules match anything they see,
+ so the effect is to match (and discard) directories called 'CVS' or to
+ match anything.
+ 
+ =back
+ 
+ =head1 TWO FOR THE PRICE OF ONE
+ 
+ File::Find::Rule also gives you a procedural interface.  This is
+ documented in L<File::Find::Rule::Procedural>
+ 
+ =head1 EXPORTS
+ 
+ L</find>, L</rule>
+ 
+ =head1 TAINT MODE INTERACTION
+ 
+ As of 0.32 File::Find::Rule doesn't capture the current working directory in
+ a taint-unsafe manner.  File::Find itself still does operations that the taint
+ system will flag as insecure but you can use the L</extras> feature to ask
+ L<File::Find> to internally C<untaint> file paths with a regex like so:
+ 
+     my $rule = File::Find::Rule->extras({ untaint => 1 });
+     
+ Please consult L<File::Find>'s documentation for C<untaint>,
+ C<untaint_pattern>, and C<untaint_skip> for more information.
+ 
+ =head1 BUGS
+ 
+ The code makes use of the C<our> keyword and as such requires perl version
+ 5.6.0 or newer.
+ 
+ Currently it isn't possible to remove a clause from a rule object.  If
+ this becomes a significant issue it will be addressed.
+ 
+ =head1 AUTHOR
+ 
+ Richard Clamp <richardc@unixbeard.net> with input gained from this
+ use.perl discussion: http://use.perl.org/~richardc/journal/6467
+ 
+ Additional proofreading and input provided by Kake, Greg McCarroll,
+ and Andy Lester andy@petdance.com.
+ 
+ =head1 COPYRIGHT
+ 
+ Copyright (C) 2002, 2003, 2004, 2006, 2009, 2011 Richard Clamp.  All Rights Reserved.
+ 
+ This module is free software; you can redistribute it and/or modify it
+ under the same terms as Perl itself.
+ 
+ =head1 SEE ALSO
+ 
+ L<File::Find>, L<Text::Glob>, L<Number::Compare>, find(1)
+ 
+ If you want to know about the procedural interface, see
+ L<File::Find::Rule::Procedural>, and if you have an idea for a neat
+ extension L<File::Find::Rule::Extending>
+ 
+ =cut
+ 
+ Implementation notes:
+ 
+ $self->rules is an array of hashrefs.  it may be a code fragment or a call
+ to a subroutine.
+ 
+ Anonymous subroutines are stored in the $self->subs hashref keyed on the
+ stringfied version of the coderef.
+ 
+ When one File::Find::Rule object is combined with another, such as in the any
+ and not operations, this entire hash is merged.
+ 
+ The _compile method walks the rules element and simply glues the code
+ fragments together so they can be compiled into an anyonymous File::Find
+ match sub for speed
+ 
+ 
+ [*] There's probably a win to be made with the current model in making
+ stat calls use C<_>.  For
+ 
+   find( file => size => "> 20M" => size => "< 400M" );
+ 
+ up to 3 stats will happen for each candidate.  Adding a priming _
+ would be a bit blind if the first operation was C< name => 'foo' >,
+ since that can be tested by a single regex.  Simply checking what the
+ next type of operation doesn't work since any arbritary exec sub may
+ or may not stat.  Potentially worse, they could stat something else
+ like so:
+ 
+   # extract from the worlds stupidest make(1)
+   find( exec => sub { my $f = $_; $f =~ s/\.c$/.o/ && !-e $f } );
+ 
+ Maybe the best way is to treat C<_> as invalid after calling an exec,
+ and doc that C<_> will only be meaningful after stat and -X tests if
+ they're wanted in exec blocks.
+
+END_OF_FILE
+
+      'Text/Glob.pm' => <<'END_OF_FILE',
+ package Text::Glob;
+ use strict;
+ use Exporter;
+ use vars qw/$VERSION @ISA @EXPORT_OK
+             $strict_leading_dot $strict_wildcard_slash/;
+ $VERSION = '0.09';
+ @ISA = 'Exporter';
+ @EXPORT_OK = qw( glob_to_regex glob_to_regex_string match_glob );
+ 
+ $strict_leading_dot    = 1;
+ $strict_wildcard_slash = 1;
+ 
+ use constant debug => 0;
+ 
+ sub glob_to_regex {
+     my $glob = shift;
+     my $regex = glob_to_regex_string($glob);
+     return qr/^$regex$/;
+ }
+ 
+ sub glob_to_regex_string
+ {
+     my $glob = shift;
+     my ($regex, $in_curlies, $escaping);
+     local $_;
+     my $first_byte = 1;
+     for ($glob =~ m/(.)/gs) {
+         if ($first_byte) {
+             if ($strict_leading_dot) {
+                 $regex .= '(?=[^\.])' unless $_ eq '.';
+             }
+             $first_byte = 0;
+         }
+         if ($_ eq '/') {
+             $first_byte = 1;
+         }
+         if ($_ eq '.' || $_ eq '(' || $_ eq ')' || $_ eq '|' ||
+             $_ eq '+' || $_ eq '^' || $_ eq '$' || $_ eq '@' || $_ eq '%' ) {
+             $regex .= "\\$_";
+         }
+         elsif ($_ eq '*') {
+             $regex .= $escaping ? "\\*" :
+               $strict_wildcard_slash ? "[^/]*" : ".*";
+         }
+         elsif ($_ eq '?') {
+             $regex .= $escaping ? "\\?" :
+               $strict_wildcard_slash ? "[^/]" : ".";
+         }
+         elsif ($_ eq '{') {
+             $regex .= $escaping ? "\\{" : "(";
+             ++$in_curlies unless $escaping;
+         }
+         elsif ($_ eq '}' && $in_curlies) {
+             $regex .= $escaping ? "}" : ")";
+             --$in_curlies unless $escaping;
+         }
+         elsif ($_ eq ',' && $in_curlies) {
+             $regex .= $escaping ? "," : "|";
+         }
+         elsif ($_ eq "\\") {
+             if ($escaping) {
+                 $regex .= "\\\\";
+                 $escaping = 0;
+             }
+             else {
+                 $escaping = 1;
+             }
+             next;
+         }
+         else {
+             $regex .= $_;
+             $escaping = 0;
+         }
+         $escaping = 0;
+     }
+     print "# $glob $regex\n" if debug;
+ 
+     return $regex;
+ }
+ 
+ sub match_glob {
+     print "# ", join(', ', map { "'$_'" } @_), "\n" if debug;
+     my $glob = shift;
+     my $regex = glob_to_regex $glob;
+     local $_;
+     grep { $_ =~ $regex } @_;
+ }
+ 
+ 1;
+ __END__
+ 
+ =head1 NAME
+ 
+ Text::Glob - match globbing patterns against text
+ 
+ =head1 SYNOPSIS
+ 
+  use Text::Glob qw( match_glob glob_to_regex );
+ 
+  print "matched\n" if match_glob( "foo.*", "foo.bar" );
+ 
+  # prints foo.bar and foo.baz
+  my $regex = glob_to_regex( "foo.*" );
+  for ( qw( foo.bar foo.baz foo bar ) ) {
+      print "matched: $_\n" if /$regex/;
+  }
+ 
+ =head1 DESCRIPTION
+ 
+ Text::Glob implements glob(3) style matching that can be used to match
+ against text, rather than fetching names from a filesystem.  If you
+ want to do full file globbing use the File::Glob module instead.
+ 
+ =head2 Routines
+ 
+ =over
+ 
+ =item match_glob( $glob, @things_to_test )
+ 
+ Returns the list of things which match the glob from the source list.
+ 
+ =item glob_to_regex( $glob )
+ 
+ Returns a compiled regex which is the equivalent of the globbing
+ pattern.
+ 
+ =item glob_to_regex_string( $glob )
+ 
+ Returns a regex string which is the equivalent of the globbing
+ pattern.
+ 
+ =back
+ 
+ =head1 SYNTAX
+ 
+ The following metacharacters and rules are respected.
+ 
+ =over
+ 
+ =item C<*> - match zero or more characters
+ 
+ C<a*> matches C<a>, C<aa>, C<aaaa> and many many more.
+ 
+ =item C<?> - match exactly one character
+ 
+ C<a?> matches C<aa>, but not C<a>, or C<aaa>
+ 
+ =item Character sets/ranges
+ 
+ C<example.[ch]> matches C<example.c> and C<example.h>
+ 
+ C<demo.[a-c]> matches C<demo.a>, C<demo.b>, and C<demo.c>
+ 
+ =item alternation
+ 
+ C<example.{foo,bar,baz}> matches C<example.foo>, C<example.bar>, and
+ C<example.baz>
+ 
+ =item leading . must be explictly matched
+ 
+ C<*.foo> does not match C<.bar.foo>.  For this you must either specify
+ the leading . in the glob pattern (C<.*.foo>), or set
+ C<$Text::Glob::strict_leading_dot> to a false value while compiling
+ the regex.
+ 
+ =item C<*> and C<?> do not match /
+ 
+ C<*.foo> does not match C<bar/baz.foo>.  For this you must either
+ explicitly match the / in the glob (C<*/*.foo>), or set
+ C<$Text::Glob::strict_wildcard_slash> to a false value with compiling
+ the regex.
+ 
+ =back
+ 
+ =head1 BUGS
+ 
+ The code uses qr// to produce compiled regexes, therefore this module
+ requires perl version 5.005_03 or newer.
+ 
+ =head1 AUTHOR
+ 
+ Richard Clamp <richardc@unixbeard.net>
+ 
+ =head1 COPYRIGHT
+ 
+ Copyright (C) 2002, 2003, 2006, 2007 Richard Clamp.  All Rights Reserved.
+ 
+ This module is free software; you can redistribute it and/or modify it
+ under the same terms as Perl itself.
+ 
+ =head1 SEE ALSO
+ 
+ L<File::Glob>, glob(3)
+ 
+ =cut
+
+END_OF_FILE
+
+      'Number/Compare.pm' => <<'END_OF_FILE',
+ package Number::Compare;
+ use strict;
+ use Carp qw(croak);
+ use vars qw/$VERSION/;
+ $VERSION = '0.03';
+ 
+ sub new  {
+     my $referent = shift;
+     my $class = ref $referent || $referent;
+     my $expr = $class->parse_to_perl( shift );
+ 
+     bless eval "sub { \$_[0] $expr }", $class;
+ }
+ 
+ sub parse_to_perl {
+     shift;
+     my $test = shift;
+ 
+     $test =~ m{^
+                ([<>]=?)?   # comparison
+                (.*?)       # value
+                ([kmg]i?)?  # magnitude
+               $}ix
+        or croak "don't understand '$test' as a test";
+ 
+     my $comparison = $1 || '==';
+     my $target     = $2;
+     my $magnitude  = $3 || '';
+     $target *=           1000 if lc $magnitude eq 'k';
+     $target *=           1024 if lc $magnitude eq 'ki';
+     $target *=        1000000 if lc $magnitude eq 'm';
+     $target *=      1024*1024 if lc $magnitude eq 'mi';
+     $target *=     1000000000 if lc $magnitude eq 'g';
+     $target *= 1024*1024*1024 if lc $magnitude eq 'gi';
+ 
+     return "$comparison $target";
+ }
+ 
+ sub test { $_[0]->( $_[1] ) }
+ 
+ 1;
+ 
+ __END__
+ 
+ =head1 NAME
+ 
+ Number::Compare - numeric comparisons
+ 
+ =head1 SYNOPSIS
+ 
+  Number::Compare->new(">1Ki")->test(1025); # is 1025 > 1024
+ 
+  my $c = Number::Compare->new(">1M");
+  $c->(1_200_000);                          # slightly terser invocation
+ 
+ =head1 DESCRIPTION
+ 
+ Number::Compare compiles a simple comparison to an anonymous
+ subroutine, which you can call with a value to be tested again.
+ 
+ Now this would be very pointless, if Number::Compare didn't understand
+ magnitudes.
+ 
+ The target value may use magnitudes of kilobytes (C<k>, C<ki>),
+ megabytes (C<m>, C<mi>), or gigabytes (C<g>, C<gi>).  Those suffixed
+ with an C<i> use the appropriate 2**n version in accordance with the
+ IEC standard: http://physics.nist.gov/cuu/Units/binary.html
+ 
+ =head1 METHODS
+ 
+ =head2 ->new( $test )
+ 
+ Returns a new object that compares the specified test.
+ 
+ =head2 ->test( $value )
+ 
+ A longhanded version of $compare->( $value ).  Predates blessed
+ subroutine reference implementation.
+ 
+ =head2 ->parse_to_perl( $test )
+ 
+ Returns a perl code fragment equivalent to the test.
+ 
+ =head1 AUTHOR
+ 
+ Richard Clamp <richardc@unixbeard.net>
+ 
+ =head1 COPYRIGHT
+ 
+ Copyright (C) 2002,2011 Richard Clamp.  All Rights Reserved.
+ 
+ This module is free software; you can redistribute it and/or modify it
+ under the same terms as Perl itself.
+ 
+ =head1 SEE ALSO
+ 
+ http://physics.nist.gov/cuu/Units/binary.html
+ 
+ =cut
+
+END_OF_FILE
+
+   );
+
+   unshift @INC, sub {
+      my ($me, $packfile) = @_;
+      return unless exists $file_for{$packfile};
+      (my $text = $file_for{$packfile}) =~ s/^\ //gmxs;
+      chop($text); # added \n at the end
+      open my $fh, '<', \$text or die "open(): $!\n";
+      return $fh;
+   };
+} ## end BEGIN
+# __MOBUNDLE_INCLUSION__
+
+use File::Find::Rule;
+
+my %config = (
+   output      => '-',
+   remote      => catfile(dirname(realpath(__FILE__)), 'remote'),
+   tarfile     => [],
+   heredir     => [],
+   rootdir     => [],
+   root        => [],
+   tarfile     => [],
+   deploy      => [],
+   passthrough => 0,
+);
+GetOptions(
+   \%config,
+   qw(
+     usage! help! man! version!
+
+     bundle|all-exec|X!
+     bzip2|bz2|j!
+     cleanup|c!
+     deploy|exec|d=s@
+     gzip|gz|z!
+     heredir|H=s@
+     include-archive-tar|T!
+     no-tar!
+     output|o=s
+     passthrough|P!
+     root|r=s@
+     rootdir|R=s@
+     tar|t=s
+     tarfile|F=s@
+     tempdir-mode|m=s
+     workdir|work-directory|deploy-directory|w=s
+     ),
+) or pod2usage(message => "invalid command line", -verbose => 99, -sections => ' ');
+pod2usage(message => "$0 $VERSION", -verbose => 99, -sections => ' ')
+  if $config{version};
+pod2usage(-verbose => 99, -sections => 'USAGE') if $config{usage};
+pod2usage(-verbose => 99, -sections => 'USAGE|EXAMPLES|OPTIONS')
+  if $config{help};
+pod2usage(-verbose => 2) if $config{man};
+
+pod2usage(
+   message   => 'working directory must be an absolute path',
+   -verbose  => 99,
+   -sections => ''
+) if exists $config{workdir} && !file_name_is_absolute($config{workdir});
+
+if ($config{'include-archive-tar'}) {
+   $config{remote} = catfile(dirname(realpath(__FILE__)), 'remote-at');
+   if (!-e $config{remote}) {    # "make" it
+      print {*STDERR} "### Making remote-at...\n";
+      my $startdir = cwd();
+      chdir dirname realpath __FILE__;
+      system {'make'} qw( make remote-at );
+      chdir $startdir;
+   } ## end if (!-e $config{remote...})
+} ## end if ($config{'include-archive-tar'...})
+
+# Establish output channel
+my $out_fh = \*STDOUT;
+if ($config{output} ne '-') {
+   open my $fh, '>', $config{output}    ## no critic
+     or croak "open('$config{output}'): $OS_ERROR";
+   $out_fh = $fh;
+}
+binmode $out_fh;
+
+# Emit script code to be executed remotely. It is guaranteed to end
+# with __END__, so that all what comes next is data
+print {$out_fh} get_remote_script();
+
+# Where all the data will be kept
+print_configuration($out_fh, \%config);
+
+print_here_stuff($out_fh, \%config, @ARGV);
+print_root_stuff($out_fh, \%config);
+
+close $out_fh;
+
+# Set as executable
+if ($config{output} ne '-') {
+   chmod oct(755), $config{output}
+     or carp "chmod(0755, '$config{output}'): $OS_ERROR";
+}
+
+sub header {
+   my %params   = @_;
+   my $namesize = length $params{name};
+   return "$namesize $params{size}\n$params{name}";
+}
+
+sub print_configuration {    # FIXME
+   my ($fh, $config) = @_;
+   my %general_configuration;
+   for my $name (
+      qw( workdir cleanup bundle deploy
+      gzip bzip2 passthrough tempdir-mode )
+     )
+   {
+      $general_configuration{$name} = $config->{$name}
+        if exists $config->{$name};
+   } ## end for my $name (qw( workdir cleanup bundle deploy...))
+   my $configuration = Dumper \%general_configuration;
+   print {$fh} header(name => 'config.pl', size => length($configuration)),
+     "\n", $configuration, "\n\n";
+} ## end sub print_configuration
+
+# Process files and directories. All these will be reported in the
+# extraction directory, i.e. basename() will be applied to them. For
+# directories, they will be re-created
+sub print_here_stuff {
+   my $fh     = shift;
+   my $config = shift;
+   my @ARGV   = @_;
+
+   my $ai = Deployable::Tar->new($config);
+   $ai->add(
+      '.' => \@ARGV,
+      map { $_ => ['.'] } @{$config->{heredir}}
+   );
+
+   print {$fh} header(name => 'here', size => $ai->size()), "\n";
+   $ai->copy_to($fh);
+   print {$fh} "\n\n";
+
+   return;
+} ## end sub print_here_stuff
+
+sub print_root_stuff {
+   my ($fh, $config) = @_;
+
+   my $ai = Deployable::Tar->new($config);
+   $ai->add(
+      '.' => $config->{rootdir},
+      (undef, $config->{tarfile}),
+      map { $_ => ['.'] } @{$config->{root}}
+   );
+
+   print {$fh} header(name => 'root', size => $ai->size()), "\n";
+   $ai->copy_to($fh);
+   print {$fh} "\n\n";
+
+   return;
+} ## end sub print_root_stuff
+
+sub get_remote_script {
+   my $fh;
+   if (-e $config{remote}) {
+      open $fh, '<', $config{remote}
+        or croak "open('$config{remote}'): $OS_ERROR";
+   }
+   else {
+      no warnings 'once';
+      $fh = \*DATA;
+   }
+   my @lines;
+   while (<$fh>) {
+      last if /\A __END__ \s*\z/mxs;
+      push @lines, $_;
+   }
+   close $fh;
+   return join '', @lines, "__END__\n";
+} ## end sub get_remote_script
+
+package Deployable::Tar;
+
+sub new {
+   my $package = shift;
+   my $self = {ref $_[0] ? %{$_[0]} : @_};
+   $package = 'Deployable::Tar::Internal';
+   if (!$self->{'no-tar'}) {
+      if ((exists $self->{tar}) || (open my $fh, '-|', 'tar', '--help')) {
+         $package = 'Deployable::Tar::External';
+         $self->{tar} ||= 'tar';
+      }
+   } ## end if (!$self->{'no-tar'})
+   bless $self, $package;
+   $self->initialise();
+   return $self;
+} ## end sub new
+
+package Deployable::Tar::External;
+use File::Temp qw( :seekable );
+use English qw( -no_match_vars );
+use Cwd ();
+use Carp;
+our @ISA = qw( Deployable::Tar );
+
+sub initialise {
+   my $self = shift;
+   $self->{_temp}     = File::Temp->new();
+   $self->{_filename} = Cwd::abs_path($self->{_temp}->filename());
+   return $self;
+} ## end sub initialise
+
+sub add {
+   my $self = shift;
+   my $tar  = $self->{tar};
+   delete $self->{_compressed};
+   while (@_) {
+      my ($directory, $stuff) = splice @_, 0, 2;
+      my @stuff = @$stuff;
+      if (defined $directory) {
+         while (@stuff) {
+            my @chunk = splice @stuff, 0, 50;
+            system {$tar} $tar, 'rvf', $self->{_filename},
+              '-C', $directory, '--', @chunk;
+         }
+      } ## end if (defined $directory)
+      else {    # it's another TAR file, concatenate
+         while (@stuff) {
+            my @chunk = splice @stuff, 0, 50;
+            system {$tar} $tar, 'Avf', $self->{_filename}, '--', @chunk;
+         }
+      } ## end else [ if (defined $directory)]
+   } ## end while (@_)
+   return $self;
+} ## end sub add
+
+sub _compress {
+   my $self = shift;
+   return if exists $self->{_compressed};
+
+   $self->{_temp}->sysseek(0, SEEK_SET);
+   if ($self->{bzip2}) {
+      require IO::Compress::Bzip2;
+      $self->{_compressed} = File::Temp->new();
+
+      # double-quotes needed to force usage of filename
+      # instead of filehandle
+      IO::Compress::Bzip2::bzip2($self->{_temp}, "$self->{_compressed}");
+   } ## end if ($self->{bzip2})
+   elsif ($self->{gzip}) {
+      require IO::Compress::Gzip;
+      $self->{_compressed} = File::Temp->new();
+
+      # double-quotes needed to force usage of filename
+      # instead of filehandle
+      IO::Compress::Gzip::gzip($self->{_temp}, "$self->{_compressed}");
+   } ## end elsif ($self->{gzip})
+   else {
+      $self->{_compressed} = $self->{_temp};
+   }
+
+   return $self;
+} ## end sub _compress
+
+sub size {
+   my ($self) = @_;
+   $self->_compress();
+   return (stat $self->{_compressed})[7];
+}
+
+sub copy_to {
+   my ($self, $out_fh) = @_;
+   $self->_compress();
+   my $in_fh = $self->{_compressed};
+   $in_fh->sysseek(0, SEEK_SET);
+   while ('true') {
+      my $nread = $in_fh->sysread(my $buffer, 4096);
+      croak "sysread(): $OS_ERROR" unless defined $nread;
+      last unless $nread;
+      print {$out_fh} $buffer;
+   } ## end while ('true')
+   return $self;
+} ## end sub copy_to
+
+package Deployable::Tar::Internal;
+use Archive::Tar     ();
+use Cwd              ();
+use File::Find::Rule ();
+use Carp qw< croak >;
+our @ISA = qw( Deployable::Tar );
+
+sub initialise {
+   my $self = shift;
+   $self->{_tar} = Archive::Tar->new();
+   return $self;
+}
+
+sub add {
+   my $self = shift;
+   delete $self->{_string};
+   my $tar = $self->{_tar};
+   my $cwd = Cwd::getcwd();
+   while (@_) {
+      my ($directory, $stuff) = splice @_, 0, 2;
+      if (defined $directory) {
+         chdir $directory;
+         for my $item (@$stuff) {
+            $tar->add_files($_) for File::Find::Rule->in($item);
+         }
+         chdir $cwd;
+      } ## end if (defined $directory)
+      else { # It's another TAR file to be concatenated
+         for my $item (@$stuff) {
+            my $iterator = Archive::Tar->iter($item);
+            while (my $f = $iterator->()) {
+               $tar->add_files($f);
+            }
+         }
+      }
+   } ## end while (@_)
+   return $self;
+} ## end sub add
+
+sub size {
+   my ($self) = @_;
+   $self->{_string} = $self->{_tar}->write()
+     unless exists $self->{_string};
+   return length $self->{_string};
+} ## end sub size
+
+sub copy_to {
+   my ($self, $out_fh) = @_;
+   $self->{_string} = $self->{_tar}->write()
+     unless exists $self->{_string};
+   print {$out_fh} $self->{_string};
+} ## end sub copy_to
+
+=head1 NAME
+
+deployable - create a deploy script for some files/scripts
+
+=head1 VERSION
+
+See version at beginning of script, variable $VERSION, or call
+
+   shell$ deployable --version
+
+=head1 USAGE
+
+   deployable [--usage] [--help] [--man] [--version]
+
+   deployable [--bundle|--all-exec|-X] [--bzip2|--bz2|-j] [--cleanup|-c]
+              [--deploy|--exec|d <program>] [--gzip|-gz|-z]
+              [--heredir|-H <dirname>] [--include-archive-tar|-T]
+              [--no-tar] [--output|-o <filename>] [--root|-r <dirname>]
+              [--rootdir|-R <dirname>] [--tar|-t <program-path>]
+              [--tarfile|-F <filename>] [--tempdir-mode|-m <mode>]
+              [--workdir|-w <path>] [ files or directories... ]
+
+=head1 EXAMPLES
+
+   # pack some files and a deploy script together.
+   shell$ deployable script.sh file.txt some/directory -d script.sh
+
+   # Use a directory's contents as elements for the target root
+   shell$ ls -1 /path/to/target/root
+   etc
+   opt
+   usr
+   var
+   # The above will be deployed as /etc, /opt, /usr and /var
+   shell$ deployable -o dep.pl --root /path/to/target/root
+
+   # Include sub-directory etc/ for inclusion and extraction
+   # directly as /etc/
+   shell$ deployable -o dep.pl --rootdir etc/
+
+=head1 DESCRIPTION
+
+This is a meta-script to create deploy scripts. The latter ones are
+suitable to be distributed in order to deploy something.
+
+You basically have to provide two things: files to install and programs
+to be executed. Files can be put directly into the deployed script, or
+can be included in gzipped tar archives.
+
+When called, this script creates a deploy script for you. This script
+includes all the specified files, and when executed it will extract
+those files and execute the given programs. In this way, you can ship
+both files and logic needed to correctly install those files, but this
+is of course of of scope.
+
+All files and archives will be extracted under a configured path
+(see L<--workdir> below), which we'll call I<workdir> from now on. Under
+the I<workdir> a temporary directory will be created, and the files
+will be put in the temporary directory. You can specify if you want to
+clean up this temporary directory or keep it, at your choice. (You're able
+to both set a default for this cleanup when invoking deployable, or when
+invoking the deploy script itself). The temporary directory will be
+called I<tmpdir> in the following.
+
+There are several ways to embed files to be shipped:
+
+=over
+
+=item *
+
+pass the name of an already-prepared tar file via L</--tarfile>. The
+contents of this file will be assumed to be referred to the root
+directory;
+
+=item *
+
+specify the file name directly on the command line. A file given in this
+way will always be extracted into the I<tmpdir>, whatever its initial path
+was;
+
+=item *
+
+specify the name of a directory on the command line. In this case,
+C<tar> will be used to archive the directory, with the usual option to
+turn absolute paths into relative ones; this means that directories will
+be re-created under I<tmpdir> when extraction is performed;
+
+=item *
+
+give the name of a directory to be used as a "here directory", using
+the C<--heredir|-H> option. This is much the same as giving the directory
+name (see above), but in this case C<tar> will be told to change into the
+directory first, and archive '.'. This means that the contents of the
+"here-directory" will be extracted directly into I<tmpdir>.
+
+=back
+
+=head2 Extended Example
+
+Suppose you have a few server which have the same configuration, apart
+from some specific stuff (e.g. the hostname, the IP addresses, etc.).
+You'd like to perform changes to all with the minimum work possible...
+so you know you should script something.
+
+For example, suppose you want to update a few files in /etc, setting these
+files equal for all hosts. You would typically do the following:
+
+   # In your computer
+   shell$ mkdir -p /tmp/newfiles/etc
+   shell$ cd /tmp/newfiles/etc
+   # Craft the new files
+   shell$ cd ..
+   shell$ tar cvzf newetc.tar.gz etc
+
+   # Now, for each server:
+   shell$ scp newetc.tar.gz $server:/tmp
+   shell$ ssh $server tar xvzf /tmp/newetc.tar.gz -C /
+
+
+So far, so good. But what if you need to kick in a little more logic?
+For example, if you update some configuration files, you'll most likey
+want to restart some services. So you could do the following:
+
+   shell$ mkdir -p /tmp/newfiles/tmp
+   shell$ cd /tmp/newfiles/tmp
+   # craft a shell script to be executed remotely and set the exec bit
+   # Suppose it's called deploy.sh
+   shell$ cd ..
+   shell$ tar cvzf newetc.tar.gz etc tmp
+
+   # Now, for each server:
+   shell$ scp newetc.tar.gz $server:/tmp
+   shell$ ssh $server tar xvzf /tmp/newetc.tar.gz -C /
+   shell$ ssh $server /tmp/deploy.sh
+
+And what if you want to install files depending on the particular machine?
+Or you have a bundle of stuff to deploy and a bunch of scripts to execute?
+You can use deployable. In this case, you can do the following:
+
+   shell$ mkdir -p /tmp/newfiles/etc
+   shell$ cd /tmp/newfiles/etc
+   # Craft the new files
+   shell$ cd ..
+   # craft a shell script to be executed remotely and set the exec bit
+   # Suppose it's called deploy.sh
+   shell$ deployable -o deploy.pl -R etc deploy.sh -d deploy.sh
+
+   # Now, for each server
+   shell$ scp deploy.pl $server:/tmp
+   shell$ ssh $server /tmp/deploy.pl
+
+And you're done. This can be particularly useful if you have another
+layer of deployment, e.g. if you have to run a script to decide which
+of a group of archives should be deployed. For example, you could craft
+a different new "etc" for each server (which is particularly true if
+network configurations are in the package), and produce a simple script
+to choose which file to use based on the MAC address of the machine. In
+this case you could have:
+
+=over
+
+=item newetc.*.tar.gz
+
+a bunch of tar files with the configurations for each different server
+
+=item newetc.list
+
+a list file with the association between the MAC addresses and the
+real tar file to deploy from the bunch in the previous bullet
+
+=item deploy-the-right-stuff.sh
+
+a script to get the real MAC address of the machine, select the right
+tar file and do the deployment.
+
+=back
+
+So, you can do the following:
+
+   shell$ deployable -o deploy.pl newetc.*.tar.gz newetc.list \
+      deploy-the-right-stuff.sh --exec deploy-the-right-stuff.sh
+
+   # Now, for each server:
+   shell$ scp deploy.pl $server:/tmp
+   shell$ ssh $server /tmp/deploy.pl
+
+So, once you have the deploy script on the target machine all you need
+to do is to execute it. This can come handy when you cannot access the
+machines from the network, but you have to go there physically: you
+can prepare all in advance, and just call the deploy script.
+
+
+=head1 OPTIONS
+
+Meta-options:
+
+=over
+
+=item B<--help>
+
+print a somewhat more verbose help, showing usage, this description of
+the options and some examples from the synopsis.
+
+=item B<--man>
+
+print out the full documentation for the script.
+
+=item B<--usage>
+
+print a concise usage line and exit.
+
+=item B<--version>
+
+print the version of the script.
+
+=back
+
+Real-world options:
+
+=over
+
+=item B<< --bundle | --all-exec | -X >>
+
+Set bundle flag in the produced script. If the bundle flag is set, the
+I<deploy script> will treat all executables in the main deployment
+directory as scripts to be executed.
+
+By default the flag is not set.
+
+=item B<< --bzip2 | --bz2 | -j >>
+
+Compress tar archives with bzip2.
+
+=item B<< --cleanup | -c >>
+
+Set cleanup flag in the produced script. If the cleanup flag is set, the
+I<deploy script> will clean up after having performed all operations.
+
+You can set this flag to C<0> by using C<--no-cleanup>.
+
+=item B<< --deploy | --exec | -d <filename> >>
+
+Set the name of a program to execute after extraction. You can provide
+multiple program names, they will be executed in the same order.
+
+=item B<< --gzip | --gz | -z >>
+
+Compress tar archives with gzip.
+
+=item B<< --heredir | -H <path> >>
+
+Set the name of a "here directory" (see L<DESCRIPTION>). You can use this
+option multiple times to provide multiple directories.
+
+=item B<< --include-archive-tar | -T >>
+
+Embed L<Archive::Tar> (with its dependencies L<Archive::Tar::Constant> and
+L<Archive::Tar::File>) inside the final script. Use this when you know (or
+aren't sure) that L<Archive::Tar> will not be available in the target
+machine.
+
+=item B<< --no-tar >>
+
+Don't use system C<tar>.
+
+=item B<< --output | -o <filename> >>
+
+Set the output file name. By default the I<deploy script> will be given
+out on the standard output; if you provide a filename (different from
+C<->, of course!) the script will be saved there and the permissions will
+be set to 0755.
+
+=item B<< --root | -r <dirname> >>
+
+Include C<dirname> contents for deployment under root directory. The
+actual production procedure is: hop into C<dirname> and grab a tarball
+of C<.>. During deployment, hop into C</> and extract the tarball.
+
+This is useful if you're already building up the absolute deployment
+layout under a given directory: just treat that directory as if it were
+the root of the target system.
+
+=item B<< --rootdir | -R <dirname> >>
+
+Include C<dirname> as a directory that will be extracted under root
+directory. The actual production procedure is: grab a tarball of
+C<dirname>. During deployment, hop into C</> and extract the tarball.
+
+This is useful if you have a directory (or a group of directories) that
+you want to deploy directly under the root.
+
+=item B<< --tar | -t <program-path> >>
+
+Set the system C<tar> program to use.
+
+=item B<< --tempdir-mode | -m >>
+
+set default permissions for temporary directory of deployable script
+
+=item B<< --workdir | --deploy-directory | -w <path> >>
+
+Set the working directory for the deploy.
+
+=back
+
+=head1 ROOT OR ROOTDIR?
+
+There are two options that allow you to specify things to be deployed
+in C</>, so what should you use? Thing is... whatever you want!
+
+If you have a bunch of directories that have to appear under root, probably
+your best bet is to put them all inside a directory called C<myroot> and
+use option C<--root>:
+
+   shell$ mkdir -p myroot/{etc,opt,var,lib,usr,whatever}
+   # Now put stuff in the directories created above...
+   shell$ deployable --root myroot ...
+
+On the other hand, if you just want to put stuff starting from one or
+two directories that have to show up in C</>, you can avoid creating
+the extra C<myroot> directory and use C<--rootdir> instead:
+
+   shell$ mkdir -p etc/whatever
+   # Now put stuff in etc/whatever...
+   shell$ deployable --rootdir etc ...
+
+They are indeed somehow equivalent, the first avoiding you much typing
+when you have many directories to be deployed starting from root (just
+put them into the same subdirectory), the second allowing you to avoid
+putting an extra directory layer.
+
+There is indeed an additional catch that makes them quite different. When
+you use C<root>, the whole content of the directory specified will be
+used as a base, so you will end up with a listing like this:
+
+   opt/
+   opt/local/
+   opt/local/application/
+   opt/local/application/myfile.txt
+   opt/local/application/otherfile.txt
+
+i.e. all intermediate directories will be saved. On the other hand, when
+you specify a directory with C<--rootdir>, you're not limited to provide
+a "single-step" directory, so for example:
+
+   shell$ deployable --rootdir opt/local/application
+
+will result in the following list of files/directories to be stored:
+
+   opt/local/application/
+   opt/local/application/myfile.txt
+   opt/local/application/otherfile.txt
+
+i.e. the upper level directories will not be included. What is better for
+you is for you to judge.
+
+=head1 THE DEPLOY SCRIPT
+
+The net result of calling this script is to produce another script,
+that we call the I<deploy script>. This script is made of two parts: the
+code, which is fixed, and the configurations/files, which is what is
+actually produced. The latter part is put after the C<__END__> marker,
+as usual.
+
+Stuff in the configuration part is always hexified in order to prevent
+strange tricks or errors. Comments will help you devise what's inside the
+configurations themselves.
+
+The I<deploy script> has options itself, even if they are quite minimal.
+In particular, it supports the same options C<--workdir|-w> and
+C<--cleanup> described above, allowing the final user to override the
+configured values. By default, the I<workdir> is set to C</tmp>
+and the script will clean up after itself.
+
+The following options are supported in the I<deploy script>:
+
+=over
+
+=item B<--usage | --man | --help>
+
+print a minimal help and exit
+
+=item B<--version>
+
+print script version and exit
+
+=item B<--bundle | --all-exec | -X>
+
+treat all executables in the main deployment directory as scripts
+to be executed
+
+=item B<--cleanup | --no-cleanup>
+
+perform / don't perform temporary directory cleanup after work done
+
+=item B<< --deploy | --no-deploy >>
+
+deploy scripts are executed by default (same as specifying '--deploy')
+but you can prevent it.
+
+=item B<--dryrun | --dry-run>
+
+print final options and exit
+
+=item B<< --filelist | --list | -l >>
+
+print a list of files that are shipped in the deploy script
+
+=item B<< --heretar | --here-tar | -H >>
+
+print out the tar file that contains all the files that would be
+extracted in the temporary directory, useful to redirect to file or
+pipe to the tar program
+
+=item B<< --inspect <dirname> >>
+
+just extract all the stuff into <dirname> for inspection. Implies
+C<--no-deploy>, C<--no-tempdir>, ignores C<--bundle> (as a consequence of
+C<--no-deploy>), disables C<--cleanup> and sets the working directory
+to C<dirname>
+
+=item B<< --no-tar >>
+
+don't use system C<tar>
+
+=item B<< --rootar | --root-tar | -R >>
+
+print out the tar file that contains all the files that would be
+extracted in the root directory, useful to redirect to file or
+pipe to the tar program
+
+=item B<--show | --show-options | -s>
+
+print configured options and exit
+
+=item B<< --tar | -t <program-path> >>
+
+set the system C<tar> program to use.
+
+=item B<< --tarfile | -F <filename> >>
+
+add the specified C<filename> (assumed to be an uncompressed
+TAR file) to the lot for root extraction. This can come handy
+when you already have all the files backed up in a TAR archive
+and you're not willing to expand them (e.g. because your
+filesystem is case-insensitive...).
+
+=item B<< --tempdir | --no-tempdir >>
+
+by default a temporary directory is created (same as specifying
+C<--tempdir>), but you can execute directly in the workdir (see below)
+without creating it.
+
+=item B<< --tempdir-mode | -m >>
+
+temporary directories (see C<--tempdir>) created by File::Temp have
+permission 600 that prevents group/others from even looking at the
+contents. You might want to invoke some of the internal scripts
+from another user (e.g. via C<su>), so you can pass a mode to be
+set on the temporary directory.
+
+Works only if C<--tempdir> is active.
+
+=item B<--workdir | --work-directory | --deploy-directory | -w>
+
+working base directory (a temporary subdirectory will be created
+there anyway)
+
+=back
+
+Note the difference between C<--show> and C<--dryrun>: the former will
+give you the options that are "embedded" in the I<deploy script> without
+taking into account other options given on the command line, while the
+latter will give you the final options that would be used if the script
+were called without C<--dryrun>.
+
+=head2 Deploy Script Example Usage
+
+In the following, we'll assume that the I<deploy script> is called
+C<deploy.pl>.
+
+To execute the script with the already configured options, you just have
+to call it:
+
+   shell$ ./deploy.pl
+
+If you just want to see which configurations are in the I<deploy script>:
+
+   shell$ ./deploy.pl --show
+
+To see which files are included, you have two options. One is asking the
+script:
+
+   shell$ ./deploy.pl --filelist
+
+the other is piping to tar:
+
+   shell$ ./deploy.pl --tar | tar tvf -
+
+Extract contents of the script in a temp directory and simply inspect
+what's inside:
+
+   # extract stuff into subdirectory 'inspect' for... inspection
+   shell$ ./deploy.pl --no-tempdir --no-deploy --workdir inspect
+
+=head2 Deploy Script Requirements
+
+You'll need a working Perl with version at least 5.6.2.
+
+If you specify L</--include-archive-tar>, the module L<Archive::Tar> will
+be included as well. This should ease your life and avoid you to have
+B<tar> on the target machine. On the other hand, if you already know
+that B<tar> will be available, you can avoid including C<Archive::Tar>
+and have the generated script use it (it could be rather slower anyway).
+
+=head1 DIAGNOSTICS
+
+Each error message should be enough explicit to be understood without the
+need for furter explainations. Which is another way to say that I'm way
+too lazy to list all possible ways that this script has to fail.
+
+
+=head1 CONFIGURATION AND ENVIRONMENT
+
+deployable requires no configuration files or environment variables.
+
+Please note that deployable B<needs> to find its master B<remote> file
+to produce the final script. This must be put in the same directory where
+deployable is put. You should be able to B<symlink> deployable where you
+think it's better, anyway - it will go search for the original file
+and look for B<remote> inside the same directory. This does not apply to
+hard links, of course.
+
+
+=head1 DEPENDENCIES
+
+All core modules, apart the following:
+
+=over
+
+=item B<< Archive::Tar >>
+
+=item B<< File::Find::Rule >>
+
+=back
+
+=head1 BUGS AND LIMITATIONS
+
+No bugs have been reported.
+
+Please report any bugs or feature requests to the AUTHOR below.
+
+Be sure to read L<CONFIGURATION AND ENVIRONMENT> for a slight limitation
+about the availability of the B<remote> script.
+
+=head1 AUTHOR
+
+Flavio Poletti C<flavio [AT] polettix.it>
+
+
+=head1 LICENSE AND COPYRIGHT
+
+Copyright (c) 2008, Flavio Poletti C<flavio [AT] polettix.it>. All rights reserved.
+
+This script is free software; you can redistribute it and/or
+modify it under the same terms as Perl itself. See L<perlartistic>
+and L<perlgpl>.
+
+=head1 DISCLAIMER OF WARRANTY
+
+BECAUSE THIS SOFTWARE IS LICENSED FREE OF CHARGE, THERE IS NO WARRANTY
+FOR THE SOFTWARE, TO THE EXTENT PERMITTED BY APPLICABLE LAW. EXCEPT WHEN
+OTHERWISE STATED IN WRITING THE COPYRIGHT HOLDERS AND/OR OTHER PARTIES
+PROVIDE THE SOFTWARE "AS IS" WITHOUT WARRANTY OF ANY KIND, EITHER
+EXPRESSED OR IMPLIED, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE
+ENTIRE RISK AS TO THE QUALITY AND PERFORMANCE OF THE SOFTWARE IS WITH
+YOU. SHOULD THE SOFTWARE PROVE DEFECTIVE, YOU ASSUME THE COST OF ALL
+NECESSARY SERVICING, REPAIR, OR CORRECTION.
+
+IN NO EVENT UNLESS REQUIRED BY APPLICABLE LAW OR AGREED TO IN WRITING
+WILL ANY COPYRIGHT HOLDER, OR ANY OTHER PARTY WHO MAY MODIFY AND/OR
+REDISTRIBUTE THE SOFTWARE AS PERMITTED BY THE ABOVE LICENCE, BE
+LIABLE TO YOU FOR DAMAGES, INCLUDING ANY GENERAL, SPECIAL, INCIDENTAL,
+OR CONSEQUENTIAL DAMAGES ARISING OUT OF THE USE OR INABILITY TO USE
+THE SOFTWARE (INCLUDING BUT NOT LIMITED TO LOSS OF DATA OR DATA BEING
+RENDERED INACCURATE OR LOSSES SUSTAINED BY YOU OR THIRD PARTIES OR A
+FAILURE OF THE SOFTWARE TO OPERATE WITH ANY OTHER SOFTWARE), EVEN IF
+SUCH HOLDER OR OTHER PARTY HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGES.
+
+=cut
+
+package main; # ensure DATA is main::DATA
+__DATA__
+#!/usr/bin/env perl
+# *** NOTE *** LEAVE THIS MODULE LIST AS A PARAGRAPH
+use strict;
+use warnings;
+use 5.006_002;
+our $VERSION = '0.2.0';
+use English qw( -no_match_vars );
+use Fatal qw( close chdir opendir closedir );
+use File::Temp qw( tempdir );
+use File::Path qw( mkpath );
+use File::Spec::Functions qw( file_name_is_absolute catfile );
+use File::Basename qw( basename dirname );
+use POSIX qw( strftime );
+use Getopt::Long qw( :config gnu_getopt );
+use Cwd qw( getcwd );
+use Fcntl qw( :seek );
+
+# *** NOTE *** LEAVE EMPTY LINE ABOVE
+my %default_config = (    # default values
+   workdir     => '/tmp',
+   cleanup     => 1,
+   'no-exec'   => 0,
+   tempdir     => 1,
+   passthrough => 0,
+   verbose     => 0,
+);
+
+my $DATA_POSITION = tell DATA;                         # GLOBAL VARIABLE
+my %script_config = (%default_config, get_config());
+
+my %config = %script_config;
+if ($ENV{DEPLOYABLE_DISABLE_PASSTHROUGH} || (!$config{passthrough})) {
+   my %cmdline_config;
+   GetOptions(
+      \%cmdline_config,
+      qw(
+        usage|help|man!
+        version!
+
+        bundle|all-exec|X!
+        cleanup|c!
+        dryrun|dry-run|n!
+        filelist|list|l!
+        heretar|here-tar|H!
+        inspect|i=s
+        no-exec!
+        no-tar!
+        roottar|root-tar|R!
+        show|show-options|s!
+        tar|t=s
+        tempdir!
+        tempdir-mode|m=s
+        verbose!
+        workdir|work-directory|deploy-directory|w=s
+        ),
+   ) or short_usage();
+   %config = (%config, %cmdline_config);
+} ## end if ($ENV{DEPLOYABLE_DISABLE_PASSTHROUGH...})
+
+usage()   if $config{usage};
+version() if $config{version};
+
+if ($config{roottar}) {
+   binmode STDOUT;
+   my ($fh, $size) = locate_file('root');
+   copy($fh, \*STDOUT, $size);
+   exit 0;
+} ## end if ($config{roottar})
+
+if ($config{heretar}) {
+   binmode STDOUT;
+   my ($fh, $size) = locate_file('here');
+   copy($fh, \*STDOUT, $size);
+   exit 0;
+} ## end if ($config{heretar})
+
+if ($config{show}) {
+   require Data::Dumper;
+   print {*STDOUT} Data::Dumper::Dumper(\%script_config);
+   exit 1;
+}
+
+if ($config{inspect}) {
+   $config{cleanup}   = 0;
+   $config{'no-exec'} = 1;
+   $config{'tempdir'} = 0;
+   $config{workdir}   = $config{inspect};
+} ## end if ($config{inspect})
+
+if ($config{dryrun}) {
+   require Data::Dumper;
+   print {*STDOUT} Data::Dumper::Dumper(\%config);
+   exit 1;
+}
+
+if ($config{filelist}) {
+   my $root_tar = get_sub_tar('root');
+   print "root:\n";
+   $root_tar->print_filelist();
+   my $here_tar = get_sub_tar('here');
+   print "here:\n";
+   $here_tar->print_filelist();
+   exit 0;
+} ## end if ($config{filelist})
+
+# go into the working directory, creating any intermediate if needed
+mkpath($config{workdir});
+chdir($config{workdir});
+print {*STDERR} "### Got into working directory '$config{workdir}'\n\n"
+  if $config{verbose};
+
+my $tempdir;
+if ($config{'tempdir'}) {    # Only if allowed
+   my $me = basename(__FILE__) || 'deploy';
+   my $now = strftime('%Y-%m-%d_%H-%M-%S', localtime);
+   $tempdir = tempdir(
+      join('-', $me, $now, ('X' x 10)),
+      DIR     => '.',
+      CLEANUP => $config{cleanup}
+   );
+
+   if ($config{'tempdir-mode'}) {
+      chmod oct($config{'tempdir-mode'}), $tempdir
+        or die "chmod('$tempdir'): $OS_ERROR\n";
+   }
+
+   chdir $tempdir
+     or die "chdir('$tempdir'): $OS_ERROR\n";
+
+   if ($config{verbose}) {
+      print {*STDERR}
+        "### Created and got into temporary directory '$tempdir'\n";
+      print {*STDERR} "### (will clean it up later)\n" if $config{cleanup};
+      print {*STDERR} "\n";
+   } ## end if ($config{verbose})
+} ## end if ($config{'tempdir'})
+
+eval {    # Not really needed, but you know...
+   $ENV{PATH} = '/bin:/usr/bin:/sbin:/usr/sbin';
+   save_files();
+   execute_deploy_programs() unless $config{'no-exec'};
+};
+warn "$EVAL_ERROR\n" if $EVAL_ERROR;
+
+# Get back so that cleanup can successfully happen, if requested
+chdir '..' if defined $tempdir;
+
+sub locate_file {
+   my ($filename) = @_;
+   my $fh = \*DATA;
+   seek $fh, $DATA_POSITION, SEEK_SET;
+   while (!eof $fh) {
+      chomp(my $sizes = <$fh>);
+      my ($name_size, $file_size) = split /\s+/, $sizes;
+      my $name = full_read($fh, $name_size);
+      full_read($fh, 1);    # "\n"
+      return ($fh, $file_size) if $name eq $filename;
+      seek $fh, $file_size + 2, SEEK_CUR;    # includes "\n\n"
+   } ## end while (!eof $fh)
+   die "could not find '$filename'";
+} ## end sub locate_file
+
+sub full_read {
+   my ($fh, $size) = @_;
+   my $retval = '';
+   while ($size) {
+      my $buffer;
+      my $nread = read $fh, $buffer, $size;
+      die "read(): $OS_ERROR" unless defined $nread;
+      die "unexpected end of file" unless $nread;
+      $retval .= $buffer;
+      $size -= $nread;
+   } ## end while ($size)
+   return $retval;
+} ## end sub full_read
+
+sub copy {
+   my ($ifh, $ofh, $size) = @_;
+   while ($size) {
+      my $buffer;
+      my $nread = read $ifh, $buffer, ($size < 4096 ? $size : 4096);
+      die "read(): $OS_ERROR" unless defined $nread;
+      die "unexpected end of file" unless $nread;
+      print {$ofh} $buffer;
+      $size -= $nread;
+   } ## end while ($size)
+   return;
+} ## end sub copy
+
+sub get_sub_tar {
+   my ($filename) = @_;
+   my ($fh, $size) = locate_file($filename);
+   return Deployable::Tar->new(%config, fh => $fh, size => $size);
+}
+
+sub get_config {
+   my ($fh, $size) = locate_file('config.pl');
+   my $config_text = full_read($fh, $size);
+   my $config = eval 'my ' . $config_text or return;
+   return $config unless wantarray;
+   return %$config;
+} ## end sub get_config
+
+sub save_files {
+   my $here_tar = get_sub_tar('here');
+   $here_tar->extract();
+
+   my $root_dir = $config{inspect} ? 'root' : '/';
+   mkpath $root_dir unless -d $root_dir;
+   my $cwd = getcwd();
+   chdir $root_dir;
+   my $root_tar = get_sub_tar('root');
+   $root_tar->extract();
+   chdir $cwd;
+
+   return;
+} ## end sub save_files
+
+sub execute_deploy_programs {
+   my @deploy_programs = @{$config{deploy} || []};
+
+   if ($config{bundle}) { # add all executable scripts in current directory
+      print {*STDERR} "### Auto-deploying all executables in main dir\n\n"
+        if $config{verbose};
+      my %flag_for = map { $_ => 1 } @deploy_programs;
+      opendir my $dh, '.';
+      for my $item (sort readdir $dh) {
+         next if $flag_for{$item};
+         next unless ((-f $item) || (-l $item)) && (-x $item);
+         $flag_for{$item} = 1;
+         push @deploy_programs, $item;
+      } ## end for my $item (sort readdir...)
+      closedir $dh;
+   } ## end if ($config{bundle})
+
+ DEPLOY:
+   for my $deploy (@deploy_programs) {
+      $deploy = catfile('.', $deploy)
+        unless file_name_is_absolute($deploy);
+      if (!-x $deploy) {
+         print {*STDERR} "### Skipping '$deploy', not executable\n\n"
+           if $config{verbose};
+         next DEPLOY;
+      }
+      print {*STDERR} "### Executing '$deploy'...\n"
+        if $config{verbose};
+      system {$deploy} $deploy, @ARGV;
+      print {*STDERR} "\n"
+        if $config{verbose};
+   } ## end DEPLOY: for my $deploy (@deploy_programs)
+
+   return;
+} ## end sub execute_deploy_programs
+
+sub short_usage {
+   my $progname = basename($0);
+   print {*STDOUT} <<"END_OF_USAGE" ;
+
+$progname version $VERSION - for help on calling and options, run:
+
+   $0 --usage
+END_OF_USAGE
+   exit 1;
+} ## end sub short_usage
+
+sub usage {
+   my $progname = basename($0);
+   print {*STDOUT} <<"END_OF_USAGE" ;
+$progname version $VERSION
+
+More or less, this script is intended to be launched without parameters.
+Anyway, you can also set the following options, which will override any
+present configuration (except in "--show-options"):
+
+* --usage | --man | --help
+    print these help lines and exit
+
+* --version
+    print script version and exit
+
+* --bundle | --all-exec | -X
+    treat all executables in the main deployment directory as scripts
+    to be executed
+
+* --cleanup | -c | --no-cleanup
+    perform / don't perform temporary directory cleanup after work done
+
+* --deploy | --no-deploy
+    deploy scripts are executed by default (same as specifying '--deploy')
+    but you can prevent it.
+
+* --dryrun | --dry-run
+    print final options and exit
+
+* --filelist | --list | -l
+    print a list of files that are shipped in the deploy script
+
+* --heretar | --here-tar | -H
+    print out the tar file that contains all the files that would be
+    extracted in the temporary directory, useful to redirect to file or
+    pipe to the tar program
+
+* --inspect | -i <dirname>
+    just extract all the stuff into <dirname> for inspection. Implies
+    --no-deploy, --no-tempdir, ignores --bundle (as a consequence of
+    --no-deploy), disables --cleanup and sets the working directory
+    to <dirname>
+
+* --no-tar
+    don't use system "tar"
+
+* --roottar | --root-tar | -R
+    print out the tar file that contains all the files that would be
+    extracted in the root directory, useful to redirect to file or
+    pipe to the tar program
+
+* --show | --show-options | -s
+    print configured options and exit
+
+* --tar | -t <program-path>
+    set the system "tar" program to use.
+
+* --tempdir | --no-tempdir
+    by default a temporary directory is created (same as specifying
+    '--tempdir'), but you can execute directly in the workdir (see below)
+    without creating it.
+
+* --tempdir-mode | -m
+    set permissions of temporary directory (octal string)
+
+* --workdir | --work-directory | --deploy-directory | -w
+    working base directory (a temporary subdirectory will be created 
+    there anyway)
+    
+END_OF_USAGE
+   exit 1;
+} ## end sub usage
+
+sub version {
+   print "$0 version $VERSION\n";
+   exit 1;
+}
+
+package Deployable::Tar;
+
+sub new {
+   my $package = shift;
+   my $self = {ref $_[0] ? %{$_[0]} : @_};
+   $package = 'Deployable::Tar::Internal';
+   if (!$self->{'no-tar'}) {
+      if ((exists $self->{tar}) || (open my $fh, '-|', 'tar', '--help')) {
+         $package = 'Deployable::Tar::External';
+         $self->{tar} ||= 'tar';
+      }
+   } ## end if (!$self->{'no-tar'})
+   bless $self, $package;
+   $self->initialise() if $self->can('initialise');
+   return $self;
+} ## end sub new
+
+package Deployable::Tar::External;
+use English qw( -no_match_vars );
+
+sub initialise {
+   my $self = shift;
+   my $compression =
+       $self->{bzip2} ? 'j'
+     : $self->{gzip}  ? 'z'
+     :                  '';
+   $self->{_list_command}    = 'tv' . $compression . 'f';
+   $self->{_extract_command} = 'x' . $compression . 'f';
+} ## end sub initialise
+
+sub print_filelist {
+   my $self = shift;
+   if ($self->{size}) {
+      open my $tfh, '|-', $self->{tar}, $self->{_list_command}, '-'
+        or die "open() on pipe to tar: $OS_ERROR";
+      main::copy($self->{fh}, $tfh, $self->{size});
+   }
+   return $self;
+} ## end sub print_filelist
+
+sub extract {
+   my $self = shift;
+   if ($self->{size}) {
+      open my $tfh, '|-', $self->{tar}, $self->{_extract_command}, '-'
+        or die "open() on pipe to tar: $OS_ERROR";
+      main::copy($self->{fh}, $tfh, $self->{size});
+   }
+   return $self;
+} ## end sub extract
+
+package Deployable::Tar::Internal;
+use English qw( -no_match_vars );
+
+sub initialise {
+   my $self = shift;
+
+   if ($self->{size}) {
+      my $data = main::full_read($self->{fh}, $self->{size});
+      open my $fh, '<', \$data
+        or die "open() on internal variable: $OS_ERROR";
+
+      require Archive::Tar;
+      $self->{_tar} = Archive::Tar->new();
+      $self->{_tar}->read($fh);
+   } ## end if ($self->{size})
+
+   return $self;
+} ## end sub initialise
+
+sub print_filelist {
+   my $self = shift;
+   if ($self->{size}) {
+      print {*STDOUT} "   $_\n" for $self->{_tar}->list_files();
+   }
+   return $self;
+} ## end sub print_filelist
+
+sub extract {
+   my $self = shift;
+   if ($self->{size}) {
+      $self->{_tar}->extract();
+   }
+   return $self;
+} ## end sub extract
+
+__END__
