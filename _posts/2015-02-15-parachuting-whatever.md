@@ -6,6 +6,7 @@ image:
    feature: kakadu-volo-insieme.jpg
    credit: Uccelli al Kakadu National Park, Australia
    creditlink: https://en.wikipedia.org/wiki/Kakadu_National_Park
+   comments: true
 ---
 
 Many times I craft things that have to be installed in some place,
