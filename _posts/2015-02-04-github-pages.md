@@ -6,6 +6,7 @@ image:
    feature: leaves.jpg
    credit: Foglie sul Lungo Tevere
    creditlink: https://it.wikipedia.org/wiki/Tevere
+comments: true
 ---
 
 I recently decided that I should probably write more. [GitHub Pages]

@@ -6,6 +6,7 @@ image:
    feature: canguro.jpg
    credit: Canguro in Australia
    creditlink: https://en.wikipedia.org/wiki/Kangaroo
+comments: true
 ---
 
 I sometimes what to transfer a file from A to B and this file might be big.

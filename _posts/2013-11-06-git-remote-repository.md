@@ -6,6 +6,7 @@ image:
    feature: dal-paese.jpg
    credit: Panorama a Pereto
    creditlink: https://it.wikipedia.org/wiki/Pereto
+comments: true
 ---
 
 I sometimes happen to start a local repository that then I want to
