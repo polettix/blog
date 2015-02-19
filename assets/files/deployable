@@ -20,6 +20,205 @@ use Encode;
 BEGIN {
    my %file_for = (
 
+      'Text/Glob.pm' => <<'END_OF_FILE',
+ package Text::Glob;
+ use strict;
+ use Exporter;
+ use vars qw/$VERSION @ISA @EXPORT_OK
+             $strict_leading_dot $strict_wildcard_slash/;
+ $VERSION = '0.09';
+ @ISA = 'Exporter';
+ @EXPORT_OK = qw( glob_to_regex glob_to_regex_string match_glob );
+ 
+ $strict_leading_dot    = 1;
+ $strict_wildcard_slash = 1;
+ 
+ use constant debug => 0;
+ 
+ sub glob_to_regex {
+     my $glob = shift;
+     my $regex = glob_to_regex_string($glob);
+     return qr/^$regex$/;
+ }
+ 
+ sub glob_to_regex_string
+ {
+     my $glob = shift;
+     my ($regex, $in_curlies, $escaping);
+     local $_;
+     my $first_byte = 1;
+     for ($glob =~ m/(.)/gs) {
+         if ($first_byte) {
+             if ($strict_leading_dot) {
+                 $regex .= '(?=[^\.])' unless $_ eq '.';
+             }
+             $first_byte = 0;
+         }
+         if ($_ eq '/') {
+             $first_byte = 1;
+         }
+         if ($_ eq '.' || $_ eq '(' || $_ eq ')' || $_ eq '|' ||
+             $_ eq '+' || $_ eq '^' || $_ eq '$' || $_ eq '@' || $_ eq '%' ) {
+             $regex .= "\\$_";
+         }
+         elsif ($_ eq '*') {
+             $regex .= $escaping ? "\\*" :
+               $strict_wildcard_slash ? "[^/]*" : ".*";
+         }
+         elsif ($_ eq '?') {
+             $regex .= $escaping ? "\\?" :
+               $strict_wildcard_slash ? "[^/]" : ".";
+         }
+         elsif ($_ eq '{') {
+             $regex .= $escaping ? "\\{" : "(";
+             ++$in_curlies unless $escaping;
+         }
+         elsif ($_ eq '}' && $in_curlies) {
+             $regex .= $escaping ? "}" : ")";
+             --$in_curlies unless $escaping;
+         }
+         elsif ($_ eq ',' && $in_curlies) {
+             $regex .= $escaping ? "," : "|";
+         }
+         elsif ($_ eq "\\") {
+             if ($escaping) {
+                 $regex .= "\\\\";
+                 $escaping = 0;
+             }
+             else {
+                 $escaping = 1;
+             }
+             next;
+         }
+         else {
+             $regex .= $_;
+             $escaping = 0;
+         }
+         $escaping = 0;
+     }
+     print "# $glob $regex\n" if debug;
+ 
+     return $regex;
+ }
+ 
+ sub match_glob {
+     print "# ", join(', ', map { "'$_'" } @_), "\n" if debug;
+     my $glob = shift;
+     my $regex = glob_to_regex $glob;
+     local $_;
+     grep { $_ =~ $regex } @_;
+ }
+ 
+ 1;
+ __END__
+ 
+ =head1 NAME
+ 
+ Text::Glob - match globbing patterns against text
+ 
+ =head1 SYNOPSIS
+ 
+  use Text::Glob qw( match_glob glob_to_regex );
+ 
+  print "matched\n" if match_glob( "foo.*", "foo.bar" );
+ 
+  # prints foo.bar and foo.baz
+  my $regex = glob_to_regex( "foo.*" );
+  for ( qw( foo.bar foo.baz foo bar ) ) {
+      print "matched: $_\n" if /$regex/;
+  }
+ 
+ =head1 DESCRIPTION
+ 
+ Text::Glob implements glob(3) style matching that can be used to match
+ against text, rather than fetching names from a filesystem.  If you
+ want to do full file globbing use the File::Glob module instead.
+ 
+ =head2 Routines
+ 
+ =over
+ 
+ =item match_glob( $glob, @things_to_test )
+ 
+ Returns the list of things which match the glob from the source list.
+ 
+ =item glob_to_regex( $glob )
+ 
+ Returns a compiled regex which is the equivalent of the globbing
+ pattern.
+ 
+ =item glob_to_regex_string( $glob )
+ 
+ Returns a regex string which is the equivalent of the globbing
+ pattern.
+ 
+ =back
+ 
+ =head1 SYNTAX
+ 
+ The following metacharacters and rules are respected.
+ 
+ =over
+ 
+ =item C<*> - match zero or more characters
+ 
+ C<a*> matches C<a>, C<aa>, C<aaaa> and many many more.
+ 
+ =item C<?> - match exactly one character
+ 
+ C<a?> matches C<aa>, but not C<a>, or C<aaa>
+ 
+ =item Character sets/ranges
+ 
+ C<example.[ch]> matches C<example.c> and C<example.h>
+ 
+ C<demo.[a-c]> matches C<demo.a>, C<demo.b>, and C<demo.c>
+ 
+ =item alternation
+ 
+ C<example.{foo,bar,baz}> matches C<example.foo>, C<example.bar>, and
+ C<example.baz>
+ 
+ =item leading . must be explictly matched
+ 
+ C<*.foo> does not match C<.bar.foo>.  For this you must either specify
+ the leading . in the glob pattern (C<.*.foo>), or set
+ C<$Text::Glob::strict_leading_dot> to a false value while compiling
+ the regex.
+ 
+ =item C<*> and C<?> do not match /
+ 
+ C<*.foo> does not match C<bar/baz.foo>.  For this you must either
+ explicitly match the / in the glob (C<*/*.foo>), or set
+ C<$Text::Glob::strict_wildcard_slash> to a false value with compiling
+ the regex.
+ 
+ =back
+ 
+ =head1 BUGS
+ 
+ The code uses qr// to produce compiled regexes, therefore this module
+ requires perl version 5.005_03 or newer.
+ 
+ =head1 AUTHOR
+ 
+ Richard Clamp <richardc@unixbeard.net>
+ 
+ =head1 COPYRIGHT
+ 
+ Copyright (C) 2002, 2003, 2006, 2007 Richard Clamp.  All Rights Reserved.
+ 
+ This module is free software; you can redistribute it and/or modify it
+ under the same terms as Perl itself.
+ 
+ =head1 SEE ALSO
+ 
+ L<File::Glob>, glob(3)
+ 
+ =cut
+
+END_OF_FILE
+
       'File/Find/Rule.pm' => <<'END_OF_FILE',
  #       $Id$
  
@@ -821,205 +1020,6 @@ BEGIN {
 
 END_OF_FILE
 
-      'Text/Glob.pm' => <<'END_OF_FILE',
- package Text::Glob;
- use strict;
- use Exporter;
- use vars qw/$VERSION @ISA @EXPORT_OK
-             $strict_leading_dot $strict_wildcard_slash/;
- $VERSION = '0.09';
- @ISA = 'Exporter';
- @EXPORT_OK = qw( glob_to_regex glob_to_regex_string match_glob );
- 
- $strict_leading_dot    = 1;
- $strict_wildcard_slash = 1;
- 
- use constant debug => 0;
- 
- sub glob_to_regex {
-     my $glob = shift;
-     my $regex = glob_to_regex_string($glob);
-     return qr/^$regex$/;
- }
- 
- sub glob_to_regex_string
- {
-     my $glob = shift;
-     my ($regex, $in_curlies, $escaping);
-     local $_;
-     my $first_byte = 1;
-     for ($glob =~ m/(.)/gs) {
-         if ($first_byte) {
-             if ($strict_leading_dot) {
-                 $regex .= '(?=[^\.])' unless $_ eq '.';
-             }
-             $first_byte = 0;
-         }
-         if ($_ eq '/') {
-             $first_byte = 1;
-         }
-         if ($_ eq '.' || $_ eq '(' || $_ eq ')' || $_ eq '|' ||
-             $_ eq '+' || $_ eq '^' || $_ eq '$' || $_ eq '@' || $_ eq '%' ) {
-             $regex .= "\\$_";
-         }
-         elsif ($_ eq '*') {
-             $regex .= $escaping ? "\\*" :
-               $strict_wildcard_slash ? "[^/]*" : ".*";
-         }
-         elsif ($_ eq '?') {
-             $regex .= $escaping ? "\\?" :
-               $strict_wildcard_slash ? "[^/]" : ".";
-         }
-         elsif ($_ eq '{') {
-             $regex .= $escaping ? "\\{" : "(";
-             ++$in_curlies unless $escaping;
-         }
-         elsif ($_ eq '}' && $in_curlies) {
-             $regex .= $escaping ? "}" : ")";
-             --$in_curlies unless $escaping;
-         }
-         elsif ($_ eq ',' && $in_curlies) {
-             $regex .= $escaping ? "," : "|";
-         }
-         elsif ($_ eq "\\") {
-             if ($escaping) {
-                 $regex .= "\\\\";
-                 $escaping = 0;
-             }
-             else {
-                 $escaping = 1;
-             }
-             next;
-         }
-         else {
-             $regex .= $_;
-             $escaping = 0;
-         }
-         $escaping = 0;
-     }
-     print "# $glob $regex\n" if debug;
- 
-     return $regex;
- }
- 
- sub match_glob {
-     print "# ", join(', ', map { "'$_'" } @_), "\n" if debug;
-     my $glob = shift;
-     my $regex = glob_to_regex $glob;
-     local $_;
-     grep { $_ =~ $regex } @_;
- }
- 
- 1;
- __END__
- 
- =head1 NAME
- 
- Text::Glob - match globbing patterns against text
- 
- =head1 SYNOPSIS
- 
-  use Text::Glob qw( match_glob glob_to_regex );
- 
-  print "matched\n" if match_glob( "foo.*", "foo.bar" );
- 
-  # prints foo.bar and foo.baz
-  my $regex = glob_to_regex( "foo.*" );
-  for ( qw( foo.bar foo.baz foo bar ) ) {
-      print "matched: $_\n" if /$regex/;
-  }
- 
- =head1 DESCRIPTION
- 
- Text::Glob implements glob(3) style matching that can be used to match
- against text, rather than fetching names from a filesystem.  If you
- want to do full file globbing use the File::Glob module instead.
- 
- =head2 Routines
- 
- =over
- 
- =item match_glob( $glob, @things_to_test )
- 
- Returns the list of things which match the glob from the source list.
- 
- =item glob_to_regex( $glob )
- 
- Returns a compiled regex which is the equivalent of the globbing
- pattern.
- 
- =item glob_to_regex_string( $glob )
- 
- Returns a regex string which is the equivalent of the globbing
- pattern.
- 
- =back
- 
- =head1 SYNTAX
- 
- The following metacharacters and rules are respected.
- 
- =over
- 
- =item C<*> - match zero or more characters
- 
- C<a*> matches C<a>, C<aa>, C<aaaa> and many many more.
- 
- =item C<?> - match exactly one character
- 
- C<a?> matches C<aa>, but not C<a>, or C<aaa>
- 
- =item Character sets/ranges
- 
- C<example.[ch]> matches C<example.c> and C<example.h>
- 
- C<demo.[a-c]> matches C<demo.a>, C<demo.b>, and C<demo.c>
- 
- =item alternation
- 
- C<example.{foo,bar,baz}> matches C<example.foo>, C<example.bar>, and
- C<example.baz>
- 
- =item leading . must be explictly matched
- 
- C<*.foo> does not match C<.bar.foo>.  For this you must either specify
- the leading . in the glob pattern (C<.*.foo>), or set
- C<$Text::Glob::strict_leading_dot> to a false value while compiling
- the regex.
- 
- =item C<*> and C<?> do not match /
- 
- C<*.foo> does not match C<bar/baz.foo>.  For this you must either
- explicitly match the / in the glob (C<*/*.foo>), or set
- C<$Text::Glob::strict_wildcard_slash> to a false value with compiling
- the regex.
- 
- =back
- 
- =head1 BUGS
- 
- The code uses qr// to produce compiled regexes, therefore this module
- requires perl version 5.005_03 or newer.
- 
- =head1 AUTHOR
- 
- Richard Clamp <richardc@unixbeard.net>
- 
- =head1 COPYRIGHT
- 
- Copyright (C) 2002, 2003, 2006, 2007 Richard Clamp.  All Rights Reserved.
- 
- This module is free software; you can redistribute it and/or modify it
- under the same terms as Perl itself.
- 
- =head1 SEE ALSO
- 
- L<File::Glob>, glob(3)
- 
- =cut
-
-END_OF_FILE
-
       'Number/Compare.pm' => <<'END_OF_FILE',
  package Number::Compare;
  use strict;
@@ -1165,7 +1165,7 @@ GetOptions(
      output|o=s
      passthrough|P!
      root|r=s@
-     rootdir|R=s@
+     rootdir|in-root|R=s@
      tar|t=s
      tarfile|F=s@
      tempdir-mode|m=s
@@ -1476,7 +1476,7 @@ See version at beginning of script, variable $VERSION, or call
               [--deploy|--exec|d <program>] [--gzip|-gz|-z]
               [--heredir|-H <dirname>] [--include-archive-tar|-T]
               [--no-tar] [--output|-o <filename>] [--root|-r <dirname>]
-              [--rootdir|-R <dirname>] [--tar|-t <program-path>]
+              [--rootdir|--in-root|-R <dirname>] [--tar|-t <program-path>]
               [--tarfile|-F <filename>] [--tempdir-mode|-m <mode>]
               [--workdir|-w <path>] [ files or directories... ]
 
@@ -1496,7 +1496,7 @@ See version at beginning of script, variable $VERSION, or call
 
    # Include sub-directory etc/ for inclusion and extraction
    # directly as /etc/
-   shell$ deployable -o dep.pl --rootdir etc/
+   shell$ deployable -o dep.pl --in-root etc/
 
 =head1 DESCRIPTION
 
@@ -1740,14 +1740,19 @@ This is useful if you're already building up the absolute deployment
 layout under a given directory: just treat that directory as if it were
 the root of the target system.
 
-=item B<< --rootdir | -R <dirname> >>
+=item B<< --rootdir | --in-root | -R <filename> >>
 
-Include C<dirname> as a directory that will be extracted under root
+Include C<filename> as an item that will be extracted under root
 directory. The actual production procedure is: grab a tarball of
-C<dirname>. During deployment, hop into C</> and extract the tarball.
+C<filename>. During deployment, hop into C</> and extract the tarball.
 
-This is useful if you have a directory (or a group of directories) that
-you want to deploy directly under the root.
+This is useful e.g. if you have a directory (or a group of directories)
+that you want to deploy directly under the root.
+
+Note that the C<--rootdir> alias is kept for backwards compatibility
+but is not 100% correct - you can specify both a dirname (like it was
+previously stated) or a single file with this option. This is why it's
+more readably to use C<--in-root> instead.
 
 =item B<< --tar | -t <program-path> >>
 
@@ -1778,11 +1783,11 @@ use option C<--root>:
 
 On the other hand, if you just want to put stuff starting from one or
 two directories that have to show up in C</>, you can avoid creating
-the extra C<myroot> directory and use C<--rootdir> instead:
+the extra C<myroot> directory and use C<--in-root> instead:
 
    shell$ mkdir -p etc/whatever
    # Now put stuff in etc/whatever...
-   shell$ deployable --rootdir etc ...
+   shell$ deployable --in-root etc ...
 
 They are indeed somehow equivalent, the first avoiding you much typing
 when you have many directories to be deployed starting from root (just
@@ -1800,10 +1805,10 @@ used as a base, so you will end up with a listing like this:
    opt/local/application/otherfile.txt
 
 i.e. all intermediate directories will be saved. On the other hand, when
-you specify a directory with C<--rootdir>, you're not limited to provide
+you specify a directory with C<--in-root>, you're not limited to provide
 a "single-step" directory, so for example:
 
-   shell$ deployable --rootdir opt/local/application
+   shell$ deployable --in-root opt/local/application
 
 will result in the following list of files/directories to be stored:
 
@@ -2157,6 +2162,10 @@ if ($config{filelist}) {
    $here_tar->print_filelist();
    exit 0;
 } ## end if ($config{filelist})
+
+# here we have to do things for real... probably, so save the current
+# working directory for consumption by the scripts
+$ENV{OLD_PWD} = getcwd();
 
 # go into the working directory, creating any intermediate if needed
 mkpath($config{workdir});
