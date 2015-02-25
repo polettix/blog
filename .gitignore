@@ -9,3 +9,4 @@ _asset_bundler_cache
 *.swp
 _octopress.yml
 old-favicon.*
+images/_host
