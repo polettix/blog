@@ -510,7 +510,7 @@ git commit -m 'using carton dependencies handling'
 <p>Carton has its own way of helping you start applications with the
 right environment:</p>
 
-<pre><code>carton exec program option option option...
+<pre><code>carton exec -- program option option option...
 </code></pre>
 
 <p>It also plays well with <a href="https://github.com/tokuhirom/plenv">plenv</a>, so if you set up a <em>local</em> version of
@@ -638,6 +638,11 @@ ln -s distro/application-2.0 application
 <p>and restart your application, if applicable.</p>
 
 <p>Congratulations! You’re ready to start using your application!</p>
+
+<h2 id="updates">Updates</h2>
+
+<p>Changed how to call <code>carton exec</code> to  more robust way - thanks Slobodan
+Miskovic!</p>
 
       <hr />
       <footer role="contentinfo">
