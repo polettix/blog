@@ -337,7 +337,7 @@ Which basically boils down to something like this:
 Carton has its own way of helping you start applications with the
 right environment:
 
-    carton exec program option option option...
+    carton exec -- program option option option...
 
 It also plays well with [plenv], so if you set up a *local* version of
 `perl` with it it will use that. My impression is that it fiddles with
@@ -456,3 +456,8 @@ Last step is to activate the release:
 and restart your application, if applicable.
 
 Congratulations! You're ready to start using your application!
+
+## Updates
+
+Changed how to call `carton exec` to  more robust way - thanks Slobodan
+Miskovic!
