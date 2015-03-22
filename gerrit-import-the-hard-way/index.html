@@ -1,0 +1,449 @@
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if (IE 7)&!(IEMobile)]><html class="no-js lt-ie9 lt-ie8" lang="en"><![endif]-->
+<!--[if (IE 8)&!(IEMobile)]><html class="no-js lt-ie9" lang="en"><![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"><!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<title>Gerrit import - the hard way &#8211; PolettiX!</title>
+<meta name="description" content="What if you started developing a tool using git, and after 400+
+commits someone tells you to import it into a Gerrit-based
+central repository where you barely have a bit for pushing
+proposed changes? Well&#8230; it&#8217;s possible!
+
+">
+<meta name="keywords" content="">
+
+
+
+<!-- Twitter Cards -->
+<meta name="twitter:title" content="Gerrit import - the hard way">
+<meta name="twitter:description" content="What if you started developing a tool using git, and after 400+
+commits someone tells you to import it into a Gerrit-based
+central repository where you barely have a bit for pushing
+proposed changes? Well&#8230; it&#8217;s possible!
+
+">
+<meta name="twitter:site" content="@polettix">
+<meta name="twitter:creator" content="@polettix">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="/images/yellow-river.jpg">
+
+<!-- Open Graph -->
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Gerrit import - the hard way">
+<meta property="og:description" content="What if you started developing a tool using git, and after 400+
+commits someone tells you to import it into a Gerrit-based
+central repository where you barely have a bit for pushing
+proposed changes? Well&#8230; it&#8217;s possible!
+
+">
+<meta property="og:url" content="/gerrit-import-the-hard-way/">
+<meta property="og:site_name" content="PolettiX!">
+
+
+
+
+
+<link rel="canonical" href="/gerrit-import-the-hard-way/">
+<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="PolettiX! Feed">
+
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+
+<meta http-equiv="cleartype" content="on">
+
+<!-- HTML5 Shiv and Media Query Support -->
+<!--[if lt IE 9]>
+	<script src="/assets/js/vendor/html5shiv.min.js"></script>
+	<script src="/assets/js/vendor/respond.min.js"></script>
+<![endif]-->
+
+<!-- Modernizr -->
+<script src="/assets/js/vendor/modernizr-2.7.1.custom.min.js"></script>
+
+<link href='//fonts.googleapis.com/css?family=PT+Sans+Narrow:400,700%7CPT+Serif:400,700,400italic' rel='stylesheet' type='text/css'>
+
+<!-- Icons -->
+<!-- 16x16 -->
+<link rel="shortcut icon" href="/favicon.ico?whatever">
+<!-- 32x32 -->
+<link rel="shortcut icon" href="/favicon.png?whatever">
+<!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
+<link rel="apple-touch-icon-precomposed" href="/images/apple-touch-icon-precomposed.png">
+<!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="/images/apple-touch-icon-72x72-precomposed.png">
+<!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="/images/apple-touch-icon-114x114-precomposed.png">
+<!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/images/apple-touch-icon-144x144-precomposed.png">
+
+</head>
+
+<body class="post">
+
+<!--[if lt IE 9]><div class="browser-upgrade alert alert-info">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</div><![endif]-->
+
+<div class="navigation-wrapper">
+	<div class="site-name">
+		<a href="/">PolettiX!</a>
+	</div><!-- /.site-name -->
+	<div class="top-navigation">
+		<nav role="navigation" id="site-nav" class="nav">
+		    <ul>
+		        
+				    
+				        
+				    
+				    <li><a href="/about/" >About</a></li>
+				
+				    
+				        
+				    
+				    <li><a href="/posts/" >Posts</a></li>
+				
+		    </ul>
+		</nav>
+	</div><!-- /.top-navigation -->
+</div><!-- /.navigation-wrapper -->
+
+
+  <div class="image-wrap">
+  <img src=
+    
+      "/images/yellow-river.jpg"
+    
+  alt="Gerrit import - the hard way feature image">
+  
+    <span class="image-credit"><a href="https://en.wikipedia.org/wiki/Kakadu_National_Park">Yellow Water al Kakadu National Park, Australia</a></span>
+  
+  </div><!-- /.image-wrap -->
+
+
+<div id="main" role="main">
+  <div class="article-author-side">
+    
+
+
+<div itemscope itemtype="http://schema.org/Person">
+
+
+	<img src="/images/flavio-self-color.png" class="bio-photo" alt="Flavio Poletti bio photo">
+
+
+  <h3 itemprop="name">Flavio Poletti</h3>
+  <p>Irreducible Perler.</p>
+  <a href="mailto:flavio@polettix.it" class="author-social" target="_blank"><i class="fa fa-fw fa-envelope-square"></i>Email</a>
+  <a href="http://comics.polettix.it/" class="author-social" target="_blank"><i class="fa fa-fw fa-pencil"></i> Comics</a>
+  <a href="http://twitter.com/polettix" class="author-social" target="_blank"><i class="fa fa-fw fa-twitter-square"></i> Twitter</a>
+  
+  
+  <a href="http://linkedin.com/in/flaviopoletti" class="author-social" target="_blank"><i class="fa fa-fw fa-linkedin-square"></i> LinkedIn</a>
+  
+  
+  <a href="https://metacpan.org/author/polettix" class="author-social" target="_blank"><i class="fa fa-fw fa-th-large"></i> MetaCPAN</a>
+  <a href="http://github.com/polettix" class="author-social" target="_blank"><i class="fa fa-fw fa-github"></i> Github</a>
+  <a href="http://stackoverflow.com/users/3865403/polettix" class="author-social" target="_blank"><i class="fa fa-fw fa-stack-overflow"></i> Stackoverflow</a>
+  
+  
+  <a href="http://www.pinterest.com/polettix" class="author-social" target="_blank"><i class="fa fa-fw fa-pinterest"></i> Pinterest</a>
+  
+  
+  
+  
+  
+  
+</div>
+
+  </div>
+  <article class="post">
+    <div class="headline-wrap">
+      
+        <h1><a href="/gerrit-import-the-hard-way/" rel="bookmark" title="Gerrit import - the hard way">Gerrit import - the hard way</a></h1>
+      
+    </div><!--/ .headline-wrap -->
+    <div class="article-wrap">
+      <p>What if you started developing a tool using <a href="http://www.git-scm.com/">git</a>, and after 400+
+commits someone tells you to import it into a <a href="https://code.google.com/p/gerrit/">Gerrit</a>-based
+central repository where you barely have a bit for pushing
+proposed changes? Well… it’s possible!</p>
+
+<h2 id="assumptions">Assumptions</h2>
+
+<p>Let’s give things names:</p>
+
+<ul>
+  <li><em>git-repo</em> is the original repo you used so far. It might even be your
+local copy of the code in your computer, this does not affect the test;</li>
+  <li><em>gerrit-origin</em> is the Fort-Knox central repository where you can push
+proposed changes</li>
+  <li><em>gerrit-local</em> is your humble local copy of <em>gerrit-origin</em></li>
+</ul>
+
+<p>There are few assumptions that will make you decide whether it’s
+worth reading on or not:</p>
+
+<ol>
+  <li>you have <em>git-repo</em> with a branch <code>source</code> containing the commits you
+want to push into <em>gerrit-origin</em>;</li>
+  <li>you are provided with means to access <em>gerrit-origin</em> (i.e. clone it
+and eventually push to it) and a branch <code>destination</code> to push your
+commits;</li>
+  <li>you want to preserve history, so each commit in the branch of <em>git-repo</em>
+will have to end up in a commit in <em>gerrit-origin</em>;</li>
+  <li>you only have a commit bit in <em>gerrit-origin</em>, i.e. you have the right
+to do a <code>git push origin HEAD:refs/for/master</code> (see
+<a href="https://gerrit-documentation.storage.googleapis.com/Documentation/2.11/intro-quick.html#_creating_the_review">Gerrit documentation</a>) and hope that someone will
+be so kind as to accept those changes, but nothing fancier.</li>
+  <li>this will be your first import of some consistent history, from that
+point in time on you will use <em>gerrit-local</em> and forget about
+<em>git-repo</em> (i.e. you will definitely jump on the <a href="https://code.google.com/p/gerrit/">Gerrit</a> carriage for
+this development).</li>
+</ol>
+
+<p>We’ll see later what you can do if some of the above do not apply… you
+lucky!</p>
+
+<h2 id="assumptions-are-right">Assumptions Are Right!</h2>
+
+<p>So the assumptions are right… let’s proceed in order. This is what we
+are going to do (you’ll notice that <a href="https://code.google.com/p/gerrit/">Gerrit</a> is somehow very fussy and
+you will have to do a lot of work to make it happy):</p>
+
+<ul>
+  <li>clone the <em>gerrit-origin</em> into a local copy <em>gerrit-local</em>;</li>
+  <li>get the commits from branch <code>source</code> in <em>git-repo</em> into branch
+<code>intermediate</code> in <em>gerrit-local</em>;</li>
+  <li>adjust the imported commits in <em>gerrit-local</em> to match the rules
+set in <em>gerrit-origin</em>. E.g. you might want to modify the committer’s
+name or email to match what is set in <em>gerrit-origin</em> in case you
+saved your commits with an email address and you want to push
+commits with another email;</li>
+  <li>add a ‘Commit-Id` to each commit message (or <em>gerrit-origin</em> will
+complain);</li>
+  <li>rebase <code>intermediate</code> to <code>destination</code>, so that <em>gerrit-origin</em> will
+see them as acceptable;</li>
+  <li>push to <em>gerrit-origin</em> and cross fingers.</li>
+</ul>
+
+<h3 id="cloning-the-repository">Cloning the repository</h3>
+
+<p>First thing to do is to create <em>gerrit-local</em> cloning <em>gerrit-origin</em>.
+We will assume that <em>gerrit-origin</em> is at:</p>
+
+<pre><code>ssh://gerrithost:29418/GerritRepo.git
+</code></pre>
+
+<p>and that you want to clone it into <code>/path/to/GerritRepo</code> so the clone
+will be:</p>
+
+<pre><code>cd /path/to
+git clone ssh://gerrithost:29418/GerritRepo.git GerritRepo
+cd GerritRepo
+</code></pre>
+
+<p>This will provide you a fresh copy of the repository, but it’s still
+not sufficient for setting up your <a href="https://code.google.com/p/gerrit/">Gerrit</a> clone properly. Every time
+you have to do a push, in fact, you will have to include a <code>Commit-Id</code>
+inside the commit message, and doing this manually is cumbersome. So
+most probably you will do something like this:</p>
+
+<pre><code>scp -p -P 29418 john.doe@gerrithost:hooks/commit-msg .git/hooks/
+</code></pre>
+
+<p>This will install a <em>hook</em> that will be called every time a commit
+message is created, including the <code>Commit-Id</code> inside the last paragraph
+of the message itself and making Gerrit happy.</p>
+
+<p>Instructions for cloning and getting the hook script should be also
+available in the <a href="https://code.google.com/p/gerrit/">Gerrit</a> GUI - if you have access to it. See
+<a href="https://gerrit-documentation.storage.googleapis.com/Documentation/2.11/intro-quick.html#_cloning_the_repository">cloning</a> and <a href="https://gerrit-documentation.storage.googleapis.com/Documentation/2.11/user-changeid.html#creation">commit-msg creation</a>
+for details and possible variants that might apply to your case.</p>
+
+<p>Last thing, we ensure that the <code>destination</code> branch is available as
+a branch in <em>gerrit-local</em> too:</p>
+
+<pre><code>git checkout -b development origin/development
+</code></pre>
+
+<h3 id="getting-your-commits-in-gerrit-local">Getting your commits in <em>gerrit-local</em></h3>
+
+<p>We will do most of the work in <em>gerrit-local</em> so we want to acquire the
+relevant commits there. We will assume that <em>git-repo</em> is at:</p>
+
+<pre><code>ssh://githost/GitRepo.git
+</code></pre>
+
+<p>so we move into <em>gerrit-local</em>’s directory and do this:</p>
+
+<pre><code>git remote add git-repo ssh://githost/GitRepo.git
+git fetch git-repo
+</code></pre>
+
+<p>and the checkout its <code>source</code> branch into the local <code>intermediate</code>
+for doing transformations:</p>
+
+<pre><code>git checkout -b intermediate git-repo/source
+</code></pre>
+
+<h3 id="transforming-the-commits">Transforming the commits</h3>
+
+<p>Time for some commits mangling now. Your friend is <code>filter-branch</code>, so
+you might want to see some additional <a href="http://www.git-scm.com/docs/git-filter-branch">documentation</a>
+if you want to do different changes.</p>
+
+<blockquote>
+  <p>The changes in this section will change the SHA1 identifiers for all
+  the commits. This should not be a problem because you are probably
+  doing a transition towards <a href="https://code.google.com/p/gerrit/">Gerrit</a> and will use <em>gerrit-origin</em>
+  after importing all commits as described in this article.</p>
+</blockquote>
+
+<p>One problem that I had was about the commiter’s email address. This might
+differ between <em>git-repo</em> (e.g. it might be your personal email address)
+and <em>gerrit-origin</em> (e.g. for your work address, or another address that
+you are using to contribute to the project in <a href="https://code.google.com/p/gerrit/">Gerrit</a>). If this is
+yours too, the following command (found <a href="https://help.github.com/articles/changing-author-info/">here</a>) can be
+useful:</p>
+
+<pre><code>git filter-branch --env-filter '
+    OLD_EMAIL="your-old-email@example.com"
+    CORRECT_NAME="Your Correct Name"
+    CORRECT_EMAIL="your-correct-email@example.com"
+    if [ "$GIT_COMMITTER_EMAIL" = "$OLD_EMAIL" ]; then
+        export GIT_COMMITTER_NAME="$CORRECT_NAME"
+        export GIT_COMMITTER_EMAIL="$CORRECT_EMAIL"
+    fi
+    if [ "$GIT_AUTHOR_EMAIL" = "$OLD_EMAIL" ]; then
+        export GIT_AUTHOR_NAME="$CORRECT_NAME"
+        export GIT_AUTHOR_EMAIL="$CORRECT_EMAIL"
+    fi
+' --tag-name-filter cat -- --branches --tags
+</code></pre>
+
+<p>Then, you will surely need to ensure that each commit has a <code>Commit-Id</code>
+inside. The hook you installed will be useful to do this, but it expects
+to take its input from a file and not from the standard input so we will
+use a pivot file <code>/tmp/mymessage</code> for exchanging data:</p>
+
+<pre><code>HOOK="$PWD/.git/hooks/commit-msg"
+git filter-branch --force --msg-filter "
+    cat - &gt;/tmp/mymessage &amp;&amp;
+    '$HOOK' /tmp/mymessage &amp;&amp;
+    cat /tmp/mymessage
+"
+</code></pre>
+
+<h3 id="rebasing-and-pushing">Rebasing and pushing</h3>
+
+<p>We are now ready to do the rebase. This is needed because there is
+currently no link between your new commits and whatever was in
+<em>gerrit-origin</em>, so you have to make sure this link is there.</p>
+
+<p>Rebase will be very simple - although the results will vary depending
+on the contents of branch <code>destination</code> in <em>gerrit-origin</em>:</p>
+
+<pre><code>git checkout intermediate
+git rebase destination
+</code></pre>
+
+<p>At this point it should be easy:</p>
+
+<pre><code>git push origin HEAD:refs/for/destination
+</code></pre>
+
+<p>If you get errors, you might want to push only part of the commits and
+then repeat - whatever is fine for you!</p>
+
+<h2 id="what-if">What if…</h2>
+
+<p>You might be in the situation in which some of the assumptions do not
+really apply… the following hints might help.</p>
+
+<h3 id="assumption-1-or-2-do-not-apply">Assumption 1 or 2 do not apply?</h3>
+
+<p>Well, this article is probably not for you at all! Did you read it up
+to here? Wow, you’re really curious!</p>
+
+<h3 id="assumption-3-does-not-apply">Assumption 3 does not apply?</h3>
+
+<p>If you’re not interested into preserving all intermediate commits, you
+can just squash the whole thing into one single commit and then
+push it. At this point you will not need to do any transformation,
+because the commit hook will take care of setting the <code>Change-Id</code> and
+you will surely have updated your email at this point - right?!?</p>
+
+<h3 id="assumption-4-does-not-apply">Assumption 4 does not apply?</h3>
+
+<p>If you have wider powers on the Gerrit side, and this is an initial
+import, then you probably can just work behind the scenes and set a
+copy of <em>git-repo</em> to what’s behind <em>gerrit-origin</em>.</p>
+
+<p>Another alternative is to temporarily disable <code>Change-Id</code>s in the
+Gerrit repo to simplify the import.</p>
+
+<h3 id="assumption-5-does-not-apply">Assumption 5 does not apply?</h3>
+
+<p>Well, your situation seems to be quite peculiar… good luck!</p>
+
+
+      <hr />
+      <footer role="contentinfo">
+        <div class="social-share">
+  <h4>Share on</h4>
+  <ul>
+    <li>
+      <a href="https://twitter.com/intent/tweet?text=/gerrit-import-the-hard-way/" class="twitter" title="Share on Twitter"><i class="fa fa-twitter"></i><span> Twitter</span></a>
+    </li>
+    <li>
+      <a href="https://www.facebook.com/sharer/sharer.php?u=/gerrit-import-the-hard-way/" class="facebook" title="Share on Facebook"><i class="fa fa-facebook"></i><span> Facebook</span></a>
+    </li>
+    <li>
+      <a href="https://plus.google.com/share?url=/gerrit-import-the-hard-way/" class="google-plus" title="Share on Google Plus"><i class="fa fa-google-plus"></i><span> Google+</span></a>
+    </li>
+  </ul>
+</div><!-- /.social-share -->
+        <p class="byline"><strong>Gerrit import - the hard way</strong> was published on <time datetime="2015-03-22T00:00:00+01:00">March 22, 2015</time>.</p>
+      </footer>
+    </div><!-- /.article-wrap -->
+  
+  </article>
+</div><!-- /#main -->
+
+<div class="footer-wrap">
+  <div class="related-articles">
+  <h4>You might also enjoy <small class="pull-right">(<a href="/posts/">View all posts</a>)</small></h4>
+    <ul>
+    
+      <li><a href="/parachuting-whatever/" title="Parachuting Whatever">Parachuting Whatever</a></li>
+    
+      <li><a href="/parachuting-perl/" title="Parachuting Perl">Parachuting Perl</a></li>
+    
+      <li><a href="/github-pages/" title="GitHub Pages">GitHub Pages</a></li>
+    
+    </ul>
+    <hr />
+  </div><!-- /.related-articles -->
+  <footer>
+    
+
+<span>&copy; 2015 Flavio Poletti. Powered by <a href="http://jekyllrb.com" rel="nofollow">Jekyll</a> using the <a href="http://mademistakes.com/minimal-mistakes/" rel="nofollow">Minimal Mistakes</a> theme.</span>
+
+  </footer>
+</div><!-- /.footer-wrap -->
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script src="/assets/js/scripts.min.js"></script>
+
+
+
+</body>
+</html>

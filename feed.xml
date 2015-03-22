@@ -4,13 +4,256 @@
 <generator uri="https://github.com/jekyll/jekyll">Jekyll</generator>
 <link rel="self" type="application/atom+xml" href="/feed.xml" />
 <link rel="alternate" type="text/html" href="" />
-<updated>2015-03-10T16:49:17+01:00</updated>
+<updated>2015-03-22T01:09:57+01:00</updated>
 <id>/</id>
 <author>
   <name>Flavio Poletti</name>
   <uri>/</uri>
   <email>flavio@polettix.it</email>
 </author>
+
+
+  
+
+<entry>
+  <title type="html"><![CDATA[Gerrit import - the hard way]]></title>
+  <link rel="alternate" type="text/html" href="/gerrit-import-the-hard-way/" />
+  <id>/gerrit-import-the-hard-way</id>
+  <published>2015-03-22T00:00:00+01:00</published>
+  <updated>2015-03-22T00:00:00+01:00</updated>
+  <author>
+    <name>Flavio Poletti</name>
+    <uri></uri>
+    <email>flavio@polettix.it</email>
+  </author>
+  <content type="html">
+    &lt;p&gt;What if you started developing a tool using &lt;a href=&quot;http://www.git-scm.com/&quot;&gt;git&lt;/a&gt;, and after 400+
+commits someone tells you to import it into a &lt;a href=&quot;https://code.google.com/p/gerrit/&quot;&gt;Gerrit&lt;/a&gt;-based
+central repository where you barely have a bit for pushing
+proposed changes? Well… it’s possible!&lt;/p&gt;
+
+&lt;h2 id=&quot;assumptions&quot;&gt;Assumptions&lt;/h2&gt;
+
+&lt;p&gt;Let’s give things names:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;em&gt;git-repo&lt;/em&gt; is the original repo you used so far. It might even be your
+local copy of the code in your computer, this does not affect the test;&lt;/li&gt;
+  &lt;li&gt;&lt;em&gt;gerrit-origin&lt;/em&gt; is the Fort-Knox central repository where you can push
+proposed changes&lt;/li&gt;
+  &lt;li&gt;&lt;em&gt;gerrit-local&lt;/em&gt; is your humble local copy of &lt;em&gt;gerrit-origin&lt;/em&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;There are few assumptions that will make you decide whether it’s
+worth reading on or not:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;you have &lt;em&gt;git-repo&lt;/em&gt; with a branch &lt;code&gt;source&lt;/code&gt; containing the commits you
+want to push into &lt;em&gt;gerrit-origin&lt;/em&gt;;&lt;/li&gt;
+  &lt;li&gt;you are provided with means to access &lt;em&gt;gerrit-origin&lt;/em&gt; (i.e. clone it
+and eventually push to it) and a branch &lt;code&gt;destination&lt;/code&gt; to push your
+commits;&lt;/li&gt;
+  &lt;li&gt;you want to preserve history, so each commit in the branch of &lt;em&gt;git-repo&lt;/em&gt;
+will have to end up in a commit in &lt;em&gt;gerrit-origin&lt;/em&gt;;&lt;/li&gt;
+  &lt;li&gt;you only have a commit bit in &lt;em&gt;gerrit-origin&lt;/em&gt;, i.e. you have the right
+to do a &lt;code&gt;git push origin HEAD:refs/for/master&lt;/code&gt; (see
+&lt;a href=&quot;https://gerrit-documentation.storage.googleapis.com/Documentation/2.11/intro-quick.html#_creating_the_review&quot;&gt;Gerrit documentation&lt;/a&gt;) and hope that someone will
+be so kind as to accept those changes, but nothing fancier.&lt;/li&gt;
+  &lt;li&gt;this will be your first import of some consistent history, from that
+point in time on you will use &lt;em&gt;gerrit-local&lt;/em&gt; and forget about
+&lt;em&gt;git-repo&lt;/em&gt; (i.e. you will definitely jump on the &lt;a href=&quot;https://code.google.com/p/gerrit/&quot;&gt;Gerrit&lt;/a&gt; carriage for
+this development).&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;We’ll see later what you can do if some of the above do not apply… you
+lucky!&lt;/p&gt;
+
+&lt;h2 id=&quot;assumptions-are-right&quot;&gt;Assumptions Are Right!&lt;/h2&gt;
+
+&lt;p&gt;So the assumptions are right… let’s proceed in order. This is what we
+are going to do (you’ll notice that &lt;a href=&quot;https://code.google.com/p/gerrit/&quot;&gt;Gerrit&lt;/a&gt; is somehow very fussy and
+you will have to do a lot of work to make it happy):&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;clone the &lt;em&gt;gerrit-origin&lt;/em&gt; into a local copy &lt;em&gt;gerrit-local&lt;/em&gt;;&lt;/li&gt;
+  &lt;li&gt;get the commits from branch &lt;code&gt;source&lt;/code&gt; in &lt;em&gt;git-repo&lt;/em&gt; into branch
+&lt;code&gt;intermediate&lt;/code&gt; in &lt;em&gt;gerrit-local&lt;/em&gt;;&lt;/li&gt;
+  &lt;li&gt;adjust the imported commits in &lt;em&gt;gerrit-local&lt;/em&gt; to match the rules
+set in &lt;em&gt;gerrit-origin&lt;/em&gt;. E.g. you might want to modify the committer’s
+name or email to match what is set in &lt;em&gt;gerrit-origin&lt;/em&gt; in case you
+saved your commits with an email address and you want to push
+commits with another email;&lt;/li&gt;
+  &lt;li&gt;add a ‘Commit-Id` to each commit message (or &lt;em&gt;gerrit-origin&lt;/em&gt; will
+complain);&lt;/li&gt;
+  &lt;li&gt;rebase &lt;code&gt;intermediate&lt;/code&gt; to &lt;code&gt;destination&lt;/code&gt;, so that &lt;em&gt;gerrit-origin&lt;/em&gt; will
+see them as acceptable;&lt;/li&gt;
+  &lt;li&gt;push to &lt;em&gt;gerrit-origin&lt;/em&gt; and cross fingers.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;cloning-the-repository&quot;&gt;Cloning the repository&lt;/h3&gt;
+
+&lt;p&gt;First thing to do is to create &lt;em&gt;gerrit-local&lt;/em&gt; cloning &lt;em&gt;gerrit-origin&lt;/em&gt;.
+We will assume that &lt;em&gt;gerrit-origin&lt;/em&gt; is at:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;ssh://gerrithost:29418/GerritRepo.git
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;and that you want to clone it into &lt;code&gt;/path/to/GerritRepo&lt;/code&gt; so the clone
+will be:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;cd /path/to
+git clone ssh://gerrithost:29418/GerritRepo.git GerritRepo
+cd GerritRepo
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This will provide you a fresh copy of the repository, but it’s still
+not sufficient for setting up your &lt;a href=&quot;https://code.google.com/p/gerrit/&quot;&gt;Gerrit&lt;/a&gt; clone properly. Every time
+you have to do a push, in fact, you will have to include a &lt;code&gt;Commit-Id&lt;/code&gt;
+inside the commit message, and doing this manually is cumbersome. So
+most probably you will do something like this:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;scp -p -P 29418 john.doe@gerrithost:hooks/commit-msg .git/hooks/
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;This will install a &lt;em&gt;hook&lt;/em&gt; that will be called every time a commit
+message is created, including the &lt;code&gt;Commit-Id&lt;/code&gt; inside the last paragraph
+of the message itself and making Gerrit happy.&lt;/p&gt;
+
+&lt;p&gt;Instructions for cloning and getting the hook script should be also
+available in the &lt;a href=&quot;https://code.google.com/p/gerrit/&quot;&gt;Gerrit&lt;/a&gt; GUI - if you have access to it. See
+&lt;a href=&quot;https://gerrit-documentation.storage.googleapis.com/Documentation/2.11/intro-quick.html#_cloning_the_repository&quot;&gt;cloning&lt;/a&gt; and &lt;a href=&quot;https://gerrit-documentation.storage.googleapis.com/Documentation/2.11/user-changeid.html#creation&quot;&gt;commit-msg creation&lt;/a&gt;
+for details and possible variants that might apply to your case.&lt;/p&gt;
+
+&lt;p&gt;Last thing, we ensure that the &lt;code&gt;destination&lt;/code&gt; branch is available as
+a branch in &lt;em&gt;gerrit-local&lt;/em&gt; too:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;git checkout -b development origin/development
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&quot;getting-your-commits-in-gerrit-local&quot;&gt;Getting your commits in &lt;em&gt;gerrit-local&lt;/em&gt;&lt;/h3&gt;
+
+&lt;p&gt;We will do most of the work in &lt;em&gt;gerrit-local&lt;/em&gt; so we want to acquire the
+relevant commits there. We will assume that &lt;em&gt;git-repo&lt;/em&gt; is at:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;ssh://githost/GitRepo.git
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;so we move into &lt;em&gt;gerrit-local&lt;/em&gt;’s directory and do this:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;git remote add git-repo ssh://githost/GitRepo.git
+git fetch git-repo
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;and the checkout its &lt;code&gt;source&lt;/code&gt; branch into the local &lt;code&gt;intermediate&lt;/code&gt;
+for doing transformations:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;git checkout -b intermediate git-repo/source
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&quot;transforming-the-commits&quot;&gt;Transforming the commits&lt;/h3&gt;
+
+&lt;p&gt;Time for some commits mangling now. Your friend is &lt;code&gt;filter-branch&lt;/code&gt;, so
+you might want to see some additional &lt;a href=&quot;http://www.git-scm.com/docs/git-filter-branch&quot;&gt;documentation&lt;/a&gt;
+if you want to do different changes.&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;The changes in this section will change the SHA1 identifiers for all
+  the commits. This should not be a problem because you are probably
+  doing a transition towards &lt;a href=&quot;https://code.google.com/p/gerrit/&quot;&gt;Gerrit&lt;/a&gt; and will use &lt;em&gt;gerrit-origin&lt;/em&gt;
+  after importing all commits as described in this article.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;One problem that I had was about the commiter’s email address. This might
+differ between &lt;em&gt;git-repo&lt;/em&gt; (e.g. it might be your personal email address)
+and &lt;em&gt;gerrit-origin&lt;/em&gt; (e.g. for your work address, or another address that
+you are using to contribute to the project in &lt;a href=&quot;https://code.google.com/p/gerrit/&quot;&gt;Gerrit&lt;/a&gt;). If this is
+yours too, the following command (found &lt;a href=&quot;https://help.github.com/articles/changing-author-info/&quot;&gt;here&lt;/a&gt;) can be
+useful:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;git filter-branch --env-filter '
+    OLD_EMAIL=&quot;your-old-email@example.com&quot;
+    CORRECT_NAME=&quot;Your Correct Name&quot;
+    CORRECT_EMAIL=&quot;your-correct-email@example.com&quot;
+    if [ &quot;$GIT_COMMITTER_EMAIL&quot; = &quot;$OLD_EMAIL&quot; ]; then
+        export GIT_COMMITTER_NAME=&quot;$CORRECT_NAME&quot;
+        export GIT_COMMITTER_EMAIL=&quot;$CORRECT_EMAIL&quot;
+    fi
+    if [ &quot;$GIT_AUTHOR_EMAIL&quot; = &quot;$OLD_EMAIL&quot; ]; then
+        export GIT_AUTHOR_NAME=&quot;$CORRECT_NAME&quot;
+        export GIT_AUTHOR_EMAIL=&quot;$CORRECT_EMAIL&quot;
+    fi
+' --tag-name-filter cat -- --branches --tags
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Then, you will surely need to ensure that each commit has a &lt;code&gt;Commit-Id&lt;/code&gt;
+inside. The hook you installed will be useful to do this, but it expects
+to take its input from a file and not from the standard input so we will
+use a pivot file &lt;code&gt;/tmp/mymessage&lt;/code&gt; for exchanging data:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;HOOK=&quot;$PWD/.git/hooks/commit-msg&quot;
+git filter-branch --force --msg-filter &quot;
+    cat - &amp;gt;/tmp/mymessage &amp;amp;&amp;amp;
+    '$HOOK' /tmp/mymessage &amp;amp;&amp;amp;
+    cat /tmp/mymessage
+&quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&quot;rebasing-and-pushing&quot;&gt;Rebasing and pushing&lt;/h3&gt;
+
+&lt;p&gt;We are now ready to do the rebase. This is needed because there is
+currently no link between your new commits and whatever was in
+&lt;em&gt;gerrit-origin&lt;/em&gt;, so you have to make sure this link is there.&lt;/p&gt;
+
+&lt;p&gt;Rebase will be very simple - although the results will vary depending
+on the contents of branch &lt;code&gt;destination&lt;/code&gt; in &lt;em&gt;gerrit-origin&lt;/em&gt;:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;git checkout intermediate
+git rebase destination
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;At this point it should be easy:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;git push origin HEAD:refs/for/destination
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;If you get errors, you might want to push only part of the commits and
+then repeat - whatever is fine for you!&lt;/p&gt;
+
+&lt;h2 id=&quot;what-if&quot;&gt;What if…&lt;/h2&gt;
+
+&lt;p&gt;You might be in the situation in which some of the assumptions do not
+really apply… the following hints might help.&lt;/p&gt;
+
+&lt;h3 id=&quot;assumption-1-or-2-do-not-apply&quot;&gt;Assumption 1 or 2 do not apply?&lt;/h3&gt;
+
+&lt;p&gt;Well, this article is probably not for you at all! Did you read it up
+to here? Wow, you’re really curious!&lt;/p&gt;
+
+&lt;h3 id=&quot;assumption-3-does-not-apply&quot;&gt;Assumption 3 does not apply?&lt;/h3&gt;
+
+&lt;p&gt;If you’re not interested into preserving all intermediate commits, you
+can just squash the whole thing into one single commit and then
+push it. At this point you will not need to do any transformation,
+because the commit hook will take care of setting the &lt;code&gt;Change-Id&lt;/code&gt; and
+you will surely have updated your email at this point - right?!?&lt;/p&gt;
+
+&lt;h3 id=&quot;assumption-4-does-not-apply&quot;&gt;Assumption 4 does not apply?&lt;/h3&gt;
+
+&lt;p&gt;If you have wider powers on the Gerrit side, and this is an initial
+import, then you probably can just work behind the scenes and set a
+copy of &lt;em&gt;git-repo&lt;/em&gt; to what’s behind &lt;em&gt;gerrit-origin&lt;/em&gt;.&lt;/p&gt;
+
+&lt;p&gt;Another alternative is to temporarily disable &lt;code&gt;Change-Id&lt;/code&gt;s in the
+Gerrit repo to simplify the import.&lt;/p&gt;
+
+&lt;h3 id=&quot;assumption-5-does-not-apply&quot;&gt;Assumption 5 does not apply?&lt;/h3&gt;
+
+&lt;p&gt;Well, your situation seems to be quite peculiar… good luck!&lt;/p&gt;
+
+
+    &lt;p&gt;&lt;a href=&quot;/gerrit-import-the-hard-way/&quot;&gt;Gerrit import - the hard way&lt;/a&gt; was originally published by Flavio Poletti at &lt;a href=&quot;&quot;&gt;PolettiX!&lt;/a&gt; on March 22, 2015.&lt;/p&gt;
+  </content>
+</entry>
 
 
   
