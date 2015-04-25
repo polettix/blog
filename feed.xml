@@ -4,13 +4,218 @@
 <generator uri="https://github.com/jekyll/jekyll">Jekyll</generator>
 <link rel="self" type="application/atom+xml" href="/feed.xml" />
 <link rel="alternate" type="text/html" href="" />
-<updated>2015-04-26T01:35:37+02:00</updated>
+<updated>2015-04-26T01:37:01+02:00</updated>
 <id>/</id>
 <author>
   <name>Flavio Poletti</name>
   <uri>/</uri>
   <email>flavio@polettix.it</email>
 </author>
+
+
+  
+
+<entry>
+  <title type="html"><![CDATA[Wrapper...l]]></title>
+  <link rel="alternate" type="text/html" href="/wrapperl/" />
+  <id>/wrapperl</id>
+  <published>2015-04-26T00:00:00+02:00</published>
+  <updated>2015-04-26T00:00:00+02:00</updated>
+  <author>
+    <name>Flavio Poletti</name>
+    <uri></uri>
+    <email>flavio@polettix.it</email>
+  </author>
+  <content type="html">
+    &lt;p&gt;&lt;code&gt;wrapperl&lt;/code&gt; is a (Perl) program lets you wrap another Perl program
+with some local-specific configurations.&lt;/p&gt;
+
+&lt;p&gt;Why would you do this, e.g. as opposed to modifying the
+&lt;em&gt;hash-bang&lt;/em&gt; line or setting &lt;code&gt;PERL5LIB&lt;/code&gt;, or calling the perl
+executable directly? Well, lazyness of course, but also the fact
+that in different environments the same program might need different
+configurations, and changing those configurations possibly in many
+little Perl programs quickly becomes an error-prone hassle.&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;wrapperl&lt;/code&gt; provides you with a consistent, minimal and easy to setup
+way to concentrate local-specific configurations in 
+&lt;code&gt;wrapperl.env&lt;/code&gt; file, and be sure
+that you will call your Perl program(s) with the right setup every time.&lt;/p&gt;
+
+&lt;p&gt;This article contains only a brief extract from the documentation to
+get your feet wet; you can find the whole thing on
+&lt;a href=&quot;https://github.com/polettix/wrapperl&quot;&gt;the GitHub repository&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h2 id=&quot;installing&quot;&gt;Installing&lt;/h2&gt;
+
+&lt;p&gt;Installion is easy: download &lt;code&gt;wrapperl&lt;/code&gt; from &lt;a href=&quot;https://raw.githubusercontent.com/polettix/wrapperl/master/wrapperl&quot;&gt;here&lt;/a&gt;
+and put it somewhere in the environment(s) where you need it. It is not
+necessary to put it in a directory in the &lt;code&gt;PATH&lt;/code&gt;, although it is
+suggested in order to access all functionalities.&lt;/p&gt;
+
+&lt;h2 id=&quot;a-complete-example&quot;&gt;A Complete Example&lt;/h2&gt;
+
+&lt;p&gt;Sometimes an example is worth a thousands manuals.&lt;/p&gt;
+
+&lt;h3 id=&quot;a-few-assumptions&quot;&gt;A few assumptions&lt;/h3&gt;
+
+&lt;p&gt;Let’s make a few assumptions:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;you will write your program &lt;code&gt;prg.pl&lt;/code&gt;. If
+you don’t even want to write one, you can copy and paste this:&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;c&quot;&gt;#!/usr/bin/env perl&lt;/span&gt;
+print &lt;span class=&quot;s2&quot;&gt;&amp;quot;using perl &amp;#39;$^X&amp;#39;, \@INC contains:\n&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+print &lt;span class=&quot;s2&quot;&gt;&amp;quot;- &amp;#39;$_&amp;#39;\n&amp;quot;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; @INC&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;you do your coding in a development environment where:
+    &lt;ul&gt;
+      &lt;li&gt;you develop &lt;code&gt;prg.pl&lt;/code&gt; inside directory &lt;code&gt;/home/me/program&lt;/code&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;code&gt;perl&lt;/code&gt; is located at &lt;code&gt;/home/me/perl/bin/perl&lt;/code&gt;&lt;/li&gt;
+      &lt;li&gt;the libraries you need are stored in non-standard positions
+  &lt;code&gt;/path/to/some/lib&lt;/code&gt; and &lt;code&gt;/path/to/another/lib&lt;/code&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;you deploy your program in a production environment with a different
+setup, namely:
+    &lt;ul&gt;
+      &lt;li&gt;your program &lt;code&gt;prg.pl&lt;/code&gt; is deployed in directory &lt;code&gt;/app/program&lt;/code&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;code&gt;perl&lt;/code&gt; is located at &lt;code&gt;/approved/perl/bin/perl&lt;/code&gt;&lt;/li&gt;
+      &lt;li&gt;the libraries you need are all stored in &lt;code&gt;/approved/lib&lt;/code&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;This is what how you start in the development environment:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;me@devhost /home/me/program&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;ls -l
+-rwxr-xr-x &lt;span class=&quot;m&quot;&gt;1&lt;/span&gt; me me &lt;span class=&quot;m&quot;&gt;74&lt;/span&gt; Apr &lt;span class=&quot;m&quot;&gt;23&lt;/span&gt; 22:28 prg.pl&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;This is what how you start in the production environment:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;me@production /app/program&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;ls -l
+-rwxr-xr-x &lt;span class=&quot;m&quot;&gt;1&lt;/span&gt; me me &lt;span class=&quot;m&quot;&gt;74&lt;/span&gt; Apr &lt;span class=&quot;m&quot;&gt;25&lt;/span&gt; 20:51 prg.pl&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;step-1-symlink-to-wrapperl&quot;&gt;Step 1: symlink to &lt;code&gt;wrapperl&lt;/code&gt;&lt;/h3&gt;
+
+&lt;p&gt;In both environments, you create a symbolic link named &lt;code&gt;prg&lt;/code&gt;
+pointing towards &lt;code&gt;wrapperl&lt;/code&gt;. The link is located inside the same
+directory as &lt;code&gt;prg.pl&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;This is what you end up with in the development environment:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;me@devhost /home/me/program&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;ls -l
+lrwxrwxrwx &lt;span class=&quot;m&quot;&gt;1&lt;/span&gt; me me  &lt;span class=&quot;m&quot;&gt;8&lt;/span&gt; Apr &lt;span class=&quot;m&quot;&gt;23&lt;/span&gt; 22:51 prg -&amp;gt; /home/me/bin/wrapperl
+-rwxr-xr-x &lt;span class=&quot;m&quot;&gt;1&lt;/span&gt; me me &lt;span class=&quot;m&quot;&gt;74&lt;/span&gt; Apr &lt;span class=&quot;m&quot;&gt;23&lt;/span&gt; 22:28 prg.pl&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;This is what you have in the production environment:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;me@production /app/program&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;ls -l
+lrwxrwxrwx &lt;span class=&quot;m&quot;&gt;1&lt;/span&gt; me me  &lt;span class=&quot;m&quot;&gt;8&lt;/span&gt; Apr &lt;span class=&quot;m&quot;&gt;25&lt;/span&gt; 20:51 prg -&amp;gt; /usr/local/bin/wrapperl
+-rwxr-xr-x &lt;span class=&quot;m&quot;&gt;1&lt;/span&gt; me me &lt;span class=&quot;m&quot;&gt;74&lt;/span&gt; Apr &lt;span class=&quot;m&quot;&gt;25&lt;/span&gt; 20:51 prg.pl&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;step-2-create-wrapperlenv-files&quot;&gt;Step 2: create &lt;code&gt;wrapperl.env&lt;/code&gt; files&lt;/h3&gt;
+
+&lt;p&gt;In each environment (development and production in our example)
+You create the &lt;code&gt;wrapperl.env&lt;/code&gt; file, which will hold configurations
+that are specific for the environment it is located into.
+We will put it in the same directory as &lt;code&gt;prg&lt;/code&gt; and &lt;code&gt;prg.pl&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;wrapperl.env&lt;/code&gt; is a standard Perl file, where you can:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;set the environment variable &lt;code&gt;PERL5LIB&lt;/code&gt; to point towards the
+library paths you need for loading your modules, and&lt;/li&gt;
+  &lt;li&gt;set a specific perl binary by means of the &lt;code&gt;$PERL&lt;/code&gt; variable&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;For our example, this is what you end up with in the development
+environment:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;me@devhost /home/me/program&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;ls -l
+lrwxrwxrwx &lt;span class=&quot;m&quot;&gt;1&lt;/span&gt; me me  &lt;span class=&quot;m&quot;&gt;8&lt;/span&gt; Apr &lt;span class=&quot;m&quot;&gt;23&lt;/span&gt; 22:51 prg -&amp;gt; /home/me/bin/wrapperl
+-rwxr-xr-x &lt;span class=&quot;m&quot;&gt;1&lt;/span&gt; me me &lt;span class=&quot;m&quot;&gt;74&lt;/span&gt; Apr &lt;span class=&quot;m&quot;&gt;23&lt;/span&gt; 22:28 prg.pl
+-rwxr-xr-x &lt;span class=&quot;m&quot;&gt;1&lt;/span&gt; me me &lt;span class=&quot;m&quot;&gt;90&lt;/span&gt; Apr &lt;span class=&quot;m&quot;&gt;22&lt;/span&gt; 12:35 wrapperl.env
+
+me@devhost /home/me/program&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;cat wrapperl.env
+&lt;span class=&quot;nv&quot;&gt;$ENV&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;PERL5LIB&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;/path/to/some/lib:/path/to/another/lib&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$PERL&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;/home/me/perl/bin/perl&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;This is what you have in the production environment:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;me@production /app/program&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;ls -l
+lrwxrwxrwx &lt;span class=&quot;m&quot;&gt;1&lt;/span&gt; me me  &lt;span class=&quot;m&quot;&gt;8&lt;/span&gt; Apr &lt;span class=&quot;m&quot;&gt;25&lt;/span&gt; 20:51 prg -&amp;gt; /usr/local/bin/wrapperl
+-rwxr-xr-x &lt;span class=&quot;m&quot;&gt;1&lt;/span&gt; me me &lt;span class=&quot;m&quot;&gt;74&lt;/span&gt; Apr &lt;span class=&quot;m&quot;&gt;25&lt;/span&gt; 20:51 prg.pl
+-rwxr-xr-x &lt;span class=&quot;m&quot;&gt;1&lt;/span&gt; me me &lt;span class=&quot;m&quot;&gt;66&lt;/span&gt; Apr &lt;span class=&quot;m&quot;&gt;25&lt;/span&gt; 20:51 wrapperl.env
+
+me@production /app/program&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;cat wrapperl.env
+&lt;span class=&quot;nv&quot;&gt;$ENV&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;PERL5LIB&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;/approved/lib&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$PERL&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;/approved/perl/bin/perl&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;So yes, they two setups are mostly the same, except for the contents
+of the &lt;code&gt;wrapperl.env&lt;/code&gt; files, each containing configurations that
+are environment-specific.&lt;/p&gt;
+
+&lt;h3 id=&quot;step-3-use-the-symlinks&quot;&gt;Step 3: use the symlinks&lt;/h3&gt;
+
+&lt;p&gt;Now, you are ready to run your program in either environment, just
+remember to execute the symbolic link to &lt;code&gt;wrapperl&lt;/code&gt; instead of your
+program.&lt;/p&gt;
+
+&lt;p&gt;In the development environment:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;me@devhost /home/me/program&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;./prg
+using perl &lt;span class=&quot;s1&quot;&gt;&amp;#39;/home/me/perl/bin/perl&amp;#39;&lt;/span&gt;, @INC contains:
+- &lt;span class=&quot;s1&quot;&gt;&amp;#39;/path/to/another/lib/i686-linux&amp;#39;&lt;/span&gt;
+- &lt;span class=&quot;s1&quot;&gt;&amp;#39;/path/to/another/lib&amp;#39;&lt;/span&gt;
+- &lt;span class=&quot;s1&quot;&gt;&amp;#39;/path/to/some/lib/i686-linux&amp;#39;&lt;/span&gt;
+- &lt;span class=&quot;s1&quot;&gt;&amp;#39;/path/to/some/lib&amp;#39;&lt;/span&gt;
+- &lt;span class=&quot;s1&quot;&gt;&amp;#39;/home/me/perl/lib/site_perl/5.18.1/i686-linux&amp;#39;&lt;/span&gt;
+- &lt;span class=&quot;s1&quot;&gt;&amp;#39;/home/me/perl/lib/site_perl/5.18.1&amp;#39;&lt;/span&gt;
+- &lt;span class=&quot;s1&quot;&gt;&amp;#39;/home/me/perl/lib/5.18.1/i686-linux&amp;#39;&lt;/span&gt;
+- &lt;span class=&quot;s1&quot;&gt;&amp;#39;/home/me/perl/lib/5.18.1&amp;#39;&lt;/span&gt;
+- &lt;span class=&quot;s1&quot;&gt;&amp;#39;.&amp;#39;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;In the production environment:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;me@production /app/program&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;./prg
+using perl &lt;span class=&quot;s1&quot;&gt;&amp;#39;/approved/perl/bin/perl&amp;#39;&lt;/span&gt;, @INC contains:
+- &lt;span class=&quot;s1&quot;&gt;&amp;#39;/approved/lib/i686-linux&amp;#39;&lt;/span&gt;
+- &lt;span class=&quot;s1&quot;&gt;&amp;#39;/approved/lib&amp;#39;&lt;/span&gt;
+- &lt;span class=&quot;s1&quot;&gt;&amp;#39;/approved/perl/lib/site_perl/5.18.1/i686-linux&amp;#39;&lt;/span&gt;
+- &lt;span class=&quot;s1&quot;&gt;&amp;#39;/approved/perl/lib/site_perl/5.18.1&amp;#39;&lt;/span&gt;
+- &lt;span class=&quot;s1&quot;&gt;&amp;#39;/approved/perl/lib/5.18.1/i686-linux&amp;#39;&lt;/span&gt;
+- &lt;span class=&quot;s1&quot;&gt;&amp;#39;/approved/perl/lib/5.18.1&amp;#39;&lt;/span&gt;
+- &lt;span class=&quot;s1&quot;&gt;&amp;#39;.&amp;#39;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;where-do-we-go-from-here&quot;&gt;Where Do We Go From Here?&lt;/h2&gt;
+
+&lt;p&gt;I can’t say that we have only scratched the surface, because the
+example above covers the main use case for &lt;code&gt;wrapperl&lt;/code&gt;. On the other
+hand, it is true that it can offer more, namely:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;an easy way to call &lt;code&gt;perl&lt;/code&gt; based on the configurations found
+in &lt;code&gt;wrapperl.env&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;an easy way to call &lt;code&gt;perldoc&lt;/code&gt; in a similar way, which of course
+allows you to access the documentation of the modules installed
+in the local libraries&lt;/li&gt;
+  &lt;li&gt;a way to figure out which &lt;code&gt;wrapperl.env&lt;/code&gt; file is in use for a
+specific symlink&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;and probably something more. You can read the full documentation
+&lt;a href=&quot;http://wrapperl.polettix.it&quot;&gt;here&lt;/a&gt; and peruse/fork the code repository
+at &lt;a href=&quot;https://github.com/polettix/wrapperl&quot;&gt;wrapperl’s GitHub repository&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;For now… That’s all folks!&lt;/p&gt;
+
+    &lt;p&gt;&lt;a href=&quot;/wrapperl/&quot;&gt;Wrapper...l&lt;/a&gt; was originally published by Flavio Poletti at &lt;a href=&quot;&quot;&gt;PolettiX!&lt;/a&gt; on April 26, 2015.&lt;/p&gt;
+  </content>
+</entry>
 
 
   
