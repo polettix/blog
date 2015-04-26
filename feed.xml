@@ -4,7 +4,7 @@
 <generator uri="https://github.com/jekyll/jekyll">Jekyll</generator>
 <link rel="self" type="application/atom+xml" href="/feed.xml" />
 <link rel="alternate" type="text/html" href="" />
-<updated>2015-04-26T06:29:03+02:00</updated>
+<updated>2015-04-26T15:19:22+02:00</updated>
 <id>/</id>
 <author>
   <name>Flavio Poletti</name>
@@ -38,7 +38,7 @@ configurations, and changing those configurations possibly in many
 little Perl programs quickly becomes an error-prone hassle.&lt;/p&gt;
 
 &lt;p&gt;&lt;code&gt;wrapperl&lt;/code&gt; provides you with a consistent, minimal and easy to setup
-way to concentrate local-specific configurations in 
+way to concentrate local-specific configurations in
 &lt;code&gt;wrapperl.env&lt;/code&gt; file, and be sure
 that you will call your Perl program(s) with the right setup every time.&lt;/p&gt;
 
@@ -191,6 +191,19 @@ using perl &lt;span class=&quot;s1&quot;&gt;&amp;#39;/approved/perl/bin/perl&amp
 - &lt;span class=&quot;s1&quot;&gt;&amp;#39;/approved/perl/lib/5.18.1&amp;#39;&lt;/span&gt;
 - &lt;span class=&quot;s1&quot;&gt;&amp;#39;.&amp;#39;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
+&lt;h2 id=&quot;can-you-path&quot;&gt;Can you &lt;code&gt;PATH&lt;/code&gt;?&lt;/h2&gt;
+
+&lt;p&gt;If you can put &lt;code&gt;wrapperl&lt;/code&gt; somewhere in the path (or in the same
+location in every environment), you can even spare the symbolic
+link. Just point the &lt;em&gt;hash-bang&lt;/em&gt; to &lt;code&gt;wrapperl&lt;/code&gt; and you’re done:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;c&quot;&gt;#!/usr/bin/env wrapperl&lt;/span&gt;
+print &lt;span class=&quot;s2&quot;&gt;&amp;quot;using perl &amp;#39;$^X&amp;#39;, \@INC contains:\n&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+print &lt;span class=&quot;s2&quot;&gt;&amp;quot;- &amp;#39;$_&amp;#39;\n&amp;quot;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; @INC&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;As an added bonus of this approach, you can even name the program
+whatever you like!&lt;/p&gt;
+
 &lt;h2 id=&quot;where-do-we-go-from-here&quot;&gt;Where Do We Go From Here?&lt;/h2&gt;
 
 &lt;p&gt;I can’t say that we have only scratched the surface, because the
@@ -212,6 +225,10 @@ specific symlink&lt;/li&gt;
 at &lt;a href=&quot;https://github.com/polettix/wrapperl&quot;&gt;wrapperl’s GitHub repository&lt;/a&gt;.&lt;/p&gt;
 
 &lt;p&gt;For now… That’s all folks!&lt;/p&gt;
+
+&lt;h2 id=&quot;updates&quot;&gt;Updates&lt;/h2&gt;
+
+&lt;p&gt;Added section &lt;em&gt;Can you PATH?&lt;/em&gt; on 2015-04-26.&lt;/p&gt;
 
     &lt;p&gt;&lt;a href=&quot;/wrapperl/&quot;&gt;Wrapper...l&lt;/a&gt; was originally published by Flavio Poletti at &lt;a href=&quot;&quot;&gt;PolettiX!&lt;/a&gt; on April 26, 2015.&lt;/p&gt;
   </content>

@@ -175,7 +175,7 @@ configurations, and changing those configurations possibly in many
 little Perl programs quickly becomes an error-prone hassle.</p>
 
 <p><code>wrapperl</code> provides you with a consistent, minimal and easy to setup
-way to concentrate local-specific configurations in 
+way to concentrate local-specific configurations in
 <code>wrapperl.env</code> file, and be sure
 that you will call your Perl program(s) with the right setup every time.</p>
 
@@ -328,6 +328,19 @@ using perl <span class="s1">&#39;/approved/perl/bin/perl&#39;</span>, @INC conta
 - <span class="s1">&#39;/approved/perl/lib/5.18.1&#39;</span>
 - <span class="s1">&#39;.&#39;</span></code></pre></div>
 
+<h2 id="can-you-path">Can you <code>PATH</code>?</h2>
+
+<p>If you can put <code>wrapperl</code> somewhere in the path (or in the same
+location in every environment), you can even spare the symbolic
+link. Just point the <em>hash-bang</em> to <code>wrapperl</code> and you’re done:</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="c">#!/usr/bin/env wrapperl</span>
+print <span class="s2">&quot;using perl &#39;$^X&#39;, \@INC contains:\n&quot;</span><span class="p">;</span>
+print <span class="s2">&quot;- &#39;$_&#39;\n&quot;</span> <span class="k">for</span> @INC<span class="p">;</span></code></pre></div>
+
+<p>As an added bonus of this approach, you can even name the program
+whatever you like!</p>
+
 <h2 id="where-do-we-go-from-here">Where Do We Go From Here?</h2>
 
 <p>I can’t say that we have only scratched the surface, because the
@@ -349,6 +362,10 @@ specific symlink</li>
 at <a href="https://github.com/polettix/wrapperl">wrapperl’s GitHub repository</a>.</p>
 
 <p>For now… That’s all folks!</p>
+
+<h2 id="updates">Updates</h2>
+
+<p>Added section <em>Can you PATH?</em> on 2015-04-26.</p>
 
       <hr />
       <footer role="contentinfo">
