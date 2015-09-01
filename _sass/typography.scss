@@ -126,6 +126,14 @@ blockquote {
 	}
 }
 
+a.footnote:before {
+   content: "[";
+}
+
+a.footnote:after {
+   content: "]";
+}
+
 /* 
    Paragraphs
    ========================================================================== */
