@@ -1,0 +1,310 @@
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if (IE 7)&!(IEMobile)]><html class="no-js lt-ie9 lt-ie8" lang="en"><![endif]-->
+<!--[if (IE 8)&!(IEMobile)]><html class="no-js lt-ie9" lang="en"><![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"><!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<title>Changes, nags and git hooks &#8211; PolettiX!</title>
+<meta name="description" content="I use Dist::Zilla with a few plugins, including NextRelease and
+Git::Check. I was always nagged by the fact that committing actually
+left the Changes file uncommitted&#8230; until now.
+
+">
+<meta name="keywords" content="">
+
+
+
+<!-- Twitter Cards -->
+<meta name="twitter:title" content="Changes, nags and git hooks">
+<meta name="twitter:description" content="I use Dist::Zilla with a few plugins, including NextRelease and
+Git::Check. I was always nagged by the fact that committing actually
+left the Changes file uncommitted&#8230; until now.
+
+">
+<meta name="twitter:site" content="@polettix">
+<meta name="twitter:creator" content="@polettix">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="/images/cape-tribulation-canguro.jpg">
+
+<!-- Open Graph -->
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Changes, nags and git hooks">
+<meta property="og:description" content="I use Dist::Zilla with a few plugins, including NextRelease and
+Git::Check. I was always nagged by the fact that committing actually
+left the Changes file uncommitted&#8230; until now.
+
+">
+<meta property="og:url" content="/changes-nags-and-git-hooks/">
+<meta property="og:site_name" content="PolettiX!">
+
+
+
+
+
+<link rel="canonical" href="/changes-nags-and-git-hooks/">
+<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="PolettiX! Feed">
+
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+
+<meta http-equiv="cleartype" content="on">
+
+<!-- HTML5 Shiv and Media Query Support -->
+<!--[if lt IE 9]>
+	<script src="/assets/js/vendor/html5shiv.min.js"></script>
+	<script src="/assets/js/vendor/respond.min.js"></script>
+<![endif]-->
+
+<!-- Modernizr -->
+<script src="/assets/js/vendor/modernizr-2.7.1.custom.min.js"></script>
+
+<link href='//fonts.googleapis.com/css?family=PT+Sans+Narrow:400,700%7CPT+Serif:400,700,400italic' rel='stylesheet' type='text/css'>
+
+<!-- Icons -->
+<!-- 16x16 -->
+<link rel="shortcut icon" href="/favicon.ico?whatever">
+<!-- 32x32 -->
+<link rel="shortcut icon" href="/favicon.png?whatever">
+<!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
+<link rel="apple-touch-icon-precomposed" href="/images/apple-touch-icon-precomposed.png">
+<!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="/images/apple-touch-icon-72x72-precomposed.png">
+<!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="/images/apple-touch-icon-114x114-precomposed.png">
+<!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/images/apple-touch-icon-144x144-precomposed.png">
+
+</head>
+
+<body class="post">
+
+<!--[if lt IE 9]><div class="browser-upgrade alert alert-info">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</div><![endif]-->
+
+<div class="navigation-wrapper">
+	<div class="site-name">
+		<a href="/">PolettiX!</a>
+	</div><!-- /.site-name -->
+	<div class="top-navigation">
+		<nav role="navigation" id="site-nav" class="nav">
+		    <ul>
+		        
+				    
+				        
+				    
+				    <li><a href="/about/" >About</a></li>
+				
+				    
+				        
+				    
+				    <li><a href="/posts/" >Posts</a></li>
+				
+		    </ul>
+		</nav>
+	</div><!-- /.top-navigation -->
+</div><!-- /.navigation-wrapper -->
+
+
+  <div class="image-wrap">
+  <img src=
+    
+      "/images/cape-tribulation-canguro.jpg"
+    
+  alt="Changes, nags and git hooks feature image">
+  
+    <span class="image-credit"><a href="https://en.wikipedia.org/wiki/Kangaroo">Canguro a Cape Tribulation, Australia</a></span>
+  
+  </div><!-- /.image-wrap -->
+
+
+<div id="main" role="main">
+  <div class="article-author-side">
+    
+
+
+<div itemscope itemtype="http://schema.org/Person">
+
+
+	<img src="/images/flavio-self-color.png" class="bio-photo" alt="Flavio Poletti bio photo">
+
+
+  <h3 itemprop="name">Flavio Poletti</h3>
+  <p>Irreducible Perler.</p>
+  <a href="mailto:flavio@polettix.it" class="author-social" target="_blank"><i class="fa fa-fw fa-envelope-square"></i>Email</a>
+  <a href="http://comics.polettix.it/" class="author-social" target="_blank"><i class="fa fa-fw fa-pencil"></i> Comics</a>
+  <a href="http://twitter.com/polettix" class="author-social" target="_blank"><i class="fa fa-fw fa-twitter-square"></i> Twitter</a>
+  
+  
+  <a href="http://linkedin.com/in/flaviopoletti" class="author-social" target="_blank"><i class="fa fa-fw fa-linkedin-square"></i> LinkedIn</a>
+  
+  
+  <a href="https://metacpan.org/author/polettix" class="author-social" target="_blank"><i class="fa fa-fw fa-th-large"></i> MetaCPAN</a>
+  <a href="http://github.com/polettix" class="author-social" target="_blank"><i class="fa fa-fw fa-github"></i> Github</a>
+  <a href="http://stackoverflow.com/users/3865403/polettix" class="author-social" target="_blank"><i class="fa fa-fw fa-stack-overflow"></i> Stackoverflow</a>
+  
+  
+  <a href="http://www.pinterest.com/polettix" class="author-social" target="_blank"><i class="fa fa-fw fa-pinterest"></i> Pinterest</a>
+  
+  
+  
+  
+  
+  
+</div>
+
+  </div>
+  <article class="post">
+    <div class="headline-wrap">
+      
+        <h1><a href="/changes-nags-and-git-hooks/" rel="bookmark" title="Changes, nags and git hooks">Changes, nags and git hooks</a></h1>
+      
+    </div><!--/ .headline-wrap -->
+    <div class="article-wrap">
+      <p>I use <a href="https://metacpan.org/pod/Dist::Zilla">Dist::Zilla</a> with a few plugins, including <code>NextRelease</code> and
+<code>Git::Check</code>. I was always nagged by the fact that committing actually
+left the <code>Changes</code> file uncommitted… until now.</p>
+
+<p>First of all, I discovered that there was no reason why I should have to
+be nagged at all. The <a href="http://dzil.org/tutorial/vcs-git.html">documentation</a> about
+<a href="https://metacpan.org/pod/Dist::Zilla">Dist::Zilla</a> is pretty clear that both plugins run at the same stage, so
+it’s only a matter of proper ordering<sup id="fnref:impatient"><a href="#fn:impatient" class="footnote">1</a></sup>. Guess what? My <code>dzil</code>
+file always has the <em>wrong</em> order!</p>
+
+<p>The funny thing is that today I had some kind of epiphany and I
+<strong>understood</strong> why this thing was nagging me. It <strong>was supposed</strong> to do
+so! It <strong>was designed</strong> to do so! In this way, I would be nagged to
+actually populate the Changes file with something meaningful before doing
+a release, right?</p>
+
+<p>Now, of course this was not the intended behaviour (again, see
+<a href="http://dzil.org/tutorial/vcs-git.html">here</a>) and there are better ways to ensure that <code>Changes</code> is
+populated in some meaningful way before doing a release
+(<a href="https://metacpan.org/pod/Dist::Zilla::Plugin::CheckChangesHasContent">Dist::Zilla::Plugin::CheckChangesHasContent</a> being my new
+plugin of election for this task), but in the excitement for my epiphany I
+also figured that <em>presto!</em>, I need a <a href="http://git-scm.com/book/en/v2/Customizing-Git-Git-Hooks">git</a> <a href="http://githooks.com/">hook</a>
+to ensure that I don’t commit <code>Changes</code> without intention (yes, I tend to
+<code>git commit -a</code> a bit too much).</p>
+
+<p>This is the <code>pre-commit</code> hook that I came out with:</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="c">#!/bin/bash</span>
+
+<span class="nv">target</span><span class="o">=</span><span class="s1">&#39;Changes&#39;</span>
+
+<span class="nv">seen_target</span><span class="o">=</span>0
+<span class="nv">skip</span><span class="o">=</span>1
+<span class="k">while</span> <span class="nb">read </span>omode nmode ohash nhash changetype filename<span class="p">;</span> <span class="k">do</span>
+<span class="o">[</span> <span class="s2">&quot;$filename&quot;</span> <span class="o">==</span> <span class="s2">&quot;$target&quot;</span> <span class="o">]</span> <span class="o">&amp;&amp;</span> <span class="nv">seen_target</span><span class="o">=</span>1
+   <span class="k">if</span> <span class="o">[</span> <span class="nv">$skip</span> -ne <span class="m">0</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+      <span class="nv">skip</span><span class="o">=</span><span class="m">0</span> <span class="c"># skip the first item only</span>
+   <span class="k">else</span>
+      <span class="o">[</span> <span class="nv">$seen_target</span> -eq <span class="m">0</span> <span class="o">]</span> <span class="o">&amp;&amp;</span> <span class="k">continue</span>
+      <span class="nb">echo</span> <span class="s2">&quot;ERROR - &#39;$target&#39; MUST be committed alone&quot;</span>
+      <span class="nb">exit </span>1
+   <span class="k">fi</span>
+<span class="k">done</span> &lt; &lt;<span class="o">(</span>git diff-index --cached HEAD<span class="o">)</span>
+
+<span class="nb">exit </span>0</code></pre></div>
+
+<p>Now, after the real <em>enlightenment</em> came (i.e. finding
+<a href="https://metacpan.org/pod/Dist::Zilla::Plugin::CheckChangesHasContent">DZP::CheckChangesHasContent</a>) this is obviously not needed any
+more… but I’ll keep it around should the need arise.</p>
+
+<p>While using <a href="https://metacpan.org/pod/Dist::Zilla::Plugin::CheckChangesHasContent">DZP::CheckChangesHasContent</a>, I figured that the
+first addition of some <em>change</em> to the file would spoil all my efforts to
+remember about <code>Changes</code> before the release. My hands were much faster
+than my brains, again: I was about to propose a patch for the plugin when
+I simply read the documentation:</p>
+
+<blockquote>
+  <p>It looks for an unindented line starting with the version to be
+released. It then looks for any text from that line until the next
+unindented line (or the end of the file), ignoring whitespace. […] If
+you had nothing but whitespace between [them], the release would be
+halted.</p>
+</blockquote>
+
+<p>So, it is sufficient to add a <strong>non-indented</strong> line immediately after the
+<code>{{NEXT}}</code> string to make sure the plugin will complain, e.g.:</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="o">{{</span>NEXT<span class="o">}}</span>
+CHECK YOUR CHANGES AND REMOVE THIS LINE!
+   - I did this
+   - I did that
+
+1.0  1972-11-09 07:45:00 Europe/Rome
+   - Born</code></pre></div>
+
+<p>Now of course I would like that line to be added automatically… this
+time, before forking the relevant plugin, I’ll try to think if there’s
+some already available way to do that!</p>
+<div class="footnotes">
+  <ol>
+    <li id="fn:impatient">
+      <p>For those of you that are too lazy to click on the link and
+read through the page, you are supposed to put <code>NextRelease</code> before
+<code>Git::Check</code>. <a href="#fnref:impatient" class="reversefootnote">&#x2934;</a></p>
+    </li>
+  </ol>
+</div>
+
+      <hr />
+      <footer role="contentinfo">
+        <div class="social-share">
+  <h4>Share on</h4>
+  <ul>
+    <li>
+      <a href="https://twitter.com/intent/tweet?text=/changes-nags-and-git-hooks/" class="twitter" title="Share on Twitter"><i class="fa fa-twitter"></i><span> Twitter</span></a>
+    </li>
+    <li>
+      <a href="https://www.facebook.com/sharer/sharer.php?u=/changes-nags-and-git-hooks/" class="facebook" title="Share on Facebook"><i class="fa fa-facebook"></i><span> Facebook</span></a>
+    </li>
+    <li>
+      <a href="https://plus.google.com/share?url=/changes-nags-and-git-hooks/" class="google-plus" title="Share on Google Plus"><i class="fa fa-google-plus"></i><span> Google+</span></a>
+    </li>
+  </ul>
+</div><!-- /.social-share -->
+        <p class="byline"><strong>Changes, nags and git hooks</strong> was published on <time datetime="2015-09-01T00:00:00+02:00">September 01, 2015</time>.</p>
+      </footer>
+    </div><!-- /.article-wrap -->
+  
+  </article>
+</div><!-- /#main -->
+
+<div class="footer-wrap">
+  <div class="related-articles">
+  <h4>You might also enjoy <small class="pull-right">(<a href="/posts/">View all posts</a>)</small></h4>
+    <ul>
+    
+      <li><a href="/wrapperl/" title="Wrapper...l">Wrapper...l</a></li>
+    
+      <li><a href="/gerrit-import-the-hard-way/" title="Gerrit import - the hard way">Gerrit import - the hard way</a></li>
+    
+      <li><a href="/parachuting-whatever/" title="Parachuting Whatever">Parachuting Whatever</a></li>
+    
+    </ul>
+    <hr />
+  </div><!-- /.related-articles -->
+  <footer>
+    
+
+<span>&copy; 2015 Flavio Poletti. Powered by <a href="http://jekyllrb.com" rel="nofollow">Jekyll</a> using the <a href="http://mademistakes.com/minimal-mistakes/" rel="nofollow">Minimal Mistakes</a> theme.</span>
+
+  </footer>
+</div><!-- /.footer-wrap -->
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script src="/assets/js/scripts.min.js"></script>
+
+
+
+</body>
+</html>

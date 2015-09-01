@@ -4,13 +4,120 @@
 <generator uri="https://github.com/jekyll/jekyll">Jekyll</generator>
 <link rel="self" type="application/atom+xml" href="/feed.xml" />
 <link rel="alternate" type="text/html" href="" />
-<updated>2015-09-01T12:36:02+02:00</updated>
+<updated>2015-09-01T18:19:33+02:00</updated>
 <id>/</id>
 <author>
   <name>Flavio Poletti</name>
   <uri>/</uri>
   <email>flavio@polettix.it</email>
 </author>
+
+
+  
+
+<entry>
+  <title type="html"><![CDATA[Changes, nags and git hooks]]></title>
+  <link rel="alternate" type="text/html" href="/changes-nags-and-git-hooks/" />
+  <id>/changes-nags-and-git-hooks</id>
+  <published>2015-09-01T00:00:00+02:00</published>
+  <updated>2015-09-01T00:00:00+02:00</updated>
+  <author>
+    <name>Flavio Poletti</name>
+    <uri></uri>
+    <email>flavio@polettix.it</email>
+  </author>
+  <content type="html">
+    &lt;p&gt;I use &lt;a href=&quot;https://metacpan.org/pod/Dist::Zilla&quot;&gt;Dist::Zilla&lt;/a&gt; with a few plugins, including &lt;code&gt;NextRelease&lt;/code&gt; and
+&lt;code&gt;Git::Check&lt;/code&gt;. I was always nagged by the fact that committing actually
+left the &lt;code&gt;Changes&lt;/code&gt; file uncommitted… until now.&lt;/p&gt;
+
+&lt;p&gt;First of all, I discovered that there was no reason why I should have to
+be nagged at all. The &lt;a href=&quot;http://dzil.org/tutorial/vcs-git.html&quot;&gt;documentation&lt;/a&gt; about
+&lt;a href=&quot;https://metacpan.org/pod/Dist::Zilla&quot;&gt;Dist::Zilla&lt;/a&gt; is pretty clear that both plugins run at the same stage, so
+it’s only a matter of proper ordering&lt;sup id=&quot;fnref:impatient&quot;&gt;&lt;a href=&quot;#fn:impatient&quot; class=&quot;footnote&quot;&gt;1&lt;/a&gt;&lt;/sup&gt;. Guess what? My &lt;code&gt;dzil&lt;/code&gt;
+file always has the &lt;em&gt;wrong&lt;/em&gt; order!&lt;/p&gt;
+
+&lt;p&gt;The funny thing is that today I had some kind of epiphany and I
+&lt;strong&gt;understood&lt;/strong&gt; why this thing was nagging me. It &lt;strong&gt;was supposed&lt;/strong&gt; to do
+so! It &lt;strong&gt;was designed&lt;/strong&gt; to do so! In this way, I would be nagged to
+actually populate the Changes file with something meaningful before doing
+a release, right?&lt;/p&gt;
+
+&lt;p&gt;Now, of course this was not the intended behaviour (again, see
+&lt;a href=&quot;http://dzil.org/tutorial/vcs-git.html&quot;&gt;here&lt;/a&gt;) and there are better ways to ensure that &lt;code&gt;Changes&lt;/code&gt; is
+populated in some meaningful way before doing a release
+(&lt;a href=&quot;https://metacpan.org/pod/Dist::Zilla::Plugin::CheckChangesHasContent&quot;&gt;Dist::Zilla::Plugin::CheckChangesHasContent&lt;/a&gt; being my new
+plugin of election for this task), but in the excitement for my epiphany I
+also figured that &lt;em&gt;presto!&lt;/em&gt;, I need a &lt;a href=&quot;http://git-scm.com/book/en/v2/Customizing-Git-Git-Hooks&quot;&gt;git&lt;/a&gt; &lt;a href=&quot;http://githooks.com/&quot;&gt;hook&lt;/a&gt;
+to ensure that I don’t commit &lt;code&gt;Changes&lt;/code&gt; without intention (yes, I tend to
+&lt;code&gt;git commit -a&lt;/code&gt; a bit too much).&lt;/p&gt;
+
+&lt;p&gt;This is the &lt;code&gt;pre-commit&lt;/code&gt; hook that I came out with:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;c&quot;&gt;#!/bin/bash&lt;/span&gt;
+
+&lt;span class=&quot;nv&quot;&gt;target&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;Changes&amp;#39;&lt;/span&gt;
+
+&lt;span class=&quot;nv&quot;&gt;seen_target&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0
+&lt;span class=&quot;nv&quot;&gt;skip&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1
+&lt;span class=&quot;k&quot;&gt;while&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;read &lt;/span&gt;omode nmode ohash nhash changetype filename&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;$filename&amp;quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;$target&amp;quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;seen_target&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;1
+   &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$skip&lt;/span&gt; -ne &lt;span class=&quot;m&quot;&gt;0&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;then&lt;/span&gt;
+      &lt;span class=&quot;nv&quot;&gt;skip&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;0&lt;/span&gt; &lt;span class=&quot;c&quot;&gt;# skip the first item only&lt;/span&gt;
+   &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt;
+      &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$seen_target&lt;/span&gt; -eq &lt;span class=&quot;m&quot;&gt;0&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;continue&lt;/span&gt;
+      &lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;ERROR - &amp;#39;$target&amp;#39; MUST be committed alone&amp;quot;&lt;/span&gt;
+      &lt;span class=&quot;nb&quot;&gt;exit &lt;/span&gt;1
+   &lt;span class=&quot;k&quot;&gt;fi&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;done&lt;/span&gt; &amp;lt; &amp;lt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;git diff-index --cached HEAD&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;nb&quot;&gt;exit &lt;/span&gt;0&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Now, after the real &lt;em&gt;enlightenment&lt;/em&gt; came (i.e. finding
+&lt;a href=&quot;https://metacpan.org/pod/Dist::Zilla::Plugin::CheckChangesHasContent&quot;&gt;DZP::CheckChangesHasContent&lt;/a&gt;) this is obviously not needed any
+more… but I’ll keep it around should the need arise.&lt;/p&gt;
+
+&lt;p&gt;While using &lt;a href=&quot;https://metacpan.org/pod/Dist::Zilla::Plugin::CheckChangesHasContent&quot;&gt;DZP::CheckChangesHasContent&lt;/a&gt;, I figured that the
+first addition of some &lt;em&gt;change&lt;/em&gt; to the file would spoil all my efforts to
+remember about &lt;code&gt;Changes&lt;/code&gt; before the release. My hands were much faster
+than my brains, again: I was about to propose a patch for the plugin when
+I simply read the documentation:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;It looks for an unindented line starting with the version to be
+released. It then looks for any text from that line until the next
+unindented line (or the end of the file), ignoring whitespace. […] If
+you had nothing but whitespace between [them], the release would be
+halted.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;So, it is sufficient to add a &lt;strong&gt;non-indented&lt;/strong&gt; line immediately after the
+&lt;code&gt;{{NEXT}}&lt;/code&gt; string to make sure the plugin will complain, e.g.:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;o&quot;&gt;{{&lt;/span&gt;NEXT&lt;span class=&quot;o&quot;&gt;}}&lt;/span&gt;
+CHECK YOUR CHANGES AND REMOVE THIS LINE!
+   - I did this
+   - I did that
+
+1.0  1972-11-09 07:45:00 Europe/Rome
+   - Born&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Now of course I would like that line to be added automatically… this
+time, before forking the relevant plugin, I’ll try to think if there’s
+some already available way to do that!&lt;/p&gt;
+&lt;div class=&quot;footnotes&quot;&gt;
+  &lt;ol&gt;
+    &lt;li id=&quot;fn:impatient&quot;&gt;
+      &lt;p&gt;For those of you that are too lazy to click on the link and
+read through the page, you are supposed to put &lt;code&gt;NextRelease&lt;/code&gt; before
+&lt;code&gt;Git::Check&lt;/code&gt;. &lt;a href=&quot;#fnref:impatient&quot; class=&quot;reversefootnote&quot;&gt;&amp;#x2934;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+  &lt;/ol&gt;
+&lt;/div&gt;
+
+    &lt;p&gt;&lt;a href=&quot;/changes-nags-and-git-hooks/&quot;&gt;Changes, nags and git hooks&lt;/a&gt; was originally published by Flavio Poletti at &lt;a href=&quot;&quot;&gt;PolettiX!&lt;/a&gt; on September 01, 2015.&lt;/p&gt;
+  </content>
+</entry>
 
 
   
