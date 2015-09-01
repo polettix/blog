@@ -24,6 +24,7 @@ gems:
 kramdown:
   auto_ids: true
   footnote_nr: 1
+  footnote_backlink: '&#x2934;'
   entity_output: as_char
   toc_levels: 1..6
   enable_coderay: false
