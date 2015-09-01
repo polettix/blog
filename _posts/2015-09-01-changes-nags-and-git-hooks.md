@@ -6,6 +6,7 @@ image:
    feature: cape-tribulation-canguro.jpg
    credit: Canguro a Cape Tribulation, Australia
    creditlink: https://en.wikipedia.org/wiki/Kangaroo
+comments: true
 ---
 
 I use [Dist::Zilla] with a few plugins, including `NextRelease` and
