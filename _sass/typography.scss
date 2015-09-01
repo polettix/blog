@@ -134,6 +134,10 @@ a.footnote:after {
    content: "]";
 }
 
+.footnotes p > a.reversefootnote {
+   text-decoration: none;
+}
+
 /* 
    Paragraphs
    ========================================================================== */
