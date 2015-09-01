@@ -234,7 +234,7 @@ halted.</p>
 <p>So, it is sufficient to add a <strong>non-indented</strong> line immediately after the
 <code>{{NEXT}}</code> string to make sure the plugin will complain, e.g.:</p>
 
-<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="o">{{</span>NEXT<span class="o">}}</span>
+<div class="highlight"><pre><code class="language-text" data-lang="text">{{NEXT}}
 CHECK YOUR CHANGES AND REMOVE THIS LINE!
    - I did this
    - I did that
@@ -245,6 +245,82 @@ CHECK YOUR CHANGES AND REMOVE THIS LINE!
 <p>Now of course I would like that line to be added automatically… this
 time, before forking the relevant plugin, I’ll try to think if there’s
 some already available way to do that!</p>
+
+<h2 id="update">Update</h2>
+
+<p>There can be a workaround to obtain something very similar to
+the above… It is sufficient to set the <code>format</code> parameter of the
+<code>NextRelease</code> plugin to something like this:</p>
+
+<div class="highlight"><pre><code class="language-text" data-lang="text">[NextRelease]
+format = Changes for My::Module:%n%n%-9v %{yyyy-MM-dd HH:mm:ssZZZZZ VVVV}d%{ (TRIAL RELEASE)}T</code></pre></div>
+
+<p>i.e. the same format as the default one, but with some meaningful
+introduction text (<code>Changes for...</code> in our example, followed by two
+newlines). In this way, the following <code>Changes</code> file:</p>
+
+<div class="highlight"><pre><code class="language-text" data-lang="text">{{NEXT}}
+   - I did this
+   - I did that
+
+1.0  1972-11-09 07:45:00 Europe/Rome
+   - Born</code></pre></div>
+
+<p>will generate this for the release package:</p>
+
+<div class="highlight"><pre><code class="language-text" data-lang="text">Changes for My::Module:
+
+2.0  1990--11-09 07:45:00 Europe/Rome
+   - I did this
+   - I did that
+
+1.0  1972-11-09 07:45:00 Europe/Rome
+   - Born</code></pre></div>
+
+<p>and will be updated into this:</p>
+
+<div class="highlight"><pre><code class="language-text" data-lang="text">{{NEXT}}
+
+Changes for My::Module:
+
+2.0  1990--11-09 07:45:00 Europe/Rome
+   - I did this
+   - I did that
+
+1.0  1972-11-09 07:45:00 Europe/Rome
+   - Born</code></pre></div>
+
+<p>At this point, it will be sufficient to add new items <em>below the
+introduction line</em>, like this:</p>
+
+<div class="highlight"><pre><code class="language-text" data-lang="text">{{NEXT}}
+
+Changes for My::Module:
+   - This happened here
+   - This happened there
+
+2.0  1990--11-09 07:45:00 Europe/Rome
+   - I did this
+   - I did that
+
+1.0  1972-11-09 07:45:00 Europe/Rome
+   - Born</code></pre></div>
+
+<p>in order to <em>keep <a href="https://metacpan.org/pod/Dist::Zilla::Plugin::CheckChangesHasContent">DZP::CheckChangesHasContent</a> complain</em> until
+the intro line is removed from the file, like this:</p>
+
+<div class="highlight"><pre><code class="language-text" data-lang="text">{{NEXT}}
+   - This happened here
+   - This happened there
+
+2.0  1990--11-09 07:45:00 Europe/Rome
+   - I did this
+   - I did that
+
+1.0  1972-11-09 07:45:00 Europe/Rome
+   - Born</code></pre></div>
+
+<p>We’re ready for a new release now!</p>
 <div class="footnotes">
   <ol>
     <li id="fn:impatient">

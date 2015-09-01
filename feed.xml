@@ -4,7 +4,7 @@
 <generator uri="https://github.com/jekyll/jekyll">Jekyll</generator>
 <link rel="self" type="application/atom+xml" href="/feed.xml" />
 <link rel="alternate" type="text/html" href="" />
-<updated>2015-09-01T23:30:51+02:00</updated>
+<updated>2015-09-02T00:25:22+02:00</updated>
 <id>/</id>
 <author>
   <name>Flavio Poletti</name>
@@ -94,7 +94,7 @@ halted.&lt;/p&gt;
 &lt;p&gt;So, it is sufficient to add a &lt;strong&gt;non-indented&lt;/strong&gt; line immediately after the
 &lt;code&gt;{{NEXT}}&lt;/code&gt; string to make sure the plugin will complain, e.g.:&lt;/p&gt;
 
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;o&quot;&gt;{{&lt;/span&gt;NEXT&lt;span class=&quot;o&quot;&gt;}}&lt;/span&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;{{NEXT}}
 CHECK YOUR CHANGES AND REMOVE THIS LINE!
    - I did this
    - I did that
@@ -105,6 +105,82 @@ CHECK YOUR CHANGES AND REMOVE THIS LINE!
 &lt;p&gt;Now of course I would like that line to be added automatically… this
 time, before forking the relevant plugin, I’ll try to think if there’s
 some already available way to do that!&lt;/p&gt;
+
+&lt;h2 id=&quot;update&quot;&gt;Update&lt;/h2&gt;
+
+&lt;p&gt;There can be a workaround to obtain something very similar to
+the above… It is sufficient to set the &lt;code&gt;format&lt;/code&gt; parameter of the
+&lt;code&gt;NextRelease&lt;/code&gt; plugin to something like this:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;[NextRelease]
+format = Changes for My::Module:%n%n%-9v %{yyyy-MM-dd HH:mm:ssZZZZZ VVVV}d%{ (TRIAL RELEASE)}T&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;i.e. the same format as the default one, but with some meaningful
+introduction text (&lt;code&gt;Changes for...&lt;/code&gt; in our example, followed by two
+newlines). In this way, the following &lt;code&gt;Changes&lt;/code&gt; file:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;{{NEXT}}
+   - I did this
+   - I did that
+
+1.0  1972-11-09 07:45:00 Europe/Rome
+   - Born&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;will generate this for the release package:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;Changes for My::Module:
+
+2.0  1990--11-09 07:45:00 Europe/Rome
+   - I did this
+   - I did that
+
+1.0  1972-11-09 07:45:00 Europe/Rome
+   - Born&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;and will be updated into this:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;{{NEXT}}
+
+Changes for My::Module:
+
+2.0  1990--11-09 07:45:00 Europe/Rome
+   - I did this
+   - I did that
+
+1.0  1972-11-09 07:45:00 Europe/Rome
+   - Born&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;At this point, it will be sufficient to add new items &lt;em&gt;below the
+introduction line&lt;/em&gt;, like this:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;{{NEXT}}
+
+Changes for My::Module:
+   - This happened here
+   - This happened there
+
+2.0  1990--11-09 07:45:00 Europe/Rome
+   - I did this
+   - I did that
+
+1.0  1972-11-09 07:45:00 Europe/Rome
+   - Born&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;in order to &lt;em&gt;keep &lt;a href=&quot;https://metacpan.org/pod/Dist::Zilla::Plugin::CheckChangesHasContent&quot;&gt;DZP::CheckChangesHasContent&lt;/a&gt; complain&lt;/em&gt; until
+the intro line is removed from the file, like this:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;{{NEXT}}
+   - This happened here
+   - This happened there
+
+2.0  1990--11-09 07:45:00 Europe/Rome
+   - I did this
+   - I did that
+
+1.0  1972-11-09 07:45:00 Europe/Rome
+   - Born&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;We’re ready for a new release now!&lt;/p&gt;
 &lt;div class=&quot;footnotes&quot;&gt;
   &lt;ol&gt;
     &lt;li id=&quot;fn:impatient&quot;&gt;
