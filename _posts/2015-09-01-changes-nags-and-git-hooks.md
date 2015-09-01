@@ -91,7 +91,7 @@ I simply read the documentation:
 So, it is sufficient to add a **non-indented** line immediately after the
 `{{"{"}}{NEXT}}` string to make sure the plugin will complain, e.g.:
 
-{% highlight bash %}
+{% highlight text %}
 {{"{"}}{NEXT}}
 CHECK YOUR CHANGES AND REMOVE THIS LINE!
    - I did this
@@ -104,3 +104,91 @@ CHECK YOUR CHANGES AND REMOVE THIS LINE!
 Now of course I would like that line to be added automatically... this
 time, before forking the relevant plugin, I'll try to think if there's
 some already available way to do that!
+
+## Update
+
+There can be a workaround to obtain something very similar to
+the above... It is sufficient to set the `format` parameter of the
+`NextRelease` plugin to something like this:
+
+{% highlight text %}
+[NextRelease]
+format = Changes for My::Module:%n%n%-9v %{yyyy-MM-dd HH:mm:ssZZZZZ VVVV}d%{ (TRIAL RELEASE)}T
+{% endhighlight %}
+
+i.e. the same format as the default one, but with some meaningful
+introduction text (`Changes for...` in our example, followed by two
+newlines). In this way, the following `Changes` file:
+
+{% highlight text %}
+{{"{"}}{NEXT}}
+   - I did this
+   - I did that
+
+1.0  1972-11-09 07:45:00 Europe/Rome
+   - Born
+{% endhighlight %}
+
+will generate this for the release package:
+
+{% highlight text %}
+Changes for My::Module:
+
+2.0  1990--11-09 07:45:00 Europe/Rome
+   - I did this
+   - I did that
+
+1.0  1972-11-09 07:45:00 Europe/Rome
+   - Born
+{% endhighlight %}
+
+and will be updated into this:
+
+{% highlight text %}
+{{"{"}}{NEXT}}
+
+Changes for My::Module:
+
+2.0  1990--11-09 07:45:00 Europe/Rome
+   - I did this
+   - I did that
+
+1.0  1972-11-09 07:45:00 Europe/Rome
+   - Born
+{% endhighlight %}
+
+At this point, it will be sufficient to add new items *below the
+introduction line*, like this:
+
+{% highlight text %}
+{{"{"}}{NEXT}}
+
+Changes for My::Module:
+   - This happened here
+   - This happened there
+
+2.0  1990--11-09 07:45:00 Europe/Rome
+   - I did this
+   - I did that
+
+1.0  1972-11-09 07:45:00 Europe/Rome
+   - Born
+{% endhighlight %}
+
+in order to *keep [DZP::CheckChangesHasContent][dzp-cchc] complain* until
+the intro line is removed from the file, like this:
+
+{% highlight text %}
+{{"{"}}{NEXT}}
+   - This happened here
+   - This happened there
+
+2.0  1990--11-09 07:45:00 Europe/Rome
+   - I did this
+   - I did that
+
+1.0  1972-11-09 07:45:00 Europe/Rome
+   - Born
+{% endhighlight %}
+
+We're ready for a new release now!
