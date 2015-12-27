@@ -4,13 +4,916 @@
 <generator uri="https://github.com/jekyll/jekyll">Jekyll</generator>
 <link rel="self" type="application/atom+xml" href="/feed.xml" />
 <link rel="alternate" type="text/html" href="" />
-<updated>2015-09-02T00:25:22+02:00</updated>
+<updated>2015-12-27T21:21:37+01:00</updated>
 <id>/</id>
 <author>
   <name>Flavio Poletti</name>
   <uri>/</uri>
   <email>flavio@polettix.it</email>
 </author>
+
+
+  
+
+<entry>
+  <title type="html"><![CDATA[TeePee]]></title>
+  <link rel="alternate" type="text/html" href="/teepee/" />
+  <id>/teepee</id>
+  <published>2015-12-27T00:00:00+01:00</published>
+  <updated>2015-12-27T00:00:00+01:00</updated>
+  <author>
+    <name>Flavio Poletti</name>
+    <uri></uri>
+    <email>flavio@polettix.it</email>
+  </author>
+  <content type="html">
+    &lt;p&gt;Get the most out of your APIs… from the shell!&lt;/p&gt;
+
+&lt;p&gt;I sometimes need to read values from a configuration file or a response
+to an API call from the shell. Most of the times they come either in
+JSON or YAML format… which is when &lt;code&gt;teepee&lt;/code&gt; comes handy.&lt;/p&gt;
+
+&lt;p&gt;Why the name, in the first place? It heavily relies upon the Perl
+distribution/module
+&lt;a href=&quot;https://metacpan.org/pod/Template::Perlish&quot;&gt;Template::Perlish&lt;/a&gt;, whose
+initials are &lt;em&gt;Ti Pi&lt;/em&gt;. Hence… &lt;code&gt;teepee&lt;/code&gt;.&lt;sup id=&quot;fnref:credits&quot;&gt;&lt;a href=&quot;#fn:credits&quot; class=&quot;footnote&quot;&gt;1&lt;/a&gt;&lt;/sup&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;quick&quot;&gt;Quick! Show Me Something!&lt;/h2&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;c&quot;&gt;# something about me&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;metacpan&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;http://api.metacpan.org/v0&amp;#39;&lt;/span&gt;
+curl &lt;span class=&quot;s2&quot;&gt;&amp;quot;$metacpan/author/POLETTIX&amp;quot;&lt;/span&gt; &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;|&lt;/span&gt; teepee -nT &lt;span class=&quot;s2&quot;&gt;&amp;quot;Hi! I&amp;#39;m [% name %] &amp;lt;[% email.0 %]&amp;gt;.&amp;quot;&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# Hi! I&amp;#39;m Flavio Poletti &amp;lt;polet...pan.org&amp;gt;.&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# for extracting multiple data, let&amp;#39;s cache in a variable&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;me&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;$(&lt;/span&gt;curl &lt;span class=&quot;s2&quot;&gt;&amp;quot;$metacpan/author/POLETTIX&amp;quot;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;)&lt;/span&gt;
+teepee -I &lt;span class=&quot;s2&quot;&gt;&amp;quot;$me&amp;quot;&lt;/span&gt; -nT &lt;span class=&quot;s1&quot;&gt;&amp;#39;See my big face at [% gravatar_url %]?s=200&amp;#39;&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# See my big face at http://www.gravatar.com/av...b57.png?s=200&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# my favourite band&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;mbrz&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;http://musicbrainz.org/ws/2&amp;#39;&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;pjq&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;$(&lt;/span&gt;curl &lt;span class=&quot;s2&quot;&gt;&amp;quot;$mbrz/artist?fmt=json&amp;amp;limit=1&amp;amp;query=Pearl%20Jam&amp;quot;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;$(&lt;/span&gt;teepee -I &lt;span class=&quot;s2&quot;&gt;&amp;quot;$pjq&amp;quot;&lt;/span&gt; -v artists.0.name&lt;span class=&quot;k&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;country&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;$(&lt;/span&gt;teepee -I &lt;span class=&quot;s2&quot;&gt;&amp;quot;$pjq&amp;quot;&lt;/span&gt; -v artists.0.country&lt;span class=&quot;k&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;$name rock from the $country&amp;quot;&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;!&amp;#39;&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# Pearl Jam rock from the US!&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# let&amp;#39;s just isolate data about Pearl Jam from the query response&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;pj&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;$(&lt;/span&gt;teepee -I &lt;span class=&quot;s2&quot;&gt;&amp;quot;$pjq&amp;quot;&lt;/span&gt; -F&lt;span class=&quot;s1&quot;&gt;&amp;#39;YAML(V &amp;quot;artists.0&amp;quot;)&amp;#39;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;year&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;$(&lt;/span&gt;teepee -I &lt;span class=&quot;s2&quot;&gt;&amp;quot;$pj&amp;quot;&lt;/span&gt; -v &lt;span class=&quot;s2&quot;&gt;&amp;quot;&amp;#39;life-span&amp;#39;.begin&amp;quot;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;city&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;$(&lt;/span&gt;teepee -I &lt;span class=&quot;s2&quot;&gt;&amp;quot;$pj&amp;quot;&lt;/span&gt; -v &lt;span class=&quot;s2&quot;&gt;&amp;quot;&amp;#39;begin-area&amp;#39;.name&amp;quot;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;they started from $city in $year&amp;quot;&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# they started from Seattle in 1990&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# we can also pretty-print, especially handy with compact JSON&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;ap&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;http://www.astro-phys.com/api/de406&amp;#39;&lt;/span&gt;
+curl &lt;span class=&quot;s2&quot;&gt;&amp;quot;$ap/coefficients?date=1972-11-9&amp;amp;bodies=mars&amp;quot;&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# {&amp;quot;date&amp;quot;: 2441630.5, &amp;quot;type&amp;quot;: &amp;quot;chebyshev&amp;quot;, &amp;quot;results&amp;quot;: {&amp;quot;mars&amp;quot;: ...&lt;/span&gt;
+curl &lt;span class=&quot;s2&quot;&gt;&amp;quot;$ap/coefficients?date=1972-11-9&amp;amp;bodies=mars&amp;quot;&lt;/span&gt; &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;|&lt;/span&gt; teepee -FYAML
+&lt;span class=&quot;c&quot;&gt;# ---&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# date: 2441630.5&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# results:&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;#   mars:&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;#     coefficients:&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;#       -&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;#         - -221246363.667206&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;#         - 26761105.8067001&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;#         ...&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;#     end: 2441680.5&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;#     start: 2441616.5&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# type: chebyshev&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# unit: km&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# or do the pretty-printing of a sub-section only&lt;/span&gt;
+teepee -I &lt;span class=&quot;s2&quot;&gt;&amp;quot;$pj&amp;quot;&lt;/span&gt; -F&lt;span class=&quot;s1&quot;&gt;&amp;#39;YAML(V &amp;quot;aliases&amp;quot;)&amp;#39;&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# ---&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# -&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;#   begin-date: ~&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;#   end-date: ~&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;#   locale: ~&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;#   name: &amp;#39;Mookie Blaylock&amp;#39;&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;#   primary: ~&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;#   sort-name: &amp;#39;Mookie Blaylock&amp;#39; type: ~&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;em&gt;No, I didn’t know Pearl Jam had an alias as Mookie Blaylock!&lt;/em&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;setting-up&quot;&gt;Setting Up&lt;/h2&gt;
+
+&lt;p&gt;To get up to speed in the examples, you need &lt;code&gt;teepee&lt;/code&gt; and
+&lt;a href=&quot;http://curl.haxx.se/&quot;&gt;curl&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;teepee&lt;/code&gt; is easy to install, especially in the &lt;a href=&quot;https://github.com/polettix/teepee/raw/master/bundle/teepee&quot;&gt;bundled
+version&lt;/a&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;curl -LO &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+    https://github.com/polettix/teepee/raw/master/bundle/teepee
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;chmod +x teepee&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;We will assume the directory where you place &lt;code&gt;teepee&lt;/code&gt; is in the &lt;code&gt;PATH&lt;/code&gt;,
+otherwise you can move it in some directory that is. (e.g.
+&lt;code&gt;usr/local/bin&lt;/code&gt;). You shouldn’t need anything more than Perl 5.8 to be
+able to run it (please report any issues!).&lt;/p&gt;
+
+&lt;p&gt;In case you don’t have &lt;code&gt;curl&lt;/code&gt;, you can try to see if you have &lt;a href=&quot;https://www.gnu.org/software/wget/&quot;&gt;GNU
+Wget&lt;/a&gt; instead. In this case, a quick
+and dirty replacement for the examples below can be the following
+&lt;code&gt;alias&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nb&quot;&gt;alias &lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;curl&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;wget -O -&amp;#39;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Last, but not least, we will use &lt;code&gt;bash&lt;/code&gt; as our shell of election in the
+following examples. You are smart enough to figure out what to change in
+case you want to use something different!&lt;/p&gt;
+
+&lt;h2 id=&quot;getting-a-value&quot;&gt;Getting A Value&lt;/h2&gt;
+
+&lt;p&gt;The basic &lt;em&gt;use case&lt;/em&gt; is probably just getting a value from a JSON or
+YAML structured file. You will need:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;some &lt;em&gt;input&lt;/em&gt; structured data&lt;/li&gt;
+  &lt;li&gt;the &lt;em&gt;path&lt;/em&gt; of the variable in the data&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;To make things clearer, let’s start playing with the following sample
+input data:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;---
+name: Flavio
+surname: Poletti
+cpan:
+    id: POLETTIX
+    metacpan: https://metacpan.org/author/POLETTIX
+    latest:
+        - Data::Crumbr
+        - Template::Perlish
+        - Graphics::Potrace
+        - Log::Log4perl::Tiny
+    favorites:
+        Dancer: YANICK
+        JSON: MAKAMAKA
+        Moo: HAARG
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;We’ll assume the above text is in file &lt;code&gt;input.yaml&lt;/code&gt;, so we have our
+&lt;em&gt;input&lt;/em&gt;.&lt;/p&gt;
+
+&lt;p&gt;What’s a &lt;em&gt;path&lt;/em&gt; then? It’s how you can reach the value you’re interested
+into starting from the root of the data structure, all the way down,
+with components separated by dots. For example, who’s the current
+maintainer of &lt;code&gt;Moo&lt;/code&gt;?&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;teepee -i input.yaml -v cpan.favorites.Moo
+HAARG&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;c&quot;&gt;# OK but next prompt is on the same line and it&amp;#39;s UGLY...&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;The first two options we just saw are:&lt;/p&gt;
+
+&lt;dl&gt;
+  &lt;dt&gt;&lt;code&gt;-i&lt;/code&gt;&lt;/dt&gt;
+  &lt;dd&gt;is for inputs. They can be JSON or YAML, and &lt;code&gt;teepee&lt;/code&gt; will try to
+auto-detect. You can be explicit and use &lt;code&gt;-j&lt;/code&gt; and &lt;code&gt;-y&lt;/code&gt;, you can guess
+what for what;&lt;/dd&gt;
+  &lt;dt&gt;&lt;code&gt;-v&lt;/code&gt;&lt;/dt&gt;
+  &lt;dd&gt;is for variable’s path. As anticipated, the different
+keys/indexes, separated by dots (more on this later!).&lt;/dd&gt;
+&lt;/dl&gt;
+
+&lt;p&gt;Well, we managed to get the value we were after, but it would be nice to
+have a newline when printing out to the terminal. No worries, there’s
+option &lt;code&gt;-n&lt;/code&gt; to the rescue:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;teepee -i input.yaml -nv cpan.favorites.Dancer
+YANICK
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;c&quot;&gt;# now the next prompt is on its own new line!&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;This option is useful only for printing things to the terminal,
+otherwise you can ignore it, e.g. when just filling up some variables:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nv&quot;&gt;$ metacpan_uri&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;$(&lt;/span&gt;teepee -i input.yaml -v cpan.metacpan&lt;span class=&quot;k&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;$metacpan_uri&amp;quot;&lt;/span&gt;
+https://metacpan.org/author/POLETTIX&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;So far so good, but probably not that impressive as we could have
+obtained the same with some &lt;code&gt;grep&lt;/code&gt; and &lt;code&gt;sed&lt;/code&gt; magic. In this case
+probably yes, but what if data were shaped like this instead:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;---
+name: Flavio
+surname: Poletti
+cpan:
+    id: POLETTIX
+    metacpan: https://metacpan.org/author/POLETTIX
+    latest:
+        - Data::Crumbr
+        - Template::Perlish
+        - Graphics::Potrace
+        - Log::Log4perl::Tiny
+    using:
+        JSON:
+            id: 'https://metacpan.org/release/JSON'
+    favorites:
+        Dancer:
+            id: YANICK
+        JSON:
+            id: MAKAMAKA
+        Moo:
+            id: HAARG
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Note that I added a &lt;code&gt;using&lt;/code&gt; hash that has itself a &lt;code&gt;JSON&lt;/code&gt; element inside,
+and changed how &lt;code&gt;id&lt;/code&gt;s are associated to the distributions. To make
+things funnier, the shape of &lt;code&gt;using&lt;/code&gt; and of &lt;code&gt;favorites&lt;/code&gt; is the same, but
+with different data. Well, &lt;em&gt;now&lt;/em&gt; it’s a bit more difficult to get the
+&lt;em&gt;right&lt;/em&gt; id for the JSON inside &lt;code&gt;favorites&lt;/code&gt;, isn’t it? It’s a trivial
+change in calling &lt;code&gt;teepee&lt;/code&gt; though:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;c&quot;&gt;# --------------------------------------------vvv&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;teepee -i input2.yaml -nv cpan.favorites.JSON.id
+MAKAMAKA&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;I hope you appreciate the simplification.&lt;/p&gt;
+
+&lt;p&gt;In case you’re wondering, accessing arrays just means using the right
+index in the right place:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;teepee -i input.yaml -nv cpan.latest.1
+Template::Perlish&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;The assumption (at least so far) is that you know exactly how your data
+are shaped, including the position of elements inside arrays. We will
+see later in section &lt;a href=&quot;#array&quot;&gt;Iterating Over an Array&lt;/a&gt; that there are
+functions that allow us to iterate over data structures, so that we can
+partially&lt;sup id=&quot;fnref:partially&quot;&gt;&lt;a href=&quot;#fn:partially&quot; class=&quot;footnote&quot;&gt;2&lt;/a&gt;&lt;/sup&gt; remove this assumption.&lt;/p&gt;
+
+&lt;h2 id=&quot;using-available-inputs&quot;&gt;Using Available Inputs&lt;/h2&gt;
+
+&lt;p&gt;If you’re consuming an API, chances are you’re actually doing remote
+calls (e.g. with &lt;code&gt;curl&lt;/code&gt;) and getting responses back.&lt;/p&gt;
+
+&lt;p&gt;You are polite enough to understand that if you need three values from
+the same response… you don’t have to make three different calls,
+right? One alternative (apart using temporary files, of course) is to
+save the response in a shell variable, which works for local files a
+well of course:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;c&quot;&gt;# cache query result in a variable, for using over and over&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ mcpan_input&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;$(&lt;/span&gt;curl &lt;span class=&quot;s2&quot;&gt;&amp;quot;http://api.metacpan.org/v0/author/POLETTIX&amp;quot;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# read file contents in a convenience variable&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ local_input&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;$(&lt;/span&gt;&amp;lt; input.yaml&lt;span class=&quot;k&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;In this case, you can use the &lt;em&gt;immediate&lt;/em&gt; parameters, that are the
+uppercase counterparts of the file-base input parameters:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;c&quot;&gt;# auto-detect&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ PAUSE_ID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;$(&lt;/span&gt;teepee -I &lt;span class=&quot;s2&quot;&gt;&amp;quot;$local_input&amp;quot;&lt;/span&gt; -v cpan.id&lt;span class=&quot;k&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# force interpreting as YAML&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ name&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;$(&lt;/span&gt;teepee -Y &lt;span class=&quot;s2&quot;&gt;&amp;quot;$local_input&amp;quot;&lt;/span&gt; -v name&lt;span class=&quot;k&quot;&gt;)&lt;/span&gt;
+
+&lt;span class=&quot;c&quot;&gt;# force interpreting as JSON&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ fullname&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;$(&lt;/span&gt;teepee -J &lt;span class=&quot;s2&quot;&gt;&amp;quot;$mcpan_input&amp;quot;&lt;/span&gt; -v name&lt;span class=&quot;k&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Remember to put double quotes around the variable with the data, or the
+shell will make a mess!&lt;/p&gt;
+
+&lt;h2 id=&quot;expanding-templates&quot;&gt;Expanding Templates&lt;/h2&gt;
+
+&lt;p&gt;Getting variables is handy, but what if you want to generate something a
+bit more evolved? You can use
+&lt;a href=&quot;https://metacpan.org/pod/Template::Perlish&quot;&gt;Template::Perlish&lt;/a&gt; for
+this, e.g. with a template passed directly on the command line as text
+with option &lt;code&gt;-T&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;teepee -i input.yaml -nT &lt;span class=&quot;s1&quot;&gt;&amp;#39;Hello, I am [% name%] [% surname %]&amp;#39;&lt;/span&gt;
+Hello, I am Flavio Poletti&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Templates can live in files, of course. Again, what’s immediate on the
+command line as an uppercase option &lt;code&gt;-T&lt;/code&gt; becomes a lowercase option &lt;code&gt;-t&lt;/code&gt;
+when taken from a file:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;cat story.txt
+Hello, my name is &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;% name %&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;% surname %&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;.
+Lorem ipsum...
+
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;teepee -i input.yaml -t story.txt
+Hello, my name is Flavio Poletti.
+Lorem ipsum...&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;This can come quite handy when you’re doing API consumption where you
+have to send JSON text back and forth. For example, one way to see one’s
+favorite distributions on &lt;em&gt;meta::cpan&lt;/em&gt; is to POST the following query:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;{
+    &quot;fields&quot;: [ &quot;distribution&quot; ],
+    &quot;filter&quot; : { &quot;term&quot; : { &quot;user&quot; : &quot;[% user %]&quot; } },
+    &quot;size&quot;: 100
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;We will store the above template in &lt;code&gt;favorites-for.json&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;We need the user identifier, which is easy to retrieve from the author’s
+profile:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nv&quot;&gt;$ me&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;$(&lt;/span&gt;curl &lt;span class=&quot;s2&quot;&gt;&amp;quot;http://api.metacpan.org/v0/author/POLETTIX&amp;quot;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;teepee -I &lt;span class=&quot;s2&quot;&gt;&amp;quot;$me&amp;quot;&lt;/span&gt; -nv user
+NwdPuW9vRBGuIdSr4Gw26g
+&lt;span class=&quot;nv&quot;&gt;$ query&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;$(&lt;/span&gt;teepee -I &lt;span class=&quot;s2&quot;&gt;&amp;quot;$me&amp;quot;&lt;/span&gt; -t favorites-for.json&lt;span class=&quot;k&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;$query&amp;quot;&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;s2&quot;&gt;&amp;quot;fields&amp;quot;&lt;/span&gt;: &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;distribution&amp;quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;,
+    &lt;span class=&quot;s2&quot;&gt;&amp;quot;filter&amp;quot;&lt;/span&gt; : &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;term&amp;quot;&lt;/span&gt; : &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;user&amp;quot;&lt;/span&gt; : &lt;span class=&quot;s2&quot;&gt;&amp;quot;NwdPuW9vRBGuIdSr4Gw26g&amp;quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;,
+    &lt;span class=&quot;s2&quot;&gt;&amp;quot;size&amp;quot;&lt;/span&gt;: 100
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ favs&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;$(&lt;/span&gt;curl -XPOST &lt;span class=&quot;s2&quot;&gt;&amp;quot;http://api.metacpan.org/v0/favorite/_search&amp;quot;&lt;/span&gt; &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+              -d &lt;span class=&quot;s2&quot;&gt;&amp;quot;$query&amp;quot;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;teepee -I &lt;span class=&quot;s2&quot;&gt;&amp;quot;$favs&amp;quot;&lt;/span&gt; -nT &lt;span class=&quot;s1&quot;&gt;&amp;#39;I have [% hits.total %] favorites&amp;#39;&lt;/span&gt;
+I have &lt;span class=&quot;m&quot;&gt;13&lt;/span&gt; favorites&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;As you are correctly thinking now, this requires that the template is
+shaped to accept exactly the data structure coming from the response,
+which is a bit stiff. We’ll see later how to use even more general
+inputs.&lt;/p&gt;
+
+&lt;h2 id=&quot;array&quot;&gt;Iterating Over an Array&lt;/h2&gt;
+
+&lt;p&gt;Our last query result contained as much as 13 favorites, in an array
+shaped like this:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;{
+    &quot;hits&quot; : {
+        &quot;hits&quot; : [
+            {
+                &quot;fields&quot; : {
+                    &quot;distribution&quot; : &quot;Template-Toolkit&quot;
+                },
+                &quot;_score&quot; : 1,
+                &quot;_type&quot; : &quot;favorite&quot;,
+                &quot;_id&quot; : &quot;vx77xt7X5e_a1pr66pq_QJvhbJs&quot;,
+                &quot;_index&quot; : &quot;cpan_v1&quot;
+            },
+            {
+                &quot;_index&quot; : &quot;cpan_v1&quot;,
+                &quot;_id&quot; : &quot;DD1K8tb8s2oNX8RN1UZEL6wijUQ&quot;,
+                &quot;fields&quot; : {
+                    &quot;distribution&quot; : &quot;Pod-Markdown&quot;
+                },
+                &quot;_type&quot; : &quot;favorite&quot;,
+                &quot;_score&quot; : 1
+            },
+            ...
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;How to get a list of distribution names? We might &lt;code&gt;grep&lt;/code&gt;, of course, or
+use a bit of Perl with
+&lt;a href=&quot;https://metacpan.org/pod/Template::Perlish&quot;&gt;Template::Perlish&lt;/a&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;teepee -I &lt;span class=&quot;s2&quot;&gt;&amp;quot;$favs&amp;quot;&lt;/span&gt; -T &lt;span class=&quot;s1&quot;&gt;&amp;#39;My favorites:&lt;/span&gt;
+&lt;span class=&quot;s1&quot;&gt;[% for my $hit (A &amp;quot;hits.hits&amp;quot;) {&lt;/span&gt;
+&lt;span class=&quot;s1&quot;&gt;   %]- [%= $hit-&amp;gt;{fields}{distribution} %]&lt;/span&gt;
+&lt;span class=&quot;s1&quot;&gt;[% } %]&amp;#39;&lt;/span&gt;
+My favorites:
+- Template-Toolkit
+- Pod-Markdown
+- GraphViz
+- Pinto
+- Parse-RecDescent
+- Path-Class
+- Dancer
+- JSON
+- WWW-Mechanize
+- Dist-Zilla
+- WWW-Mechanize-Shell
+- libwww-perl
+- Moo&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;We already saw that option &lt;code&gt;-T&lt;/code&gt; allows us to set a generic template.
+What’s good is that the template can also contain Perl code.&lt;/p&gt;
+
+&lt;p&gt;The really handy thing here is the &lt;code&gt;A&lt;/code&gt; function, that works on a &lt;em&gt;path&lt;/em&gt;
+(string &lt;code&gt;&quot;hits.hits&quot;&lt;/code&gt; in this case) and, assuming it leads to an array
+reference, expands the reference to a list of items. In our case, each
+item is a hash where the interesting part is inside &lt;code&gt;fields&lt;/code&gt;, then
+inside &lt;code&gt;distribution&lt;/code&gt;.&lt;/p&gt;
+
+&lt;h2 id=&quot;handy-shortcuts&quot;&gt;Handy Shortcuts&lt;/h2&gt;
+
+&lt;p&gt;We saw in &lt;a href=&quot;#array&quot;&gt;Iterating Over an Array&lt;/a&gt; that it’s possible to use a
+function &lt;code&gt;A&lt;/code&gt; in the templates, that takes a template path and expands
+it into a list. There are a few of additional functions:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;code&gt;V&lt;/code&gt; expands to a single value. It might be a leaf scalar or an
+intermediate data structure, you should know what you have though;&lt;/li&gt;
+  &lt;li&gt;&lt;code&gt;H&lt;/code&gt; expands a hash reference to the list intermixing keys and values;&lt;/li&gt;
+  &lt;li&gt;&lt;code&gt;HK&lt;/code&gt; expands a hash reference into the list if its keys;&lt;/li&gt;
+  &lt;li&gt;&lt;code&gt;HV&lt;/code&gt; expands a hash reference into the list of its values.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;They all take a &lt;em&gt;path&lt;/em&gt;, either as a string or as a reference to an array
+containing the different crumbs in the sequence.&lt;/p&gt;
+
+&lt;p&gt;The functions also accept an optional second parameter, assumed to be a
+reference to a data structure. When present, it is visited instead of
+the top-level data structure. Hence, the last example in the previous
+section can be rewritten as follows:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;teepee -I &lt;span class=&quot;s2&quot;&gt;&amp;quot;$favs&amp;quot;&lt;/span&gt; -T &lt;span class=&quot;s1&quot;&gt;&amp;#39;My favorites:&lt;/span&gt;
+&lt;span class=&quot;s1&quot;&gt;[%&lt;/span&gt;
+&lt;span class=&quot;s1&quot;&gt;    for my $hit (A &amp;quot;hits.hits&amp;quot;) { %]- [%=&lt;/span&gt;
+&lt;span class=&quot;s1&quot;&gt;        V(&amp;quot;fields.distribution&amp;quot;, $hit) %]&lt;/span&gt;
+&lt;span class=&quot;s1&quot;&gt;[% } %]&amp;#39;&lt;/span&gt;
+My favorites:
+- Template-Toolkit
+...&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;yet-another-input-channel&quot;&gt;Yet Another Input Channel&lt;/h2&gt;
+
+&lt;p&gt;There is an interesting &lt;a href=&quot;https://metacpan.org/&quot;&gt;meta::cpan&lt;/a&gt; query
+&lt;a href=&quot;https://github.com/CPAN-API/cpan-api/blob/master/docs/API-docs.md#get-the-latest-version-numbers-of-your-favorite-modules&quot;&gt;get the latest version numbers of your favorite
+modules&lt;/a&gt;
+that can be expressed in the following template:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;{
+    &quot;query&quot; : { &quot;terms&quot; :
+        { &quot;release.distribution&quot; : [% list_array %] } },
+    &quot;filter&quot; : { &quot;term&quot; : { &quot;release.status&quot; : &quot;latest&quot; } },
+    &quot;fields&quot; : [ &quot;distribution&quot;, &quot;version&quot; ],
+    &quot;size&quot;   : [% size %]
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;We’ll save the above template in &lt;code&gt;lastv-favs.json&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;Now, of course, the issue is to get &lt;code&gt;list_array&lt;/code&gt; and &lt;code&gt;size&lt;/code&gt; for &lt;em&gt;your&lt;/em&gt;
+favorites. In the previous section we already saw mine, so we can
+generate something suitable for &lt;code&gt;list_array&lt;/code&gt; as follows:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nv&quot;&gt;$ list_array&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;$(&lt;/span&gt;teepee -I &lt;span class=&quot;s2&quot;&gt;&amp;quot;$favs&amp;quot;&lt;/span&gt; -T &lt;span class=&quot;s1&quot;&gt;&amp;#39;[ [%=&lt;/span&gt;
+&lt;span class=&quot;s1&quot;&gt;    join &amp;quot;, &amp;quot;, map { qq[&amp;quot;$_-&amp;gt;{fields}{distribution}&amp;quot;]}&lt;/span&gt;
+&lt;span class=&quot;s1&quot;&gt;        A &amp;quot;hits.hits&amp;quot;;&lt;/span&gt;
+&lt;span class=&quot;s1&quot;&gt;%] ]&amp;#39;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ size&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;$(&lt;/span&gt;teepee -I &lt;span class=&quot;s2&quot;&gt;&amp;quot;$favs&amp;quot;&lt;/span&gt; -v hits.total&lt;span class=&quot;k&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Now we have our expansion values inside shell variables… how do we
+pass them to &lt;code&gt;teepee&lt;/code&gt; for expanding the template above? This is where
+option &lt;code&gt;-d&lt;/code&gt; comes handy, because it allows you to define variable
+valued directly on the command line:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nv&quot;&gt;$ query&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;$(&lt;/span&gt;teepee -t &lt;span class=&quot;s2&quot;&gt;&amp;quot;lastv-favs.json&amp;quot;&lt;/span&gt; &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+    -d &lt;span class=&quot;nv&quot;&gt;list_array&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;$list_array&amp;quot;&lt;/span&gt; &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+    -d &lt;span class=&quot;nv&quot;&gt;size&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;$size&amp;quot;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;But wait! Why does it seem to be stuck at this point? The fact is that
+by default &lt;code&gt;teepee&lt;/code&gt; expects to read some input, and it goes to standard
+input by default. If you don’t want it to get any &lt;em&gt;regular&lt;/em&gt; input (as
+in this case, in which you define variables directly) you can use option
+&lt;code&gt;-N&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nv&quot;&gt;$ query&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;$(&lt;/span&gt;teepee -Nt &lt;span class=&quot;s2&quot;&gt;&amp;quot;lastv-favs.json&amp;quot;&lt;/span&gt; &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+    -d &lt;span class=&quot;nv&quot;&gt;list_array&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;$list_array&amp;quot;&lt;/span&gt; &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+    -d &lt;span class=&quot;nv&quot;&gt;size&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;$size&amp;quot;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;$query&amp;quot;&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;s2&quot;&gt;&amp;quot;query&amp;quot;&lt;/span&gt; : &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;terms&amp;quot;&lt;/span&gt; :
+        &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;release.distribution&amp;quot;&lt;/span&gt; : &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;Template-Toolkit&amp;quot;&lt;/span&gt;, ... &lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;,
+    &lt;span class=&quot;s2&quot;&gt;&amp;quot;filter&amp;quot;&lt;/span&gt; : &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;term&amp;quot;&lt;/span&gt; : &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;release.status&amp;quot;&lt;/span&gt; : &lt;span class=&quot;s2&quot;&gt;&amp;quot;latest&amp;quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;,
+    &lt;span class=&quot;s2&quot;&gt;&amp;quot;fields&amp;quot;&lt;/span&gt; : &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;distribution&amp;quot;&lt;/span&gt;, &lt;span class=&quot;s2&quot;&gt;&amp;quot;version&amp;quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;,
+    &lt;span class=&quot;s2&quot;&gt;&amp;quot;size&amp;quot;&lt;/span&gt;   : 13
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;We’re now ready to run our query:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nv&quot;&gt;$ lfv&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;$(&lt;/span&gt;curl -XPOST &lt;span class=&quot;s2&quot;&gt;&amp;quot;http://api.metacpan.org/v0/release/_search&amp;quot;&lt;/span&gt; &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+             -d &lt;span class=&quot;s2&quot;&gt;&amp;quot;$query&amp;quot;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;teepee -I &lt;span class=&quot;s2&quot;&gt;&amp;quot;$lfv&amp;quot;&lt;/span&gt; -T &lt;span class=&quot;s1&quot;&gt;&amp;#39;My favorites with latest version:&lt;/span&gt;
+&lt;span class=&quot;s1&quot;&gt;[%&lt;/span&gt;
+&lt;span class=&quot;s1&quot;&gt;    for my $hit (A &amp;quot;hits.hits&amp;quot;) {&lt;/span&gt;
+&lt;span class=&quot;s1&quot;&gt;        my $f = $hit-&amp;gt;{fields};&lt;/span&gt;
+&lt;span class=&quot;s1&quot;&gt;        print &amp;quot;- $f-&amp;gt;{distribution} ($f-&amp;gt;{version})\n&amp;quot;;&lt;/span&gt;
+&lt;span class=&quot;s1&quot;&gt;    }&lt;/span&gt;
+&lt;span class=&quot;s1&quot;&gt;%]&amp;#39;&lt;/span&gt;
+My favorites with latest version:
+- Path-Class &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.35&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+- Pod-Markdown &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;3.003&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+- GraphViz &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;2.19&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+- WWW-Mechanize-Shell &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.55&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+- Parse-RecDescent &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1.967013&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+- Moo &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;2.000002&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+- WWW-Mechanize &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1.75&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+- JSON &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;2.90&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+- libwww-perl &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;6.15&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+- Template-Toolkit &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;2.26&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+- Pinto &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.11&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+- Dist-Zilla &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;5.042&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+- Dancer &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1.3202&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;reshaping&quot;&gt;Reshaping&lt;/h2&gt;
+
+&lt;p&gt;In our last example, we extracted information from the first query into
+two variables, then used them to build up a new template for our next
+query. This surely works, but might become cumbersome (and intensive in
+terms of process-calling) if you want to take more than a handful of
+values.&lt;/p&gt;
+
+&lt;p&gt;If you’re going to use &lt;code&gt;teepee&lt;/code&gt; on the data, like in our example, an
+efficient alternative is to build up a new JSON/YAML data structure out
+of your input data:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nv&quot;&gt;$ reshaped&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;$(&lt;/span&gt;teepee -I &lt;span class=&quot;s2&quot;&gt;&amp;quot;$favs&amp;quot;&lt;/span&gt; -NT &lt;span class=&quot;s1&quot;&gt;&amp;#39;---&lt;/span&gt;
+&lt;span class=&quot;s1&quot;&gt;size: [% hits.total %]&lt;/span&gt;
+&lt;span class=&quot;s1&quot;&gt;distros:&lt;/span&gt;
+&lt;span class=&quot;s1&quot;&gt;[% for my $hit (A &amp;quot;hits.hits&amp;quot;) { %]   - &amp;quot;[%=&lt;/span&gt;
+&lt;span class=&quot;s1&quot;&gt;        $hit-&amp;gt;{fields}{distribution} %]&amp;quot;&lt;/span&gt;
+&lt;span class=&quot;s1&quot;&gt;[% } %]&amp;#39;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;$reshaped&amp;quot;&lt;/span&gt;
+---
+size: 13
+distros:
+   - &lt;span class=&quot;s2&quot;&gt;&amp;quot;Template-Toolkit&amp;quot;&lt;/span&gt;
+   - &lt;span class=&quot;s2&quot;&gt;&amp;quot;Pod-Markdown&amp;quot;&lt;/span&gt;
+   - &lt;span class=&quot;s2&quot;&gt;&amp;quot;GraphViz&amp;quot;&lt;/span&gt;
+   - &lt;span class=&quot;s2&quot;&gt;&amp;quot;Pinto&amp;quot;&lt;/span&gt;
+   - &lt;span class=&quot;s2&quot;&gt;&amp;quot;Parse-RecDescent&amp;quot;&lt;/span&gt;
+   - &lt;span class=&quot;s2&quot;&gt;&amp;quot;Path-Class&amp;quot;&lt;/span&gt;
+   - &lt;span class=&quot;s2&quot;&gt;&amp;quot;Dancer&amp;quot;&lt;/span&gt;
+   - &lt;span class=&quot;s2&quot;&gt;&amp;quot;JSON&amp;quot;&lt;/span&gt;
+   - &lt;span class=&quot;s2&quot;&gt;&amp;quot;WWW-Mechanize&amp;quot;&lt;/span&gt;
+   - &lt;span class=&quot;s2&quot;&gt;&amp;quot;Dist-Zilla&amp;quot;&lt;/span&gt;
+   - &lt;span class=&quot;s2&quot;&gt;&amp;quot;WWW-Mechanize-Shell&amp;quot;&lt;/span&gt;
+   - &lt;span class=&quot;s2&quot;&gt;&amp;quot;libwww-perl&amp;quot;&lt;/span&gt;
+   - &lt;span class=&quot;s2&quot;&gt;&amp;quot;Moo&amp;quot;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;We will have to modify our template at this point, but it’s also cleaner
+to expect an array as input and handle the shaping in the template
+itself. Here’s our second take at the template (we will call the file
+&lt;code&gt;lastv-favs-2.json&lt;/code&gt;):&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;{
+    &quot;query&quot; : {
+        &quot;terms&quot; : {
+            &quot;release.distribution&quot; : [ [%
+                print join &quot;, &quot;, map { qq{&quot;$_&quot;} } A 'distros';
+            %] ]
+        }
+    },
+    &quot;filter&quot; : { &quot;term&quot; : { &quot;release.status&quot; : &quot;latest&quot; } },
+    &quot;fields&quot; : [ &quot;distribution&quot;, &quot;version&quot; ],
+    &quot;size&quot;   : [% size %]
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;The query then becomes:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nv&quot;&gt;$ query&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;$(&lt;/span&gt;teepee -t &lt;span class=&quot;s2&quot;&gt;&amp;quot;lastv-favs-2.json&amp;quot;&lt;/span&gt; -Y&lt;span class=&quot;s2&quot;&gt;&amp;quot;$reshaped&amp;quot;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;with similar results as before.&lt;/p&gt;
+
+&lt;p&gt;This reshaping does not necessarily have to be applied for generating
+new YAML or JSON though. If you’re still interested into getting values
+into shell variables, you can prepare the right text and then &lt;code&gt;eval&lt;/code&gt; it,
+to get all values in one shot:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nv&quot;&gt;$ variables&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;$(&lt;/span&gt;teepee -I &lt;span class=&quot;s2&quot;&gt;&amp;quot;$favs&amp;quot;&lt;/span&gt; -T &lt;span class=&quot;s1&quot;&gt;&amp;#39;list_array=[%=&lt;/span&gt;
+&lt;span class=&quot;s1&quot;&gt;    my $list = join &amp;quot;, &amp;quot;, map { qq[&amp;quot;$_-&amp;gt;{fields}{distribution}&amp;quot;]}&lt;/span&gt;
+&lt;span class=&quot;s1&quot;&gt;        A &amp;quot;hits.hits&amp;quot;;&lt;/span&gt;
+&lt;span class=&quot;s1&quot;&gt;    quotemeta(&amp;quot;[ $list ]&amp;quot;);&lt;/span&gt;
+&lt;span class=&quot;s1&quot;&gt;%]&lt;/span&gt;
+&lt;span class=&quot;s1&quot;&gt;size=[%= quotemeta(V &amp;quot;hits.total&amp;quot; ) %]&lt;/span&gt;
+&lt;span class=&quot;s1&quot;&gt;&amp;#39;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;eval&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;$variables&amp;quot;&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;size: $size - array: $list_array&amp;quot;&lt;/span&gt;
+size: &lt;span class=&quot;m&quot;&gt;13&lt;/span&gt; - array: &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;Template-Toolkit&amp;quot;&lt;/span&gt;, &lt;span class=&quot;s2&quot;&gt;&amp;quot;Pod-Markdown&amp;quot;&lt;/span&gt;, ...&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;&lt;strong&gt;Don’t use &lt;code&gt;eval&lt;/code&gt; unless you’re 200% sure about what you are
+doing!&lt;/strong&gt; To be on the safe side, either avoid this technique
+completely, or use it only on data you trust.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&quot;pretty-printing-and-isolating&quot;&gt;Pretty-Printing and Isolating&lt;/h2&gt;
+
+&lt;p&gt;Some APIs choose to return pretty-printed data, trading some space for
+ease of use. Other ones go for compactness, and leave you the &lt;em&gt;burden&lt;/em&gt;
+to pretty print the response if you need to read it (as a human).&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;teepee&lt;/code&gt; allows you to re-print your input data either in JSON or YAML
+format. This also comes handy if you want to trasform from one to the
+other, by the way; so you might have data that is already
+pretty-printed, and re-pretty-print it into another format (I usually
+find YAML a better reading experience).&lt;/p&gt;
+
+&lt;p&gt;Pretty-printing is done through a couple of functions that are available
+in the templates; unsurprisingly, these functions are called &lt;code&gt;YAML&lt;/code&gt; and
+&lt;code&gt;JSON&lt;/code&gt;. This is how it would be done:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nv&quot;&gt;$ ap&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;http://www.astro-phys.com/api/de406&amp;#39;&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ mars&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;$(&lt;/span&gt;curl &lt;span class=&quot;s2&quot;&gt;&amp;quot;$ap/coefficients?date=1972-11-9&amp;amp;bodies=mars&amp;quot;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;$mars&amp;quot;&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;date&amp;quot;&lt;/span&gt;: 2441630.5, &lt;span class=&quot;s2&quot;&gt;&amp;quot;type&amp;quot;&lt;/span&gt;: &lt;span class=&quot;s2&quot;&gt;&amp;quot;chebyshev&amp;quot;&lt;/span&gt;, &lt;span class=&quot;s2&quot;&gt;&amp;quot;results&amp;quot;&lt;/span&gt;: &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;mars&amp;quot;&lt;/span&gt;: ...
+
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;teepee -J &lt;span class=&quot;s2&quot;&gt;&amp;quot;$mars&amp;quot;&lt;/span&gt; -T &lt;span class=&quot;s1&quot;&gt;&amp;#39;[%= YAML %]&amp;#39;&lt;/span&gt;
+---
+date: 2441630.5
+results:
+  mars:
+    coefficients:
+      -
+        - -221246363.667206
+        - 26761105.8067001
+        ...
+      -
+        - -80259893.9503651
+        - -50770737.7568579
+        ...
+    end: 2441680.5
+    start: 2441616.5
+&lt;span class=&quot;nb&quot;&gt;type&lt;/span&gt;: chebyshev
+unit: km&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;code&gt;JSON&lt;/code&gt; would work similarly. This construct is so handy that it made
+sense to provide a slightly shorter way to type it. In particular,
+option &lt;code&gt;-F&lt;/code&gt; provides a way to specify a template without too much
+boilerplate, so the following two calls are actually equivalent:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;teepee -Fwhatever ...
+&lt;span class=&quot;c&quot;&gt;# ...&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;teepee -T &lt;span class=&quot;s1&quot;&gt;&amp;#39;[%= whatever %]&amp;#39;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Hence, pretty-printing in YAML is as simple as this:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;teepee -FYAML -J &lt;span class=&quot;s2&quot;&gt;&amp;quot;$mars&amp;quot;&lt;/span&gt;
+---
+date: 2441630.5
+results:
+...&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;The two functions can also take an optional parameter, namely a
+reference to a data structure. Guess what? They will pretty-print that!
+So, if we are interested only in the &lt;code&gt;results.mars.coefficients&lt;/code&gt; we can
+isolate them as follows:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nv&quot;&gt;$ coeffs&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;$(&lt;/span&gt;teepee -F&lt;span class=&quot;s1&quot;&gt;&amp;#39;YAML V &amp;quot;results.mars.coefficients&amp;quot;&amp;#39;&lt;/span&gt; -J&lt;span class=&quot;s2&quot;&gt;&amp;quot;$mars&amp;quot;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;$coeffs&amp;quot;&lt;/span&gt;
+---
+-
+  - -221246363.667206
+  - 26761105.8067001
+  - 4016544.02022364
+...&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;This can be useful if you’re only interested into a subsection of a
+complex response, because you can isolate that subsection into a shell
+variable (like &lt;code&gt;$coeffs&lt;/code&gt; in our example above) and then run &lt;code&gt;teepee&lt;/code&gt;
+over that variable with shorter paths.&lt;/p&gt;
+
+&lt;h2 id=&quot;a-few-examples&quot;&gt;A Few Examples&lt;/h2&gt;
+
+&lt;p&gt;Here are a few examples of consuming APIs from the shell with the help
+of &lt;code&gt;teepee&lt;/code&gt;… I hope they will inspire you!&lt;/p&gt;
+
+&lt;h3 id=&quot;whats-the-weather-like&quot;&gt;What’s the Weather Like?&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://openweathermap.org/&quot;&gt;OpenWeatherMap&lt;/a&gt; &lt;em&gt;delivers 1 billion&lt;/em&gt;
+[weather] &lt;em&gt;forecasts per day&lt;/em&gt;. It should be able to cope with a few
+requests from us!&lt;/p&gt;
+
+&lt;p&gt;To use it, you will need to register (freely) at &lt;a href=&quot;http://home.openweathermap.org/users/sign_up&quot;&gt;the registration
+page&lt;/a&gt; and get an API key.&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Yes, I know that the examples in the &lt;a href=&quot;http://openweathermap.org/current&quot;&gt;Current Weather
+  Data&lt;/a&gt; page work fine and include a
+  valid API key, but you SHOULD get your own key to be fair!&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Every API call is a &lt;code&gt;GET&lt;/code&gt; and parameters are passed in the URI, encoded.
+One of them is the API key, so we’ll start with the following
+definition:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nv&quot;&gt;$ key&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;YOUR-API-KEY-HERE&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Accessing the latest weather data is as simple as sending a query to
+&lt;code&gt;http://api.openweathermap.org/data/2.5/weather?appid=$key&lt;/code&gt;. Response
+parameters are explained &lt;a href=&quot;http://openweathermap.org/current&quot;&gt;here&lt;/a&gt;. We
+will format a little report according to the following template (saved
+as &lt;code&gt;weather.tmpl&lt;/code&gt;):&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;[%
+    # convenience function for cutting excess decimals
+    sub fmt { return sprintf '%.1lf', shift; }
+%]Hi! Here's some facts about [% name %] [[% sys.country %]]:
+  - position is about latitude [% coord.lat %]N and longitude [%
+      coord.lon %]E
+  - [% weather.0.main %]: [% weather.0.description %]
+  - temperature is [%= fmt(V('main.temp') - 273.15) %]°C ([%=
+      fmt(V('main.temp_min') - V('main.temp')) %]/+[%=
+      fmt(V('main.temp_max') - V('main.temp')) %]°C)
+  - humidity is [% main.humidity %]%
+  - last sunrise was on [%= scalar localtime V('sys.sunrise') %]
+  - last sunset  was on [%= scalar localtime V('sys.sunset') %]
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Now, we’re ready to get some facts about Roma, my city:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nv&quot;&gt;$ owm_weather_api&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;http://api.openweathermap.org/data/2.5/weather&amp;quot;&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;curl &lt;span class=&quot;s2&quot;&gt;&amp;quot;$owm_weather_api?appid=$key&amp;amp;q=Roma,it&amp;quot;&lt;/span&gt; &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;|&lt;/span&gt; teepee -t weather.tmpl
+Hi! Here are some facts about Roma &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;IT&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;:
+  - position is about latitude 41.89N and longitude 12.48E
+  - Clear: Sky is Clear
+  - temperature is 8.1°C &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;-2.1/+0.9°C&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+  - humidity is 87%
+  - last sunrise was on Tue Dec &lt;span class=&quot;m&quot;&gt;15&lt;/span&gt; 07:31:04 2015
+  - last sunset  was on Tue Dec &lt;span class=&quot;m&quot;&gt;15&lt;/span&gt; 16:39:56 2015&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Not exactly hot… but lovely for this time of the year in the night,
+isn’t it? Let’s look how it will go in the coming days, using
+&lt;code&gt;forecast-daily.tmpl&lt;/code&gt;:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;[%
+    sub fmt { sprintf '%.1lf', shift }
+%]Forecast for [% city.name %] [[% city.country %]] ([%
+        city.coord.lat %]N, [% city.coord.lon %]E):[%
+    for my $day (A 'list') {
+%]
+- [%= (my $d = scalar localtime $day-&amp;gt;{dt}) =~ s{\d\d:.*}{}mxs;
+    $d; %]: [%=
+        fmt $day-&amp;gt;{temp}{min} %]°C/[%= fmt $day-&amp;gt;{temp}{max} %]°C [%=
+        $day-&amp;gt;{weather}[0]{main} %] ([%=
+        $day-&amp;gt;{weather}[0]{description} %])[%
+    }
+%]
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;and the following query:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nv&quot;&gt;$ owm_fd&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;http://api.openweathermap.org/data/2.5/forecast/daily&amp;quot;&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;curl &lt;span class=&quot;s2&quot;&gt;&amp;quot;$owm_fd?appid=$key&amp;amp;q=Roma,it&amp;amp;units=metric&amp;amp;cnt=16&amp;quot;&lt;/span&gt; &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;|&lt;/span&gt; teepee -t forecast-daily.tmpl
+Forecast &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; Roma &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;IT&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;41.894741N, 12.4839E&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;:
+  - Tue Dec &lt;span class=&quot;m&quot;&gt;15&lt;/span&gt; : 7.3°C/7.8°C Clear &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;sky is clear&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+  - Wed Dec &lt;span class=&quot;m&quot;&gt;16&lt;/span&gt; : 5.8°C/12.6°C Clouds &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;few clouds&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+  - Thu Dec &lt;span class=&quot;m&quot;&gt;17&lt;/span&gt; : 4.2°C/11.4°C Clear &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;sky is clear&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+  - Fri Dec &lt;span class=&quot;m&quot;&gt;18&lt;/span&gt; : 8.4°C/13.3°C Rain &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;light rain&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+  - Sat Dec &lt;span class=&quot;m&quot;&gt;19&lt;/span&gt; : 9.9°C/11.5°C Rain &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;moderate rain&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+  - Sun Dec &lt;span class=&quot;m&quot;&gt;20&lt;/span&gt; : 6.2°C/12.1°C Clear &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;sky is clear&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+  - Mon Dec &lt;span class=&quot;m&quot;&gt;21&lt;/span&gt; : 7.0°C/13.4°C Rain &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;light rain&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+  - Tue Dec &lt;span class=&quot;m&quot;&gt;22&lt;/span&gt; : 10.0°C/13.2°C Rain &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;light rain&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+  - Wed Dec &lt;span class=&quot;m&quot;&gt;23&lt;/span&gt; : 13.5°C/15.2°C Rain &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;light rain&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+  - Thu Dec &lt;span class=&quot;m&quot;&gt;24&lt;/span&gt; : 9.2°C/15.4°C Clear &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;sky is clear&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+  - Fri Dec &lt;span class=&quot;m&quot;&gt;25&lt;/span&gt; : 7.9°C/14.5°C Clear &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;sky is clear&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+  - Sat Dec &lt;span class=&quot;m&quot;&gt;26&lt;/span&gt; : 10.9°C/14.7°C Rain &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;light rain&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+  - Sun Dec &lt;span class=&quot;m&quot;&gt;27&lt;/span&gt; : 9.2°C/14.2°C Rain &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;light rain&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+  - Mon Dec &lt;span class=&quot;m&quot;&gt;28&lt;/span&gt; : 7.2°C/13.6°C Rain &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;light rain&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+  - Tue Dec &lt;span class=&quot;m&quot;&gt;29&lt;/span&gt; : 10.0°C/13.4°C Rain &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;light rain&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+  - Wed Dec &lt;span class=&quot;m&quot;&gt;30&lt;/span&gt; : 10.6°C/14.4°C Rain &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;light rain&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;A little too rainy for my taste… but it’s life!&lt;/p&gt;
+
+&lt;h3 id=&quot;where-can-i-go-from&quot;&gt;Where Can I Go From…&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://en.wikipedia.org/&quot;&gt;Wikipedia&lt;/a&gt; is the biggest online
+encyclopedia, and can be a real time drag as you go through the pages,
+following links over links (even only internal).&lt;/p&gt;
+
+&lt;p&gt;For example… how many links are contained in a few pages, e.g. about
+&lt;code&gt;Perl&lt;/code&gt;, &lt;code&gt;Bash&lt;/code&gt; or &lt;code&gt;Pearl Jam&lt;/code&gt;? Let’s see:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nv&quot;&gt;$ wp&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;https://en.wikipedia.org/w/api.php&amp;#39;&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ wpq&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;$wp?action=query&amp;amp;prop=links&amp;amp;format=json&amp;amp;pllimit=500&amp;quot;&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; title in &lt;span class=&quot;s1&quot;&gt;&amp;#39;Perl&amp;#39;&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;Bash&amp;#39;&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;Pearl_Jam&amp;#39;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
+    curl -s &lt;span class=&quot;s2&quot;&gt;&amp;quot;$wpq&amp;amp;titles=$title&amp;quot;&lt;/span&gt; &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+        &lt;span class=&quot;p&quot;&gt;|&lt;/span&gt; teepee -nT &lt;span class=&quot;s1&quot;&gt;&amp;#39;[%=&lt;/span&gt;
+&lt;span class=&quot;s1&quot;&gt;            my ($d) = HV &amp;quot;query.pages&amp;quot;;&lt;/span&gt;
+&lt;span class=&quot;s1&quot;&gt;            my $n = scalar @{$d-&amp;gt;{links}};&lt;/span&gt;
+&lt;span class=&quot;s1&quot;&gt;            &amp;quot;$d-&amp;gt;{title}: $n&amp;quot;;&lt;/span&gt;
+&lt;span class=&quot;s1&quot;&gt;          %]&amp;#39;&lt;/span&gt;
+  &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;
+Perl: 450
+Bash: 14
+Pearl Jam: 455&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Well… it seems that there is a &lt;em&gt;slight&lt;/em&gt; better chance to get lost
+reading about Pearl Jam than about Perl, but they’re almost there
+together!&lt;/p&gt;
+
+&lt;h3 id=&quot;whats-the-last-xkcd-strip&quot;&gt;What’s the Last xkcd Strip?&lt;/h3&gt;
+
+&lt;p&gt;I hope you love &lt;a href=&quot;http://xkcd.com/&quot;&gt;xkcd&lt;/a&gt; as much as I do. You’re in the
+terminal and you would like to know what’s the last strip, just to see
+if there’s anything new…&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;curl http://xkcd.com/info.0.json &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;|&lt;/span&gt; teepee -n &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
+        -T &lt;span class=&quot;s1&quot;&gt;&amp;#39;#[%num%] &amp;quot;[%safe_title%]&amp;quot;, [%year%]-[%month%]-[%day%]&amp;#39;&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;#1616 &amp;quot;Lunch&amp;quot;, 2015-12-14&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;When you call it you don’t get too much data, e.g.:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nv&quot;&gt;$ xkcd_last&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;$(&lt;/span&gt;curl http://xkcd.com/info.0.json&lt;span class=&quot;k&quot;&gt;)&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;$xkcd_last&amp;quot;&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;month&amp;quot;&lt;/span&gt;: &lt;span class=&quot;s2&quot;&gt;&amp;quot;12&amp;quot;&lt;/span&gt;, &lt;span class=&quot;s2&quot;&gt;&amp;quot;num&amp;quot;&lt;/span&gt;: 1616, &lt;span class=&quot;s2&quot;&gt;&amp;quot;link&amp;quot;&lt;/span&gt;: &lt;span class=&quot;s2&quot;&gt;&amp;quot;&amp;quot;&lt;/span&gt;, &lt;span class=&quot;s2&quot;&gt;&amp;quot;year&amp;quot;&lt;/span&gt;: &lt;span class=&quot;s2&quot;&gt;&amp;quot;2015&amp;quot;&lt;/span&gt;, &lt;span class=&quot;s2&quot;&gt;&amp;quot;news&amp;quot;&lt;/span&gt;: &lt;span class=&quot;s2&quot;&gt;&amp;quot;&amp;quot;&lt;/span&gt;, &lt;span class=&quot;s2&quot;&gt;&amp;quot;safe_title&amp;quot;&lt;/span&gt;: &lt;span class=&quot;s2&quot;&gt;&amp;quot;Lunch&amp;quot;&lt;/span&gt;, &lt;span class=&quot;s2&quot;&gt;&amp;quot;transcript&amp;quot;&lt;/span&gt;: &lt;span class=&quot;s2&quot;&gt;&amp;quot;&amp;quot;&lt;/span&gt;, &lt;span class=&quot;s2&quot;&gt;&amp;quot;alt&amp;quot;&lt;/span&gt;: &lt;span class=&quot;s2&quot;&gt;&amp;quot;I&amp;#39;m trying to be healthier, so after I eat this brick of cheese, I&amp;#39;ll have a spoonful of grease-soaked vegetables.&amp;quot;&lt;/span&gt;, &lt;span class=&quot;s2&quot;&gt;&amp;quot;img&amp;quot;&lt;/span&gt;: &lt;span class=&quot;s2&quot;&gt;&amp;quot;http:\/\/imgs.xkcd.com\/comics\/lunch.png&amp;quot;&lt;/span&gt;, &lt;span class=&quot;s2&quot;&gt;&amp;quot;title&amp;quot;&lt;/span&gt;: &lt;span class=&quot;s2&quot;&gt;&amp;quot;Lunch&amp;quot;&lt;/span&gt;, &lt;span class=&quot;s2&quot;&gt;&amp;quot;day&amp;quot;&lt;/span&gt;: &lt;span class=&quot;s2&quot;&gt;&amp;quot;14&amp;quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Well… it’s not that readable, is it? All that scrolling to the
+right… This can use some pretty printing, e.g. in YAML:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;teepee -J &lt;span class=&quot;s2&quot;&gt;&amp;quot;$xkcd_last&amp;quot;&lt;/span&gt; -FYAML
+---
+alt: &lt;span class=&quot;s2&quot;&gt;&amp;quot;I&amp;#39;m trying to be healthier, so after I eat this brick of cheese, I&amp;#39;ll have a spoonful of grease-soaked vegetables.&amp;quot;&lt;/span&gt;
+day: &lt;span class=&quot;s1&quot;&gt;&amp;#39;14&amp;#39;&lt;/span&gt;
+img: http://imgs.xkcd.com/comics/lunch.png
+link: &lt;span class=&quot;s1&quot;&gt;&amp;#39;&amp;#39;&lt;/span&gt;
+month: &lt;span class=&quot;s1&quot;&gt;&amp;#39;12&amp;#39;&lt;/span&gt;
+news: &lt;span class=&quot;s1&quot;&gt;&amp;#39;&amp;#39;&lt;/span&gt;
+num: 1616
+safe_title: Lunch
+title: Lunch
+transcript: &lt;span class=&quot;s1&quot;&gt;&amp;#39;&amp;#39;&lt;/span&gt;
+year: &lt;span class=&quot;s1&quot;&gt;&amp;#39;2015&amp;#39;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;and-so-on&quot;&gt;… And So On…&lt;/h3&gt;
+
+&lt;p&gt;I hope you got your feet wet at this point. Be sure to go (again)
+through the examples in section &lt;a href=&quot;#quick&quot;&gt;Quick! Show Me Something!&lt;/a&gt;,
+they can be a bit more understandable at this point!&lt;/p&gt;
+
+&lt;h2 id=&quot;times-up&quot;&gt;Time’s Up!&lt;/h2&gt;
+
+&lt;p&gt;If you made it to the end of this article… congratulations! I hope you
+will consider &lt;code&gt;teepee&lt;/code&gt; as a tool worth using in your next shell project.&lt;/p&gt;
+
+&lt;p&gt;If you want to play a bit, a good entry point for finding out APIs to do
+some testing is &lt;a href=&quot;http://www.programmableweb.com/&quot;&gt;Programmable Web&lt;/a&gt;,
+although for Perl enthusiast also &lt;a href=&quot;https://metacpan.org/&quot;&gt;meta::cpan&lt;/a&gt; is
+worth a look. Some good starting points that do not require registration
+are the following:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;http://metacpan.org/&quot;&gt;meta::cpan&lt;/a&gt; is a fast growing (feature-wise)
+search tool for CPAN. &lt;a href=&quot;https://github.com/CPAN-API/cpan-api/blob/master/docs/API-docs.md&quot;&gt;meta::cpan
+APIs&lt;/a&gt;
+(&lt;a href=&quot;http://api.metacpan.org/&quot;&gt;entry point&lt;/a&gt;) allow programmale access to
+the database.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;http://musicbrainz.org/&quot;&gt;MusicBrainz&lt;/a&gt; is an open music encyclopedia
+that collects music metadata and makes it available to the public.
+&lt;a href=&quot;http://musicbrainz.org/doc/Development&quot;&gt;Development&lt;/a&gt; explains how to
+consume their APIs, with details on the &lt;a href=&quot;http://musicbrainz.org/doc/Development/JSON_Web_Service&quot;&gt;JSON
+interface&lt;/a&gt;.
+(&lt;a href=&quot;http://musicbrainz.org/ws/2/&quot;&gt;Entry point&lt;/a&gt;).&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;http://hacktheuniverse.github.io/star-api/&quot;&gt;Star API&lt;/a&gt; &lt;em&gt;provides access
+the Digital Universe Data set&lt;/em&gt;. (&lt;a href=&quot;http://star-api.herokuapp.com/api/v1/stars&quot;&gt;Entry
+point&lt;/a&gt;).&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;http://openweathermap.org/&quot;&gt;OpenWeatherMap&lt;/a&gt; &lt;em&gt;delivers 1 billion
+forecasts per day&lt;/em&gt;. API description is
+&lt;a href=&quot;http://openweathermap.org/api&quot;&gt;here&lt;/a&gt;. Well, you’re supposed to
+register actually, as already written before…&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;https://en.wikipedia.org&quot;&gt;Wikipedia&lt;/a&gt; is a wonderful resource for
+information… although you always have to remember that it’s not
+fully peer-reviewed. It has an &lt;a href=&quot;https://www.mediawiki.org/wiki/API:Tutorial&quot;&gt;API
+Tutorial&lt;/a&gt;.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;a href=&quot;http://xkcd.com&quot;&gt;xkcd&lt;/a&gt; is &lt;em&gt;A webcomic of romance, sarcasm, math, and
+language&lt;/em&gt;. Very funny. API hints &lt;a href=&quot;https://xkcd.com/json.html&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;There are many more… including your very own API for the next-decade
+killer application!&lt;/p&gt;
+
+&lt;div class=&quot;footnotes&quot;&gt;
+  &lt;ol&gt;
+    &lt;li id=&quot;fn:credits&quot;&gt;
+
+      &lt;p&gt;Photo credits: &lt;a href=&quot;http://www.loc.gov/pictures/item/95522788/&quot;&gt;Teepees on the
+Columbia&lt;/a&gt;
+by Ralph Irving Gifford, &lt;a href=&quot;http://www.loc.gov/pictures/item/95500540/&quot;&gt;Ute
+Pagre&lt;/a&gt; by H.H. Tammen. &lt;a href=&quot;#fnref:credits&quot; class=&quot;reversefootnote&quot;&gt;&amp;#x2934;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+    &lt;li id=&quot;fn:partially&quot;&gt;
+      &lt;p&gt;You are still supposed to know how your data are &lt;em&gt;shaped&lt;/em&gt;,
+although you might not know where the different elements in an array
+are placed. &lt;a href=&quot;#fnref:partially&quot; class=&quot;reversefootnote&quot;&gt;&amp;#x2934;&lt;/a&gt;&lt;/p&gt;
+    &lt;/li&gt;
+  &lt;/ol&gt;
+&lt;/div&gt;
+
+    &lt;p&gt;&lt;a href=&quot;/teepee/&quot;&gt;TeePee&lt;/a&gt; was originally published by Flavio Poletti at &lt;a href=&quot;&quot;&gt;PolettiX!&lt;/a&gt; on December 27, 2015.&lt;/p&gt;
+  </content>
+</entry>
 
 
   
