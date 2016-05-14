@@ -4,13 +4,263 @@
 <generator uri="https://github.com/jekyll/jekyll">Jekyll</generator>
 <link rel="self" type="application/atom+xml" href="/feed.xml" />
 <link rel="alternate" type="text/html" href="" />
-<updated>2015-12-27T21:21:37+01:00</updated>
+<updated>2016-05-14T12:17:00+02:00</updated>
 <id>/</id>
 <author>
   <name>Flavio Poletti</name>
   <uri>/</uri>
   <email>flavio@polettix.it</email>
 </author>
+
+
+  
+
+<entry>
+  <title type="html"><![CDATA[Writing About Stuff]]></title>
+  <link rel="alternate" type="text/html" href="/writing-about-stuff/" />
+  <id>/writing-about-stuff</id>
+  <published>2016-05-14T00:00:00+02:00</published>
+  <updated>2016-05-14T00:00:00+02:00</updated>
+  <author>
+    <name>Flavio Poletti</name>
+    <uri></uri>
+    <email>flavio@polettix.it</email>
+  </author>
+  <content type="html">
+    &lt;p&gt;One of the most effective ways to debug and refine my code is to…
+write about it. I am so smart that I figured it out all alone… at
+about 43!&lt;/p&gt;
+
+&lt;p&gt;(I mean &lt;em&gt;fourty-three, wow!&lt;/em&gt;, not &lt;em&gt;6.0415263e+52&lt;/em&gt;).&lt;/p&gt;
+
+&lt;h2 id=&quot;datatubes-again-and-again&quot;&gt;Data::Tubes, Again and Again&lt;/h2&gt;
+
+&lt;p&gt;I’m working on a project called &lt;a href=&quot;http://github.polettix.it/Data-Tubes/&quot;&gt;Data::Tubes&lt;/a&gt; lately. To be honest,
+there’s not much left to do with respect to my original plan, so I’m
+actually more &lt;em&gt;writing about it&lt;/em&gt; than &lt;em&gt;writing it&lt;/em&gt; now.&lt;/p&gt;
+
+&lt;p&gt;While doing this, two things are becoming more and more evident:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;this project is not much relevant. I see the value of it, and I’ll
+probably use it quite extensively to solve a class of problems that
+pop up from time to time, but overall it’s quite niche-y;&lt;/li&gt;
+  &lt;li&gt;to really make something useful, it’s better to use it. A lot of the
+changes in the interface happened while writing examples.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;The first aspect is a bummer to some extent; on the flip side, I’m
+having fun, learning something, keeping my programming muscles exercised
+and… doing something that most probably will be useful at some time.&lt;/p&gt;
+
+&lt;p&gt;The second one is just rediscovering what I probably read over and over,
+with relations to Test Driven Developemnt to some extent. I’m really not
+sticking to the KISS principle - it turns out that many times I’m adding
+things “just because it’s easy” and blends well, not out of real need.
+On the other hand, writing about it let me refine the interface to
+something &lt;em&gt;handy&lt;/em&gt; as opposed to simply &lt;em&gt;doable&lt;/em&gt;.&lt;/p&gt;
+
+&lt;h2 id=&quot;frustration&quot;&gt;Frustration!&lt;/h2&gt;
+
+&lt;p&gt;For relevancy of the project, here’s were the hubris really gets put to
+test. Well, some humility never hurt anyone.&lt;/p&gt;
+
+&lt;p&gt;When I first saw a reference in &lt;a href=&quot;http://perlweekly.com/archive/245.html&quot;&gt;issue 245 of Perl Weekly&lt;/a&gt; I
+was a bit disapponted to see the whole idea summarized as &lt;em&gt;templating
+engine using tags that resemble the tags of Template::Toolkit and input
+data in PSKV format. That might stand for Pipe Separated Keys and
+Values.&lt;/em&gt;. Wait… what? The whole point of &lt;a href=&quot;http://github.polettix.it/Data-Tubes/&quot;&gt;Data::Tubes&lt;/a&gt; is to give
+you all the flexibility on how you read, process, render and write your
+outputs… how come?!?&lt;/p&gt;
+
+&lt;p&gt;I’m not blaming Gabor of course. The &lt;a href=&quot;http://perlweekly.com/&quot;&gt;Perl Weekly&lt;/a&gt; team does a
+really remarkable job of keeping people updated on what happens in the
+Perl world, and it was of course my fault to not provide clear
+information about my project.&lt;/p&gt;
+
+&lt;p&gt;After that, I saw that &lt;a href=&quot;http://github.polettix.it/Data-Tubes/&quot;&gt;Data::Tubes&lt;/a&gt; was featured in &lt;a href=&quot;http://perltricks.com/article/what-s-new-on-cpan---march-2016/&quot;&gt;this issue of
+Perl Tricks&lt;/a&gt;. Wow, they called it &lt;em&gt;a cute data
+transformation module&lt;/em&gt;… how kind! But wait… what? What does &lt;em&gt;needs
+iterators&lt;/em&gt; mean?!? They’re there since the beginning!!!&lt;/p&gt;
+
+&lt;p&gt;Again, I think that the &lt;a href=&quot;http://perltricks.com/authors/&quot;&gt;authors&lt;/a&gt; at &lt;a href=&quot;http://perltricks.com/&quot;&gt;Perl Tricks&lt;/a&gt; do an
+amazing job… again, my fault for not making things clear enough!&lt;/p&gt;
+
+&lt;h2 id=&quot;so-what&quot;&gt;So What?&lt;/h2&gt;
+
+&lt;p&gt;So… what did I do? Well, I thought that the whole frustration thing
+could mean two things:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;I really suck at synthesizing and describe the gist of things. I still
+have to figure out how to improve here…&lt;/li&gt;
+  &lt;li&gt;all the stuff I coded needed much better documentation, not only the
+&lt;em&gt;reference&lt;/em&gt; type (the POD was already in place), but the kind that you
+would initially turn to to understand how a thing can be actually
+useful to address a problem.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;This resulted in a &lt;em&gt;lot&lt;/em&gt; of writing (the &lt;a href=&quot;http://github.polettix.it/Data-Tubes/&quot;&gt;web site&lt;/a&gt;, the
+articles in the &lt;a href=&quot;https://github.com/polettix/Data-Tubes/wiki&quot;&gt;wiki&lt;/a&gt;)… again confirming my distance from
+synthesys!&lt;/p&gt;
+
+&lt;p&gt;All this writing benefited me in two ways:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;I wrote something that will help me to use my project effectively and
+efficiently when I will need it. I’m trying to write stuff in the way
+I’d like to read it!&lt;/li&gt;
+  &lt;li&gt;I got better insight at what it can do and how it can be done better -
+more features to add, wow!&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;the-birth-of-bucket&quot;&gt;The Birth of &lt;code&gt;bucket&lt;/code&gt;&lt;/h2&gt;
+
+&lt;p&gt;One such thing that happened lately eventually led to the addition of
+the &lt;code&gt;bucket&lt;/code&gt; type of &lt;code&gt;tap&lt;/code&gt;. Let’s go in steps!&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://github.polettix.it/Data-Tubes/&quot;&gt;Data::Tubes&lt;/a&gt; lets you define a sequence, or &lt;a href=&quot;https://metacpan.org/pod/Data::Tubes#pipeline&quot;&gt;pipeline&lt;/a&gt;, of
+transforming actions called tubes. Each tube receives as input exactly
+one &lt;em&gt;record&lt;/em&gt; and outputs:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;code&gt;()&lt;/code&gt;: the input record is simply discarded;&lt;/li&gt;
+  &lt;li&gt;&lt;code&gt;($onething)&lt;/code&gt;: the &lt;code&gt;$onething&lt;/code&gt; is the output record, that is suitable
+for being fed to the following tube;&lt;/li&gt;
+  &lt;li&gt;&lt;code&gt;(records =&amp;gt; \@manythings)&lt;/code&gt;: the input record gave rise to a sequence
+of output records, returned as an array reference;&lt;/li&gt;
+  &lt;li&gt;&lt;code&gt;(iterator =&amp;gt; sub{...})&lt;/code&gt;: the input record gave rise to a &lt;em&gt;promise&lt;/em&gt; to
+generate zero, one or more output records&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;During the design of &lt;a href=&quot;https://metacpan.org/pod/Data::Tubes#pipeline&quot;&gt;pipeline&lt;/a&gt; I had to deal with the generic case,
+where you don’t know in anticipation what the tubes in the pipeline will
+return. The most sensible choice seemed to be the &lt;em&gt;iterator&lt;/em&gt;: it allows
+returning whatever number of output records (so it’s general enough) and
+it also does not assume that you want to go all the way down in one
+single shot (which is what an iterator is useful for).&lt;/p&gt;
+
+&lt;p&gt;So, when we define a pipeline like this:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-perl&quot; data-lang=&quot;perl&quot;&gt;&lt;span class=&quot;k&quot;&gt;use&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;Data::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Tubes&lt;/span&gt; &lt;span class=&quot;sx&quot;&gt;qw&amp;lt; pipeline &amp;gt;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;my&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$pipeline&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pipeline&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
+   &lt;span class=&quot;s&quot;&gt;&amp;#39;Source::iterate_files&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+   &lt;span class=&quot;s&quot;&gt;&amp;#39;Reader::by_line&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+   &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;#39;Parser::by_format&amp;#39;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;name,age&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt;
+   &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;
+      &lt;span class=&quot;s&quot;&gt;&amp;#39;Renderer::with_template_perlish&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+      &lt;span class=&quot;s&quot;&gt;&amp;quot;Hi [% name %]! You&amp;#39;re [% age %] today!\n&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+   &lt;span class=&quot;p&quot;&gt;],&lt;/span&gt;
+   &lt;span class=&quot;s&quot;&gt;&amp;#39;Writer::to_files&amp;#39;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;we get back a tube whose output contract is the &lt;code&gt;iterator&lt;/code&gt; one:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-perl&quot; data-lang=&quot;perl&quot;&gt;&lt;span class=&quot;k&quot;&gt;my&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;@outcome&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$pipeline&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;@filenames&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# $outcome[0] is the string &amp;#39;iterator&amp;#39;&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# $outcome[1] is an iterator. NO real computation happened yet!&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;while&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;my&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$out&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$outcome&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;())&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;# ... use the $out-put record if needed&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;One thing that was immediately evident, though, was that in most cases
+what I wanted was to just run the whole thing for all input records.
+This initially led me to add the &lt;a href=&quot;https://metacpan.org/pod/Data::Tubes#drain&quot;&gt;drain&lt;/a&gt; function, which takes care to
+feed a tube with inputs and &lt;em&gt;drain&lt;/em&gt; whatever comes out of it:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-perl&quot; data-lang=&quot;perl&quot;&gt;&lt;span class=&quot;k&quot;&gt;use&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;Data::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Tubes&lt;/span&gt; &lt;span class=&quot;sx&quot;&gt;qw&amp;lt; pipeline drain &amp;gt;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;# create the pipeline as before, then instead of calling this:&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;#    my @outcome = $pipeline-&amp;gt;(\@filenames);&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# you can call this:&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;drain&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$pipeline&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;@filenames&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;This is a drag (you have to import &lt;a href=&quot;https://metacpan.org/pod/Data::Tubes#drain&quot;&gt;drain&lt;/a&gt;!), so a couple of options
+were added to automate the draining process. The most basic is &lt;code&gt;tap&lt;/code&gt;,
+that when set to &lt;code&gt;sink&lt;/code&gt; ensures that the iterator is drained on the spot
+and nothing is returned (to save memory):&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-perl&quot; data-lang=&quot;perl&quot;&gt;&lt;span class=&quot;k&quot;&gt;use&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;Data::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Tubes&lt;/span&gt; &lt;span class=&quot;sx&quot;&gt;qw&amp;lt; pipeline &amp;gt;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;my&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$pipeline&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;pipeline&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
+   &lt;span class=&quot;s&quot;&gt;&amp;#39;Source::iterate_files&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+   &lt;span class=&quot;s&quot;&gt;&amp;#39;Reader::by_line&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+   &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;#39;Parser::by_format&amp;#39;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;name,age&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt;
+   &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;
+      &lt;span class=&quot;s&quot;&gt;&amp;#39;Renderer::with_template_perlish&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+      &lt;span class=&quot;s&quot;&gt;&amp;quot;Hi [% name %]! You&amp;#39;re [% age %] today!\n&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+   &lt;span class=&quot;p&quot;&gt;],&lt;/span&gt;
+   &lt;span class=&quot;s&quot;&gt;&amp;#39;Writer::to_files&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+   &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;tap&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;sink&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$pipeline&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;@filenames&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;So far so good.&lt;/p&gt;
+
+&lt;p&gt;While writing an article about &lt;a href=&quot;https://metacpan.org/pod/Data::Tubes::Plugin::Plumbing#alternatives&quot;&gt;alternatives&lt;/a&gt;, though, I came to
+discovering that &lt;a href=&quot;https://metacpan.org/pod/Data::Tubes#pipeline&quot;&gt;pipeline&lt;/a&gt; is not only useful to define the &lt;em&gt;outer&lt;/em&gt;
+pipeline, i.e. the one that does the end-to-end processing, but also to
+define sub-pipelines to be fed as &lt;a href=&quot;https://metacpan.org/pod/Data::Tubes::Plugin::Plumbing#alternatives&quot;&gt;alternatives&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;In a nutshell, &lt;a href=&quot;https://metacpan.org/pod/Data::Tubes::Plugin::Plumbing#alternatives&quot;&gt;alternatives&lt;/a&gt; allows you to provide a list of
+alternative tubes, each of which will be tried over the same input
+record until one of them &lt;em&gt;accepts&lt;/em&gt; it and returns something back.&lt;/p&gt;
+
+&lt;p&gt;This led me to a bug though, because:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;by default, &lt;a href=&quot;https://metacpan.org/pod/Data::Tubes#pipeline&quot;&gt;pipeline&lt;/a&gt; returns a tube that always returns an
+iterator. Hence, the first tube in the alternatives would always get
+the input record, even if it would eventually toss it away at
+&lt;em&gt;iterator firing&lt;/em&gt; time;&lt;/li&gt;
+  &lt;li&gt;working around the iterator setting the &lt;code&gt;tap&lt;/code&gt; to &lt;code&gt;sink&lt;/code&gt; will make
+&lt;em&gt;all&lt;/em&gt; the alternatives to be always fired, because the &lt;code&gt;sink&lt;/code&gt; does not
+return anything.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;While it was already possible to address the problem with the available
+interface (&lt;a href=&quot;https://metacpan.org/pod/Data::Tubes#pipeline&quot;&gt;pipeline&lt;/a&gt; also supported a &lt;code&gt;pump&lt;/code&gt; option that could be
+used effectively), there was clearly a need for both exhausting the
+iterator &lt;em&gt;and&lt;/em&gt; getting the output records. Hence, the following example
+does use &lt;a href=&quot;https://metacpan.org/pod/Data::Tubes::Plugin::Plumbing#alternatives&quot;&gt;alternatives&lt;/a&gt; in the right way:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-perl&quot; data-lang=&quot;perl&quot;&gt;&lt;span class=&quot;k&quot;&gt;my&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$template_for_OK&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;my&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$template_for_NOT_OK&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;...&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;pipeline&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
+   &lt;span class=&quot;s&quot;&gt;&amp;#39;Source::iterate_files&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+   &lt;span class=&quot;s&quot;&gt;&amp;#39;Reader::by_line&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+   &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;#39;Parser::by_format&amp;#39;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;status:name&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt;
+   &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;
+      &lt;span class=&quot;s&quot;&gt;&amp;#39;Plumbing::alternatives&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    
+      &lt;span class=&quot;c1&quot;&gt;# First alternative, try to see if it&amp;#39;s a good one&lt;/span&gt;
+      &lt;span class=&quot;n&quot;&gt;pipeline&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
+          &lt;span class=&quot;k&quot;&gt;sub &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;# filter only good ones&lt;/span&gt;
+             &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$_&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$_&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;structured&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;status&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;eq&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;OK;&lt;/span&gt;
+&lt;span class=&quot;s&quot;&gt;             return;&lt;/span&gt;
+&lt;span class=&quot;s&quot;&gt;          },&lt;/span&gt;
+&lt;span class=&quot;s&quot;&gt;          [&amp;#39;&lt;/span&gt;&lt;span class=&quot;nn&quot;&gt;Renderer::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;with_template_perlish&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;#39; =&amp;gt; $template_for_OK],&lt;/span&gt;
+&lt;span class=&quot;s&quot;&gt;          {tap =&amp;gt; &amp;#39;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;bucket&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;#39;}, # &amp;lt;&amp;lt;&amp;lt; LOOK HERE!!!&lt;/span&gt;
+&lt;span class=&quot;s&quot;&gt;      ),&lt;/span&gt;
+&lt;span class=&quot;s&quot;&gt;    &lt;/span&gt;
+&lt;span class=&quot;s&quot;&gt;      # as a fallback, we render for NOT OK&lt;/span&gt;
+&lt;span class=&quot;s&quot;&gt;      [&amp;#39;&lt;/span&gt;&lt;span class=&quot;nn&quot;&gt;Renderer::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;with_template_perlish&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;#39; =&amp;gt; $template_for_NOT_OK],&lt;/span&gt;
+&lt;span class=&quot;s&quot;&gt;   ],&lt;/span&gt;
+&lt;span class=&quot;s&quot;&gt;   &amp;#39;&lt;/span&gt;&lt;span class=&quot;nn&quot;&gt;Writer::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;to_files&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;#39;,&lt;/span&gt;
+&lt;span class=&quot;s&quot;&gt;   {tap =&amp;gt; &amp;#39;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sink&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;},&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;# we can just toss the records away here&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;@input_filenames&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;conclusions&quot;&gt;Conclusions?&lt;/h2&gt;
+
+&lt;p&gt;I don’t think I have some conclusions for this article to be honest. I’m
+having fun with &lt;a href=&quot;http://github.polettix.it/Data-Tubes/&quot;&gt;Data::Tubes&lt;/a&gt;, although I start doubting its relevance
+and usefulness. But one thing is sure: for me, it’s an amazing learning
+tool as a hobby programmer!&lt;/p&gt;
+
+
+    &lt;p&gt;&lt;a href=&quot;/writing-about-stuff/&quot;&gt;Writing About Stuff&lt;/a&gt; was originally published by Flavio Poletti at &lt;a href=&quot;&quot;&gt;PolettiX!&lt;/a&gt; on May 14, 2016.&lt;/p&gt;
+  </content>
+</entry>
 
 
   
@@ -212,7 +462,7 @@ cpan:
         - Log::Log4perl::Tiny
     using:
         JSON:
-            id: 'https://metacpan.org/release/JSON'
+            id: &#39;https://metacpan.org/release/JSON&#39;
     favorites:
         Dancer:
             id: YANICK
@@ -556,7 +806,7 @@ itself. Here’s our second take at the template (we will call the file
     &quot;query&quot; : {
         &quot;terms&quot; : {
             &quot;release.distribution&quot; : [ [%
-                print join &quot;, &quot;, map { qq{&quot;$_&quot;} } A 'distros';
+                print join &quot;, &quot;, map { qq{&quot;$_&quot;} } A &#39;distros&#39;;
             %] ]
         }
     },
@@ -704,17 +954,17 @@ as &lt;code&gt;weather.tmpl&lt;/code&gt;):&lt;/p&gt;
 
 &lt;pre&gt;&lt;code&gt;[%
     # convenience function for cutting excess decimals
-    sub fmt { return sprintf '%.1lf', shift; }
-%]Hi! Here's some facts about [% name %] [[% sys.country %]]:
+    sub fmt { return sprintf &#39;%.1lf&#39;, shift; }
+%]Hi! Here&#39;s some facts about [% name %] [[% sys.country %]]:
   - position is about latitude [% coord.lat %]N and longitude [%
       coord.lon %]E
   - [% weather.0.main %]: [% weather.0.description %]
-  - temperature is [%= fmt(V('main.temp') - 273.15) %]°C ([%=
-      fmt(V('main.temp_min') - V('main.temp')) %]/+[%=
-      fmt(V('main.temp_max') - V('main.temp')) %]°C)
+  - temperature is [%= fmt(V(&#39;main.temp&#39;) - 273.15) %]°C ([%=
+      fmt(V(&#39;main.temp_min&#39;) - V(&#39;main.temp&#39;)) %]/+[%=
+      fmt(V(&#39;main.temp_max&#39;) - V(&#39;main.temp&#39;)) %]°C)
   - humidity is [% main.humidity %]%
-  - last sunrise was on [%= scalar localtime V('sys.sunrise') %]
-  - last sunset  was on [%= scalar localtime V('sys.sunset') %]
+  - last sunrise was on [%= scalar localtime V(&#39;sys.sunrise&#39;) %]
+  - last sunset  was on [%= scalar localtime V(&#39;sys.sunset&#39;) %]
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;Now, we’re ready to get some facts about Roma, my city:&lt;/p&gt;
@@ -735,10 +985,10 @@ isn’t it? Let’s look how it will go in the coming days, using
 &lt;code&gt;forecast-daily.tmpl&lt;/code&gt;:&lt;/p&gt;
 
 &lt;pre&gt;&lt;code&gt;[%
-    sub fmt { sprintf '%.1lf', shift }
+    sub fmt { sprintf &#39;%.1lf&#39;, shift }
 %]Forecast for [% city.name %] [[% city.country %]] ([%
         city.coord.lat %]N, [% city.coord.lon %]E):[%
-    for my $day (A 'list') {
+    for my $day (A &#39;list&#39;) {
 %]
 - [%= (my $d = scalar localtime $day-&amp;gt;{dt}) =~ s{\d\d:.*}{}mxs;
     $d; %]: [%=
@@ -1478,7 +1728,7 @@ you are using to contribute to the project in &lt;a href=&quot;https://code.goog
 yours too, the following command (found &lt;a href=&quot;https://help.github.com/articles/changing-author-info/&quot;&gt;here&lt;/a&gt;) can be
 useful:&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;git filter-branch --env-filter '
+&lt;pre&gt;&lt;code&gt;git filter-branch --env-filter &#39;
     OLD_EMAIL=&quot;your-old-email@example.com&quot;
     CORRECT_NAME=&quot;Your Correct Name&quot;
     CORRECT_EMAIL=&quot;your-correct-email@example.com&quot;
@@ -1490,7 +1740,7 @@ useful:&lt;/p&gt;
         export GIT_AUTHOR_NAME=&quot;$CORRECT_NAME&quot;
         export GIT_AUTHOR_EMAIL=&quot;$CORRECT_EMAIL&quot;
     fi
-' --tag-name-filter cat -- --branches --tags
+&#39; --tag-name-filter cat -- --branches --tags
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;Then, you will surely need to ensure that each commit has a &lt;code&gt;Commit-Id&lt;/code&gt;
@@ -1501,7 +1751,7 @@ use a pivot file &lt;code&gt;/tmp/mymessage&lt;/code&gt; for exchanging data:&lt
 &lt;pre&gt;&lt;code&gt;HOOK=&quot;$PWD/.git/hooks/commit-msg&quot;
 git filter-branch --force --msg-filter &quot;
     cat - &amp;gt;/tmp/mymessage &amp;amp;&amp;amp;
-    '$HOOK' /tmp/mymessage &amp;amp;&amp;amp;
+    &#39;$HOOK&#39; /tmp/mymessage &amp;amp;&amp;amp;
     cat /tmp/mymessage
 &quot;
 &lt;/code&gt;&lt;/pre&gt;
@@ -1651,7 +1901,7 @@ deployment script inside the directory that is created&lt;/li&gt;
 
 &lt;pre&gt;&lt;code&gt;mkdir foobar
 cp /lots/of/stuff/* foobar
-vi foobar/deploy.sh # and put what's needed
+vi foobar/deploy.sh # and put what&#39;s needed
 chmod +x foobar/deploy.sh
 tar cvzf package.tar.gz foobar
 &lt;/code&gt;&lt;/pre&gt;
@@ -1886,7 +2136,7 @@ documentation. Good places to look are:&lt;/p&gt;
 &lt;p&gt;You can either edit the place where &lt;code&gt;PATH&lt;/code&gt; is set, or add a line like this
 at the end (file and syntax depend from the shell and considerations above):&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;echo 'export PATH=&quot;$HOME/.plenv/bin:$PATH&quot;' &amp;gt;&amp;gt; ~/.bashrc
+&lt;pre&gt;&lt;code&gt;echo &#39;export PATH=&quot;$HOME/.plenv/bin:$PATH&quot;&#39; &amp;gt;&amp;gt; ~/.bashrc
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;At this point, you can execute the following and have &lt;a href=&quot;https://github.com/tokuhirom/plenv&quot;&gt;plenv&lt;/a&gt; &lt;em&gt;visible&lt;/em&gt;
@@ -1905,7 +2155,7 @@ to the file you modified for the &lt;code&gt;PATH&lt;/code&gt; variable, just ru
 
 &lt;pre&gt;&lt;code&gt;export PATH=&quot;$HOME/.plenv/shims:${PATH}&quot;
 export PLENV_SHELL=bash
-source '$HOME/.plenv/libexec/../completions/plenv.bash'
+source &#39;$HOME/.plenv/libexec/../completions/plenv.bash&#39;
 plenv() {
     local command
     command=&quot;$1&quot;
@@ -1926,7 +2176,7 @@ plenv() {
 lines like you did for &lt;code&gt;PATH&lt;/code&gt; modification above. Actually, what is
 suggested by the author of &lt;a href=&quot;https://github.com/tokuhirom/plenv&quot;&gt;plenv&lt;/a&gt; is to add this:&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;echo 'eval &quot;$(plenv init -)&quot;' &amp;gt;&amp;gt; ~/.bash_profile
+&lt;pre&gt;&lt;code&gt;echo &#39;eval &quot;$(plenv init -)&quot;&#39; &amp;gt;&amp;gt; ~/.bash_profile
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;which is less save than installing the lines above. Unless you are going
@@ -1987,7 +2237,7 @@ version. We already added a couple of directories to the &lt;code&gt;PATH&lt;/co
 we will install it in one of them:&lt;/p&gt;
 
 &lt;pre&gt;&lt;code&gt;# you can do this with wget as well, of course
-curl -L 'https://github.com/miyagawa/cpanminus/raw/devel/cpanm' \
+curl -L &#39;https://github.com/miyagawa/cpanminus/raw/devel/cpanm&#39; \
     &amp;gt; ~/.plenv/bin/cpanm
 chmod a+x ~/.plenv/bin/cpanm
 &lt;/code&gt;&lt;/pre&gt;
@@ -2049,7 +2299,7 @@ have to transfer the file, unpack and &lt;em&gt;colonize&lt;/em&gt;:&lt;/p&gt;
 
 &lt;pre&gt;&lt;code&gt;scp myperl.tar.bz2 &quot;$user&quot;@&quot;$remote&quot;:/tmp
 ssh &quot;$user&quot;@&quot;$remote&quot; \
-    'cd ~ &amp;amp;&amp;amp; tar xvf /tmp/myperl.tar.bz2 &amp;amp;&amp;amp; ./plenv/bin/colonize.sh'
+    &#39;cd ~ &amp;amp;&amp;amp; tar xvf /tmp/myperl.tar.bz2 &amp;amp;&amp;amp; ./plenv/bin/colonize.sh&#39;
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;h2 id=&quot;development-environment-set-up&quot;&gt;Development Environment Set-Up&lt;/h2&gt;
@@ -2080,9 +2330,9 @@ machine.&lt;/p&gt;
 project, like this:&lt;/p&gt;
 
 &lt;pre&gt;&lt;code&gt;# This is file &quot;cpanfile&quot;
-requires 'Log::Log4perl::Tiny', '1.2.6';
-requires 'Template::Perlish';
-requires 'JSON', '2.59';
+requires &#39;Log::Log4perl::Tiny&#39;, &#39;1.2.6&#39;;
+requires &#39;Template::Perlish&#39;;
+requires &#39;JSON&#39;, &#39;2.59&#39;;
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;As you can see, you can either specify the module version - e.g. because
@@ -2117,7 +2367,7 @@ so).&lt;/li&gt;
 
 &lt;pre&gt;&lt;code&gt;echo local/ &amp;gt;&amp;gt; .gitignore
 git add .gitignore cpanfile cpanfile.snapshot
-git commit -m 'using carton dependencies handling'
+git commit -m &#39;using carton dependencies handling&#39;
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;h3 id=&quot;running-applications&quot;&gt;Running applications&lt;/h3&gt;
@@ -2138,7 +2388,7 @@ of the &lt;code&gt;local&lt;/code&gt; library directly from your application. Yo
 already do something like this if you store most of your code inside
 the &lt;code&gt;lib&lt;/code&gt; directory:&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;use FindBin '$Bin';
+&lt;pre&gt;&lt;code&gt;use FindBin &#39;$Bin&#39;;
 use lib &quot;$Bin/../lib&quot;, &quot;$Bin/../local/lib/perl5&quot;;
 &lt;/code&gt;&lt;/pre&gt;
 
