@@ -20,7 +20,7 @@ fullpath="$prepath/$fullname"
 
 cat >"$fullpath" <<END
 ---
-# vim: ts=4 sw=4 expandtab syn=off
+# vim: ts=4 sw=4 expandtab syn=off :
 layout: post
 title: $title
 image:
