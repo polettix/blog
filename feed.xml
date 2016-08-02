@@ -4,7 +4,7 @@
 <generator uri="https://github.com/jekyll/jekyll">Jekyll</generator>
 <link rel="self" type="application/atom+xml" href="/feed.xml" />
 <link rel="alternate" type="text/html" href="" />
-<updated>2016-05-14T12:17:00+02:00</updated>
+<updated>2016-08-02T11:43:26+02:00</updated>
 <id>/</id>
 <author>
   <name>Flavio Poletti</name>
@@ -3291,6 +3291,1506 @@ whistle… start from &lt;a href=&quot;http://oss.oetiker.ch/rrdtool/doc/rrdgrap
 
 
     &lt;p&gt;&lt;a href=&quot;/rrdtool/&quot;&gt;RRDtool - Sparse Notes&lt;/a&gt; was originally published by Flavio Poletti at &lt;a href=&quot;&quot;&gt;PolettiX!&lt;/a&gt; on November 02, 2013.&lt;/p&gt;
+  </content>
+</entry>
+
+
+  
+
+<entry>
+  <title type="html"><![CDATA[local::lib for distributions]]></title>
+  <link rel="alternate" type="text/html" href="/local-lib-for-distributions/" />
+  <id>/local-lib-for-distributions</id>
+  <published>2010-07-30T00:00:00+02:00</published>
+  <updated>2010-07-30T00:00:00+02:00</updated>
+  <author>
+    <name>Flavio Poletti</name>
+    <uri></uri>
+    <email>flavio@polettix.it</email>
+  </author>
+  <content type="html">
+    &lt;p&gt;&lt;a href=&quot;https://metacpan.org/pod/local::lib&quot;&gt;local::lib&lt;/a&gt; is a love-it-or-hate-it module, with the additional feature
+that you don’t get the hate-it part.&lt;/p&gt;
+
+&lt;p&gt;Recently, I had to develop a script to do a couple of HTTP redirections.
+I headed towards CPAN, quickly found that &lt;a href=&quot;https://metacpan.org/pod/HTTP::Server::Simple&quot;&gt;HTTP::Server::Simple&lt;/a&gt; (and in
+particular &lt;a href=&quot;https://metacpan.org/pod/HTTP::Server::Simple::CGI&quot;&gt;HTTP::Server::Simple::CGI&lt;/a&gt;) and in some twenty minutes I had a
+working prototype. Forget that I changed my mind a couple of times
+before having what I eventually used for my test…&lt;/p&gt;
+
+&lt;p&gt;Now, I knew I had to go into an environment that could possibly prevent
+me from using my machine to perform the test. As a matter of fact, I
+didn’t know whether I could use the program anywhere, let alone know
+what kind of Perl environment I would have found. Nightmare!&lt;/p&gt;
+
+&lt;p&gt;Luckily enough, it turned out that I only needed modules that do not
+require compilation. I love Pure Perl modules! So now I had the problem
+to bundle all the needed non-core modules in a way that was convenient
+to deliver. This is where &lt;a href=&quot;https://metacpan.org/pod/local::lib&quot;&gt;local::lib&lt;/a&gt; really saved the day,
+and in particular its &lt;code&gt;--self-contained&lt;/code&gt; option. Well - yes -
+I’ve seen options that were commented way better… but at least the
+only reference in the synopsis made me curious enough to discover that
+it was hitting the nail right in the head.&lt;/p&gt;
+
+&lt;p&gt;On my machine I have my own compiled Perl version to tinker with, so I
+installed &lt;a href=&quot;https://metacpan.org/pod/local::lib&quot;&gt;local::lib&lt;/a&gt; without the need to bootstrap anything. At this
+point, all I had to do was something along these lines:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;shell$ perl -MCPAN -Mlocal::lib=--self-contained,my_lib -e &amp;#39;CPAN::install($_) for @ARGV&amp;#39; HTTP::Server::Simple URI Log::Log4perl&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Yes… I’m quite fond of &lt;code&gt;Log::Log4perl&lt;/code&gt;, but that’s another story.&lt;/p&gt;
+
+&lt;p&gt;The installation above went smooth and installed all the modules, and
+their needed &lt;em&gt;non-core&lt;/em&gt; dependencies, under the directory tree starting
+from &lt;code&gt;my_lib&lt;/code&gt;. I checked that there were actually no compiled components
+- dependencies could play some trick - and I verified that I had been
+lucky. Yay!&lt;/p&gt;
+
+&lt;p&gt;The directory structure you end up with is more or less the following:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;my_lib/bin
+my_lib/lib/perl5/...
+my_lib/man&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;I didn’t need either the bin or the man subdirectory, so I just moved
+the contents &lt;code&gt;my_lib/lib/perl5&lt;/code&gt; into a &lt;code&gt;lib&lt;/code&gt; subdirectory, removed what
+remained of &lt;code&gt;my_lib&lt;/code&gt; and… that’s it! Well, wait a minute, I had to
+make a slight change to the code as well:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;#...
+use FindBin;
+use lib $FindBin::Bin;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;OK, now &lt;em&gt;that’s it&lt;/em&gt;! The funny part? I was actually able to use my
+laptop, so I didn’t need anything of this…&lt;/p&gt;
+
+    &lt;p&gt;&lt;a href=&quot;/local-lib-for-distributions/&quot;&gt;local::lib for distributions&lt;/a&gt; was originally published by Flavio Poletti at &lt;a href=&quot;&quot;&gt;PolettiX!&lt;/a&gt; on July 30, 2010.&lt;/p&gt;
+  </content>
+</entry>
+
+
+  
+
+<entry>
+  <title type="html"><![CDATA[Carp::Always would have helped]]></title>
+  <link rel="alternate" type="text/html" href="/carp-always/" />
+  <id>/carp-always</id>
+  <published>2010-05-09T00:00:00+02:00</published>
+  <updated>2010-05-09T00:00:00+02:00</updated>
+  <author>
+    <name>Flavio Poletti</name>
+    <uri></uri>
+    <email>flavio@polettix.it</email>
+  </author>
+  <content type="html">
+    &lt;p&gt;Yesterday I wrote an &lt;a href=&quot;dist-zilla&quot;&gt;article&lt;/a&gt; about &lt;a href=&quot;https://metacpan.org/pod/Dist::Zilla&quot;&gt;Dist::Zilla&lt;/a&gt; and,
+at a certain point, I had issues with a missing &lt;code&gt;Changes&lt;/code&gt; file,
+that triggered an error whose source was not evident:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;~/dzilla/Sample-Module$ dzil release
+[DZ] beginning to build Sample-Module
+[BumpVersionFromGit] Bumping version from 0.1.3 to 0.1.4
+[DZ] guessing dist&amp;#39;s main_module is lib/Sample/Module.pm
+[DZ] extracting distribution abstract from lib/Sample/Module.pm
+[DZ] writing Sample-Module in Sample-Module-0.1.4
+[DZ] writing archive to Sample-Module-0.1.4.tar.gz
+[@Filter/Check] branch master is in a clean state
+[@Filter/TestRelease] ...
+...
+[@Filter/TestRelease] all&amp;#39;s well; removing .build/OIeyjyhBZd
+[FakeRelease] Fake release happening (nothing was really done)
+can&amp;#39;t open Changes for reading: No such file or directory\
+ at /opt/perl-5.8.8/lib/site_perl/5.8.8/Dist/Zilla/File/OnDisk.pm line 31.&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;To find out the offending plugin I decided to hack
+&lt;code&gt;Dist::Zilla::File::OnDisk&lt;/code&gt;, turning a &lt;code&gt;die()&lt;/code&gt; into a &lt;code&gt;Carp::confess()&lt;/code&gt;
+to see what was going wrong:&lt;/p&gt;
+
+&lt;pre&gt;
+&lt;em style=&quot;color:red&quot;&gt;--- src.OnDisk.pm&lt;/em&gt;
+&lt;em style=&quot;color:green&quot;&gt;+++ dst.OnDisk.pm&lt;/em&gt;
+@@ -28,7 +28,8 @@
+ sub _read_file {
+   my ($self) = @_;
+ 
+   my $fname = $self-&amp;gt;_original_name;
+&lt;em style=&quot;color:red&quot;&gt;-  open my $fh, &#39;&amp;lt;&#39;, $fname or die &quot;can&#39;t open $fname for reading: $!&quot;;&lt;/em&gt;
+&lt;em style=&quot;color:green&quot;&gt;+  use Carp;
++  open my $fh, &#39;&amp;lt;&#39;, $fname or Carp::confess &quot;can&#39;t open $fname for reading: $!&quot;;&lt;/em&gt;
+   my $content = do { local $/; &amp;lt;$fh&amp;gt; };
+ }
+
+&lt;/pre&gt;
+
+&lt;p&gt;Had I read the &lt;em&gt;title&lt;/em&gt; of &lt;a href=&quot;http://d.hatena.ne.jp/tokuhirom/&quot;&gt;Tokuhiro Matsuno&lt;/a&gt;’s post
+&lt;a href=&quot;http://d.hatena.ne.jp/tokuhirom/20100508/1273279912&quot;&gt;Carp::Always::Color&lt;/a&gt;
+(well, I can’t read Japanese, so I can’t go beyond an
+English title!), I would have avoided all the editing mess to just
+use &lt;a href=&quot;http://search.cpan.org/~ferreira/&quot;&gt;Adriano Ferreira&lt;/a&gt;’s
+&lt;a href=&quot;https://metacpan.org/pod/Carp::Always&quot;&gt;Carp::Always&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;So, instead of editing the file, I should have find out where
+&lt;code&gt;dzil&lt;/code&gt; is installed in my system:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;~/dzilla/Sample-Module$ which dzil
+/opt/perl/bin/dzil&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;This way, the &lt;code&gt;perl&lt;/code&gt; executable can be called directly to add &lt;a href=&quot;https://metacpan.org/pod/Carp::Always&quot;&gt;Carp::Always&lt;/a&gt;
+in the command line:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;~/dzilla/Sample-Module$ perl -MCarp::Always /opt/perl/bin/dzil release
+[DZ] beginning to build Sample-Module
+[BumpVersionFromGit] Bumping version from 0.1.3 to 0.1.4
+[DZ] guessing dist&amp;#39;s main_module is lib/Sample/Module.pm
+[DZ] extracting distribution abstract from lib/Sample/Module.pm
+[DZ] writing Sample-Module in Sample-Module-0.1.4
+[DZ] writing archive to Sample-Module-0.1.4.tar.gz
+[@Filter/Check] branch master is in a clean state
+[@Filter/TestRelease] ...
+...
+[@Filter/TestRelease] all&amp;#39;s well; removing .build/dE1qIIQWEG
+[FakeRelease] Fake release happening (nothing was really done)
+can&amp;#39;t open Changes for reading: No such file or directory\
+ at /opt/perl-5.8.8/lib/site_perl/5.8.8/Dist/Zilla/File/OnDisk.pm line 31
+   Dist::Zilla::File::OnDisk::_read_file(...
+   Dist::Zilla::File::OnDisk::__ANON__(...
+   Class::MOP::Attribute::default(...
+   Dist::Zilla::File::OnDisk::content(...
+   &amp;lt;em style=&amp;quot;color:red&amp;quot;&amp;gt;Dist::Zilla::Plugin::Git::Commit&amp;lt;/em&amp;gt;::_get_changes(...
+   Dist::Zilla::Plugin::Git::Commit::__ANON__(...
+   String::Formatter::method_replace(...
+   String::Formatter::format(...
+   String::Formatter::__ANON__(...
+   Dist::Zilla::Plugin::Git::Commit::get_commit_message(...
+   Dist::Zilla::Plugin::Git::Commit::after_release(...
+   Dist::Zilla::release(...
+   Dist::Zilla::App::Command::release::execute(...
+   App::Cmd::execute_command(...
+   App::Cmd::run(...&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;em&gt;Voilà&lt;/em&gt;, a perfect stack trace with the info I was after!&lt;/p&gt;
+
+    &lt;p&gt;&lt;a href=&quot;/carp-always/&quot;&gt;Carp::Always would have helped&lt;/a&gt; was originally published by Flavio Poletti at &lt;a href=&quot;&quot;&gt;PolettiX!&lt;/a&gt; on May 09, 2010.&lt;/p&gt;
+  </content>
+</entry>
+
+
+  
+
+<entry>
+  <title type="html"><![CDATA[Giving Dist::Zilla a try]]></title>
+  <link rel="alternate" type="text/html" href="/dist-zilla/" />
+  <id>/dist-zilla</id>
+  <published>2010-05-08T00:00:00+02:00</published>
+  <updated>2010-05-08T00:00:00+02:00</updated>
+  <author>
+    <name>Flavio Poletti</name>
+    <uri></uri>
+    <email>flavio@polettix.it</email>
+  </author>
+  <content type="html">
+    &lt;p&gt;I’m just new to &lt;a href=&quot;https://metacpan.org/pod/Dist::Zilla&quot;&gt;Dist::Zilla&lt;/a&gt;,
+so these are the records of what I found about it… If you’re impatient
+and only want the results, go to &lt;a href=&quot;#the-lucky-path&quot;&gt;The Lucky Path&lt;/a&gt;
+section below, otherwise keep reading!&lt;/p&gt;
+
+&lt;h3 id=&quot;installation&quot;&gt;Installation&lt;/h3&gt;
+
+&lt;p&gt;The installation was more or less flawless. There are a number of
+modules that get installed, other get updated. Curiously enough, the
+installation for &lt;a href=&quot;https://metacpan.org/pod/Dist::Zilla&quot;&gt;Dist::Zilla&lt;/a&gt; itself went wrong due to &lt;a href=&quot;http://rt.perl.org/rt3/Public/Bug/Display.html?id=3038&quot;&gt;a bug in perl
+5.8.x&lt;/a&gt;’s regular
+expression operator &lt;code&gt;qr&lt;/code&gt; that triggers an error in one of the tests.&lt;/p&gt;
+
+&lt;h3 id=&quot;starting-a-new-module&quot;&gt;Starting a new module&lt;/h3&gt;
+
+&lt;p&gt;This step requires you to do work! From the
+&lt;a href=&quot;http://dzil.org/&quot;&gt;official tutorial&lt;/a&gt; (as of May 8, 2010):&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;This document will be overhauled when dzil new is more useful.&lt;br /&gt;
+For now, we won’t even cover the new command, because it’s so pointless.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;So let’s follow &lt;a href=&quot;http://dzil.org/tutorial/new-dist.html&quot;&gt;the hints here&lt;/a&gt;
+and create something:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;~/dzilla$ mkdir Sample-Module
+~/dzilla$ cd Sample-Module
+~/dzilla/Sample-Module$ mkdir t
+~/dzilla/Sample-Module$ mkdir -p lib/Sample
+~/dzilla/Sample-Module$ vi t/00-load.t
+~/dzilla/Sample-Module$ showfile t/00-load.t
+
+|  # vim: filetype=perl :
+|  use strict;
+|  use warnings;
+|
+|  use Test::More tests =&amp;gt; 1; # last test to print
+|
+|  BEGIN {
+|     use_ok(&amp;#39;Sample::Module&amp;#39;);
+|  }
+|
+|  diag(&amp;quot;Testing Sample::Module $Sample::Module::VERSION&amp;quot;);
+
+~/dzilla/Sample-Module$ vi lib/Sample/Module.pm
+~/dzilla/Sample-Module$ show lib/Sample/Module.pm
+
+|  package Sample::Module;
+|  use strict;
+|  use warnings;
+|  use English qw( -no_match_vars );
+|  use Carp;
+|
+|  1;
+|  __END__
+
+~/dzilla/Sample-Module$ vi dist.ini
+~/dzilla/Sample-Module$ show dist.ini
+
+|  name    = Sample-Module
+|  author  = Flavio Poletti &amp;lt;polettix@cpan.org&amp;gt;
+|  license = Perl_5
+|  copyright_holder = Flavio Poletti
+|  
+|  [@Basic]&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;In case you’re wondering, I’m working in Linux and the &lt;code&gt;show&lt;/code&gt;
+stuff above is a shell function defined as follows:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;k&quot;&gt;function&lt;/span&gt; show&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt; 
+    &lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;    &lt;/span&gt;sed &lt;span class=&quot;s1&quot;&gt;&amp;#39;s/^/|  /&amp;#39;&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;$1&amp;quot;&lt;/span&gt;
+    &lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Well… there’s nothing to tell me what to do now, so let’s just
+&lt;code&gt;build&lt;/code&gt; it:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;~/dzilla/Sample-Module$ dzil build
+[DZ] beginning to build Sample-Module
+[DZ] guessing dist&amp;#39;s main_module is lib/Sample/Module.pm
+[DZ] extracting distribution abstract from lib/Sample/Module.pm
+Unable to extract an abstract from lib/Sample.pm. Please add...
+[DZ] no version was ever set...&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Bummer! There seem to be two problems here (and with the tutorial): the
+first one is the absence of the &lt;em&gt;abstract&lt;/em&gt;, the other one seems more
+serious because it triggers some error internally to &lt;a href=&quot;https://metacpan.org/pod/Dist::Zilla&quot;&gt;Dist::Zilla&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h3 id=&quot;adding-an-abstract&quot;&gt;Adding an &lt;code&gt;ABSTRACT&lt;/code&gt;&lt;/h3&gt;
+
+&lt;p&gt;Fixing the first issue should be simple, I remember reading about the
+abstract &lt;a href=&quot;http://dzil.org/tutorial/writing-docs.html&quot;&gt;somewhere&lt;/a&gt;
+and it seems to just require an additional line in the module file:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;~/dzilla/Sample-Module$ vi lib/Sample/Module.pm
+~/dzilla/Sample-Module$ show lib/Sample/Module.pm
+
+|   package Sample::Module;
+|   # ABSTRACT: a sample module to play with Dist::Zilla
+|   
+|   use strict;
+|   use warnings;
+|   use English qw( -no_match_vars );
+|   use Carp;
+|   
+|   1;
+|   __END__
+
+~/dzilla/Sample-Module$ dzil build
+[DZ] beginning to build Sample-Module
+[DZ] guessing dist&amp;#39;s main_module is lib/Sample/Module.pm
+[DZ] extracting distribution abstract from lib/Sample/Module.pm
+[DZ] no version was ever set...&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;I just think that some &lt;em&gt;explicit&lt;/em&gt; mention about the &lt;code&gt;ABSTRACT&lt;/code&gt;
+would be nice on the reader in the tutorial!&lt;/p&gt;
+
+&lt;h3 id=&quot;dealing-with-the-version&quot;&gt;Dealing with the &lt;em&gt;version&lt;/em&gt;&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://dzil.org/tutorial/versioning.html&quot;&gt;Managing Version Numbering with Dist::Zilla&lt;/a&gt;
+seems to be a good candidate to get rid of the second error. I find
+particularly reassuring the following sentence:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;The simplest way to specify your dist’s version is to put it in &lt;em&gt;dist.ini&lt;/em&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;so let’s try it immediately:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;~/dzilla/Sample-Module$ vi dist.ini
+~/dzilla/Sample-Module$ show dist.ini
+
+|   name    = Sample-Module
+|   &amp;lt;em style=&amp;quot;color:red&amp;quot;&amp;gt;version = 3.14.15&amp;lt;/em&amp;gt;
+|   author  = Flavio Poletti &amp;lt;polettix@cpan.org&amp;gt;
+|   license = Perl_5
+|   copyright_holder = Flavio Poletti
+|   
+|   [@Basic]
+
+~/dzilla/Sample-Module$ dzil build
+[DZ] beginning to build Sample-Module
+[DZ] guessing dist&amp;#39;s main_module is lib/Sample/Module.pm
+[DZ] extracting distribution abstract from lib/Sample/Module.pm
+[DZ] writing Sample-Module in Sample-Module-3.14.15
+[DZ] writing archive to Sample-Module-3.14.15.tar.gz&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;WTF? Definitely not what I expected from a &lt;code&gt;build&lt;/code&gt; command!
+&lt;a href=&quot;#build-wtf&quot;&gt;I’ll dig it later&lt;/a&gt;, now let’s try to test it:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;~/dzilla/Sample-Module$ dzil test
+[DZ] building test distribution under .build/krERIMYW7M
+[DZ] beginning to build Sample-Module
+[DZ] guessing dist&amp;#39;s main_module is lib/Sample/Module.pm
+[DZ] extracting distribution abstract from lib/Sample/Module.pm
+[DZ] writing Sample-Module in .build/krERIMYW7M
+Checking if your kit is complete...
+Looks good
+Writing Makefile for Sample::Module
+cp lib/Sample/Module.pm blib/lib/Sample/Module.pm
+PERL_DL_NONLAZY=1 /opt/perl-5.8.8/bin/perl...
+&amp;lt;em style=&amp;quot;color:red&amp;quot;&amp;gt;t/00-load.t .. 1/1 Use of uninitialized value in concatenation (.) or string at t/00-load.t line 11.&amp;lt;/em&amp;gt;
+# Testing Sample::Module 
+t/00-load.t .. ok   
+All tests successful.
+Files=1, Tests=1,  0 wallclock secs ( 0.01 usr  0.02 sys +  0.02 cusr  0.00 csys =  0.05 CPU)
+Result: PASS
+[DZ] all&amp;#39;s well; removing .build/krERIMYW7M&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Yay, it’s working… more or less. There is still no &lt;code&gt;$VERSION&lt;/code&gt;
+in my module, and this is something that annoyed me a lot in these years.
+Maybe it’s time to read some more from the tutorial:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;There are a number of plugins that put your version number to use.
+PkgVersion inserts a $VERSION definition in all your packages so that
+they’ll all have versions matching distribution’s version. NextRelease
+adds version headers to your changelog file so you don’t need to worry
+about what the next version number will be until it’s built. PodVersion
+or PodWeaver can insert a =head1 VERSION section in your documentation.
+The Git integration plugins system uses your version to tag releases.&lt;/p&gt;
+
+  &lt;p&gt;All of these plugins go a long way to taking care of version
+accounting for you. PkgVersion and the Pod mungers, especially,
+eliminate the need to update multiple files in multiple ways.&lt;/p&gt;
+
+  &lt;p&gt;The next step to letting Dist::Zilla help manage your versions is to
+let it manange your version numbering, too.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Well, let’s try this again then…&lt;/p&gt;
+
+&lt;h3 id=&quot;dealing-with-the-version-reloaded&quot;&gt;Dealing with the éversion*, reloaded&lt;/h3&gt;
+
+&lt;p&gt;I would actually have done this step in any case, because I’m lazy and
+I like my system to figure out stuff like version numbering, unless it’s
+time that I really need to bump the version. I also use
+&lt;a href=&quot;http://git-scm.com/&quot;&gt;git&lt;/a&gt;, so it seems I’m quite lucky because
+of &lt;a href=&quot;http://search.cpan.org/dist/Dist-Zilla-Plugin-BumpVersionFromGit/&quot;&gt;Dist::Zilla::Plugin::BumpVersionFromGit&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;The installation of this module is not clean, anyway. In particular,
+it seems that using Debian’s git is not liked very much by this module,
+that has tests fixed for version 1.7 while I have 1.5:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;#   Failed test at t/basic.t line 45.
+#                   &amp;#39;git: &amp;#39;a-command-not-likely-to-exist&amp;#39; is not a git-command. See &amp;#39;git --help&amp;#39;.
+# &amp;#39;
+#     doesn&amp;#39;t match &amp;#39;(?-xism:which does not exist)&amp;#39;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;How the hell did they decide to change error messages is obscure to me.
+Now the problem is… to install or not to install? Probably the best thing
+to do would be to self-compile git and go with the bleading edge, but I’m
+lazy enough to decide that &lt;code&gt;git tag&lt;/code&gt; is probably unchanged…
+so I go for &lt;code&gt;make install&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;After the installation, following &lt;a href=&quot;http://search.cpan.org/dist/Dist-Zilla-Plugin-BumpVersionFromGit/&quot;&gt;Dist::Zilla::Plugin::BumpVersionFromGit&lt;/a&gt;
+should be easy:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;~/dzilla/Sample-Module$ vi dist.ini
+~/dzilla/Sample-Module$ show dist.ini
+
+|   name    = Sample-Module
+|   author  = Flavio Poletti &amp;lt;polettix@cpan.org&amp;gt;
+|   license = Perl_5
+|   copyright_holder = Flavio Poletti
+|   
+|   [@Basic]
+|   
+|   [BumpVersionFromGit]
+|   first_version = 0.1.0
+|   version_regexp  = ^v(.+)$&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;So let’s try:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;~/dzilla/Sample-Module$ dzil test
+[DZ] building test distribution under .build/hYUzF1mKs7
+[DZ] beginning to build Sample-Module
+[DZ] guessing dist&amp;#39;s main_module is lib/Sample/Module.pm
+[DZ] extracting distribution abstract from lib/Sample/Module.pm
+fatal: Not a git repository&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Ach! I didn’t initialise the git repository!!! Let’s fix this:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;~/dzilla/Sample-Module$ git init
+Initialized empty Git repository in .git/
+~/dzilla/Sample-Module$ git add dist.ini lib/Sample/Module.pm t/00-load.t
+~/dzilla/Sample-Module$ git commit -m &amp;#39;Initial import&amp;#39;
+Created initial commit bf8a91c: Initial import
+ 3 files changed, 31 insertions(+), 0 deletions(-)
+ create mode 100644 dist.ini
+ create mode 100644 lib/Sample/Module.pm
+ create mode 100644 t/00-load.t&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;and give it a new try:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;~/dzilla/Sample-Module$ dzil test
+[DZ] building test distribution under .build/6rSmgX1Gpw
+[DZ] beginning to build Sample-Module
+[DZ] guessing dist&amp;#39;s main_module is lib/Sample/Module.pm
+[DZ] extracting distribution abstract from lib/Sample/Module.pm
+[DZ] writing Sample-Module in .build/6rSmgX1Gpw
+Checking if your kit is complete...
+Looks good
+Writing Makefile for Sample::Module
+cp lib/Sample/Module.pm blib/lib/Sample/Module.pm
+PERL_DL_NONLAZY=1 /opt/perl-5.8.8/bin/perl...
+t/00-load.t .. 1/1 Use of uninitialized value in concatenation (.) or string at t/00-load.t line 11.
+# Testing Sample::Module 
+t/00-load.t .. ok   
+All tests successful.
+Files=1, Tests=1,  0 wallclock secs ( 0.00 usr  0.02 sys +  0.01 cusr  0.02 csys =  0.05 CPU)
+Result: PASS
+[DZ] all&amp;#39;s well; removing .build/6rSmgX1Gpw&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;What’s wrong now?!? OK I get it, it draws the &lt;em&gt;whole bundle&lt;/em&gt; version
+number from git, but still does not set it inside modules; it seems that I
+did not read the tutorial with sufficient attention:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;There are a number of plugins that put your version number to use.
+&lt;strong&gt;PkgVersion inserts a &lt;code&gt;$VERSION&lt;/code&gt; definition in all your packages so
+that they’ll all have versions matching distribution’s version.&lt;/strong&gt;
+NextRelease adds version headers to your changelog file so you don’t
+need to worry about what the next version number will be until it’s
+built. PodVersion or PodWeaver can insert a &lt;code&gt;=head1 VERSION&lt;/code&gt; section in
+your documentation. The Git integration plugins system uses your version
+to tag releases.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Let’s add &lt;code&gt;PkgVersion&lt;/code&gt; then, and give it yet another try:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;~/dzilla/Sample-Module$ vi dist.ini
+~/dzilla/Sample-Module$ show dist.ini
+
+|   name    = Sample-Module
+|   author  = Flavio Poletti &amp;lt;polettix@cpan.org&amp;gt;
+|   license = Perl_5
+|   copyright_holder = Flavio Poletti
+|   
+|   [@Basic]
+|   [PkgVersion]
+|   
+|   [BumpVersionFromGit]
+|   first_version = 0.1.0
+|   version_regexp  = ^v(.+)$
+
+~/dzilla/Sample-Module$ dzil test
+[DZ] building test distribution under .build/uFlnF2gzDc
+[DZ] beginning to build Sample-Module
+[DZ] guessing dist&amp;#39;s main_module is lib/Sample/Module.pm
+[DZ] extracting distribution abstract from lib/Sample/Module.pm
+[DZ] writing Sample-Module in .build/uFlnF2gzDc
+Checking if your kit is complete...
+Looks good
+Writing Makefile for Sample::Module
+cp lib/Sample/Module.pm blib/lib/Sample/Module.pm
+PERL_DL_NONLAZY=1 /opt/perl-5.8.8/bin/perl...
+t/00-load.t .. 1/1 # Testing Sample::Module 0.1.0
+t/00-load.t .. ok   
+All tests successful.
+Files=1, Tests=1,  1 wallclock secs ( 0.01 usr  0.02 sys +  0.01 cusr  0.01 csys =  0.05 CPU)
+Result: PASS
+[DZ] all&amp;#39;s well; removing .build/uFlnF2gzDc&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;According to the docs, I can bump the version by myself:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;~/dzilla/Sample-Module$ V=3.14.15 dzil build
+[DZ] beginning to build Sample-Module
+[DZ] guessing dist&amp;#39;s main_module is lib/Sample/Module.pm
+[DZ] extracting distribution abstract from lib/Sample/Module.pm
+[DZ] writing Sample-Module in Sample-Module-&amp;lt;em style=&amp;quot;color:red&amp;quot;&amp;gt;3.14.15&amp;lt;/em&amp;gt;
+[DZ] writing archive to Sample-Module-&amp;lt;em style=&amp;quot;color:red&amp;quot;&amp;gt;3.14.15&amp;lt;/em&amp;gt;.tar.gz&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;a name=&quot;build-wtf&quot;&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;dzil-build-wtf&quot;&gt;&lt;code&gt;dzil build&lt;/code&gt; WTF?&lt;/h3&gt;
+
+&lt;p&gt;I expected &lt;code&gt;build&lt;/code&gt; to do something similar
+to either &lt;a href=&quot;https://metacpan.org/pod/Module::Build&quot;&gt;Module::Build&lt;/a&gt;’s &lt;code&gt;./Build&lt;/code&gt;
+or &lt;a href=&quot;https://metacpan.org/pod/ExtUtils::MakeMaker&quot;&gt;ExtUtils::MakeMaker&lt;/a&gt;’s &lt;code&gt;make&lt;/code&gt;,
+but it seems that it actually builds up the
+distribution file, &lt;em&gt;a-la&lt;/em&gt; &lt;code&gt;./Build dist&lt;/code&gt; or &lt;code&gt;make dist&lt;/code&gt;. To be
+fair, it’s written in the help:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;~/dzilla/Sample-Module$ dzil | grep build:
+     build: build your dist&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;but I’m not particularly fond of these changes in terminology, especially
+when they change from well-established conventions.&lt;/p&gt;
+
+&lt;p&gt;As a CPAN author that uses these modules from some time,
+&lt;code&gt;dist&lt;/code&gt; would be much, much better.&lt;/p&gt;
+
+&lt;h3 id=&quot;so-whats-inside-that-package&quot;&gt;So, what’s inside that package?&lt;/h3&gt;
+
+&lt;p&gt;This is what’s inside the directory after running &lt;code&gt;dzil build&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;~/dzilla/Sample-Module$ dir
+total 24
+-rw-r--r-- 1 poletti dialout  148 2010-05-08 12:52 dist.ini
+drwxr-xr-x 3 poletti dialout 4096 2010-05-08 12:20 lib
+drwxr-xr-x 4 poletti dialout 4096 2010-05-08 12:52 Sample-Module-3.14.15
+-rw-r--r-- 1 poletti dialout 7920 2010-05-08 12:52 Sample-Module-3.14.15.tar.gz
+drwxr-xr-x 2 poletti dialout 4096 2010-05-08 12:21 t
+~/dzilla/Sample-Module$ cd Sample-Module-3.14.15
+~/dzilla/Sample-Module/Sample-Module-3.14.15$ dir
+total 48
+-rw-r--r-- 1 poletti dialout   148 2010-05-08 12:52 dist.ini
+drwxr-xr-x 3 poletti dialout  4096 2010-05-08 12:52 lib
+-rw-r--r-- 1 poletti dialout 18258 2010-05-08 12:52 LICENSE
+-rw-r--r-- 1 poletti dialout   977 2010-05-08 12:52 Makefile.PL
+-rw-r--r-- 1 poletti dialout    86 2010-05-08 12:52 MANIFEST
+-rw-r--r-- 1 poletti dialout   386 2010-05-08 12:52 META.yml
+-rw-r--r-- 1 poletti dialout   311 2010-05-08 12:52 README
+drwxr-xr-x 2 poletti dialout  4096 2010-05-08 12:52 t&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Well, it seems that promises have been kept!&lt;/p&gt;
+
+&lt;h3 id=&quot;dealing-with-the-version-revolution&quot;&gt;Dealing with the &lt;em&gt;version&lt;/em&gt;, revolution&lt;/h3&gt;
+
+&lt;p&gt;There’s one final thing to do with version numbering, anyway: git must be
+told to “remember” it, otherwise I’m still stuck in dealing with this
+stuff by myself. &lt;a href=&quot;https://metacpan.org/pod/Dist::Zilla::Plugin::Git&quot;&gt;Dist::Zilla::Plugin::Git&lt;/a&gt; comes to the
+rescue, according to &lt;a href=&quot;http://dzil.org/tutorial/vcs-git.html&quot;&gt;this tutorial page&lt;/a&gt;.
+Well, actually the tutorial page gives for granted that you already
+know the module and installed it:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;~/dzilla/Sample-Module$ vi dist.ini
+~/dzilla/Sample-Module$ show dist.ini
+
+|   name    = Sample-Module
+|   author  = Flavio Poletti &amp;lt;polettix@cpan.org&amp;gt;
+|   license = Perl_5
+|   copyright_holder = Flavio Poletti
+|   
+|   [@Basic]
+|   [PkgVersion]
+|   [@Git]
+|   
+|   [BumpVersionFromGit]
+|   first_version = 0.1.0
+|   version_regexp  = ^v(.+)$
+
+~/dzilla/Sample-Module$ dzil test
+couldn&amp;#39;t load plugin @Git given in config: Can&amp;#39;t locate Dist/Zilla/PluginBundle/Git.pm
+...
+[lots of error lines here]&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Unluckily, the module installation is not clean due to git’s version…
+again. From the &lt;code&gt;Changes&lt;/code&gt; file:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;fix tests to work with git 1.7.0&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;This time the problem seems to be a bit more serious, so I decide to
+upgrade git and the module eventually gets installed. Time to give it a try:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;~/dzilla/Sample-Module$ dzil release
+[DZ] beginning to build Sample-Module
+[DZ] guessing dist&amp;#39;s main_module is lib/Sample/Module.pm
+[DZ] extracting distribution abstract from lib/Sample/Module.pm
+[DZ] writing Sample-Module in Sample-Module-0.1.0
+[DZ] writing archive to Sample-Module-0.1.0.tar.gz
+[@Basic/TestRelease] ...
+...
+Result: PASS
+[@Basic/TestRelease] all&amp;#39;s well; removing .build/uFQW51GQq_
+
+*** Preparing to upload Sample-Module-0.1.0.tar.gz to CPAN ***
+
+Do you want to continue the release process? (yes/no) [no]&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Hey, wait a moment! I have uncommitted files, why didn’t it spot them?&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;~/dzilla/Sample-Module$ git status
+# On branch master
+# Changed but not updated:
+...
+# Untracked files:
+...&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;It turns out to be an ordering problem inside &lt;code&gt;dist.ini&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;~/dzilla/Sample-Module$ vi dist.ini
+~/dzilla/Sample-Module$ show dist.ini
+
+|   name    = Sample-Module
+|   author  = Flavio Poletti &amp;lt;polettix@cpan.org&amp;gt;
+|   license = Perl_5
+|   copyright_holder = Flavio Poletti
+|   
+|   &amp;lt;em style=&amp;quot;color:red&amp;quot;&amp;gt;[@Git]&amp;lt;/em&amp;gt;
+|   [@Basic]
+|   [PkgVersion]
+|   
+|   [BumpVersionFromGit]
+|   first_version = 0.1.0
+|   version_regexp  = ^v(.+)$
+
+~/dzilla/Sample-Module$ dzil release
+[DZ] beginning to build Sample-Module
+[DZ] guessing dist&amp;#39;s main_module is lib/Sample/Module.pm
+[DZ] extracting distribution abstract from lib/Sample/Module.pm
+[DZ] writing Sample-Module in Sample-Module-0.1.0
+[DZ] writing archive to Sample-Module-0.1.0.tar.gz
+[@Git/Check] branch master has some untracked files:
+[@Git/Check]   Sample-Module-0.1.0.tar.gz
+[@Git/Check]   Sample-Module-0.1.0/LICENSE
+[@Git/Check]   Sample-Module-0.1.0/MANIFEST
+[@Git/Check]   Sample-Module-0.1.0/META.yml
+[@Git/Check]   Sample-Module-0.1.0/Makefile.PL
+[@Git/Check]   Sample-Module-0.1.0/README
+[@Git/Check]   Sample-Module-0.1.0/dist.ini
+[@Git/Check]   Sample-Module-0.1.0/lib/Sample/Module.pm
+[@Git/Check]   Sample-Module-0.1.0/t/00-load.t ...&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;The check works, at last. It’s interesting (and correct) that &lt;code&gt;dist.ini&lt;/code&gt;
+does not participate in the checks. Now let’s see if it all works, it’s
+necessary to add the release package names in the exclusion list for
+git:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;~/dzilla/Sample-Module$ vi .git/info/exclude
+~/dzilla/Sample-Module$ show .git/info/exclude
+
+|   # git-ls-files --others --exclude-from=.git/info/exclude
+|   # Lines that start with &amp;#39;#&amp;#39; are comments.
+|   # For a project mostly in C, the following would be a good set of
+|   # exclude patterns (uncomment them if you want to use them):
+|   # *.[oa]
+|   # *~
+|   Sample-Module-*&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;and then re-run the &lt;code&gt;release&lt;/code&gt; command:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;~/dzilla/Sample-Module$ dzil release
+[DZ] beginning to build Sample-Module
+[DZ] guessing dist&amp;#39;s main_module is lib/Sample/Module.pm
+[DZ] extracting distribution abstract from lib/Sample/Module.pm
+[DZ] writing Sample-Module in Sample-Module-0.1.0
+[DZ] writing archive to Sample-Module-0.1.0.tar.gz
+[@Git/Check] branch master is in a clean state
+[@Basic/TestRelease] Extracting ...
+...
+[@Basic/TestRelease] all&amp;#39;s well; removing .build/EqUfLZpmQJ
+
+*** Preparing to upload Sample-Module-0.1.0.tar.gz to CPAN ***
+
+Do you want to continue the release process? (yes/no) [no]^C
+[@Basic/ConfirmRelease] Aborting release...&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Well, we’re going a bit too far, I don’t want to push this stuff to
+CPAN. It seems that this is due to some plugin in the &lt;code&gt;@Basic&lt;/code&gt; bundle,
+so let’s see how to disable it… In &lt;a href=&quot;https://metacpan.org/pod/Dist::Zilla&quot;&gt;Dist::Zilla&lt;/a&gt; distribution page
+there’s an interesting &lt;a href=&quot;https://metacpan.org/pod/Dist::Zilla::PluginBundle::Filter&quot;&gt;Dist::Zilla::PluginBundle::Filter&lt;/a&gt; so I get rid
+of the basic bundle and go for the filter:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;~/dzilla/Sample-Module$ vi dist.ini
+~/dzilla/Sample-Module$ show dist.ini
+
+|   name    = Sample-Module
+|   author  = Flavio Poletti &amp;lt;polettix@cpan.org&amp;gt;
+|   license = Perl_5
+|   copyright_holder = Flavio Poletti
+|   
+|   [@Git]
+|   &amp;lt;em style=&amp;quot;color:red&amp;quot;&amp;gt;[@Filter]&amp;lt;/em&amp;gt;
+|   &amp;lt;em style=&amp;quot;color:red&amp;quot;&amp;gt;bundle = @Basic&amp;lt;/em&amp;gt;
+|   &amp;lt;em style=&amp;quot;color:red&amp;quot;&amp;gt;remove = UploadToCPAN&amp;lt;/em&amp;gt;
+|   &amp;lt;em style=&amp;quot;color:red&amp;quot;&amp;gt;remove = ConfirmRelease&amp;lt;/em&amp;gt;
+|   [PkgVersion]
+|   
+|   [BumpVersionFromGit]
+|   first_version = 0.1.0
+|   version_regexp  = ^v(.+)$&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Time for a new test&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;~/dzilla/Sample-Module$ dzil release
+you can&amp;#39;t release without any Releaser plugins ...&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Ouch! I hope &lt;a href=&quot;https://metacpan.org/pod/Dist::Zilla::Plugin::FakeRelease&quot;&gt;Dist::Zilla::Plugin::FakeRelease&lt;/a&gt; will help me out:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;~/dzilla/Sample-Module$ vi dist.ini
+~/dzilla/Sample-Module$ show dist.ini
+
+|   name    = Sample-Module
+|   author  = Flavio Poletti &amp;lt;polettix@cpan.org&amp;gt;
+|   license = Perl_5
+|   copyright_holder = Flavio Poletti
+|   
+|   [@Git]
+|   [@Filter]
+|   bundle = @Basic
+|   remove = UploadToCPAN
+|   remove = ConfirmRelease
+|   &amp;lt;em style=&amp;quot;color:red&amp;quot;&amp;gt;[FakeRelease]&amp;lt;/em&amp;gt;
+|   [PkgVersion]
+|   
+|   [BumpVersionFromGit]
+|   first_version = 0.1.0
+|   version_regexp  = ^v(.+)$&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Now, just to double-check the &lt;code&gt;Git::Check&lt;/code&gt; module, I modify a file:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;~/dzilla/Sample-Module$ vi lib/Sample/Module.pm
+~/dzilla/Sample-Module$ show lib/Sample/Module.pm
+
+|   package Sample::Module;
+|   # ABSTRACT: a sample module to play with Dist::Zilla
+|   # just a comment
+|   
+|   use strict;
+|   use warnings;
+|   use English qw( -no_match_vars );
+|   use Carp;
+|   
+|   1;
+|   __END__&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;and run the &lt;code&gt;release&lt;/code&gt; command once again:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;~/dzilla/Sample-Module$ dzil release
+[DZ] beginning to build Sample-Module
+[DZ] guessing dist&amp;#39;s main_module is lib/Sample/Module.pm
+[DZ] extracting distribution abstract from lib/Sample/Module.pm
+[DZ] writing Sample-Module in Sample-Module-0.1.0
+[DZ] writing archive to Sample-Module-0.1.0.tar.gz
+[@Git/Check] branch master has some uncommitted files:
+[@Git/Check]   lib/Sample/Module.pm ...&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Awesome! After committing let’s try this again:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;~/dzilla/Sample-Module$ git commit lib/Sample/Module.pm -m &amp;quot;added comment&amp;quot;
+~/dzilla/Sample-Module$ dzil release
+[DZ] beginning to build Sample-Module
+[DZ] guessing dist&amp;#39;s main_module is lib/Sample/Module.pm
+[DZ] extracting distribution abstract from lib/Sample/Module.pm
+[DZ] writing Sample-Module in Sample-Module-0.1.0
+[DZ] writing archive to Sample-Module-0.1.0.tar.gz
+[@Git/Check] branch master is in a clean state
+[@Filter/TestRelease] ...
+...
+[@Filter/TestRelease] all&amp;#39;s well; removing .build/yqbgoYW_GV
+[FakeRelease] Fake release happening (nothing was really done)
+[@Git/Tag] Tagged v0.1.0
+[@Git/Push] pushing to origin
+fatal: &amp;#39;origin&amp;#39; does not appear to be a git repository
+fatal: The remote end hung up unexpectedly&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Uhm, it seems that I’d better get rid of the &lt;code&gt;Git::Push&lt;/code&gt; plugin,
+because my repository is local:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;~/dzilla/Sample-Module$ vi dist.ini
+~/dzilla/Sample-Module$ show dist.ini
+
+|   name    = Sample-Module
+|   author  = Flavio Poletti &amp;lt;polettix@cpan.org&amp;gt;
+|   license = Perl_5
+|   copyright_holder = Flavio Poletti
+|   
+|   [@Filter]
+|   bundle = @Git
+|   remove = Git::Push
+|   [@Filter]
+|   bundle = @Basic
+|   remove = UploadToCPAN
+|   remove = ConfirmRelease
+|   [FakeRelease]
+|   [PkgVersion]
+|   
+|   [BumpVersionFromGit]
+|   first_version = 0.1.0
+|   version_regexp  = ^v(.+)$
+
+~/dzilla/Sample-Module$ dzil release
+[DZ] beginning to build Sample-Module
+[BumpVersionFromGit] Bumping version from 0.1.0 to 0.1.1
+[DZ] guessing dist&amp;#39;s main_module is lib/Sample/Module.pm
+[DZ] extracting distribution abstract from lib/Sample/Module.pm
+[DZ] writing Sample-Module in Sample-Module-0.1.1
+[DZ] writing archive to Sample-Module-0.1.1.tar.gz
+[@Filter/Check] branch master is in a clean state
+[@Filter/TestRelease] Extracting ...
+...
+[@Filter/TestRelease] all&amp;#39;s well; removing .build/E9CAlzs8sG
+[FakeRelease] Fake release happening (nothing was really done)
+can&amp;#39;t open Changes for reading:  No such file or directory\
+ at /opt/perl-5.8.8/lib/site_perl/5.8.8/Dist/Zilla/File/OnDisk.pm line 31&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;OK, the version bumping works, all’s well but… there’s an error at the
+end! First of all, I wonder why it didn’t pop up last time the release
+process blocked in &lt;code&gt;Git::Push&lt;/code&gt;, but whatever the reason I have
+to find who’s preventing this release from happening. This requires a
+little hack into &lt;a href=&quot;https://metacpan.org/pod/Dist::Zilla&quot;&gt;Dist::Zilla&lt;/a&gt; itself, in particular inside the
+offending module &lt;code&gt;Dist::Zilla::File::OnDisk&lt;/code&gt; we change the
+&lt;code&gt;die()&lt;/code&gt; into &lt;code&gt;Carp::confess&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;can&amp;#39;t open Changes for reading: No such file or directory...
+   Dist::Zilla::File::OnDisk::_read_file(...
+   Dist::Zilla::File::OnDisk::__ANON__(...
+   Class::MOP::Attribute::default(...
+   Dist::Zilla::File::OnDisk::content(...
+   Dist::Zilla::Plugin::Git::Commit::_get_changes(...
+   Dist::Zilla::Plugin::Git::Commit::__ANON__(...
+   String::Formatter::method_replace(...
+   String::Formatter::format(...
+   String::Formatter::__ANON__(...
+   Dist::Zilla::Plugin::Git::Commit::get_commit_message(...
+   &amp;lt;em style=&amp;quot;color:red&amp;quot;&amp;gt;Dist::Zilla::Plugin::Git::Commit&amp;lt;/em&amp;gt;::after_release(...
+   Dist::Zilla::release(...
+   Dist::Zilla::App::Command::release::execute(...
+   App::Cmd::execute_command(...
+   App::Cmd::run(...&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;So that’s the culprit… &lt;code&gt;DZP::Git::Commit&lt;/code&gt;! For the &lt;code&gt;$VERSION&lt;/code&gt; stuff we
+don’t actually need it, so let’s rule it away for the moment:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;~/dzilla/Sample-Module$ vi dist.ini
+~/dzilla/Sample-Module$ show dist.ini
+
+|   name    = Sample-Module
+|   author  = Flavio Poletti &amp;lt;polettix@cpan.org&amp;gt;
+|   license = Perl_5
+|   copyright_holder = Flavio Poletti
+|   
+|   [@Filter]
+|   bundle = @Git
+|   remove = Git::Push
+|   remove = Git::Commit
+|   [@Filter]
+|   bundle = @Basic
+|   remove = UploadToCPAN
+|   remove = ConfirmRelease
+|   [FakeRelease]
+|   [PkgVersion]
+|   
+|   [BumpVersionFromGit]
+|   first_version = 0.1.0
+|   version_regexp  = ^v(.+)$
+
+~/dzilla/Sample-Module$ dzil release
+[DZ] beginning to build Sample-Module
+[BumpVersionFromGit] Bumping version from 0.1.0 to 0.1.1
+[DZ] guessing dist&amp;#39;s main_module is lib/Sample/Module.pm
+[DZ] extracting distribution abstract from lib/Sample/Module.pm
+[DZ] writing Sample-Module in Sample-Module-0.1.1
+[DZ] writing archive to Sample-Module-0.1.1.tar.gz
+[@Filter/Check] branch master is in a clean state
+[@Filter/TestRelease] Extracting ...
+...
+[@Filter/TestRelease] all&amp;#39;s well; removing .build/ieACRWrTGf
+[FakeRelease] Fake release happening (nothing was really done)
+[@Filter/Tag] Tagged v0.1.1&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;At the very last!!! Anyway, having a &lt;code&gt;Changes&lt;/code&gt; file is actually a good
+thing, so let’s add one and restore the ruled out plugin:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;~/dzilla/Sample-Module$ touch Changes
+~/dzilla/Sample-Module$ git add Changes
+~/dzilla/Sample-Module$ git commit Changes -m &amp;#39;added Changes file&amp;#39;
+[master 27e56cd] added Changes file
+ 0 files changed, 0 insertions(+), 0 deletions(-)
+ create mode 100644 Changes
+~/dzilla/Sample-Module$ vi dist.ini
+~/dzilla/Sample-Module$ show dist.ini
+
+|   name    = Sample-Module
+|   author  = Flavio Poletti &amp;lt;polettix@cpan.org&amp;gt;
+|   license = Perl_5
+|   copyright_holder = Flavio Poletti
+|   
+|   [@Filter]
+|   bundle = @Git
+|   remove = Git::Push
+|   [@Filter]
+|   bundle = @Basic
+|   remove = UploadToCPAN
+|   remove = ConfirmRelease
+|   [FakeRelease]
+|   [PkgVersion]
+|   
+|   [BumpVersionFromGit]
+|   first_version = 0.1.0
+|   version_regexp  = ^v(.+)$
+
+~/dzilla/Sample-Module$ dzil release
+[DZ] beginning to build Sample-Module
+[BumpVersionFromGit] Bumping version from 0.1.1 to 0.1.2
+[DZ] guessing dist&amp;#39;s main_module is lib/Sample/Module.pm
+[DZ] extracting distribution abstract from lib/Sample/Module.pm
+[DZ] writing Sample-Module in Sample-Module-0.1.2
+[DZ] writing archive to Sample-Module-0.1.2.tar.gz
+[@Filter/Check] branch master is in a clean state
+[@Filter/TestRelease] ...
+...
+[@Filter/TestRelease] all&amp;#39;s well; removing .build/dvgGmImcg2
+[FakeRelease] Fake release happening (nothing was really done)
+[@Filter/Commit] Committed dist.ini
+[@Filter/Tag] Tagged v0.1.2
+~/dzilla/Sample-Module$ show Changes&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Much ado abouth nothing? Maybe I have to actually do some changes, let’s
+try:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;~/dzilla/Sample-Module$ vi lib/Sample/Module.pm
+~/dzilla/Sample-Module$ show lib/Sample/Module.pm
+
+|   package Sample::Module;
+|   # ABSTRACT: a sample module to play with Dist::Zilla
+|   # just a comment, extended
+|   
+|   use strict;
+|   use warnings;
+|   use English qw( -no_match_vars );
+|   use Carp;
+|   
+|   1;
+|   __END__
+
+~/dzilla/Sample-Module$ dzil release
+[DZ] beginning to build Sample-Module
+[BumpVersionFromGit] Bumping version from 0.1.2 to 0.1.3
+[DZ] guessing dist&amp;#39;s main_module is lib/Sample/Module.pm
+[DZ] extracting distribution abstract from lib/Sample/Module.pm
+[DZ] writing Sample-Module in Sample-Module-0.1.3
+[DZ] writing archive to Sample-Module-0.1.3.tar.gz
+[@Filter/Check] branch master has some uncommitted files:
+[@Filter/Check]   lib/Sample/Module.pm ...&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Correct, let’s commit and go forth:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;~/dzilla/Sample-Module$ git commit -a -m &amp;quot;extended the comment&amp;quot;
+[master 71a01c0] extended the comment
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+&amp;lt;b&amp;gt;~/dzilla/Sample-Module$ dzil release&amp;lt;/b&amp;gt;
+[DZ] beginning to build Sample-Module
+[BumpVersionFromGit] Bumping version from 0.1.2 to 0.1.3
+[DZ] guessing dist&amp;#39;s main_module is lib/Sample/Module.pm
+[DZ] extracting distribution abstract from lib/Sample/Module.pm
+[DZ] writing Sample-Module in Sample-Module-0.1.3
+[DZ] writing archive to Sample-Module-0.1.3.tar.gz
+[@Filter/Check] branch master is in a clean state
+[@Filter/TestRelease] ...
+...
+[@Filter/TestRelease] all&amp;#39;s well; removing .build/yn5wsMwfpC
+[FakeRelease] Fake release happening (nothing was really done)
+[@Filter/Tag] Tagged v0.1.3
+~/dzilla/Sample-Module$ show Changes&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Still nothing, but this will probably be meat for some future article!&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;Update&lt;/em&gt;: I later tried to move the &lt;code&gt;Git&lt;/code&gt; stuff before
+the &lt;code&gt;Basic&lt;/code&gt; and release stuff, and it actually worked as expected:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;~dzilla/Sample-Module$ show dist.ini
+
+|   name    = Sample-Module
+|   author  = Flavio Poletti &amp;lt;polettix@cpan.org&amp;gt;
+|   license = Perl_5
+|   copyright_holder = Flavio Poletti
+|   
+|   [@Filter]
+|   bundle = @Basic
+|   remove = UploadToCPAN
+|   remove = ConfirmRelease
+|   [FakeRelease]
+|   [@Filter]
+|   bundle = @Git
+|   remove = Git::Push
+|   [PkgVersion]
+|   
+|   [BumpVersionFromGit]
+|   first_version = 0.1.0
+|   version_regexp  = ^v(.+)$
+
+~dzilla/Sample-Module$ dzil release
+[DZ] beginning to build Sample-Module
+[BumpVersionFromGit] Bumping version from 0.1.3 to 0.1.4
+[DZ] guessing dist&amp;#39;s main_module is lib/Sample/Module.pm
+[DZ] extracting distribution abstract from lib/Sample/Module.pm
+[DZ] writing Sample-Module in Sample-Module-0.1.4
+[DZ] writing archive to Sample-Module-0.1.4.tar.gz
+[@Filter/TestRelease] Extracting ...
+...
+[@Filter/TestRelease] all&amp;#39;s well; removing .build/zD6QJBMw7z
+[@Filter/Check] branch master has some untracked files:
+[@Filter/Check]   adjust.pl ...&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;I don’t actually understand why this happens; anyway, I still think that
+keeping the &lt;code&gt;Git::Check&lt;/code&gt; stuff before is better, because the whole
+build and test stuff is not performed if there are pending commits.&lt;/p&gt;
+
+&lt;p&gt;&lt;a name=&quot;the-lucky-path&quot;&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;the-lucky-path&quot;&gt;The Lucky Path&lt;/h3&gt;
+
+&lt;p&gt;Well, back to the very beginning… what should I do to:
+- start using &lt;a href=&quot;https://metacpan.org/pod/Dist::Zilla&quot;&gt;Dist::Zilla&lt;/a&gt; from scratch
+- with basic integration with &lt;a href=&quot;http://www.git-scm.com/&quot;&gt;git&lt;/a&gt;
+- and with automatic version numbering?&lt;/p&gt;
+
+&lt;p&gt;Here’s my recipe!&lt;/p&gt;
+
+&lt;h4 id=&quot;install-needed-stuff&quot;&gt;Install needed stuff&lt;/h4&gt;
+
+&lt;p&gt;You’ll need a reasonably recent version of &lt;a href=&quot;http://www.git-scm.com/&quot;&gt;git&lt;/a&gt;, so install it beforehand.
+Then install the Perl modules:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;~/dzilla$ cpanm Dist::Zilla Dist::Zilla::Plugin::BumpVersionFromGit Dist::Zilla::Plugin::Git&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h4 id=&quot;create-module-directory-and-stuff&quot;&gt;Create module directory and stuff&lt;/h4&gt;
+
+&lt;p&gt;This is up to you, just a minimal example:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;~/dzilla$ mkdir Sample
+~/dzilla$ cd Sample
+~/dzilla/Sample$ mkdir lib
+~/dzilla/Sample$ cat &amp;gt;lib/Sample.pm &amp;lt;&amp;lt;END_OF_MODULE
+package Sample;
+# ABSTRACT: whatever
+1;
+__END__
+END_OF_MODULE
+~/dzilla/Sample$ touch Changes
+~/dzilla/Sample$ git init
+Initialized empty Git repository in /home/poletti/sviluppo/perl/dzilla/Sample/.git/
+~/dzilla/Sample$ git add .
+~/dzilla/Sample$ git commit -m &amp;#39;Initial import&amp;#39;
+[master (root-commit) 3b19203] Initial import
+ 1 files changed, 3 insertions(+), 0 deletions(-)
+ create mode 100644 Changes
+ create mode 100644 lib/Sample.pm
+~/dzilla/Sample$ echo &amp;#39;Sample-*&amp;#39; &amp;gt;&amp;gt; .git/info/exclude&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Remember to ensure that the &lt;code&gt;Changes&lt;/code&gt; file is created, or
+&lt;a href=&quot;https://metacpan.org/pod/Dist::Zilla::Plugin::Git::Commit&quot;&gt;Dist::Zilla::Plugin::Git::Commit&lt;/a&gt; will complain later.&lt;/p&gt;
+
+&lt;h4 id=&quot;create-distini&quot;&gt;Create &lt;code&gt;dist.ini&lt;/code&gt;&lt;/h4&gt;
+
+&lt;p&gt;Now create &lt;code&gt;dist.ini&lt;/code&gt;, the configuration file for &lt;a href=&quot;https://metacpan.org/pod/Dist::Zilla&quot;&gt;Dist::Zilla&lt;/a&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;~/dzilla/Sample$ cat &amp;gt;dist.ini &amp;lt;&amp;lt;END_OF_FILE
+name    = Sample
+author  = A. U. Thor &amp;lt;someone@example.com&amp;gt;
+license = Perl_5
+copyright_holder = A. U. Thor
+
+[@Filter]
+bundle = @Git
+remove = Git::Push
+[@Filter]
+bundle = @Basic
+remove = ConfirmRelease
+remove = UploadToCPAN
+[FakeRelease]
+[PkgVersion]
+
+[BumpVersionFromGit]
+first_version = 0.1.0
+version_regexp  = ^v(.+)$
+END_OF_FILE
+~/dzilla/Sample$ git add dist.ini
+~/dzilla/Sample$ git commit -m &amp;#39;added dist.ini&amp;#39;
+[master 98feba7] added dist.ini
+ 1 files changed, 18 insertions(+), 0 deletions(-)
+ create mode 100644 dist.ini&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h4 id=&quot;enjoy-your-toolchain&quot;&gt;Enjoy your toolchain&lt;/h4&gt;
+
+&lt;p&gt;At this point, you can check the toolchain:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;~/dzilla/Sample$ dzil release
+[DZ] beginning to build Sample
+[DZ] guessing dist&amp;#39;s main_module is lib/Sample.pm
+[DZ] extracting distribution abstract from lib/Sample.pm
+[DZ] writing Sample in Sample-0.1.0
+[DZ] writing archive to Sample-0.1.0.tar.gz
+[@Filter/Check] branch master is in a clean state
+[@Filter/TestRelease] Extracting ~/dzilla/Sample/Sample-0.1.0.tar.gz to .build/3GuZPYcWef
+Checking if your kit is complete...
+Looks good
+Writing Makefile for Sample
+cp lib/Sample.pm blib/lib/Sample.pm
+No tests defined for Sample extension.
+[@Filter/TestRelease] all&amp;#39;s well; removing .build/3GuZPYcWef
+[FakeRelease] Fake release happening (nothing was really done)
+[@Filter/Tag] Tagged v0.1.0&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;If you want, you can restore the automatic upload to CPAN feature of
+&lt;code&gt;release&lt;/code&gt;, by changing the dist.ini file like this:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;~/dzilla/Sample$ cat &amp;gt;dist.ini &amp;lt;&amp;lt;END_OF_FILE
+name    = Sample
+author  = A. U. Thor &amp;lt;someone@example.com&amp;gt;
+license = Perl_5
+copyright_holder = A. U. Thor
+
+[@Filter]
+bundle = @Git
+remove = Git::Push
+[@Basic]
+[PkgVersion]
+
+[BumpVersionFromGit]
+first_version = 0.1.0
+version_regexp  = ^v(.+)$
+END_OF_FILE&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h4 id=&quot;a-shell-script-to-rule-them-all&quot;&gt;A shell script to rule them all&lt;/h4&gt;
+
+&lt;p&gt;This script should do all that you need, just cross your fingers:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;mkdir Sample
+&lt;span class=&quot;nb&quot;&gt;cd &lt;/span&gt;Sample
+
+mkdir lib
+cat &amp;gt;lib/Sample.pm &lt;span class=&quot;s&quot;&gt;&amp;lt;&amp;lt;END_OF_MODULE&lt;/span&gt;
+&lt;span class=&quot;s&quot;&gt;package Sample;&lt;/span&gt;
+&lt;span class=&quot;s&quot;&gt;# ABSTRACT: whatever&lt;/span&gt;
+&lt;span class=&quot;s&quot;&gt;1;&lt;/span&gt;
+&lt;span class=&quot;s&quot;&gt;__END__&lt;/span&gt;
+&lt;span class=&quot;s&quot;&gt;END_OF_MODULE&lt;/span&gt;
+
+touch Changes
+
+cat &amp;gt;dist.ini &lt;span class=&quot;s&quot;&gt;&amp;lt;&amp;lt;END_OF_FILE&lt;/span&gt;
+&lt;span class=&quot;s&quot;&gt;name    = Sample&lt;/span&gt;
+&lt;span class=&quot;s&quot;&gt;author  = A. U. Thor &lt;/span&gt;
+&lt;span class=&quot;s&quot;&gt;license = Perl_5&lt;/span&gt;
+&lt;span class=&quot;s&quot;&gt;copyright_holder = A. U. Thor&lt;/span&gt;
+
+&lt;span class=&quot;s&quot;&gt;[@Filter]&lt;/span&gt;
+&lt;span class=&quot;s&quot;&gt;bundle = @Git&lt;/span&gt;
+&lt;span class=&quot;s&quot;&gt;remove = Git::Push&lt;/span&gt;
+&lt;span class=&quot;s&quot;&gt;[@Filter]&lt;/span&gt;
+&lt;span class=&quot;s&quot;&gt;bundle = @Basic&lt;/span&gt;
+&lt;span class=&quot;s&quot;&gt;remove = ConfirmRelease&lt;/span&gt;
+&lt;span class=&quot;s&quot;&gt;remove = UploadToCPAN&lt;/span&gt;
+&lt;span class=&quot;s&quot;&gt;[FakeRelease]&lt;/span&gt;
+&lt;span class=&quot;s&quot;&gt;[PkgVersion]&lt;/span&gt;
+
+&lt;span class=&quot;s&quot;&gt;[BumpVersionFromGit]&lt;/span&gt;
+&lt;span class=&quot;s&quot;&gt;first_version = 0.1.0&lt;/span&gt;
+&lt;span class=&quot;s&quot;&gt;version_regexp  = ^v(.+)$&lt;/span&gt;
+&lt;span class=&quot;s&quot;&gt;END_OF_FILE&lt;/span&gt;
+
+git init
+git add .
+git commit -m &lt;span class=&quot;s1&quot;&gt;&amp;#39;Initial import&amp;#39;&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;Sample-*&amp;#39;&lt;/span&gt; &amp;gt;&amp;gt; .git/info/exclude
+
+dzil release&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;thats-all-folks&quot;&gt;That’s all, folks&lt;/h3&gt;
+
+&lt;p&gt;Well, it seems that &lt;a href=&quot;https://metacpan.org/pod/Dist::Zilla&quot;&gt;Dist::Zilla&lt;/a&gt;
+has its sharp edges, but seems that it’s actually possible to start using
+it and it’s quite promising… Stay tuned for further adventures of this
+total newbie in &lt;a href=&quot;https://metacpan.org/pod/Dist::Zilla&quot;&gt;Dist::Zilla&lt;/a&gt;’s world!&lt;/p&gt;
+
+    &lt;p&gt;&lt;a href=&quot;/dist-zilla/&quot;&gt;Giving Dist::Zilla a try&lt;/a&gt; was originally published by Flavio Poletti at &lt;a href=&quot;&quot;&gt;PolettiX!&lt;/a&gt; on May 08, 2010.&lt;/p&gt;
+  </content>
+</entry>
+
+
+  
+
+<entry>
+  <title type="html"><![CDATA[Why parsing should be simple?]]></title>
+  <link rel="alternate" type="text/html" href="/perl-5-parsing/" />
+  <id>/perl-5-parsing</id>
+  <published>2009-12-15T00:00:00+01:00</published>
+  <updated>2009-12-15T00:00:00+01:00</updated>
+  <author>
+    <name>Flavio Poletti</name>
+    <uri></uri>
+    <email>flavio@polettix.it</email>
+  </author>
+  <content type="html">
+    &lt;p&gt;Following &lt;a href=&quot;http://greenokapi.net/blog/2009/12/15/github-language-statistics/&quot;&gt;an article&lt;/a&gt;
+by &lt;a href=&quot;http://greenokapi.net/blog&quot;&gt;osfameron&lt;/a&gt; (found
+thanks to &lt;a href=&quot;http://ironman.enlightenedperl.org/&quot;&gt;Planet Perl Iron Man&lt;/a&gt;) I landed
+on &lt;a href=&quot;http://corte.si/posts/code/devsurvey/index.html&quot;&gt;the interesting analysis&lt;/a&gt;
+performed by Aldo Cortesi. I was quite
+unsurprised at seeing yet another variant of the old thorny “Perl is
+dead or at least does not feel very well” infamous adage.&lt;/p&gt;
+
+&lt;p&gt;I was a bit more surprised at
+seeing &lt;a href=&quot;http://corte.si/posts/code/devsurvey/index.html#comment-25790536&quot;&gt;this comment&lt;/a&gt;
+(&lt;em&gt;this comment does not seem to appear any more now&lt;/em&gt;):&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;At the risk of inflaming more Perl
+programmers to come and manfully defend their language on my blog, I
+think there’s a reason why Python has a nice BNF grammar, and Perl has
+5600 lines of ad-hoc parsing code:
+&lt;a href=&quot;http://www.perlmonks.org/?node_id=663393&quot;&gt;http://www.perlmonks.org/?node_id=663393&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;I wonder which reason Aldo is thinking about. IMHO, the reason is that
+probably Python development focuses more on language orthogonality and
+Perl development more on programmers’ ease at the possible expense of a
+more complicated compiler, but it’s just me.&lt;/p&gt;
+
+    &lt;p&gt;&lt;a href=&quot;/perl-5-parsing/&quot;&gt;Why parsing should be simple?&lt;/a&gt; was originally published by Flavio Poletti at &lt;a href=&quot;&quot;&gt;PolettiX!&lt;/a&gt; on December 15, 2009.&lt;/p&gt;
+  </content>
+</entry>
+
+
+  
+
+<entry>
+  <title type="html"><![CDATA[IO::Zlib and saved space]]></title>
+  <link rel="alternate" type="text/html" href="/io-zlib/" />
+  <id>/io-zlib</id>
+  <published>2009-12-05T00:00:00+01:00</published>
+  <updated>2009-12-05T00:00:00+01:00</updated>
+  <author>
+    <name>Flavio Poletti</name>
+    <uri></uri>
+    <email>flavio@polettix.it</email>
+  </author>
+  <content type="html">
+    &lt;p&gt;A few days ago a colleague asked me about using Perl for analysing some
+ASA firewall logs in order to spot how many public addresses are needed
+for NATting users towards the Internet. The basic regular expression to
+capture the bits of information that he needs is quite straightforward,
+but what was interesting is that the files he has to work on are
+gzipped, and he had already extracted a sample one to work on. I
+remembered that there is &lt;a href=&quot;https://metacpan.org/pod/IO::Zlib&quot;&gt;IO::Zlib&lt;/a&gt;
+and this is what I did:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-perl&quot; data-lang=&quot;perl&quot;&gt;&lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;my&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$file&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;@ARGV&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+   &lt;span class=&quot;nb&quot;&gt;eval&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+      &lt;span class=&quot;k&quot;&gt;my&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$fh&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_open&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$file&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+      &lt;span class=&quot;k&quot;&gt;while&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;sr&quot;&gt;&amp;lt;$fh&amp;gt;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+         &lt;span class=&quot;k&quot;&gt;my&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$inside&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$outside&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;sr&quot;&gt;/Built\ dynamic\ translation\ from\ inside:(.*?)\ to\ outside:(.*?)/mxs&lt;/span&gt;
+            &lt;span class=&quot;ow&quot;&gt;or&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;next&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+         &lt;span class=&quot;c1&quot;&gt;# use $inside and $outside&lt;/span&gt;
+      &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+      &lt;span class=&quot;nb&quot;&gt;close&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$fh&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+   &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;or&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;warn&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;exception for &amp;#39;$file&amp;#39;: $EVAL_ERROR&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;sub &lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;_open&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+   &lt;span class=&quot;k&quot;&gt;my&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$file&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;@_&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+   &lt;span class=&quot;k&quot;&gt;my&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$fh&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+   &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$file&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=~&lt;/span&gt;&lt;span class=&quot;sr&quot;&gt; /\.gz \z/mxs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+      &lt;span class=&quot;nv&quot;&gt;$fh&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;IO::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Zlib&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;new&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+      &lt;span class=&quot;nv&quot;&gt;$fh&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;open&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$file&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;rb&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+         &lt;span class=&quot;ow&quot;&gt;or&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;die&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;IO::Zlib complained: $OS_ERROR&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+   &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+   &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+      &lt;span class=&quot;nb&quot;&gt;open&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$fh&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;&amp;lt;&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$file&lt;/span&gt;
+         &lt;span class=&quot;ow&quot;&gt;or&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;die&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;open(): $OS_ERROR&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+   &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+   &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$fh&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;It worked pretty well so nothing to complain. Just before blogging about it, I
+paid a due visit to the documentation, and I discovered that I was more or less
+lucky: there are limitations in using the module, which basically boil down to
+&lt;code&gt;$fh&lt;/code&gt; not being what you expect from a full fledged filehandle. But,
+at least, it should work out of the box if all you need is to read the file
+one line at a time.&lt;/p&gt;
+
+&lt;p&gt;The module isn’t in the core distribution, but it’s a common
+prerequisite so chances are that you already have it in your distro.
+It’s a bit weird that it is known by &lt;a href=&quot;https://metacpan.org/pod/corelist&quot;&gt;corelist&lt;/a&gt;
+to have been included in 5.9.3:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;IO::Zlib was first released with perl 5.009003&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;even though there is no trace of it in 5.10. Go figure. Anyway, it
+should be a bit more common to find than the alternative
+&lt;a href=&quot;https://metacpan.org/pod/PerlIO::gzip&quot;&gt;PerlIO::gzip&lt;/a&gt;, which would make
+the &lt;code&gt;sub _open&lt;/code&gt; unneeded when substituted with this:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-perl&quot; data-lang=&quot;perl&quot;&gt;&lt;span class=&quot;nb&quot;&gt;open&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;my&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$fh&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;&amp;lt;:autopop&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$file&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;or&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;die&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;...&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;I wonder how much Perl IO layers are used out there.&lt;/p&gt;
+
+    &lt;p&gt;&lt;a href=&quot;/io-zlib/&quot;&gt;IO::Zlib and saved space&lt;/a&gt; was originally published by Flavio Poletti at &lt;a href=&quot;&quot;&gt;PolettiX!&lt;/a&gt; on December 05, 2009.&lt;/p&gt;
+  </content>
+</entry>
+
+
+  
+
+<entry>
+  <title type="html"><![CDATA[Equality is reflexive... isn't it?]]></title>
+  <link rel="alternate" type="text/html" href="/perl6-junction/" />
+  <id>/perl6-junction</id>
+  <published>2009-11-29T00:00:00+01:00</published>
+  <updated>2009-11-29T00:00:00+01:00</updated>
+  <author>
+    <name>Flavio Poletti</name>
+    <uri></uri>
+    <email>flavio@polettix.it</email>
+  </author>
+  <content type="html">
+    &lt;p&gt;I read about &lt;a href=&quot;http://search.cpan.org/dist/Perl6-Junction&quot;&gt;Perl6::Junction&lt;/a&gt;
+in an &lt;a href=&quot;http://blogs.perl.org/users/marc_sebastian_jakobs/2009/11/my-favorite-module-of-the-month-perl6junction.html&quot;&gt;article&lt;/a&gt;
+on &lt;a href=&quot;http://blogs.perl.org/&quot;&gt;blogs.perl.org&lt;/a&gt; and I was tickled. I quickly
+went on CPAN to see what the module was about beyond the post above, and
+saw two enthusiastic reviews by two bigs (at least this is what I
+consider both of them).&lt;/p&gt;
+
+&lt;p&gt;I have to say that I was a bit disappointed in seeing that they both
+talked about very clear documentation, while it seemed a bit too minimal
+for my taste. I do agree that the test suite is complete, anyway, and
+it’s a useful source for examples too! The tests are indeed quite
+extensive, and there are also tests for something that made me curious,
+i.e.: “will it be possible to use junctions on both sides?”. The answer
+turns out to be positive, and there are tests for those cases (see the
+&lt;code&gt;t/join.t&lt;/code&gt; test file for details).&lt;/p&gt;
+
+&lt;p&gt;One funny thing in the module is that the following both apply:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-perl&quot; data-lang=&quot;perl&quot;&gt;&lt;span class=&quot;k&quot;&gt;my&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$is_true&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;all&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;any&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;));&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;my&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$is_NOT_true&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;any&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;all&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;));&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;It actually makes sense: the first says “do all elements in the &lt;code&gt;{3, 4}&lt;/code&gt;
+set have something equal to them in the &lt;code&gt;{3, 4}&lt;/code&gt; set?”. Course they do,
+because &lt;code&gt;3&lt;/code&gt; in the first set has &lt;code&gt;3&lt;/code&gt; in the second, and &lt;code&gt;4&lt;/code&gt; in the first set
+has &lt;code&gt;4&lt;/code&gt; in the second. The second says “is any element in the &lt;code&gt;{3, 4}&lt;/code&gt; equal
+to all the elements in &lt;code&gt;{3, 4}&lt;/code&gt;?”. Course there isn’t, because &lt;code&gt;3&lt;/code&gt; from the
+first set is equal to &lt;code&gt;3&lt;/code&gt; in the second set, but fails to be equal to &lt;code&gt;4&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;Hence, the (numeric) equality operator does not maintain the reflexive
+property here, and it seems just… &lt;em&gt;weird&lt;/em&gt;, even though it makes
+perfectly sense.&lt;/p&gt;
+
+    &lt;p&gt;&lt;a href=&quot;/perl6-junction/&quot;&gt;Equality is reflexive... isn&#39;t it?&lt;/a&gt; was originally published by Flavio Poletti at &lt;a href=&quot;&quot;&gt;PolettiX!&lt;/a&gt; on November 29, 2009.&lt;/p&gt;
+  </content>
+</entry>
+
+
+  
+
+<entry>
+  <title type="html"><![CDATA[RTFM, you geek!]]></title>
+  <link rel="alternate" type="text/html" href="/mobundle/" />
+  <id>/mobundle</id>
+  <published>2009-11-24T00:00:00+01:00</published>
+  <updated>2009-11-24T00:00:00+01:00</updated>
+  <author>
+    <name>Flavio Poletti</name>
+    <uri></uri>
+    <email>flavio@polettix.it</email>
+  </author>
+  <content type="html">
+    &lt;p&gt;After the previous post, I shipped the script and the related libraries
+to the recipient and slept as a baby. Just to discover that they didn’t
+figure out how to use it properly!&lt;/p&gt;
+
+&lt;p&gt;The main issue is that geeks and technical people generally don’t read
+the documentation. I admit, most of the times I don’t do this as well.
+In this case, my good colleague saw a Perl script, made the
+too-simple-to-seem-true association between Perl and the Web and
+installed Apache! Well, as a matter of fact &lt;em&gt;it is&lt;/em&gt; a web
+application, but I strived to make it self-contained and you end up with
+Apache?!?&lt;/p&gt;
+
+&lt;p&gt;Luck was that I was there some thirty minutes after to correct the
+problem and let Perl shine: “hey bro, it’s a single program with an
+embedded web server!”. That was the lucky part, anyway: the environment
+we’re working into is &lt;em&gt;particularly&lt;/em&gt; hostile, to the point that
+two machines in the very same network can’t ping one another!
+Fortunately when I did use the program to make some tests the network
+connectivity was not that bad and we managed to do them.&lt;/p&gt;
+
+&lt;p&gt;Another thing that annoyed me a bit was that the script was not
+&lt;em&gt;fully&lt;/em&gt; self-contained. Yes, I have to ship a hole tar.gz file…
+so I thought that it would be great to distribute a single script
+without anything more. One option is PAR, of course, but I always
+regretted to use it because you basically have to compile for a target
+architecture (at least in my understanding). In case of Pure-Perl stuff
+this does not make me happy.&lt;/p&gt;
+
+&lt;p&gt;Some time ago I had a similar problem that I solved with a script to
+bundle Pure-Perl modules inside a script. I put it in
+&lt;a href=&quot;http://repo.or.cz/w/mobundle.git&quot;&gt;repository&lt;/a&gt; in
+&lt;a href=&quot;http://repo.or.cz/&quot;&gt;repo.org.cz&lt;/a&gt;, for anyone to have a good laugh.&lt;/p&gt;
+
+    &lt;p&gt;&lt;a href=&quot;/mobundle/&quot;&gt;RTFM, you geek!&lt;/a&gt; was originally published by Flavio Poletti at &lt;a href=&quot;&quot;&gt;PolettiX!&lt;/a&gt; on November 24, 2009.&lt;/p&gt;
+  </content>
+</entry>
+
+
+  
+
+<entry>
+  <title type="html"><![CDATA[Perl.org has a new face!]]></title>
+  <link rel="alternate" type="text/html" href="/perl_org_new_face/" />
+  <id>/perl_org_new_face</id>
+  <published>2009-11-15T00:00:00+01:00</published>
+  <updated>2009-11-15T00:00:00+01:00</updated>
+  <author>
+    <name>Flavio Poletti</name>
+    <uri></uri>
+    <email>flavio@polettix.it</email>
+  </author>
+  <content type="html">
+    &lt;p&gt;Wow, I’m very pleased to see the new face of
+&lt;a href=&quot;http://www.perl.org/&quot;&gt;Perl.org&lt;/a&gt;. I have to thank &lt;a href=&quot;https://twitter.com/pjf&quot;&gt;Paul
+Fenwick&lt;/a&gt; for the hint!&lt;/p&gt;
+
+    &lt;p&gt;&lt;a href=&quot;/perl_org_new_face/&quot;&gt;Perl.org has a new face!&lt;/a&gt; was originally published by Flavio Poletti at &lt;a href=&quot;&quot;&gt;PolettiX!&lt;/a&gt; on November 15, 2009.&lt;/p&gt;
+  </content>
+</entry>
+
+
+  
+
+<entry>
+  <title type="html"><![CDATA[Italian Perl Workshop 2009]]></title>
+  <link rel="alternate" type="text/html" href="/ipw2009/" />
+  <id>/ipw2009</id>
+  <published>2009-10-29T00:00:00+01:00</published>
+  <updated>2009-10-29T00:00:00+01:00</updated>
+  <author>
+    <name>Flavio Poletti</name>
+    <uri></uri>
+    <email>flavio@polettix.it</email>
+  </author>
+  <content type="html">
+    &lt;p&gt;Divertito mi sono divertito! Rivedere gli amici perlisti, conoscerne di
+nuovi… Ho notato una cosa, però: la gente sembrava veramente poca quando
+si stava nella sala grande!&lt;/p&gt;
+
+&lt;p&gt;Le presentazioni che ho fatto sono su &lt;a href=&quot;http://www.slideshare.net/&quot;&gt;SlideShare&lt;/a&gt;:&lt;/p&gt;
+
+&lt;div style=&quot;width:577px;margin:auto;&quot;&gt;&lt;object style=&quot;margin:0px&quot; width=&quot;575&quot; height=&quot;410&quot;&gt;&lt;param name=&quot;movie&quot; value=&quot;http://static.slidesharecdn.com/swf/multiwidget.swf&quot; /&gt;&lt;param name=&quot;allowFullScreen&quot; value=&quot;true&quot; /&gt;&lt;param name=&quot;allowScriptAccess&quot; value=&quot;always&quot; /&gt;&lt;embed src=&quot;http://static.slidesharecdn.com/swf/multiwidget.swf&quot; flashvars=&quot;feedurl=user/polettix/tag/ipw2009&amp;amp;widgettitle=Slideshows for
+Tag: ipw2009 by polettix&quot; type=&quot;application/x-shockwave-flash&quot; allowscriptaccess=&quot;always&quot; allowfullscreen=&quot;true&quot; width=&quot;575&quot; height=&quot;410&quot; /&gt;&lt;/object&gt;&lt;br /&gt;&lt;div style=&quot;font-size:11px;font-family:tahoma,arial;height:26px;padding-top:2px;text-align:left;&quot;&gt;&lt;a href=&quot;http://www.slideshare.net/?src=multiwidget&quot;&gt;&lt;img src=&quot;http://static.slidesharecdn.com/swf/logo_embd.png&quot; style=&quot;border:0px
+none;margin-bottom:-5px&quot; alt=&quot;SlideShare&quot; /&gt;&lt;/a&gt; | &lt;a href=&quot;http://www.slideshare.net/widgets/playlist&quot; title=&quot;Get your
+SlideShare Playlist&quot;&gt;Get your SlideShare Playlist&lt;/a&gt;&lt;/div&gt;&lt;/div&gt;
+
+    &lt;p&gt;&lt;a href=&quot;/ipw2009/&quot;&gt;Italian Perl Workshop 2009&lt;/a&gt; was originally published by Flavio Poletti at &lt;a href=&quot;&quot;&gt;PolettiX!&lt;/a&gt; on October 29, 2009.&lt;/p&gt;
   </content>
 </entry>
 

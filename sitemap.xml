@@ -56,20 +56,65 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>/local-lib-for-distributions/</loc>
+    <lastmod>2010-07-30T00:00:00+02:00</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>/carp-always/</loc>
+    <lastmod>2010-05-09T00:00:00+02:00</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>/dist-zilla/</loc>
+    <lastmod>2010-05-08T00:00:00+02:00</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>/perl-5-parsing/</loc>
+    <lastmod>2009-12-15T00:00:00+01:00</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>/io-zlib/</loc>
+    <lastmod>2009-12-05T00:00:00+01:00</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>/perl6-junction/</loc>
+    <lastmod>2009-11-29T00:00:00+01:00</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>/mobundle/</loc>
+    <lastmod>2009-11-24T00:00:00+01:00</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>/perl_org_new_face/</loc>
+    <lastmod>2009-11-15T00:00:00+01:00</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>/ipw2009/</loc>
+    <lastmod>2009-10-29T00:00:00+01:00</lastmod>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>/</loc>
-    <lastmod>2016-05-14T12:17:00+02:00</lastmod>
+    <lastmod>2016-08-02T11:43:26+02:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
     <loc>/posts/</loc>
-    <lastmod>2016-05-14T12:17:00+02:00</lastmod>
+    <lastmod>2016-08-02T11:43:26+02:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>/about/</loc>
-    <lastmod>2016-05-14T12:17:00+02:00</lastmod>
+    <lastmod>2016-08-02T11:43:26+02:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>

@@ -1,0 +1,263 @@
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if (IE 7)&!(IEMobile)]><html class="no-js lt-ie9 lt-ie8" lang="en"><![endif]-->
+<!--[if (IE 8)&!(IEMobile)]><html class="no-js lt-ie9" lang="en"><![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"><!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<title>Equality is reflexive... isn't it? &#8211; PolettiX!</title>
+<meta name="description" content="I read about Perl6::Junction
+in an article
+on blogs.perl.org and I was tickled. I quickly
+went on CPAN to see what the module was about beyond the post above, and
+saw two enthusiastic reviews by two bigs (at least this is what I
+consider both of them).
+
+">
+<meta name="keywords" content="">
+
+
+
+<!-- Twitter Cards -->
+<meta name="twitter:title" content="Equality is reflexive... isn't it?">
+<meta name="twitter:description" content="I read about Perl6::Junction
+in an article
+on blogs.perl.org and I was tickled. I quickly
+went on CPAN to see what the module was about beyond the post above, and
+saw two enthusiastic reviews by two bigs (at least this is what I
+consider both of them).
+
+">
+<meta name="twitter:site" content="@polettix">
+<meta name="twitter:creator" content="@polettix">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="/images/tramonto.jpg">
+
+<!-- Open Graph -->
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Equality is reflexive... isn't it?">
+<meta property="og:description" content="I read about Perl6::Junction
+in an article
+on blogs.perl.org and I was tickled. I quickly
+went on CPAN to see what the module was about beyond the post above, and
+saw two enthusiastic reviews by two bigs (at least this is what I
+consider both of them).
+
+">
+<meta property="og:url" content="/perl6-junction/">
+<meta property="og:site_name" content="PolettiX!">
+
+
+
+
+
+<link rel="canonical" href="/perl6-junction/">
+<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="PolettiX! Feed">
+
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+
+<meta http-equiv="cleartype" content="on">
+
+<!-- HTML5 Shiv and Media Query Support -->
+<!--[if lt IE 9]>
+	<script src="/assets/js/vendor/html5shiv.min.js"></script>
+	<script src="/assets/js/vendor/respond.min.js"></script>
+<![endif]-->
+
+<!-- Modernizr -->
+<script src="/assets/js/vendor/modernizr-2.7.1.custom.min.js"></script>
+
+<link href='//fonts.googleapis.com/css?family=PT+Sans+Narrow:400,700%7CPT+Serif:400,700,400italic' rel='stylesheet' type='text/css'>
+
+<!-- Icons -->
+<!-- 16x16 -->
+<link rel="shortcut icon" href="/favicon.ico?whatever">
+<!-- 32x32 -->
+<link rel="shortcut icon" href="/favicon.png?whatever">
+<!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
+<link rel="apple-touch-icon-precomposed" href="/images/apple-touch-icon-precomposed.png">
+<!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="/images/apple-touch-icon-72x72-precomposed.png">
+<!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="/images/apple-touch-icon-114x114-precomposed.png">
+<!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/images/apple-touch-icon-144x144-precomposed.png">
+
+</head>
+
+<body class="post">
+
+<!--[if lt IE 9]><div class="browser-upgrade alert alert-info">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</div><![endif]-->
+
+<div class="navigation-wrapper">
+	<div class="site-name">
+		<a href="/">PolettiX!</a>
+	</div><!-- /.site-name -->
+	<div class="top-navigation">
+		<nav role="navigation" id="site-nav" class="nav">
+		    <ul>
+		        
+				    
+				        
+				    
+				    <li><a href="/about/" >About</a></li>
+				
+				    
+				        
+				    
+				    <li><a href="/posts/" >Posts</a></li>
+				
+		    </ul>
+		</nav>
+	</div><!-- /.top-navigation -->
+</div><!-- /.navigation-wrapper -->
+
+
+  <div class="image-wrap">
+  <img src=
+    
+      "/images/tramonto.jpg"
+    
+  alt="Equality is reflexive... isn't it? feature image">
+  
+    <span class="image-credit"><a href="https://en.wikipedia.org/wiki/Australia">Tramonto in Australia</a></span>
+  
+  </div><!-- /.image-wrap -->
+
+
+<div id="main" role="main">
+  <div class="article-author-side">
+    
+
+
+<div itemscope itemtype="http://schema.org/Person">
+
+
+	<img src="/images/flavio-self-color.png" class="bio-photo" alt="Flavio Poletti bio photo">
+
+
+  <h3 itemprop="name">Flavio Poletti</h3>
+  <p>Irreducible Perler.</p>
+  <a href="mailto:flavio@polettix.it" class="author-social" target="_blank"><i class="fa fa-fw fa-envelope-square"></i>Email</a>
+  <a href="http://comics.polettix.it/" class="author-social" target="_blank"><i class="fa fa-fw fa-pencil"></i> Comics</a>
+  <a href="http://twitter.com/polettix" class="author-social" target="_blank"><i class="fa fa-fw fa-twitter-square"></i> Twitter</a>
+  
+  
+  <a href="http://linkedin.com/in/flaviopoletti" class="author-social" target="_blank"><i class="fa fa-fw fa-linkedin-square"></i> LinkedIn</a>
+  
+  
+  <a href="https://metacpan.org/author/polettix" class="author-social" target="_blank"><i class="fa fa-fw fa-th-large"></i> MetaCPAN</a>
+  <a href="http://github.com/polettix" class="author-social" target="_blank"><i class="fa fa-fw fa-github"></i> Github</a>
+  <a href="http://stackoverflow.com/users/3865403/polettix" class="author-social" target="_blank"><i class="fa fa-fw fa-stack-overflow"></i> Stackoverflow</a>
+  
+  
+  <a href="http://www.pinterest.com/polettix" class="author-social" target="_blank"><i class="fa fa-fw fa-pinterest"></i> Pinterest</a>
+  
+  
+  
+  
+  
+  
+</div>
+
+  </div>
+  <article class="post">
+    <div class="headline-wrap">
+      
+        <h1><a href="/perl6-junction/" rel="bookmark" title="Equality is reflexive... isn't it?">Equality is reflexive... isn't it?</a></h1>
+      
+    </div><!--/ .headline-wrap -->
+    <div class="article-wrap">
+      <p>I read about <a href="http://search.cpan.org/dist/Perl6-Junction">Perl6::Junction</a>
+in an <a href="http://blogs.perl.org/users/marc_sebastian_jakobs/2009/11/my-favorite-module-of-the-month-perl6junction.html">article</a>
+on <a href="http://blogs.perl.org/">blogs.perl.org</a> and I was tickled. I quickly
+went on CPAN to see what the module was about beyond the post above, and
+saw two enthusiastic reviews by two bigs (at least this is what I
+consider both of them).</p>
+
+<p>I have to say that I was a bit disappointed in seeing that they both
+talked about very clear documentation, while it seemed a bit too minimal
+for my taste. I do agree that the test suite is complete, anyway, and
+it’s a useful source for examples too! The tests are indeed quite
+extensive, and there are also tests for something that made me curious,
+i.e.: “will it be possible to use junctions on both sides?”. The answer
+turns out to be positive, and there are tests for those cases (see the
+<code>t/join.t</code> test file for details).</p>
+
+<p>One funny thing in the module is that the following both apply:</p>
+
+<div class="highlight"><pre><code class="language-perl" data-lang="perl"><span class="k">my</span> <span class="nv">$is_true</span> <span class="o">=</span> <span class="p">(</span><span class="n">all</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span> <span class="o">==</span> <span class="n">any</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">));</span>
+<span class="k">my</span> <span class="nv">$is_NOT_true</span> <span class="o">=</span> <span class="p">(</span><span class="n">any</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span> <span class="o">==</span> <span class="n">all</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">));</span></code></pre></div>
+
+<p>It actually makes sense: the first says “do all elements in the <code>{3, 4}</code>
+set have something equal to them in the <code>{3, 4}</code> set?”. Course they do,
+because <code>3</code> in the first set has <code>3</code> in the second, and <code>4</code> in the first set
+has <code>4</code> in the second. The second says “is any element in the <code>{3, 4}</code> equal
+to all the elements in <code>{3, 4}</code>?”. Course there isn’t, because <code>3</code> from the
+first set is equal to <code>3</code> in the second set, but fails to be equal to <code>4</code>.</p>
+
+<p>Hence, the (numeric) equality operator does not maintain the reflexive
+property here, and it seems just… <em>weird</em>, even though it makes
+perfectly sense.</p>
+
+      <hr />
+      <footer role="contentinfo">
+        <div class="social-share">
+  <h4>Share on</h4>
+  <ul>
+    <li>
+      <a href="https://twitter.com/intent/tweet?text=/perl6-junction/" class="twitter" title="Share on Twitter"><i class="fa fa-twitter"></i><span> Twitter</span></a>
+    </li>
+    <li>
+      <a href="https://www.facebook.com/sharer/sharer.php?u=/perl6-junction/" class="facebook" title="Share on Facebook"><i class="fa fa-facebook"></i><span> Facebook</span></a>
+    </li>
+    <li>
+      <a href="https://plus.google.com/share?url=/perl6-junction/" class="google-plus" title="Share on Google Plus"><i class="fa fa-google-plus"></i><span> Google+</span></a>
+    </li>
+  </ul>
+</div><!-- /.social-share -->
+        <p class="byline"><strong>Equality is reflexive... isn't it?</strong> was published on <time datetime="2009-11-29T00:00:00+01:00">November 29, 2009</time>.</p>
+      </footer>
+    </div><!-- /.article-wrap -->
+  
+  </article>
+</div><!-- /#main -->
+
+<div class="footer-wrap">
+  <div class="related-articles">
+  <h4>You might also enjoy <small class="pull-right">(<a href="/posts/">View all posts</a>)</small></h4>
+    <ul>
+    
+      <li><a href="/writing-about-stuff/" title="Writing About Stuff">Writing About Stuff</a></li>
+    
+      <li><a href="/teepee/" title="TeePee">TeePee</a></li>
+    
+      <li><a href="/changes-nags-and-git-hooks/" title="Changes, nags and git hooks">Changes, nags and git hooks</a></li>
+    
+    </ul>
+    <hr />
+  </div><!-- /.related-articles -->
+  <footer>
+    
+
+<span>&copy; 2016 Flavio Poletti. Powered by <a href="http://jekyllrb.com" rel="nofollow">Jekyll</a> using the <a href="http://mademistakes.com/minimal-mistakes/" rel="nofollow">Minimal Mistakes</a> theme.</span>
+
+  </footer>
+</div><!-- /.footer-wrap -->
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script src="/assets/js/scripts.min.js"></script>
+
+
+
+</body>
+</html>

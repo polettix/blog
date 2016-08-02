@@ -1,0 +1,1248 @@
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if (IE 7)&!(IEMobile)]><html class="no-js lt-ie9 lt-ie8" lang="en"><![endif]-->
+<!--[if (IE 8)&!(IEMobile)]><html class="no-js lt-ie9" lang="en"><![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"><!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<title>Giving Dist::Zilla a try &#8211; PolettiX!</title>
+<meta name="description" content="I’m just new to Dist::Zilla,
+so these are the records of what I found about it… If you’re impatient
+and only want the results, go to The Lucky Path
+section below, otherwise keep reading!
+
+">
+<meta name="keywords" content="">
+
+
+
+<!-- Twitter Cards -->
+<meta name="twitter:title" content="Giving Dist::Zilla a try">
+<meta name="twitter:description" content="I’m just new to Dist::Zilla,
+so these are the records of what I found about it… If you’re impatient
+and only want the results, go to The Lucky Path
+section below, otherwise keep reading!
+
+">
+<meta name="twitter:site" content="@polettix">
+<meta name="twitter:creator" content="@polettix">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="/images/tramonto.jpg">
+
+<!-- Open Graph -->
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Giving Dist::Zilla a try">
+<meta property="og:description" content="I’m just new to Dist::Zilla,
+so these are the records of what I found about it… If you’re impatient
+and only want the results, go to The Lucky Path
+section below, otherwise keep reading!
+
+">
+<meta property="og:url" content="/dist-zilla/">
+<meta property="og:site_name" content="PolettiX!">
+
+
+
+
+
+<link rel="canonical" href="/dist-zilla/">
+<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="PolettiX! Feed">
+
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+
+<meta http-equiv="cleartype" content="on">
+
+<!-- HTML5 Shiv and Media Query Support -->
+<!--[if lt IE 9]>
+	<script src="/assets/js/vendor/html5shiv.min.js"></script>
+	<script src="/assets/js/vendor/respond.min.js"></script>
+<![endif]-->
+
+<!-- Modernizr -->
+<script src="/assets/js/vendor/modernizr-2.7.1.custom.min.js"></script>
+
+<link href='//fonts.googleapis.com/css?family=PT+Sans+Narrow:400,700%7CPT+Serif:400,700,400italic' rel='stylesheet' type='text/css'>
+
+<!-- Icons -->
+<!-- 16x16 -->
+<link rel="shortcut icon" href="/favicon.ico?whatever">
+<!-- 32x32 -->
+<link rel="shortcut icon" href="/favicon.png?whatever">
+<!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
+<link rel="apple-touch-icon-precomposed" href="/images/apple-touch-icon-precomposed.png">
+<!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="/images/apple-touch-icon-72x72-precomposed.png">
+<!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="/images/apple-touch-icon-114x114-precomposed.png">
+<!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/images/apple-touch-icon-144x144-precomposed.png">
+
+</head>
+
+<body class="post">
+
+<!--[if lt IE 9]><div class="browser-upgrade alert alert-info">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</div><![endif]-->
+
+<div class="navigation-wrapper">
+	<div class="site-name">
+		<a href="/">PolettiX!</a>
+	</div><!-- /.site-name -->
+	<div class="top-navigation">
+		<nav role="navigation" id="site-nav" class="nav">
+		    <ul>
+		        
+				    
+				        
+				    
+				    <li><a href="/about/" >About</a></li>
+				
+				    
+				        
+				    
+				    <li><a href="/posts/" >Posts</a></li>
+				
+		    </ul>
+		</nav>
+	</div><!-- /.top-navigation -->
+</div><!-- /.navigation-wrapper -->
+
+
+  <div class="image-wrap">
+  <img src=
+    
+      "/images/tramonto.jpg"
+    
+  alt="Giving Dist::Zilla a try feature image">
+  
+    <span class="image-credit"><a href="https://en.wikipedia.org/wiki/Australia">Tramonto in Australia</a></span>
+  
+  </div><!-- /.image-wrap -->
+
+
+<div id="main" role="main">
+  <div class="article-author-side">
+    
+
+
+<div itemscope itemtype="http://schema.org/Person">
+
+
+	<img src="/images/flavio-self-color.png" class="bio-photo" alt="Flavio Poletti bio photo">
+
+
+  <h3 itemprop="name">Flavio Poletti</h3>
+  <p>Irreducible Perler.</p>
+  <a href="mailto:flavio@polettix.it" class="author-social" target="_blank"><i class="fa fa-fw fa-envelope-square"></i>Email</a>
+  <a href="http://comics.polettix.it/" class="author-social" target="_blank"><i class="fa fa-fw fa-pencil"></i> Comics</a>
+  <a href="http://twitter.com/polettix" class="author-social" target="_blank"><i class="fa fa-fw fa-twitter-square"></i> Twitter</a>
+  
+  
+  <a href="http://linkedin.com/in/flaviopoletti" class="author-social" target="_blank"><i class="fa fa-fw fa-linkedin-square"></i> LinkedIn</a>
+  
+  
+  <a href="https://metacpan.org/author/polettix" class="author-social" target="_blank"><i class="fa fa-fw fa-th-large"></i> MetaCPAN</a>
+  <a href="http://github.com/polettix" class="author-social" target="_blank"><i class="fa fa-fw fa-github"></i> Github</a>
+  <a href="http://stackoverflow.com/users/3865403/polettix" class="author-social" target="_blank"><i class="fa fa-fw fa-stack-overflow"></i> Stackoverflow</a>
+  
+  
+  <a href="http://www.pinterest.com/polettix" class="author-social" target="_blank"><i class="fa fa-fw fa-pinterest"></i> Pinterest</a>
+  
+  
+  
+  
+  
+  
+</div>
+
+  </div>
+  <article class="post">
+    <div class="headline-wrap">
+      
+        <h1><a href="/dist-zilla/" rel="bookmark" title="Giving Dist::Zilla a try">Giving Dist::Zilla a try</a></h1>
+      
+    </div><!--/ .headline-wrap -->
+    <div class="article-wrap">
+      <p>I’m just new to <a href="https://metacpan.org/pod/Dist::Zilla">Dist::Zilla</a>,
+so these are the records of what I found about it… If you’re impatient
+and only want the results, go to <a href="#the-lucky-path">The Lucky Path</a>
+section below, otherwise keep reading!</p>
+
+<h3 id="installation">Installation</h3>
+
+<p>The installation was more or less flawless. There are a number of
+modules that get installed, other get updated. Curiously enough, the
+installation for <a href="https://metacpan.org/pod/Dist::Zilla">Dist::Zilla</a> itself went wrong due to <a href="http://rt.perl.org/rt3/Public/Bug/Display.html?id=3038">a bug in perl
+5.8.x</a>’s regular
+expression operator <code>qr</code> that triggers an error in one of the tests.</p>
+
+<h3 id="starting-a-new-module">Starting a new module</h3>
+
+<p>This step requires you to do work! From the
+<a href="http://dzil.org/">official tutorial</a> (as of May 8, 2010):</p>
+
+<blockquote>
+  <p>This document will be overhauled when dzil new is more useful.<br />
+For now, we won’t even cover the new command, because it’s so pointless.</p>
+</blockquote>
+
+<p>So let’s follow <a href="http://dzil.org/tutorial/new-dist.html">the hints here</a>
+and create something:</p>
+
+<div class="highlight"><pre><code class="language-text" data-lang="text">~/dzilla$ mkdir Sample-Module
+~/dzilla$ cd Sample-Module
+~/dzilla/Sample-Module$ mkdir t
+~/dzilla/Sample-Module$ mkdir -p lib/Sample
+~/dzilla/Sample-Module$ vi t/00-load.t
+~/dzilla/Sample-Module$ showfile t/00-load.t
+
+|  # vim: filetype=perl :
+|  use strict;
+|  use warnings;
+|
+|  use Test::More tests =&gt; 1; # last test to print
+|
+|  BEGIN {
+|     use_ok(&#39;Sample::Module&#39;);
+|  }
+|
+|  diag(&quot;Testing Sample::Module $Sample::Module::VERSION&quot;);
+
+~/dzilla/Sample-Module$ vi lib/Sample/Module.pm
+~/dzilla/Sample-Module$ show lib/Sample/Module.pm
+
+|  package Sample::Module;
+|  use strict;
+|  use warnings;
+|  use English qw( -no_match_vars );
+|  use Carp;
+|
+|  1;
+|  __END__
+
+~/dzilla/Sample-Module$ vi dist.ini
+~/dzilla/Sample-Module$ show dist.ini
+
+|  name    = Sample-Module
+|  author  = Flavio Poletti &lt;polettix@cpan.org&gt;
+|  license = Perl_5
+|  copyright_holder = Flavio Poletti
+|  
+|  [@Basic]</code></pre></div>
+
+<p>In case you’re wondering, I’m working in Linux and the <code>show</code>
+stuff above is a shell function defined as follows:</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="k">function</span> show<span class="o">()</span> <span class="o">{</span> 
+    <span class="nb">echo</span>
+<span class="nb">    </span>sed <span class="s1">&#39;s/^/|  /&#39;</span> <span class="s2">&quot;$1&quot;</span>
+    <span class="nb">echo</span>
+<span class="o">}</span></code></pre></div>
+
+<p>Well… there’s nothing to tell me what to do now, so let’s just
+<code>build</code> it:</p>
+
+<div class="highlight"><pre><code class="language-text" data-lang="text">~/dzilla/Sample-Module$ dzil build
+[DZ] beginning to build Sample-Module
+[DZ] guessing dist&#39;s main_module is lib/Sample/Module.pm
+[DZ] extracting distribution abstract from lib/Sample/Module.pm
+Unable to extract an abstract from lib/Sample.pm. Please add...
+[DZ] no version was ever set...</code></pre></div>
+
+<p>Bummer! There seem to be two problems here (and with the tutorial): the
+first one is the absence of the <em>abstract</em>, the other one seems more
+serious because it triggers some error internally to <a href="https://metacpan.org/pod/Dist::Zilla">Dist::Zilla</a>.</p>
+
+<h3 id="adding-an-abstract">Adding an <code>ABSTRACT</code></h3>
+
+<p>Fixing the first issue should be simple, I remember reading about the
+abstract <a href="http://dzil.org/tutorial/writing-docs.html">somewhere</a>
+and it seems to just require an additional line in the module file:</p>
+
+<div class="highlight"><pre><code class="language-text" data-lang="text">~/dzilla/Sample-Module$ vi lib/Sample/Module.pm
+~/dzilla/Sample-Module$ show lib/Sample/Module.pm
+
+|   package Sample::Module;
+|   # ABSTRACT: a sample module to play with Dist::Zilla
+|   
+|   use strict;
+|   use warnings;
+|   use English qw( -no_match_vars );
+|   use Carp;
+|   
+|   1;
+|   __END__
+
+~/dzilla/Sample-Module$ dzil build
+[DZ] beginning to build Sample-Module
+[DZ] guessing dist&#39;s main_module is lib/Sample/Module.pm
+[DZ] extracting distribution abstract from lib/Sample/Module.pm
+[DZ] no version was ever set...</code></pre></div>
+
+<p>I just think that some <em>explicit</em> mention about the <code>ABSTRACT</code>
+would be nice on the reader in the tutorial!</p>
+
+<h3 id="dealing-with-the-version">Dealing with the <em>version</em></h3>
+
+<p><a href="http://dzil.org/tutorial/versioning.html">Managing Version Numbering with Dist::Zilla</a>
+seems to be a good candidate to get rid of the second error. I find
+particularly reassuring the following sentence:</p>
+
+<blockquote>
+  <p>The simplest way to specify your dist’s version is to put it in <em>dist.ini</em></p>
+</blockquote>
+
+<p>so let’s try it immediately:</p>
+
+<div class="highlight"><pre><code class="language-text" data-lang="text">~/dzilla/Sample-Module$ vi dist.ini
+~/dzilla/Sample-Module$ show dist.ini
+
+|   name    = Sample-Module
+|   &lt;em style=&quot;color:red&quot;&gt;version = 3.14.15&lt;/em&gt;
+|   author  = Flavio Poletti &lt;polettix@cpan.org&gt;
+|   license = Perl_5
+|   copyright_holder = Flavio Poletti
+|   
+|   [@Basic]
+
+~/dzilla/Sample-Module$ dzil build
+[DZ] beginning to build Sample-Module
+[DZ] guessing dist&#39;s main_module is lib/Sample/Module.pm
+[DZ] extracting distribution abstract from lib/Sample/Module.pm
+[DZ] writing Sample-Module in Sample-Module-3.14.15
+[DZ] writing archive to Sample-Module-3.14.15.tar.gz</code></pre></div>
+
+<p>WTF? Definitely not what I expected from a <code>build</code> command!
+<a href="#build-wtf">I’ll dig it later</a>, now let’s try to test it:</p>
+
+<div class="highlight"><pre><code class="language-text" data-lang="text">~/dzilla/Sample-Module$ dzil test
+[DZ] building test distribution under .build/krERIMYW7M
+[DZ] beginning to build Sample-Module
+[DZ] guessing dist&#39;s main_module is lib/Sample/Module.pm
+[DZ] extracting distribution abstract from lib/Sample/Module.pm
+[DZ] writing Sample-Module in .build/krERIMYW7M
+Checking if your kit is complete...
+Looks good
+Writing Makefile for Sample::Module
+cp lib/Sample/Module.pm blib/lib/Sample/Module.pm
+PERL_DL_NONLAZY=1 /opt/perl-5.8.8/bin/perl...
+&lt;em style=&quot;color:red&quot;&gt;t/00-load.t .. 1/1 Use of uninitialized value in concatenation (.) or string at t/00-load.t line 11.&lt;/em&gt;
+# Testing Sample::Module 
+t/00-load.t .. ok   
+All tests successful.
+Files=1, Tests=1,  0 wallclock secs ( 0.01 usr  0.02 sys +  0.02 cusr  0.00 csys =  0.05 CPU)
+Result: PASS
+[DZ] all&#39;s well; removing .build/krERIMYW7M</code></pre></div>
+
+<p>Yay, it’s working… more or less. There is still no <code>$VERSION</code>
+in my module, and this is something that annoyed me a lot in these years.
+Maybe it’s time to read some more from the tutorial:</p>
+
+<blockquote>
+  <p>There are a number of plugins that put your version number to use.
+PkgVersion inserts a $VERSION definition in all your packages so that
+they’ll all have versions matching distribution’s version. NextRelease
+adds version headers to your changelog file so you don’t need to worry
+about what the next version number will be until it’s built. PodVersion
+or PodWeaver can insert a =head1 VERSION section in your documentation.
+The Git integration plugins system uses your version to tag releases.</p>
+
+  <p>All of these plugins go a long way to taking care of version
+accounting for you. PkgVersion and the Pod mungers, especially,
+eliminate the need to update multiple files in multiple ways.</p>
+
+  <p>The next step to letting Dist::Zilla help manage your versions is to
+let it manange your version numbering, too.</p>
+</blockquote>
+
+<p>Well, let’s try this again then…</p>
+
+<h3 id="dealing-with-the-version-reloaded">Dealing with the éversion*, reloaded</h3>
+
+<p>I would actually have done this step in any case, because I’m lazy and
+I like my system to figure out stuff like version numbering, unless it’s
+time that I really need to bump the version. I also use
+<a href="http://git-scm.com/">git</a>, so it seems I’m quite lucky because
+of <a href="http://search.cpan.org/dist/Dist-Zilla-Plugin-BumpVersionFromGit/">Dist::Zilla::Plugin::BumpVersionFromGit</a>.</p>
+
+<p>The installation of this module is not clean, anyway. In particular,
+it seems that using Debian’s git is not liked very much by this module,
+that has tests fixed for version 1.7 while I have 1.5:</p>
+
+<div class="highlight"><pre><code class="language-text" data-lang="text">#   Failed test at t/basic.t line 45.
+#                   &#39;git: &#39;a-command-not-likely-to-exist&#39; is not a git-command. See &#39;git --help&#39;.
+# &#39;
+#     doesn&#39;t match &#39;(?-xism:which does not exist)&#39;</code></pre></div>
+
+<p>How the hell did they decide to change error messages is obscure to me.
+Now the problem is… to install or not to install? Probably the best thing
+to do would be to self-compile git and go with the bleading edge, but I’m
+lazy enough to decide that <code>git tag</code> is probably unchanged…
+so I go for <code>make install</code>.</p>
+
+<p>After the installation, following <a href="http://search.cpan.org/dist/Dist-Zilla-Plugin-BumpVersionFromGit/">Dist::Zilla::Plugin::BumpVersionFromGit</a>
+should be easy:</p>
+
+<div class="highlight"><pre><code class="language-text" data-lang="text">~/dzilla/Sample-Module$ vi dist.ini
+~/dzilla/Sample-Module$ show dist.ini
+
+|   name    = Sample-Module
+|   author  = Flavio Poletti &lt;polettix@cpan.org&gt;
+|   license = Perl_5
+|   copyright_holder = Flavio Poletti
+|   
+|   [@Basic]
+|   
+|   [BumpVersionFromGit]
+|   first_version = 0.1.0
+|   version_regexp  = ^v(.+)$</code></pre></div>
+
+<p>So let’s try:</p>
+
+<div class="highlight"><pre><code class="language-text" data-lang="text">~/dzilla/Sample-Module$ dzil test
+[DZ] building test distribution under .build/hYUzF1mKs7
+[DZ] beginning to build Sample-Module
+[DZ] guessing dist&#39;s main_module is lib/Sample/Module.pm
+[DZ] extracting distribution abstract from lib/Sample/Module.pm
+fatal: Not a git repository</code></pre></div>
+
+<p>Ach! I didn’t initialise the git repository!!! Let’s fix this:</p>
+
+<div class="highlight"><pre><code class="language-text" data-lang="text">~/dzilla/Sample-Module$ git init
+Initialized empty Git repository in .git/
+~/dzilla/Sample-Module$ git add dist.ini lib/Sample/Module.pm t/00-load.t
+~/dzilla/Sample-Module$ git commit -m &#39;Initial import&#39;
+Created initial commit bf8a91c: Initial import
+ 3 files changed, 31 insertions(+), 0 deletions(-)
+ create mode 100644 dist.ini
+ create mode 100644 lib/Sample/Module.pm
+ create mode 100644 t/00-load.t</code></pre></div>
+
+<p>and give it a new try:</p>
+
+<div class="highlight"><pre><code class="language-text" data-lang="text">~/dzilla/Sample-Module$ dzil test
+[DZ] building test distribution under .build/6rSmgX1Gpw
+[DZ] beginning to build Sample-Module
+[DZ] guessing dist&#39;s main_module is lib/Sample/Module.pm
+[DZ] extracting distribution abstract from lib/Sample/Module.pm
+[DZ] writing Sample-Module in .build/6rSmgX1Gpw
+Checking if your kit is complete...
+Looks good
+Writing Makefile for Sample::Module
+cp lib/Sample/Module.pm blib/lib/Sample/Module.pm
+PERL_DL_NONLAZY=1 /opt/perl-5.8.8/bin/perl...
+t/00-load.t .. 1/1 Use of uninitialized value in concatenation (.) or string at t/00-load.t line 11.
+# Testing Sample::Module 
+t/00-load.t .. ok   
+All tests successful.
+Files=1, Tests=1,  0 wallclock secs ( 0.00 usr  0.02 sys +  0.01 cusr  0.02 csys =  0.05 CPU)
+Result: PASS
+[DZ] all&#39;s well; removing .build/6rSmgX1Gpw</code></pre></div>
+
+<p>What’s wrong now?!? OK I get it, it draws the <em>whole bundle</em> version
+number from git, but still does not set it inside modules; it seems that I
+did not read the tutorial with sufficient attention:</p>
+
+<blockquote>
+  <p>There are a number of plugins that put your version number to use.
+<strong>PkgVersion inserts a <code>$VERSION</code> definition in all your packages so
+that they’ll all have versions matching distribution’s version.</strong>
+NextRelease adds version headers to your changelog file so you don’t
+need to worry about what the next version number will be until it’s
+built. PodVersion or PodWeaver can insert a <code>=head1 VERSION</code> section in
+your documentation. The Git integration plugins system uses your version
+to tag releases.</p>
+</blockquote>
+
+<p>Let’s add <code>PkgVersion</code> then, and give it yet another try:</p>
+
+<div class="highlight"><pre><code class="language-text" data-lang="text">~/dzilla/Sample-Module$ vi dist.ini
+~/dzilla/Sample-Module$ show dist.ini
+
+|   name    = Sample-Module
+|   author  = Flavio Poletti &lt;polettix@cpan.org&gt;
+|   license = Perl_5
+|   copyright_holder = Flavio Poletti
+|   
+|   [@Basic]
+|   [PkgVersion]
+|   
+|   [BumpVersionFromGit]
+|   first_version = 0.1.0
+|   version_regexp  = ^v(.+)$
+
+~/dzilla/Sample-Module$ dzil test
+[DZ] building test distribution under .build/uFlnF2gzDc
+[DZ] beginning to build Sample-Module
+[DZ] guessing dist&#39;s main_module is lib/Sample/Module.pm
+[DZ] extracting distribution abstract from lib/Sample/Module.pm
+[DZ] writing Sample-Module in .build/uFlnF2gzDc
+Checking if your kit is complete...
+Looks good
+Writing Makefile for Sample::Module
+cp lib/Sample/Module.pm blib/lib/Sample/Module.pm
+PERL_DL_NONLAZY=1 /opt/perl-5.8.8/bin/perl...
+t/00-load.t .. 1/1 # Testing Sample::Module 0.1.0
+t/00-load.t .. ok   
+All tests successful.
+Files=1, Tests=1,  1 wallclock secs ( 0.01 usr  0.02 sys +  0.01 cusr  0.01 csys =  0.05 CPU)
+Result: PASS
+[DZ] all&#39;s well; removing .build/uFlnF2gzDc</code></pre></div>
+
+<p>According to the docs, I can bump the version by myself:</p>
+
+<div class="highlight"><pre><code class="language-text" data-lang="text">~/dzilla/Sample-Module$ V=3.14.15 dzil build
+[DZ] beginning to build Sample-Module
+[DZ] guessing dist&#39;s main_module is lib/Sample/Module.pm
+[DZ] extracting distribution abstract from lib/Sample/Module.pm
+[DZ] writing Sample-Module in Sample-Module-&lt;em style=&quot;color:red&quot;&gt;3.14.15&lt;/em&gt;
+[DZ] writing archive to Sample-Module-&lt;em style=&quot;color:red&quot;&gt;3.14.15&lt;/em&gt;.tar.gz</code></pre></div>
+
+<p><a name="build-wtf"></a></p>
+
+<h3 id="dzil-build-wtf"><code>dzil build</code> WTF?</h3>
+
+<p>I expected <code>build</code> to do something similar
+to either <a href="https://metacpan.org/pod/Module::Build">Module::Build</a>’s <code>./Build</code>
+or <a href="https://metacpan.org/pod/ExtUtils::MakeMaker">ExtUtils::MakeMaker</a>’s <code>make</code>,
+but it seems that it actually builds up the
+distribution file, <em>a-la</em> <code>./Build dist</code> or <code>make dist</code>. To be
+fair, it’s written in the help:</p>
+
+<div class="highlight"><pre><code class="language-text" data-lang="text">~/dzilla/Sample-Module$ dzil | grep build:
+     build: build your dist</code></pre></div>
+
+<p>but I’m not particularly fond of these changes in terminology, especially
+when they change from well-established conventions.</p>
+
+<p>As a CPAN author that uses these modules from some time,
+<code>dist</code> would be much, much better.</p>
+
+<h3 id="so-whats-inside-that-package">So, what’s inside that package?</h3>
+
+<p>This is what’s inside the directory after running <code>dzil build</code>:</p>
+
+<div class="highlight"><pre><code class="language-text" data-lang="text">~/dzilla/Sample-Module$ dir
+total 24
+-rw-r--r-- 1 poletti dialout  148 2010-05-08 12:52 dist.ini
+drwxr-xr-x 3 poletti dialout 4096 2010-05-08 12:20 lib
+drwxr-xr-x 4 poletti dialout 4096 2010-05-08 12:52 Sample-Module-3.14.15
+-rw-r--r-- 1 poletti dialout 7920 2010-05-08 12:52 Sample-Module-3.14.15.tar.gz
+drwxr-xr-x 2 poletti dialout 4096 2010-05-08 12:21 t
+~/dzilla/Sample-Module$ cd Sample-Module-3.14.15
+~/dzilla/Sample-Module/Sample-Module-3.14.15$ dir
+total 48
+-rw-r--r-- 1 poletti dialout   148 2010-05-08 12:52 dist.ini
+drwxr-xr-x 3 poletti dialout  4096 2010-05-08 12:52 lib
+-rw-r--r-- 1 poletti dialout 18258 2010-05-08 12:52 LICENSE
+-rw-r--r-- 1 poletti dialout   977 2010-05-08 12:52 Makefile.PL
+-rw-r--r-- 1 poletti dialout    86 2010-05-08 12:52 MANIFEST
+-rw-r--r-- 1 poletti dialout   386 2010-05-08 12:52 META.yml
+-rw-r--r-- 1 poletti dialout   311 2010-05-08 12:52 README
+drwxr-xr-x 2 poletti dialout  4096 2010-05-08 12:52 t</code></pre></div>
+
+<p>Well, it seems that promises have been kept!</p>
+
+<h3 id="dealing-with-the-version-revolution">Dealing with the <em>version</em>, revolution</h3>
+
+<p>There’s one final thing to do with version numbering, anyway: git must be
+told to “remember” it, otherwise I’m still stuck in dealing with this
+stuff by myself. <a href="https://metacpan.org/pod/Dist::Zilla::Plugin::Git">Dist::Zilla::Plugin::Git</a> comes to the
+rescue, according to <a href="http://dzil.org/tutorial/vcs-git.html">this tutorial page</a>.
+Well, actually the tutorial page gives for granted that you already
+know the module and installed it:</p>
+
+<div class="highlight"><pre><code class="language-text" data-lang="text">~/dzilla/Sample-Module$ vi dist.ini
+~/dzilla/Sample-Module$ show dist.ini
+
+|   name    = Sample-Module
+|   author  = Flavio Poletti &lt;polettix@cpan.org&gt;
+|   license = Perl_5
+|   copyright_holder = Flavio Poletti
+|   
+|   [@Basic]
+|   [PkgVersion]
+|   [@Git]
+|   
+|   [BumpVersionFromGit]
+|   first_version = 0.1.0
+|   version_regexp  = ^v(.+)$
+
+~/dzilla/Sample-Module$ dzil test
+couldn&#39;t load plugin @Git given in config: Can&#39;t locate Dist/Zilla/PluginBundle/Git.pm
+...
+[lots of error lines here]</code></pre></div>
+
+<p>Unluckily, the module installation is not clean due to git’s version…
+again. From the <code>Changes</code> file:</p>
+
+<blockquote>
+  <p>fix tests to work with git 1.7.0</p>
+</blockquote>
+
+<p>This time the problem seems to be a bit more serious, so I decide to
+upgrade git and the module eventually gets installed. Time to give it a try:</p>
+
+<div class="highlight"><pre><code class="language-text" data-lang="text">~/dzilla/Sample-Module$ dzil release
+[DZ] beginning to build Sample-Module
+[DZ] guessing dist&#39;s main_module is lib/Sample/Module.pm
+[DZ] extracting distribution abstract from lib/Sample/Module.pm
+[DZ] writing Sample-Module in Sample-Module-0.1.0
+[DZ] writing archive to Sample-Module-0.1.0.tar.gz
+[@Basic/TestRelease] ...
+...
+Result: PASS
+[@Basic/TestRelease] all&#39;s well; removing .build/uFQW51GQq_
+
+*** Preparing to upload Sample-Module-0.1.0.tar.gz to CPAN ***
+
+Do you want to continue the release process? (yes/no) [no]</code></pre></div>
+
+<p>Hey, wait a moment! I have uncommitted files, why didn’t it spot them?</p>
+
+<div class="highlight"><pre><code class="language-text" data-lang="text">~/dzilla/Sample-Module$ git status
+# On branch master
+# Changed but not updated:
+...
+# Untracked files:
+...</code></pre></div>
+
+<p>It turns out to be an ordering problem inside <code>dist.ini</code>:</p>
+
+<div class="highlight"><pre><code class="language-text" data-lang="text">~/dzilla/Sample-Module$ vi dist.ini
+~/dzilla/Sample-Module$ show dist.ini
+
+|   name    = Sample-Module
+|   author  = Flavio Poletti &lt;polettix@cpan.org&gt;
+|   license = Perl_5
+|   copyright_holder = Flavio Poletti
+|   
+|   &lt;em style=&quot;color:red&quot;&gt;[@Git]&lt;/em&gt;
+|   [@Basic]
+|   [PkgVersion]
+|   
+|   [BumpVersionFromGit]
+|   first_version = 0.1.0
+|   version_regexp  = ^v(.+)$
+
+~/dzilla/Sample-Module$ dzil release
+[DZ] beginning to build Sample-Module
+[DZ] guessing dist&#39;s main_module is lib/Sample/Module.pm
+[DZ] extracting distribution abstract from lib/Sample/Module.pm
+[DZ] writing Sample-Module in Sample-Module-0.1.0
+[DZ] writing archive to Sample-Module-0.1.0.tar.gz
+[@Git/Check] branch master has some untracked files:
+[@Git/Check]   Sample-Module-0.1.0.tar.gz
+[@Git/Check]   Sample-Module-0.1.0/LICENSE
+[@Git/Check]   Sample-Module-0.1.0/MANIFEST
+[@Git/Check]   Sample-Module-0.1.0/META.yml
+[@Git/Check]   Sample-Module-0.1.0/Makefile.PL
+[@Git/Check]   Sample-Module-0.1.0/README
+[@Git/Check]   Sample-Module-0.1.0/dist.ini
+[@Git/Check]   Sample-Module-0.1.0/lib/Sample/Module.pm
+[@Git/Check]   Sample-Module-0.1.0/t/00-load.t ...</code></pre></div>
+
+<p>The check works, at last. It’s interesting (and correct) that <code>dist.ini</code>
+does not participate in the checks. Now let’s see if it all works, it’s
+necessary to add the release package names in the exclusion list for
+git:</p>
+
+<div class="highlight"><pre><code class="language-text" data-lang="text">~/dzilla/Sample-Module$ vi .git/info/exclude
+~/dzilla/Sample-Module$ show .git/info/exclude
+
+|   # git-ls-files --others --exclude-from=.git/info/exclude
+|   # Lines that start with &#39;#&#39; are comments.
+|   # For a project mostly in C, the following would be a good set of
+|   # exclude patterns (uncomment them if you want to use them):
+|   # *.[oa]
+|   # *~
+|   Sample-Module-*</code></pre></div>
+
+<p>and then re-run the <code>release</code> command:</p>
+
+<div class="highlight"><pre><code class="language-text" data-lang="text">~/dzilla/Sample-Module$ dzil release
+[DZ] beginning to build Sample-Module
+[DZ] guessing dist&#39;s main_module is lib/Sample/Module.pm
+[DZ] extracting distribution abstract from lib/Sample/Module.pm
+[DZ] writing Sample-Module in Sample-Module-0.1.0
+[DZ] writing archive to Sample-Module-0.1.0.tar.gz
+[@Git/Check] branch master is in a clean state
+[@Basic/TestRelease] Extracting ...
+...
+[@Basic/TestRelease] all&#39;s well; removing .build/EqUfLZpmQJ
+
+*** Preparing to upload Sample-Module-0.1.0.tar.gz to CPAN ***
+
+Do you want to continue the release process? (yes/no) [no]^C
+[@Basic/ConfirmRelease] Aborting release...</code></pre></div>
+
+<p>Well, we’re going a bit too far, I don’t want to push this stuff to
+CPAN. It seems that this is due to some plugin in the <code>@Basic</code> bundle,
+so let’s see how to disable it… In <a href="https://metacpan.org/pod/Dist::Zilla">Dist::Zilla</a> distribution page
+there’s an interesting <a href="https://metacpan.org/pod/Dist::Zilla::PluginBundle::Filter">Dist::Zilla::PluginBundle::Filter</a> so I get rid
+of the basic bundle and go for the filter:</p>
+
+<div class="highlight"><pre><code class="language-text" data-lang="text">~/dzilla/Sample-Module$ vi dist.ini
+~/dzilla/Sample-Module$ show dist.ini
+
+|   name    = Sample-Module
+|   author  = Flavio Poletti &lt;polettix@cpan.org&gt;
+|   license = Perl_5
+|   copyright_holder = Flavio Poletti
+|   
+|   [@Git]
+|   &lt;em style=&quot;color:red&quot;&gt;[@Filter]&lt;/em&gt;
+|   &lt;em style=&quot;color:red&quot;&gt;bundle = @Basic&lt;/em&gt;
+|   &lt;em style=&quot;color:red&quot;&gt;remove = UploadToCPAN&lt;/em&gt;
+|   &lt;em style=&quot;color:red&quot;&gt;remove = ConfirmRelease&lt;/em&gt;
+|   [PkgVersion]
+|   
+|   [BumpVersionFromGit]
+|   first_version = 0.1.0
+|   version_regexp  = ^v(.+)$</code></pre></div>
+
+<p>Time for a new test</p>
+
+<div class="highlight"><pre><code class="language-text" data-lang="text">~/dzilla/Sample-Module$ dzil release
+you can&#39;t release without any Releaser plugins ...</code></pre></div>
+
+<p>Ouch! I hope <a href="https://metacpan.org/pod/Dist::Zilla::Plugin::FakeRelease">Dist::Zilla::Plugin::FakeRelease</a> will help me out:</p>
+
+<div class="highlight"><pre><code class="language-text" data-lang="text">~/dzilla/Sample-Module$ vi dist.ini
+~/dzilla/Sample-Module$ show dist.ini
+
+|   name    = Sample-Module
+|   author  = Flavio Poletti &lt;polettix@cpan.org&gt;
+|   license = Perl_5
+|   copyright_holder = Flavio Poletti
+|   
+|   [@Git]
+|   [@Filter]
+|   bundle = @Basic
+|   remove = UploadToCPAN
+|   remove = ConfirmRelease
+|   &lt;em style=&quot;color:red&quot;&gt;[FakeRelease]&lt;/em&gt;
+|   [PkgVersion]
+|   
+|   [BumpVersionFromGit]
+|   first_version = 0.1.0
+|   version_regexp  = ^v(.+)$</code></pre></div>
+
+<p>Now, just to double-check the <code>Git::Check</code> module, I modify a file:</p>
+
+<div class="highlight"><pre><code class="language-text" data-lang="text">~/dzilla/Sample-Module$ vi lib/Sample/Module.pm
+~/dzilla/Sample-Module$ show lib/Sample/Module.pm
+
+|   package Sample::Module;
+|   # ABSTRACT: a sample module to play with Dist::Zilla
+|   # just a comment
+|   
+|   use strict;
+|   use warnings;
+|   use English qw( -no_match_vars );
+|   use Carp;
+|   
+|   1;
+|   __END__</code></pre></div>
+
+<p>and run the <code>release</code> command once again:</p>
+
+<div class="highlight"><pre><code class="language-text" data-lang="text">~/dzilla/Sample-Module$ dzil release
+[DZ] beginning to build Sample-Module
+[DZ] guessing dist&#39;s main_module is lib/Sample/Module.pm
+[DZ] extracting distribution abstract from lib/Sample/Module.pm
+[DZ] writing Sample-Module in Sample-Module-0.1.0
+[DZ] writing archive to Sample-Module-0.1.0.tar.gz
+[@Git/Check] branch master has some uncommitted files:
+[@Git/Check]   lib/Sample/Module.pm ...</code></pre></div>
+
+<p>Awesome! After committing let’s try this again:</p>
+
+<div class="highlight"><pre><code class="language-text" data-lang="text">~/dzilla/Sample-Module$ git commit lib/Sample/Module.pm -m &quot;added comment&quot;
+~/dzilla/Sample-Module$ dzil release
+[DZ] beginning to build Sample-Module
+[DZ] guessing dist&#39;s main_module is lib/Sample/Module.pm
+[DZ] extracting distribution abstract from lib/Sample/Module.pm
+[DZ] writing Sample-Module in Sample-Module-0.1.0
+[DZ] writing archive to Sample-Module-0.1.0.tar.gz
+[@Git/Check] branch master is in a clean state
+[@Filter/TestRelease] ...
+...
+[@Filter/TestRelease] all&#39;s well; removing .build/yqbgoYW_GV
+[FakeRelease] Fake release happening (nothing was really done)
+[@Git/Tag] Tagged v0.1.0
+[@Git/Push] pushing to origin
+fatal: &#39;origin&#39; does not appear to be a git repository
+fatal: The remote end hung up unexpectedly</code></pre></div>
+
+<p>Uhm, it seems that I’d better get rid of the <code>Git::Push</code> plugin,
+because my repository is local:</p>
+
+<div class="highlight"><pre><code class="language-text" data-lang="text">~/dzilla/Sample-Module$ vi dist.ini
+~/dzilla/Sample-Module$ show dist.ini
+
+|   name    = Sample-Module
+|   author  = Flavio Poletti &lt;polettix@cpan.org&gt;
+|   license = Perl_5
+|   copyright_holder = Flavio Poletti
+|   
+|   [@Filter]
+|   bundle = @Git
+|   remove = Git::Push
+|   [@Filter]
+|   bundle = @Basic
+|   remove = UploadToCPAN
+|   remove = ConfirmRelease
+|   [FakeRelease]
+|   [PkgVersion]
+|   
+|   [BumpVersionFromGit]
+|   first_version = 0.1.0
+|   version_regexp  = ^v(.+)$
+
+~/dzilla/Sample-Module$ dzil release
+[DZ] beginning to build Sample-Module
+[BumpVersionFromGit] Bumping version from 0.1.0 to 0.1.1
+[DZ] guessing dist&#39;s main_module is lib/Sample/Module.pm
+[DZ] extracting distribution abstract from lib/Sample/Module.pm
+[DZ] writing Sample-Module in Sample-Module-0.1.1
+[DZ] writing archive to Sample-Module-0.1.1.tar.gz
+[@Filter/Check] branch master is in a clean state
+[@Filter/TestRelease] Extracting ...
+...
+[@Filter/TestRelease] all&#39;s well; removing .build/E9CAlzs8sG
+[FakeRelease] Fake release happening (nothing was really done)
+can&#39;t open Changes for reading:  No such file or directory\
+ at /opt/perl-5.8.8/lib/site_perl/5.8.8/Dist/Zilla/File/OnDisk.pm line 31</code></pre></div>
+
+<p>OK, the version bumping works, all’s well but… there’s an error at the
+end! First of all, I wonder why it didn’t pop up last time the release
+process blocked in <code>Git::Push</code>, but whatever the reason I have
+to find who’s preventing this release from happening. This requires a
+little hack into <a href="https://metacpan.org/pod/Dist::Zilla">Dist::Zilla</a> itself, in particular inside the
+offending module <code>Dist::Zilla::File::OnDisk</code> we change the
+<code>die()</code> into <code>Carp::confess</code>:</p>
+
+<div class="highlight"><pre><code class="language-text" data-lang="text">can&#39;t open Changes for reading: No such file or directory...
+   Dist::Zilla::File::OnDisk::_read_file(...
+   Dist::Zilla::File::OnDisk::__ANON__(...
+   Class::MOP::Attribute::default(...
+   Dist::Zilla::File::OnDisk::content(...
+   Dist::Zilla::Plugin::Git::Commit::_get_changes(...
+   Dist::Zilla::Plugin::Git::Commit::__ANON__(...
+   String::Formatter::method_replace(...
+   String::Formatter::format(...
+   String::Formatter::__ANON__(...
+   Dist::Zilla::Plugin::Git::Commit::get_commit_message(...
+   &lt;em style=&quot;color:red&quot;&gt;Dist::Zilla::Plugin::Git::Commit&lt;/em&gt;::after_release(...
+   Dist::Zilla::release(...
+   Dist::Zilla::App::Command::release::execute(...
+   App::Cmd::execute_command(...
+   App::Cmd::run(...</code></pre></div>
+
+<p>So that’s the culprit… <code>DZP::Git::Commit</code>! For the <code>$VERSION</code> stuff we
+don’t actually need it, so let’s rule it away for the moment:</p>
+
+<div class="highlight"><pre><code class="language-text" data-lang="text">~/dzilla/Sample-Module$ vi dist.ini
+~/dzilla/Sample-Module$ show dist.ini
+
+|   name    = Sample-Module
+|   author  = Flavio Poletti &lt;polettix@cpan.org&gt;
+|   license = Perl_5
+|   copyright_holder = Flavio Poletti
+|   
+|   [@Filter]
+|   bundle = @Git
+|   remove = Git::Push
+|   remove = Git::Commit
+|   [@Filter]
+|   bundle = @Basic
+|   remove = UploadToCPAN
+|   remove = ConfirmRelease
+|   [FakeRelease]
+|   [PkgVersion]
+|   
+|   [BumpVersionFromGit]
+|   first_version = 0.1.0
+|   version_regexp  = ^v(.+)$
+
+~/dzilla/Sample-Module$ dzil release
+[DZ] beginning to build Sample-Module
+[BumpVersionFromGit] Bumping version from 0.1.0 to 0.1.1
+[DZ] guessing dist&#39;s main_module is lib/Sample/Module.pm
+[DZ] extracting distribution abstract from lib/Sample/Module.pm
+[DZ] writing Sample-Module in Sample-Module-0.1.1
+[DZ] writing archive to Sample-Module-0.1.1.tar.gz
+[@Filter/Check] branch master is in a clean state
+[@Filter/TestRelease] Extracting ...
+...
+[@Filter/TestRelease] all&#39;s well; removing .build/ieACRWrTGf
+[FakeRelease] Fake release happening (nothing was really done)
+[@Filter/Tag] Tagged v0.1.1</code></pre></div>
+
+<p>At the very last!!! Anyway, having a <code>Changes</code> file is actually a good
+thing, so let’s add one and restore the ruled out plugin:</p>
+
+<div class="highlight"><pre><code class="language-text" data-lang="text">~/dzilla/Sample-Module$ touch Changes
+~/dzilla/Sample-Module$ git add Changes
+~/dzilla/Sample-Module$ git commit Changes -m &#39;added Changes file&#39;
+[master 27e56cd] added Changes file
+ 0 files changed, 0 insertions(+), 0 deletions(-)
+ create mode 100644 Changes
+~/dzilla/Sample-Module$ vi dist.ini
+~/dzilla/Sample-Module$ show dist.ini
+
+|   name    = Sample-Module
+|   author  = Flavio Poletti &lt;polettix@cpan.org&gt;
+|   license = Perl_5
+|   copyright_holder = Flavio Poletti
+|   
+|   [@Filter]
+|   bundle = @Git
+|   remove = Git::Push
+|   [@Filter]
+|   bundle = @Basic
+|   remove = UploadToCPAN
+|   remove = ConfirmRelease
+|   [FakeRelease]
+|   [PkgVersion]
+|   
+|   [BumpVersionFromGit]
+|   first_version = 0.1.0
+|   version_regexp  = ^v(.+)$
+
+~/dzilla/Sample-Module$ dzil release
+[DZ] beginning to build Sample-Module
+[BumpVersionFromGit] Bumping version from 0.1.1 to 0.1.2
+[DZ] guessing dist&#39;s main_module is lib/Sample/Module.pm
+[DZ] extracting distribution abstract from lib/Sample/Module.pm
+[DZ] writing Sample-Module in Sample-Module-0.1.2
+[DZ] writing archive to Sample-Module-0.1.2.tar.gz
+[@Filter/Check] branch master is in a clean state
+[@Filter/TestRelease] ...
+...
+[@Filter/TestRelease] all&#39;s well; removing .build/dvgGmImcg2
+[FakeRelease] Fake release happening (nothing was really done)
+[@Filter/Commit] Committed dist.ini
+[@Filter/Tag] Tagged v0.1.2
+~/dzilla/Sample-Module$ show Changes</code></pre></div>
+
+<p>Much ado abouth nothing? Maybe I have to actually do some changes, let’s
+try:</p>
+
+<div class="highlight"><pre><code class="language-text" data-lang="text">~/dzilla/Sample-Module$ vi lib/Sample/Module.pm
+~/dzilla/Sample-Module$ show lib/Sample/Module.pm
+
+|   package Sample::Module;
+|   # ABSTRACT: a sample module to play with Dist::Zilla
+|   # just a comment, extended
+|   
+|   use strict;
+|   use warnings;
+|   use English qw( -no_match_vars );
+|   use Carp;
+|   
+|   1;
+|   __END__
+
+~/dzilla/Sample-Module$ dzil release
+[DZ] beginning to build Sample-Module
+[BumpVersionFromGit] Bumping version from 0.1.2 to 0.1.3
+[DZ] guessing dist&#39;s main_module is lib/Sample/Module.pm
+[DZ] extracting distribution abstract from lib/Sample/Module.pm
+[DZ] writing Sample-Module in Sample-Module-0.1.3
+[DZ] writing archive to Sample-Module-0.1.3.tar.gz
+[@Filter/Check] branch master has some uncommitted files:
+[@Filter/Check]   lib/Sample/Module.pm ...</code></pre></div>
+
+<p>Correct, let’s commit and go forth:</p>
+
+<div class="highlight"><pre><code class="language-text" data-lang="text">~/dzilla/Sample-Module$ git commit -a -m &quot;extended the comment&quot;
+[master 71a01c0] extended the comment
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+&lt;b&gt;~/dzilla/Sample-Module$ dzil release&lt;/b&gt;
+[DZ] beginning to build Sample-Module
+[BumpVersionFromGit] Bumping version from 0.1.2 to 0.1.3
+[DZ] guessing dist&#39;s main_module is lib/Sample/Module.pm
+[DZ] extracting distribution abstract from lib/Sample/Module.pm
+[DZ] writing Sample-Module in Sample-Module-0.1.3
+[DZ] writing archive to Sample-Module-0.1.3.tar.gz
+[@Filter/Check] branch master is in a clean state
+[@Filter/TestRelease] ...
+...
+[@Filter/TestRelease] all&#39;s well; removing .build/yn5wsMwfpC
+[FakeRelease] Fake release happening (nothing was really done)
+[@Filter/Tag] Tagged v0.1.3
+~/dzilla/Sample-Module$ show Changes</code></pre></div>
+
+<p>Still nothing, but this will probably be meat for some future article!</p>
+
+<p><em>Update</em>: I later tried to move the <code>Git</code> stuff before
+the <code>Basic</code> and release stuff, and it actually worked as expected:</p>
+
+<div class="highlight"><pre><code class="language-text" data-lang="text">~dzilla/Sample-Module$ show dist.ini
+
+|   name    = Sample-Module
+|   author  = Flavio Poletti &lt;polettix@cpan.org&gt;
+|   license = Perl_5
+|   copyright_holder = Flavio Poletti
+|   
+|   [@Filter]
+|   bundle = @Basic
+|   remove = UploadToCPAN
+|   remove = ConfirmRelease
+|   [FakeRelease]
+|   [@Filter]
+|   bundle = @Git
+|   remove = Git::Push
+|   [PkgVersion]
+|   
+|   [BumpVersionFromGit]
+|   first_version = 0.1.0
+|   version_regexp  = ^v(.+)$
+
+~dzilla/Sample-Module$ dzil release
+[DZ] beginning to build Sample-Module
+[BumpVersionFromGit] Bumping version from 0.1.3 to 0.1.4
+[DZ] guessing dist&#39;s main_module is lib/Sample/Module.pm
+[DZ] extracting distribution abstract from lib/Sample/Module.pm
+[DZ] writing Sample-Module in Sample-Module-0.1.4
+[DZ] writing archive to Sample-Module-0.1.4.tar.gz
+[@Filter/TestRelease] Extracting ...
+...
+[@Filter/TestRelease] all&#39;s well; removing .build/zD6QJBMw7z
+[@Filter/Check] branch master has some untracked files:
+[@Filter/Check]   adjust.pl ...</code></pre></div>
+
+<p>I don’t actually understand why this happens; anyway, I still think that
+keeping the <code>Git::Check</code> stuff before is better, because the whole
+build and test stuff is not performed if there are pending commits.</p>
+
+<p><a name="the-lucky-path"></a></p>
+
+<h3 id="the-lucky-path">The Lucky Path</h3>
+
+<p>Well, back to the very beginning… what should I do to:
+- start using <a href="https://metacpan.org/pod/Dist::Zilla">Dist::Zilla</a> from scratch
+- with basic integration with <a href="http://www.git-scm.com/">git</a>
+- and with automatic version numbering?</p>
+
+<p>Here’s my recipe!</p>
+
+<h4 id="install-needed-stuff">Install needed stuff</h4>
+
+<p>You’ll need a reasonably recent version of <a href="http://www.git-scm.com/">git</a>, so install it beforehand.
+Then install the Perl modules:</p>
+
+<div class="highlight"><pre><code class="language-text" data-lang="text">~/dzilla$ cpanm Dist::Zilla Dist::Zilla::Plugin::BumpVersionFromGit Dist::Zilla::Plugin::Git</code></pre></div>
+
+<h4 id="create-module-directory-and-stuff">Create module directory and stuff</h4>
+
+<p>This is up to you, just a minimal example:</p>
+
+<div class="highlight"><pre><code class="language-text" data-lang="text">~/dzilla$ mkdir Sample
+~/dzilla$ cd Sample
+~/dzilla/Sample$ mkdir lib
+~/dzilla/Sample$ cat &gt;lib/Sample.pm &lt;&lt;END_OF_MODULE
+package Sample;
+# ABSTRACT: whatever
+1;
+__END__
+END_OF_MODULE
+~/dzilla/Sample$ touch Changes
+~/dzilla/Sample$ git init
+Initialized empty Git repository in /home/poletti/sviluppo/perl/dzilla/Sample/.git/
+~/dzilla/Sample$ git add .
+~/dzilla/Sample$ git commit -m &#39;Initial import&#39;
+[master (root-commit) 3b19203] Initial import
+ 1 files changed, 3 insertions(+), 0 deletions(-)
+ create mode 100644 Changes
+ create mode 100644 lib/Sample.pm
+~/dzilla/Sample$ echo &#39;Sample-*&#39; &gt;&gt; .git/info/exclude</code></pre></div>
+
+<p>Remember to ensure that the <code>Changes</code> file is created, or
+<a href="https://metacpan.org/pod/Dist::Zilla::Plugin::Git::Commit">Dist::Zilla::Plugin::Git::Commit</a> will complain later.</p>
+
+<h4 id="create-distini">Create <code>dist.ini</code></h4>
+
+<p>Now create <code>dist.ini</code>, the configuration file for <a href="https://metacpan.org/pod/Dist::Zilla">Dist::Zilla</a>:</p>
+
+<div class="highlight"><pre><code class="language-text" data-lang="text">~/dzilla/Sample$ cat &gt;dist.ini &lt;&lt;END_OF_FILE
+name    = Sample
+author  = A. U. Thor &lt;someone@example.com&gt;
+license = Perl_5
+copyright_holder = A. U. Thor
+
+[@Filter]
+bundle = @Git
+remove = Git::Push
+[@Filter]
+bundle = @Basic
+remove = ConfirmRelease
+remove = UploadToCPAN
+[FakeRelease]
+[PkgVersion]
+
+[BumpVersionFromGit]
+first_version = 0.1.0
+version_regexp  = ^v(.+)$
+END_OF_FILE
+~/dzilla/Sample$ git add dist.ini
+~/dzilla/Sample$ git commit -m &#39;added dist.ini&#39;
+[master 98feba7] added dist.ini
+ 1 files changed, 18 insertions(+), 0 deletions(-)
+ create mode 100644 dist.ini</code></pre></div>
+
+<h4 id="enjoy-your-toolchain">Enjoy your toolchain</h4>
+
+<p>At this point, you can check the toolchain:</p>
+
+<div class="highlight"><pre><code class="language-text" data-lang="text">~/dzilla/Sample$ dzil release
+[DZ] beginning to build Sample
+[DZ] guessing dist&#39;s main_module is lib/Sample.pm
+[DZ] extracting distribution abstract from lib/Sample.pm
+[DZ] writing Sample in Sample-0.1.0
+[DZ] writing archive to Sample-0.1.0.tar.gz
+[@Filter/Check] branch master is in a clean state
+[@Filter/TestRelease] Extracting ~/dzilla/Sample/Sample-0.1.0.tar.gz to .build/3GuZPYcWef
+Checking if your kit is complete...
+Looks good
+Writing Makefile for Sample
+cp lib/Sample.pm blib/lib/Sample.pm
+No tests defined for Sample extension.
+[@Filter/TestRelease] all&#39;s well; removing .build/3GuZPYcWef
+[FakeRelease] Fake release happening (nothing was really done)
+[@Filter/Tag] Tagged v0.1.0</code></pre></div>
+
+<p>If you want, you can restore the automatic upload to CPAN feature of
+<code>release</code>, by changing the dist.ini file like this:</p>
+
+<div class="highlight"><pre><code class="language-text" data-lang="text">~/dzilla/Sample$ cat &gt;dist.ini &lt;&lt;END_OF_FILE
+name    = Sample
+author  = A. U. Thor &lt;someone@example.com&gt;
+license = Perl_5
+copyright_holder = A. U. Thor
+
+[@Filter]
+bundle = @Git
+remove = Git::Push
+[@Basic]
+[PkgVersion]
+
+[BumpVersionFromGit]
+first_version = 0.1.0
+version_regexp  = ^v(.+)$
+END_OF_FILE</code></pre></div>
+
+<h4 id="a-shell-script-to-rule-them-all">A shell script to rule them all</h4>
+
+<p>This script should do all that you need, just cross your fingers:</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">mkdir Sample
+<span class="nb">cd </span>Sample
+
+mkdir lib
+cat &gt;lib/Sample.pm <span class="s">&lt;&lt;END_OF_MODULE</span>
+<span class="s">package Sample;</span>
+<span class="s"># ABSTRACT: whatever</span>
+<span class="s">1;</span>
+<span class="s">__END__</span>
+<span class="s">END_OF_MODULE</span>
+
+touch Changes
+
+cat &gt;dist.ini <span class="s">&lt;&lt;END_OF_FILE</span>
+<span class="s">name    = Sample</span>
+<span class="s">author  = A. U. Thor </span>
+<span class="s">license = Perl_5</span>
+<span class="s">copyright_holder = A. U. Thor</span>
+
+<span class="s">[@Filter]</span>
+<span class="s">bundle = @Git</span>
+<span class="s">remove = Git::Push</span>
+<span class="s">[@Filter]</span>
+<span class="s">bundle = @Basic</span>
+<span class="s">remove = ConfirmRelease</span>
+<span class="s">remove = UploadToCPAN</span>
+<span class="s">[FakeRelease]</span>
+<span class="s">[PkgVersion]</span>
+
+<span class="s">[BumpVersionFromGit]</span>
+<span class="s">first_version = 0.1.0</span>
+<span class="s">version_regexp  = ^v(.+)$</span>
+<span class="s">END_OF_FILE</span>
+
+git init
+git add .
+git commit -m <span class="s1">&#39;Initial import&#39;</span>
+<span class="nb">echo</span> <span class="s1">&#39;Sample-*&#39;</span> &gt;&gt; .git/info/exclude
+
+dzil release</code></pre></div>
+
+<h3 id="thats-all-folks">That’s all, folks</h3>
+
+<p>Well, it seems that <a href="https://metacpan.org/pod/Dist::Zilla">Dist::Zilla</a>
+has its sharp edges, but seems that it’s actually possible to start using
+it and it’s quite promising… Stay tuned for further adventures of this
+total newbie in <a href="https://metacpan.org/pod/Dist::Zilla">Dist::Zilla</a>’s world!</p>
+
+      <hr />
+      <footer role="contentinfo">
+        <div class="social-share">
+  <h4>Share on</h4>
+  <ul>
+    <li>
+      <a href="https://twitter.com/intent/tweet?text=/dist-zilla/" class="twitter" title="Share on Twitter"><i class="fa fa-twitter"></i><span> Twitter</span></a>
+    </li>
+    <li>
+      <a href="https://www.facebook.com/sharer/sharer.php?u=/dist-zilla/" class="facebook" title="Share on Facebook"><i class="fa fa-facebook"></i><span> Facebook</span></a>
+    </li>
+    <li>
+      <a href="https://plus.google.com/share?url=/dist-zilla/" class="google-plus" title="Share on Google Plus"><i class="fa fa-google-plus"></i><span> Google+</span></a>
+    </li>
+  </ul>
+</div><!-- /.social-share -->
+        <p class="byline"><strong>Giving Dist::Zilla a try</strong> was published on <time datetime="2010-05-08T00:00:00+02:00">May 08, 2010</time>.</p>
+      </footer>
+    </div><!-- /.article-wrap -->
+  
+  </article>
+</div><!-- /#main -->
+
+<div class="footer-wrap">
+  <div class="related-articles">
+  <h4>You might also enjoy <small class="pull-right">(<a href="/posts/">View all posts</a>)</small></h4>
+    <ul>
+    
+      <li><a href="/writing-about-stuff/" title="Writing About Stuff">Writing About Stuff</a></li>
+    
+      <li><a href="/teepee/" title="TeePee">TeePee</a></li>
+    
+      <li><a href="/changes-nags-and-git-hooks/" title="Changes, nags and git hooks">Changes, nags and git hooks</a></li>
+    
+    </ul>
+    <hr />
+  </div><!-- /.related-articles -->
+  <footer>
+    
+
+<span>&copy; 2016 Flavio Poletti. Powered by <a href="http://jekyllrb.com" rel="nofollow">Jekyll</a> using the <a href="http://mademistakes.com/minimal-mistakes/" rel="nofollow">Minimal Mistakes</a> theme.</span>
+
+  </footer>
+</div><!-- /.footer-wrap -->
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script src="/assets/js/scripts.min.js"></script>
+
+
+
+</body>
+</html>

@@ -1,0 +1,296 @@
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if (IE 7)&!(IEMobile)]><html class="no-js lt-ie9 lt-ie8" lang="en"><![endif]-->
+<!--[if (IE 8)&!(IEMobile)]><html class="no-js lt-ie9" lang="en"><![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"><!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<title>IO::Zlib and saved space &#8211; PolettiX!</title>
+<meta name="description" content="A few days ago a colleague asked me about using Perl for analysing some
+ASA firewall logs in order to spot how many public addresses are needed
+for NATting users towards the Internet. The basic regular expression to
+capture the bits of information that he needs is quite straightforward,
+but what was interesting is that the files he has to work on are
+gzipped, and he had already extracted a sample one to work on. I
+remembered that there is IO::Zlib
+and this is what I did:
+
+">
+<meta name="keywords" content="">
+
+
+
+<!-- Twitter Cards -->
+<meta name="twitter:title" content="IO::Zlib and saved space">
+<meta name="twitter:description" content="A few days ago a colleague asked me about using Perl for analysing some
+ASA firewall logs in order to spot how many public addresses are needed
+for NATting users towards the Internet. The basic regular expression to
+capture the bits of information that he needs is quite straightforward,
+but what was interesting is that the files he has to work on are
+gzipped, and he had already extracted a sample one to work on. I
+remembered that there is IO::Zlib
+and this is what I did:
+
+">
+<meta name="twitter:site" content="@polettix">
+<meta name="twitter:creator" content="@polettix">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="/images/tramonto.jpg">
+
+<!-- Open Graph -->
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:title" content="IO::Zlib and saved space">
+<meta property="og:description" content="A few days ago a colleague asked me about using Perl for analysing some
+ASA firewall logs in order to spot how many public addresses are needed
+for NATting users towards the Internet. The basic regular expression to
+capture the bits of information that he needs is quite straightforward,
+but what was interesting is that the files he has to work on are
+gzipped, and he had already extracted a sample one to work on. I
+remembered that there is IO::Zlib
+and this is what I did:
+
+">
+<meta property="og:url" content="/io-zlib/">
+<meta property="og:site_name" content="PolettiX!">
+
+
+
+
+
+<link rel="canonical" href="/io-zlib/">
+<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="PolettiX! Feed">
+
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+
+<meta http-equiv="cleartype" content="on">
+
+<!-- HTML5 Shiv and Media Query Support -->
+<!--[if lt IE 9]>
+	<script src="/assets/js/vendor/html5shiv.min.js"></script>
+	<script src="/assets/js/vendor/respond.min.js"></script>
+<![endif]-->
+
+<!-- Modernizr -->
+<script src="/assets/js/vendor/modernizr-2.7.1.custom.min.js"></script>
+
+<link href='//fonts.googleapis.com/css?family=PT+Sans+Narrow:400,700%7CPT+Serif:400,700,400italic' rel='stylesheet' type='text/css'>
+
+<!-- Icons -->
+<!-- 16x16 -->
+<link rel="shortcut icon" href="/favicon.ico?whatever">
+<!-- 32x32 -->
+<link rel="shortcut icon" href="/favicon.png?whatever">
+<!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
+<link rel="apple-touch-icon-precomposed" href="/images/apple-touch-icon-precomposed.png">
+<!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="/images/apple-touch-icon-72x72-precomposed.png">
+<!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="/images/apple-touch-icon-114x114-precomposed.png">
+<!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/images/apple-touch-icon-144x144-precomposed.png">
+
+</head>
+
+<body class="post">
+
+<!--[if lt IE 9]><div class="browser-upgrade alert alert-info">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</div><![endif]-->
+
+<div class="navigation-wrapper">
+	<div class="site-name">
+		<a href="/">PolettiX!</a>
+	</div><!-- /.site-name -->
+	<div class="top-navigation">
+		<nav role="navigation" id="site-nav" class="nav">
+		    <ul>
+		        
+				    
+				        
+				    
+				    <li><a href="/about/" >About</a></li>
+				
+				    
+				        
+				    
+				    <li><a href="/posts/" >Posts</a></li>
+				
+		    </ul>
+		</nav>
+	</div><!-- /.top-navigation -->
+</div><!-- /.navigation-wrapper -->
+
+
+  <div class="image-wrap">
+  <img src=
+    
+      "/images/tramonto.jpg"
+    
+  alt="IO::Zlib and saved space feature image">
+  
+    <span class="image-credit"><a href="https://en.wikipedia.org/wiki/Australia">Tramonto in Australia</a></span>
+  
+  </div><!-- /.image-wrap -->
+
+
+<div id="main" role="main">
+  <div class="article-author-side">
+    
+
+
+<div itemscope itemtype="http://schema.org/Person">
+
+
+	<img src="/images/flavio-self-color.png" class="bio-photo" alt="Flavio Poletti bio photo">
+
+
+  <h3 itemprop="name">Flavio Poletti</h3>
+  <p>Irreducible Perler.</p>
+  <a href="mailto:flavio@polettix.it" class="author-social" target="_blank"><i class="fa fa-fw fa-envelope-square"></i>Email</a>
+  <a href="http://comics.polettix.it/" class="author-social" target="_blank"><i class="fa fa-fw fa-pencil"></i> Comics</a>
+  <a href="http://twitter.com/polettix" class="author-social" target="_blank"><i class="fa fa-fw fa-twitter-square"></i> Twitter</a>
+  
+  
+  <a href="http://linkedin.com/in/flaviopoletti" class="author-social" target="_blank"><i class="fa fa-fw fa-linkedin-square"></i> LinkedIn</a>
+  
+  
+  <a href="https://metacpan.org/author/polettix" class="author-social" target="_blank"><i class="fa fa-fw fa-th-large"></i> MetaCPAN</a>
+  <a href="http://github.com/polettix" class="author-social" target="_blank"><i class="fa fa-fw fa-github"></i> Github</a>
+  <a href="http://stackoverflow.com/users/3865403/polettix" class="author-social" target="_blank"><i class="fa fa-fw fa-stack-overflow"></i> Stackoverflow</a>
+  
+  
+  <a href="http://www.pinterest.com/polettix" class="author-social" target="_blank"><i class="fa fa-fw fa-pinterest"></i> Pinterest</a>
+  
+  
+  
+  
+  
+  
+</div>
+
+  </div>
+  <article class="post">
+    <div class="headline-wrap">
+      
+        <h1><a href="/io-zlib/" rel="bookmark" title="IO::Zlib and saved space">IO::Zlib and saved space</a></h1>
+      
+    </div><!--/ .headline-wrap -->
+    <div class="article-wrap">
+      <p>A few days ago a colleague asked me about using Perl for analysing some
+ASA firewall logs in order to spot how many public addresses are needed
+for NATting users towards the Internet. The basic regular expression to
+capture the bits of information that he needs is quite straightforward,
+but what was interesting is that the files he has to work on are
+gzipped, and he had already extracted a sample one to work on. I
+remembered that there is <a href="https://metacpan.org/pod/IO::Zlib">IO::Zlib</a>
+and this is what I did:</p>
+
+<div class="highlight"><pre><code class="language-perl" data-lang="perl"><span class="k">for</span> <span class="k">my</span> <span class="nv">$file</span> <span class="p">(</span><span class="nv">@ARGV</span><span class="p">)</span> <span class="p">{</span>
+   <span class="nb">eval</span> <span class="p">{</span>
+      <span class="k">my</span> <span class="nv">$fh</span> <span class="o">=</span> <span class="n">_open</span><span class="p">(</span><span class="nv">$file</span><span class="p">);</span>
+      <span class="k">while</span> <span class="p">(</span><span class="sr">&lt;$fh&gt;</span><span class="p">)</span> <span class="p">{</span>
+         <span class="k">my</span> <span class="p">(</span><span class="nv">$inside</span><span class="p">,</span> <span class="nv">$outside</span><span class="p">)</span> <span class="o">=</span> <span class="sr">/Built\ dynamic\ translation\ from\ inside:(.*?)\ to\ outside:(.*?)/mxs</span>
+            <span class="ow">or</span> <span class="k">next</span><span class="p">;</span>
+         <span class="c1"># use $inside and $outside</span>
+      <span class="p">}</span>
+      <span class="nb">close</span> <span class="nv">$fh</span><span class="p">;</span>
+   <span class="p">}</span> <span class="ow">or</span> <span class="nb">warn</span> <span class="s">&quot;exception for &#39;$file&#39;: $EVAL_ERROR&quot;</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">sub </span><span class="nf">_open</span> <span class="p">{</span>
+   <span class="k">my</span> <span class="p">(</span><span class="nv">$file</span><span class="p">)</span> <span class="o">=</span> <span class="nv">@_</span><span class="p">;</span>
+   <span class="k">my</span> <span class="nv">$fh</span><span class="p">;</span>
+   <span class="k">if</span> <span class="p">(</span><span class="nv">$file</span> <span class="o">=~</span><span class="sr"> /\.gz \z/mxs</span><span class="p">)</span> <span class="p">{</span>
+      <span class="nv">$fh</span> <span class="o">=</span> <span class="nn">IO::</span><span class="n">Zlib</span><span class="o">-&gt;</span><span class="k">new</span><span class="p">();</span>
+      <span class="nv">$fh</span><span class="o">-&gt;</span><span class="nb">open</span><span class="p">(</span><span class="nv">$file</span><span class="p">,</span> <span class="s">&#39;rb&#39;</span><span class="p">)</span>
+         <span class="ow">or</span> <span class="nb">die</span> <span class="s">&quot;IO::Zlib complained: $OS_ERROR&quot;</span><span class="p">;</span>
+   <span class="p">}</span>
+   <span class="k">else</span> <span class="p">{</span>
+      <span class="nb">open</span> <span class="nv">$fh</span><span class="p">,</span> <span class="s">&#39;&lt;&#39;</span><span class="p">,</span> <span class="nv">$file</span>
+         <span class="ow">or</span> <span class="nb">die</span> <span class="s">&quot;open(): $OS_ERROR&quot;</span><span class="p">;</span>
+   <span class="p">}</span>
+   <span class="k">return</span> <span class="nv">$fh</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<p>It worked pretty well so nothing to complain. Just before blogging about it, I
+paid a due visit to the documentation, and I discovered that I was more or less
+lucky: there are limitations in using the module, which basically boil down to
+<code>$fh</code> not being what you expect from a full fledged filehandle. But,
+at least, it should work out of the box if all you need is to read the file
+one line at a time.</p>
+
+<p>The module isn’t in the core distribution, but it’s a common
+prerequisite so chances are that you already have it in your distro.
+It’s a bit weird that it is known by <a href="https://metacpan.org/pod/corelist">corelist</a>
+to have been included in 5.9.3:</p>
+
+<div class="highlight"><pre><code class="language-text" data-lang="text">IO::Zlib was first released with perl 5.009003</code></pre></div>
+
+<p>even though there is no trace of it in 5.10. Go figure. Anyway, it
+should be a bit more common to find than the alternative
+<a href="https://metacpan.org/pod/PerlIO::gzip">PerlIO::gzip</a>, which would make
+the <code>sub _open</code> unneeded when substituted with this:</p>
+
+<div class="highlight"><pre><code class="language-perl" data-lang="perl"><span class="nb">open</span> <span class="k">my</span> <span class="nv">$fh</span><span class="p">,</span> <span class="s">&#39;&lt;:autopop&#39;</span><span class="p">,</span> <span class="nv">$file</span> <span class="ow">or</span> <span class="nb">die</span> <span class="s">&#39;...&#39;</span><span class="p">;</span></code></pre></div>
+
+<p>I wonder how much Perl IO layers are used out there.</p>
+
+      <hr />
+      <footer role="contentinfo">
+        <div class="social-share">
+  <h4>Share on</h4>
+  <ul>
+    <li>
+      <a href="https://twitter.com/intent/tweet?text=/io-zlib/" class="twitter" title="Share on Twitter"><i class="fa fa-twitter"></i><span> Twitter</span></a>
+    </li>
+    <li>
+      <a href="https://www.facebook.com/sharer/sharer.php?u=/io-zlib/" class="facebook" title="Share on Facebook"><i class="fa fa-facebook"></i><span> Facebook</span></a>
+    </li>
+    <li>
+      <a href="https://plus.google.com/share?url=/io-zlib/" class="google-plus" title="Share on Google Plus"><i class="fa fa-google-plus"></i><span> Google+</span></a>
+    </li>
+  </ul>
+</div><!-- /.social-share -->
+        <p class="byline"><strong>IO::Zlib and saved space</strong> was published on <time datetime="2009-12-05T00:00:00+01:00">December 05, 2009</time>.</p>
+      </footer>
+    </div><!-- /.article-wrap -->
+  
+  </article>
+</div><!-- /#main -->
+
+<div class="footer-wrap">
+  <div class="related-articles">
+  <h4>You might also enjoy <small class="pull-right">(<a href="/posts/">View all posts</a>)</small></h4>
+    <ul>
+    
+      <li><a href="/writing-about-stuff/" title="Writing About Stuff">Writing About Stuff</a></li>
+    
+      <li><a href="/teepee/" title="TeePee">TeePee</a></li>
+    
+      <li><a href="/changes-nags-and-git-hooks/" title="Changes, nags and git hooks">Changes, nags and git hooks</a></li>
+    
+    </ul>
+    <hr />
+  </div><!-- /.related-articles -->
+  <footer>
+    
+
+<span>&copy; 2016 Flavio Poletti. Powered by <a href="http://jekyllrb.com" rel="nofollow">Jekyll</a> using the <a href="http://mademistakes.com/minimal-mistakes/" rel="nofollow">Minimal Mistakes</a> theme.</span>
+
+  </footer>
+</div><!-- /.footer-wrap -->
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script src="/assets/js/scripts.min.js"></script>
+
+
+
+</body>
+</html>
