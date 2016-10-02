@@ -1,0 +1,852 @@
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if (IE 7)&!(IEMobile)]><html class="no-js lt-ie9 lt-ie8" lang="en"><![endif]-->
+<!--[if (IE 8)&!(IEMobile)]><html class="no-js lt-ie9" lang="en"><![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"><!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<title>Setup a Taskwarrior server &#8211; PolettiX!</title>
+<meta name="description" content="Do you use Taskwarrior and want to setup a private remote server for
+backing stuff up and sync across multiple devices? Here’s a few notes
+you might find interesting.
+
+">
+<meta name="keywords" content="">
+
+
+
+<!-- Twitter Cards -->
+<meta name="twitter:title" content="Setup a Taskwarrior server">
+<meta name="twitter:description" content="Do you use Taskwarrior and want to setup a private remote server for
+backing stuff up and sync across multiple devices? Here’s a few notes
+you might find interesting.
+
+">
+<meta name="twitter:site" content="@polettix">
+<meta name="twitter:creator" content="@polettix">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="/images/yellow-river.jpg">
+
+<!-- Open Graph -->
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Setup a Taskwarrior server">
+<meta property="og:description" content="Do you use Taskwarrior and want to setup a private remote server for
+backing stuff up and sync across multiple devices? Here’s a few notes
+you might find interesting.
+
+">
+<meta property="og:url" content="/setup-a-taskwarrior-server/">
+<meta property="og:site_name" content="PolettiX!">
+
+
+
+
+
+<link rel="canonical" href="/setup-a-taskwarrior-server/">
+<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="PolettiX! Feed">
+
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+
+<meta http-equiv="cleartype" content="on">
+
+<!-- HTML5 Shiv and Media Query Support -->
+<!--[if lt IE 9]>
+	<script src="/assets/js/vendor/html5shiv.min.js"></script>
+	<script src="/assets/js/vendor/respond.min.js"></script>
+<![endif]-->
+
+<!-- Modernizr -->
+<script src="/assets/js/vendor/modernizr-2.7.1.custom.min.js"></script>
+
+<link href='//fonts.googleapis.com/css?family=PT+Sans+Narrow:400,700%7CPT+Serif:400,700,400italic' rel='stylesheet' type='text/css'>
+
+<!-- Icons -->
+<!-- 16x16 -->
+<link rel="shortcut icon" href="/favicon.ico?whatever">
+<!-- 32x32 -->
+<link rel="shortcut icon" href="/favicon.png?whatever">
+<!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
+<link rel="apple-touch-icon-precomposed" href="/images/apple-touch-icon-precomposed.png">
+<!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="/images/apple-touch-icon-72x72-precomposed.png">
+<!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="/images/apple-touch-icon-114x114-precomposed.png">
+<!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/images/apple-touch-icon-144x144-precomposed.png">
+
+</head>
+
+<body class="post">
+
+<!--[if lt IE 9]><div class="browser-upgrade alert alert-info">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</div><![endif]-->
+
+<div class="navigation-wrapper">
+	<div class="site-name">
+		<a href="/">PolettiX!</a>
+	</div><!-- /.site-name -->
+	<div class="top-navigation">
+		<nav role="navigation" id="site-nav" class="nav">
+		    <ul>
+		        
+				    
+				        
+				    
+				    <li><a href="/about/" >About</a></li>
+				
+				    
+				        
+				    
+				    <li><a href="/posts/" >Posts</a></li>
+				
+		    </ul>
+		</nav>
+	</div><!-- /.top-navigation -->
+</div><!-- /.navigation-wrapper -->
+
+
+  <div class="image-wrap">
+  <img src=
+    
+      "/images/yellow-river.jpg"
+    
+  alt="Setup a Taskwarrior server feature image">
+  
+    <span class="image-credit"><a href="https://en.wikipedia.org/wiki/Kakadu_National_Park">Yellow Water al Kakadu National Park, Australia</a></span>
+  
+  </div><!-- /.image-wrap -->
+
+
+<div id="main" role="main">
+  <div class="article-author-side">
+    
+
+
+<div itemscope itemtype="http://schema.org/Person">
+
+
+	<img src="/images/flavio-self-color.png" class="bio-photo" alt="Flavio Poletti bio photo">
+
+
+  <h3 itemprop="name">Flavio Poletti</h3>
+  <p>Irreducible Perler.</p>
+  <a href="mailto:flavio@polettix.it" class="author-social" target="_blank"><i class="fa fa-fw fa-envelope-square"></i>Email</a>
+  <a href="http://comics.polettix.it/" class="author-social" target="_blank"><i class="fa fa-fw fa-pencil"></i> Comics</a>
+  <a href="http://twitter.com/polettix" class="author-social" target="_blank"><i class="fa fa-fw fa-twitter-square"></i> Twitter</a>
+  
+  
+  <a href="http://linkedin.com/in/flaviopoletti" class="author-social" target="_blank"><i class="fa fa-fw fa-linkedin-square"></i> LinkedIn</a>
+  
+  
+  <a href="https://metacpan.org/author/polettix" class="author-social" target="_blank"><i class="fa fa-fw fa-th-large"></i> MetaCPAN</a>
+  <a href="http://github.com/polettix" class="author-social" target="_blank"><i class="fa fa-fw fa-github"></i> Github</a>
+  <a href="http://stackoverflow.com/users/3865403/polettix" class="author-social" target="_blank"><i class="fa fa-fw fa-stack-overflow"></i> Stackoverflow</a>
+  
+  
+  <a href="http://www.pinterest.com/polettix" class="author-social" target="_blank"><i class="fa fa-fw fa-pinterest"></i> Pinterest</a>
+  
+  
+  
+  
+  
+  
+</div>
+
+  </div>
+  <article class="post">
+    <div class="headline-wrap">
+      
+        <h1><a href="/setup-a-taskwarrior-server/" rel="bookmark" title="Setup a Taskwarrior server">Setup a Taskwarrior server</a></h1>
+      
+    </div><!--/ .headline-wrap -->
+    <div class="article-wrap">
+      <p>Do you use <a href="https://taskwarrior.org/">Taskwarrior</a> and want to setup a private remote server for
+backing stuff up and sync across multiple devices? Here’s a few notes
+you might find interesting.</p>
+
+<h2 id="what-will-we-talk-about">What will we talk about?</h2>
+
+<p>First of all, the <a href="https://taskwarrior.org/">Taskwarrior</a> site has comprehensive instructions on
+<a href="https://taskwarrior.org/docs/taskserver/setup.html">how to setup your own sync server</a>. Take it as a good
+starting point, it will actually work quite well if you are doing all on
+your own.</p>
+
+<p>In the following sections, we will begin with a brief introduction to
+the concepts related to setting up the security part of the Taskserver.
+This is by far the most tricky part of the setup, and the one more
+likely to make you angry.</p>
+
+<p>If you’re in a hurry, you can skip the following section about securing
+the communications, and jump directly to the configuration parts. Enjoy!</p>
+
+<h2 id="securing-the-communications">Securing The Communications</h2>
+
+<p><a href="https://taskwarrior.org/">Taskwarrior</a> allows you to setup encrypted communications between
+client and server, and rightly so. This is done using a protocol called
+<a href="https://en.wikipedia.org/wiki/Transport_Layer_Security">Transport Layer Security</a> (or TLS), which requires you to use
+<em>keys</em>, <em>certificates</em>, <em>certification authorities</em> and <em>certificate
+revocation lists</em>.</p>
+
+<p>Sounds complicated? It is! We will not get into the details but just
+look at the core concepts that matter in configuring Taskwarrior (see
+<a href="https://en.wikipedia.org/wiki/Information_security">Information security</a> for additional resources).</p>
+
+<p>When you care about security in syncing your local changes to a remote
+server, the immediate issue you are probably worried with is
+<em>confidentiality</em>, i.e.: how do I make sure that nobody else is able to
+understand what me and the server are saying?</p>
+
+<p>Another aspect you should care about is whether the system you’re
+syncing with is actually what it claims to be, and not something set up
+to appear so. If you have confidentiality, but you’re telling your
+secrets to the wrong system… that’s not very secure, is it? This works
+also the other way around, of course: they system accepting sync
+requests has to be sure that you are who you claim to be, otherwise
+others might impersonate you and mess with your data.</p>
+
+<p>For both aspects (there are more, of course) maths come to the rescue.
+In particular, <em>encryption</em> can give you confidentiality, while <em>digital
+signatures</em> can give you reasonable proof of someone’s identity.</p>
+
+<h3 id="keys">Keys</h3>
+
+<p>At the core of both are techniques that go under the umbrella of
+asymmetric cryptography. Asymmetric means that for security reasons each
+subject has two keys, one called <em>private</em> that has to be kept secret at
+all times, and one <em>public</em> that can be distributed freely. They act as
+keys where one can open whatever the other is capable of closing, so
+they always come as a <em>key pair</em>.</p>
+
+<p>For example, if you want to send a message (think of it like “closing
+the message in a box”) you use the recipient’s public key to do that,
+and be sure that only the recipient will be able to read it using the
+private key. This is encryption.</p>
+
+<p>On the other hand, if you want proof that the peer has the private key
+corresponding to the public key you already have, you tell them to lock
+a message you invent on the spot inside a box, and use their public key
+to open the box: it will work only if the two keys form a <em>pair</em>. This
+is signing, or putting a <em>signature</em>.</p>
+
+<h3 id="certificates">Certificates</h3>
+
+<p>At this point you might be thinking that this whole construction works
+only as long as you actually <em>trust</em> that the public key you have
+actually comes from the right source. The best way to ensure this is to
+get this public key in some way that you trust, like e.g. meet the
+person and get the key from a USB pen, or ask them to spell it on the
+phone. Whatever makes you feel good for your level of secrecy.</p>
+
+<p>While theoretically correct, this method has the non-trivial flaw of
+being completely impractical for today’s Internet size. This would mean
+going to your bank and taking the key, going to Google’s and take their
+key, then Facebook, Twitter, and whatever service you use that leverages
+TLS. This is where <em>certificates</em> come into play.</p>
+
+<p>A certificate is basically a public key with some information attached,
+in particular with the identity of the owner of that public key, in the
+form of a <em>Common Name</em> (abbreviated CN), which is basically a domain
+name owned by the organization (like <code>www.example.com</code>). It’s like you
+had a key and put a label on it saying that this key is owned by the
+same people that run <code>www.example.com</code>.</p>
+
+<h3 id="certification-authorities">Certification Authorities</h3>
+
+<p>Of course everybody would be able to put a label about <code>www.example.com</code>
+on <em>their own</em> public key, so we’re the catch? In addition to containing
+a public key and a CN, a certificate also contains a <em>signature</em> by
+a third party called the <em>Certification Authority</em> (abbreviated CA). So
+the certificate says: this public key is owned by the people that also
+own this CN, and this is guaranteed by the CA. At this point, of course,
+you must have the CA certificate to verify that their signature is valid
+(because the CA certificate will contain their public key and their
+identity!).</p>
+
+<p>This shifts your trust from the people that run the CN to the people
+that run the CA. While it may seem that this didn’t improve things too
+much (you still have to figure out how to trust the CA people!), this
+actually makes things easier for you, because the same CA can emit
+certificates for a lot of CNs. Hence, instead of going to everyone’s and
+get their public key, you just go to the CA and get theirs: this will
+make sure that all the certificate they signed actually come from the
+CNs written in the certificates.</p>
+
+<h4 id="a-chain-of-cas">A chain of CAs</h4>
+
+<p>This same process might apply to CAs too. A little CA might ask a bigger
+one to sign its certificate to declare that they are entitled to sign
+certificates, and so on. Hence, when some web site sends you their
+certificate, they might also send you a <em>chain of intermediate CA
+certificates</em> where each certificate is about the CA that signed the
+certificate immediately before, up to the last that is signed by some
+well-known CA.</p>
+
+<p>At this point you might ask: “Hey! I didn’t ever go to any <em>well known</em>
+CA to get this <em>rule-them-all</em> CA certificate!”. Right, you didn’t. But
+most browsers come with a bunch of pre-recorded certificates of well
+known CAs, so here’s how you got them behind the scenes. Now you should
+ask yourself if you really trust your browser, shouldn’t you?</p>
+
+<p>There are quite some CAs out there, from the most famous like
+<a href="https://en.wikipedia.org/wiki/Comodo_Group">Comodo</a>, <a href="https://en.wikipedia.org/wiki/Symantec">Symantec</a> and <a href="https://en.wikipedia.org/wiki/GoDaddy">GoDaddy</a>, to minor ones. The most famous
+are those whose certificates get installed in browsers and TLS libraries
+by default. They have a non-trivial work to do, because they have to
+keep their private keys very private (if someone stole them, they could
+be used to issue false certificates!) and they also have to make sure
+that people asking a certificate for a CN actually <em>own</em> that CN (i.e.
+they have <em>to go there</em> instead of you). This is why certificates
+usually come with a cost, which varies depending on the level of trust
+that they provide (bank’s certificates undergo a much deeper scrutiny
+with respect to some casual user’s home page), and this is also why
+browsers can show a simple lock for lesser certificates up to a full
+green indication for the most trusted ones.</p>
+
+<h4 id="which-ca-for-taskwarrior">Which CA for Taskwarrior?</h4>
+
+<p>Back to Taskwarrior, if you don’t want to shell out money for setting up
+your own sync server, you have a couple of alternatives:</p>
+
+<ul>
+  <li>you can set up your fake CA and sign your own certificates. In
+a private context this makes absolutely sense, because you are sure to
+trust everyone involved… unless you suffer from multiple
+personalities and you are not sure about a couple of them!</li>
+  <li>if you have a real domain hosted somewhere, you can get certificates
+for free in a few places, one of which is <a href="https://letsencrypt.org/">Let’s Encrypt</a>. They will
+issue you <em>real</em> certificates, although they are an intermediate CA so
+they will also provide their own certificate that is signed by
+a bigger well-known company.</li>
+</ul>
+
+<p>Which way should you go? In a private or very controlled environment,
+you can definitely go with the first option. The instructions you find
+in <a href="https://taskwarrior.org/">Taskwarrior</a>’s <a href="https://taskwarrior.org/docs/taskserver/setup.html">instructions page</a> actually assume
+that this is they way you are going to take. This will require a bit
+more complicated procedure on the client side, because you will have to
+take care that the client actually trusts the fake CA you set up (but
+you have the certificate for this fake CA, so you’re going to be fine).</p>
+
+<p>On the other hand, if you plan to give access to a wider audience, your
+best chance is probably to go for a certificate issued by a <em>real</em> CA,
+like Let’s Encrypt. Which one you choose depends on which guarantees you
+want to have about the CA: the higher you need, the more you will have
+to spend on it.</p>
+
+<h3 id="what-about-clients">What about clients?</h3>
+
+<p>Up to now, we discussed how can your client be sure about the server
+(which might be a web server, or a <code>taskd</code> installed somewhere). For the
+web, this is most of the times all that you need.</p>
+
+<p>In the case of <a href="https://taskwarrior.org/">Taskwarrior</a> this is not all, though. Put yourself
+into <code>taskd</code>’s shoes: should it blindly accept all updates that claim to
+come from you as valid? What if someone else tries to sync updated
+pretenting to be you, and mess up with your precious activities?</p>
+
+<p>The same story we saw above with <em>key pairs</em> and <em>certificates</em> applies
+to clients as well. So, you can generate a pair of key, set the private
+one in the client and keep the public one in the server, inside
+a certificate that tells who you are.</p>
+
+<h3 id="expiration-and-certificate-revocation-list">Expiration and Certificate Revocation List</h3>
+
+<p>One last thing to keep in mind is that certificates are usually issued
+with an expiration date. The more time passes, the more the public key
+can be subject to an attack to try to figure out the associated private
+key, for example; or the more you might have leaked your private key.
+So, although it’s a hassle to take care of renewing your keys and
+certificates, this is actually a safety measure.</p>
+
+<p>In addition to expiration, you might want to invalidate certificates
+ahead of time. This might e.g. happen if you discover that the private
+key was leaked somehow. For this reason. so-called <em>Certificate
+Revocation Lists</em> (abbreviated CRL) can help you track certificates that
+aren’t trusted anymore, even if they have a valid signature and have not
+expired yet.</p>
+
+<p>The CRL is usually kept by the CA, because it’s the entity that
+guarantees about the validity of the certificates it signs.</p>
+
+<h3 id="summary">Summary</h3>
+
+<p>After this long digression, we come to the following summary
+conclusions:</p>
+
+<ul>
+  <li>there are three types of entities involved in this whole TLS story:
+    <ul>
+      <li>users</li>
+      <li>servers</li>
+      <li>CAs</li>
+    </ul>
+  </li>
+  <li>there are three basic kind of artifacts that we have to take care of:
+    <ul>
+      <li>private keys, which we will simply call <em>key</em>s in the following;</li>
+      <li>(public) <em>certificate</em>s</li>
+      <li>(public) <em>certificate revocation list</em>s</li>
+    </ul>
+  </li>
+</ul>
+
+<p>Each entity involved (users, servers, CAs) will have the first two kind
+of artifact (a key and a certificate), while CAs will also have a CRL.
+So, you will have to deal with the following artifacts:</p>
+
+<ul>
+  <li><em>user key</em> and <em>user certificate</em></li>
+  <li><em>server key</em> and <em>server certificate</em></li>
+  <li><em>CA key</em>, <em>CA certificate</em> and <em>CA CRL</em>.</li>
+</ul>
+
+<p>It helps to remember that they are all data that is saved into files,
+although there might be a many-to-one relation (e.g. a file containing
+certificates might contain a server certificate, followed by a chain of
+CA certificates up to one signed by a well-known CA).</p>
+
+<h2 id="setup-remote-sync">Setup Remote Sync</h2>
+
+<p>Before starting, we will assume that:</p>
+
+<ul>
+  <li>you have some degree of control over a domain. It must not necessarily
+be a <em>real</em> one, i.e. visible from the outside or registered in
+official DNSs; it suffices that you can somehow control the resolution
+process in clients so that that particular domain points to the IP
+Address of the Taskserver you set up. In this example, we will call
+this domain <code>taskd.example.com</code>, although we will also assume that it
+is stored in environment variable <code>DOMAIN</code>;</li>
+  <li>you will use the port stored in the environment variable <code>PORT</code>, which
+you already ensured that will be available elsewhere (e.g. you opened
+the right ports in the firewall, etc.). Just for you to know, it’s
+customary to set the port to <code>53589</code>;</li>
+  <li>your Taskserver software is already installed and ready to be started,
+only missing the right configuration for security. We will assume it
+is stored in a directory whose path is stored in environment variable
+<code>TWSERVER</code>;</li>
+  <li>your Taskwarrior software in the client is already installed and
+working. We will assume that its base directory’s path is stored in
+environment variable <code>TWCLIENT</code>.</li>
+</ul>
+
+<h3 id="user-accounts">User accounts</h3>
+
+<p>Whatever the way you choose to configure keys, certificates etc. you
+will need to enable your user(s) for syncing their tasks, ensuring that
+they will not trump onto each other.</p>
+
+<p>Users can be grouped in <em>organizations</em>. To create an organization you
+can issue the following command <em>on the server</em>:</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">taskd add org name-of-your-org</code></pre></div>
+
+<p>where <code>name-of-your-org</code> can be whatever you choose to call your
+organization. Suggestion: use letters, numbers, underscores and hyphens
+only. If you plan to keep things simple (all users inside the same
+organization) this is the only time you will need to issue this command.</p>
+
+<p>After this, for each user you want to create you have to run the
+following command, still on the server:</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">taskd add user name-of-your-org <span class="s1">&#39;Name O. User&#39;</span></code></pre></div>
+
+<p>You will get back something like this:</p>
+
+<div class="highlight"><pre><code class="language-text" data-lang="text">New user key: cf31f287-ee9e-43a8-843e-e8bbd5de4294
+Created user &#39;Name O. User&#39; for organization &#39;name-of-your-org&#39;</code></pre></div>
+
+<p>where the key will be different (each user will get its own unique key).</p>
+
+<p>In the following, we will assume that environment variables
+<code>ORGANIZATION</code>, <code>USER_NAME</code> and <code>USER_KEY</code> contain… what you think
+that they should contain. In our example, they contain respectively
+the strings <code>name-of-your-org</code>, <code>Name O. User' and
+</code>cf31f287-ee9e-43a8-843e-e8bbd5de4294`.</p>
+
+<h3 id="alternative-1-diy">Alternative 1: DIY</h3>
+
+<p>If your setup is sufficiently restricted and you have good control over
+your clients, you can go the <em>do it yourself</em> way and be the CA of
+yourself. This is also the easiest thing to do with what ships with
+<a href="https://taskwarrior.org/">Taskwarrior</a> by default, because there are scripts that allow you to
+do exactly this.</p>
+
+<p>All the heavy lifting is done within a directory named <code>pki</code>. Depending
+on the distribution/system you use, it might be located in a different
+location; we will let you find it and wait patiently here. Just for
+a hint, this is what you should find in that directory (this example was
+run in Alpine Linux):</p>
+
+<div class="highlight"><pre><code class="language-text" data-lang="text">/ $ cd /usr/share/taskd/pki/
+/usr/share/taskd/pki $ ls -l
+total 28
+-rw-r--r--    1 root     root          1272 May 10  2015 README
+-rwxr-xr-x    1 root     root           664 May 10  2015 generate
+-rwxr-xr-x    1 root     root           633 May 10  2015 generate.ca
+-rwxr-xr-x    1 root     root           778 May 10  2015 generate.client
+-rwxr-xr-x    1 root     root           889 May 10  2015 generate.crl
+-rwxr-xr-x    1 root     root           866 May 10  2015 generate.server
+-rw-r--r--    1 root     root           138 May 10  2015 vars</code></pre></div>
+
+<p>Before running anything, you MUST edit the file <code>vars</code>, that initially
+appears like this:</p>
+
+<div class="highlight"><pre><code class="language-text" data-lang="text">BITS=4096
+EXPIRATION_DAYS=365
+ORGANIZATION=&quot;Göteborg Bit Factory&quot;
+CN=localhost
+COUNTRY=SE
+STATE=&quot;Västra Götaland&quot;
+LOCALITY=&quot;Göteborg&quot;</code></pre></div>
+
+<p>The only, single important thing that you MUST change is the <code>CN</code>
+setting (remember the <em>Common Name</em>? Well, this is it!). As we are
+assuming to operate <code>taskd.example.com</code>, this is what we have to setup
+here. It does not hurt to change a few of the other parameters of
+course, but it’s not strictly necessary. This is how we will change it
+in this example:</p>
+
+<div class="highlight"><pre><code class="language-text" data-lang="text">BITS=4096
+EXPIRATION_DAYS=365
+ORGANIZATION=&quot;Yadda Yadda Yadda&quot;
+CN=taskd.example.com
+COUNTRY=IT
+STATE=&quot;Lazio&quot;
+LOCALITY=&quot;Roma&quot;</code></pre></div>
+
+<p>It does not hurt to repeat: <strong>change <code>CN</code> to your domain</strong>.</p>
+
+<p>Now, you just run the shell script <code>generate</code> inside the directory, and
+let the magic happen. It boils down to the following four commands (at
+least as of release 2.5.1):</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">./generate.ca
+./generate.server
+./generate.crl
+./generate.client client</code></pre></div>
+
+<p>It should be pretty clear at this point:</p>
+
+<ul>
+  <li>first of all, a <em>fake</em> CA is generated. This is us acting as a CA,
+that is not widely recognised but that we can totally trust! This step
+generates files <code>ca.key.pem</code> (the CA’s private key) and <code>ca.cert.pem</code>
+(the public certificate). This certificate is somehow special, because
+it tells two things:
+    <ul>
+      <li>first, that it’s from a Certification Authority, so it should be
+trusted when used for signing other certificates;</li>
+      <li>second, that it’s signed… by the certificate owner itself. This
+is why it’s also called a <em>self-signed certificate</em>.</li>
+    </ul>
+  </li>
+  <li>Now that we have a CA, we can sign certificates for other entities,
+i.e. servers and clients. The second step takes care to generate the
+server’s key pair, saving the private key in <code>server.key.pem</code> and
+generating a certificate that includes the public key in
+<code>server.cert.pem</code>. <em>This is where the details in file <code>vars</code> are
+used</em>.</li>
+  <li>The third step generates a Certificate Revocation List. This is
+probably overkill for a small setup, but it does not hurt to have one
+anyway. The step generates the file <code>server.crl.pem</code>.</li>
+  <li>The fourth step generates a (private) key and a certificate for
+a client, so that it will be able to demonstrate its identity back to
+the server. This step generates <code>client.key.pem</code> and
+<code>client.cert.pem</code>.</li>
+</ul>
+
+<p>One interesting thing is that the CA we created in the first step has
+a double role here, because it signs the certificates for both the
+server and the clients. This is not the most generic setup that you can
+have, as we will see below; for the moment, we will stick with it.</p>
+
+<p>This is a summary of the generated files and where you should put them:</p>
+
+<div class="highlight"><pre><code class="language-text" data-lang="text">SERVER                          CLIENT
+---------------------------     ---------------------------
+&quot;$TWSERVER&quot;/server.key.pem      &quot;$TWCLIENT&quot;/client.key.pem
+&quot;$TWSERVER&quot;/server.cert.pem     &quot;$TWCLIENT&quot;/client.cert.pem
+&quot;$TWSERVER&quot;/server.crl.pem      &quot;$TWCLIENT&quot;/ca.cert.pem
+&quot;$TWSERVER&quot;/ca.cert.pem</code></pre></div>
+
+<p>To be completely right, you should also ensure to keep <code>ca.key.pem</code>
+somewhere, because it will be needed to regenerate the <code>server.crl.pem</code>
+file in case of need.</p>
+
+<h4 id="server-configuration">Server configuration</h4>
+
+<p>Now you only have to do the configurations. On the server you have to
+setup the files we generated and moved into the right location, plus
+where the daemon should be listening (we will copy also a couple of
+additional configurations while we are at it):</p>
+
+<div class="highlight"><pre><code class="language-text" data-lang="text">taskd config --force -- server      &quot;$DOMAIN:$PORT&quot;
+taskd config --force -- log         &quot;$TWSERVER&quot;/taskd.log
+taskd config --force -- pid.file    &quot;$TWSERVER&quot;/taskd.pid
+taskd config --force -- server.key  &quot;$TWSERVER&quot;/server.key.pem
+taskd config --force -- server.cert &quot;$TWSERVER&quot;/server.cert.pem
+taskd config --force -- server.crl  &quot;$TWSERVER&quot;/server.crl.pem
+taskd config --force -- ca.cert     &quot;$TWSERVER&quot;/ca.cert.pem</code></pre></div>
+
+<h4 id="client-configuration">Client configuration</h4>
+
+<p>Configuration on the client involves the following items:</p>
+
+<ul>
+  <li>tell the client where the server for synchronization is;</li>
+  <li>make sure we will accept the server’s certificate. As this is signed
+by our fake CA, we have to make sure that the TLS library will accept
+it by loading the fake CA certificate at the right time;</li>
+  <li>set the trust model to the <code>strict</code>est mode, because we care about
+security (otherwise, you wouldn’t be reading this!)</li>
+  <li>tell the client about our own user identifier and the organization we
+will save our data within;</li>
+  <li>set the client key and certificate so that it will be able to provide
+them when requested by the server.</li>
+</ul>
+
+<p>This is what we can do then:</p>
+
+<div class="highlight"><pre><code class="language-text" data-lang="text">task config --force -- taskd.server      &quot;$DOMAIN:$PORT&quot;
+task config --force -- taskd.ca          &quot;$TWCLIENT&quot;/ca.cert.pem
+task config --force -- taskd.trust       strict
+task config --force -- taskd.credentials &quot;$ORGANIZATION/$USER_NAME/$USER_KEY&quot;
+task config --force -- taskd.key         &quot;$TWCLIENT&quot;/client.key.pem
+task config --force -- taskd.certificate &quot;$TWCLIENT&quot;/client.cert.pem</code></pre></div>
+
+<p>Done!</p>
+
+<h3 id="alternative-2-real-certificate">Alternative 2: <em>Real</em> certificate</h3>
+
+<p>First thing to do: just do Alternative 1 and start from there. It’s
+really not much different and you don’t really want to read it again.</p>
+
+<p>Done? OK, now let’s move on.</p>
+
+<p>One thing to keep in mind is that with real certificates there are two
+CAs that come into play:</p>
+
+<ul>
+  <li>the CA that signs your server certificate, and</li>
+  <li>the CA that signs your clients’ certificates.</li>
+</ul>
+
+<p>In the previous example, we used the same CA for both, but in this case
+the first one is outside of our control (unless you <em>are</em> the people
+behind some well-known CA, of course!) while the second one most
+probably will remain ours. Why? Well, those certificates are needed to
+ensure that the people that ask to connect actually were allowed by us,
+so it’s quite reasonable that we do still provide them without asking
+those people to pay for a certificate.</p>
+
+<p>To start with, just repeat whatever was described in Alternative
+1 above. We will be using probably a different key and surely
+a different certificate for the server, but all the rest remains exactly
+as described so it’s worth to just repeat the steps.</p>
+
+<p>In this example, we will assume that you get your certificate with <a href="https://letsencrypt.org/">Let’s
+Encrypt</a>. It’s a bit of work to set it up, but after that you can
+automate the renewal of the certificate (as a matter of fact, this
+automation is encouraged) and forget about it in some crontab line.</p>
+
+<p>Now go get your certificate for your domain. We will wait here until
+you’re done.</p>
+
+<p>Really.</p>
+
+<p>At the end you will end up with the same files as in the previous
+section, with the addition of a <code>domain.key</code> and a <code>domain.crt</code> file
+that come from the setup for <a href="https://letsencrypt.org/">Let’s Encrypt</a>. It’s worth to remember that
+you MUST NEVER send your <code>domain.key</code> to anyone, including <a href="https://letsencrypt.org/">Let’s
+Encrypt</a>!</p>
+
+<h4 id="server-configuration-1">Server configuration</h4>
+
+<p>On the server side, all you have to do is copy <code>domain.key</code> over
+<code>server.key.pem</code> and <code>domain.crt</code> over <code>server.cert.pem</code>, then restart
+<code>taskd</code> if it was running using the previous certificates.</p>
+
+<p>This is really all that you need to do on the server side. The CA
+certificate <em>in the server</em> does not change, because this is the
+certificate for the CA that generates the clients’ certificates, not the
+server’s.</p>
+
+<h4 id="client-configuration-1">Client configuration</h4>
+
+<p><em>Theoretically</em>, on the client side you should not need to do
+<em>anything</em>. This is because the certificate file you get from <a href="https://letsencrypt.org/">Let’s
+Encrypt</a> should already contain two certificates inside, one for your
+server followed by one for the CA of <a href="https://letsencrypt.org/">Let’s Encrypt</a> (this latter
+signed by a well-known CA, of course). Clients are able to follow the
+chain of certificates in a file they receive, automatically.</p>
+
+<p>Anyway, as of version 2.5.1 you will discover that this does not really
+work out of the box. Why is this? Well, it’s because the code does not
+load the well-known certificates, so the client follows the chain of
+certificates (correct) but it eventually lands on a CA that it does not
+know of, despite it’s a well-known one. This will be probably corrected
+in some future release (although most probably it will work only for
+clients compiled against a version of the library GnuTLS that is at
+least 3.0.20).</p>
+
+<p>So are we out of luck? Not really. After completing the configuration
+like in the Alternative 1 above, all we have to do is to get the last
+(CA) certificate from the new server certificate, and save it inside
+file <code>$TWCLIENT/ca.cert.pem</code> <strong>in the client</strong>.</p>
+
+<p>It’s easy to extract the certificate, just look for the last section in
+the file that is included between clear <code>BEGIN CERTIFICATE</code> and <code>END
+CERTIFICATE</code> markers:</p>
+
+<div class="highlight"><pre><code class="language-text" data-lang="text">-----BEGIN CERTIFICATE-----
+MIIGNTCCBR2gAwIBAgISAyzjWXqpc+Xbd... \
+.................................... | THIS IS THE SERVER CERTIFICATE
+pOlsXXuFidxtdN6ey7iA+SgLE+ZEZWfC9... /
+-----END CERTIFICATE-----
+-----BEGIN CERTIFICATE-----
+MIIEkjCCA3qgAwIBAgIQCgFBQgAAAVOFc... \
+.................................... | THIS IS THE CA CERTIFICATE
++X+Q7UNKEkROb3N6KOqkqm57TH2H3eDJA... /
+-----END CERTIFICATE-----</code></pre></div>
+
+<p>Now, from the next invocation of <code>task sync</code>, the server will send the
+new shiny <em>real</em> certificate, and the client will not reject it because
+it’s configured to trust the Let’s Encrypt CA. YAY!</p>
+
+<h3 id="quick-consideration-on-clients-authentication">Quick consideration on clients authentication</h3>
+
+<p>You might have noticed at this point that there’s something going on
+with client authentication. This actually happens at two levels:</p>
+
+<ul>
+  <li>at the TLS level, the server asks the client for its client
+certificate;</li>
+  <li>at the Taskwarrior level, the server asks the client for the
+organization, the username and the user key (the one generated by
+<code>taskd</code>, not the TLS private key!) that acts both as a unique
+identifier for the account AND as a password.</li>
+</ul>
+
+<p>These two authentications are not actually connected together, although
+they probably should. In particular, it would be great if the client’s
+certificate CN included the string we are setting for
+<code>taskd.credentials</code> in the client.</p>
+
+<p>Anyway, this is not how it works today. So, for any practical reason,
+you don’t <em>strictly</em> need to generate a new TLS key and certificate for
+each new user you want to manage… because everyone will just be fine
+with the <code>client.key.pem</code> and <code>client.cert.pem</code> files you generated in
+the first place. Which also means: if some of your users figures out the
+username and the taskd user key of someone else, they will be able to
+sync against them. There’s always space for improvement!</p>
+
+<h2 id="summing-up">Summing Up</h2>
+
+<p><a href="https://taskwarrior.org/">Taskwarrior</a> is really a great and useful piece of code. Being able
+to setup your own Taskserver for syncing up all your devices is a very
+useful addition too; doing it properly requires some attention but it’s
+really not difficult as long as you follow the instructions carefully.</p>
+
+<p>Using it with <em>real</em> certificates is definitely doable, although the
+process can be enhanced to make it even simpler (with less
+configurations needed on the client side). Even now it’s not really
+difficult and just requires one step more than what would be ideal.</p>
+
+<p>The clients authentication process should probably relate user accounts
+managed by Taskwarrior to the certificates generated for clients. This
+would allow better restriction of access (like “you can access
+a specific resource if and only if you know the resources details <em>and</em>
+you also have the certificate attached to that resource”) and also an
+effective usage of the Certificate Revocation List. Anyway,
+<a href="https://taskwarrior.org/">Taskwarrior</a> is under active development… and you might be the one to
+implement those enhancements!</p>
+
+<p>Until then… happy tasking!</p>
+
+
+      <hr />
+      <footer role="contentinfo">
+        <div class="social-share">
+  <h4>Share on</h4>
+  <ul>
+    <li>
+      <a href="https://twitter.com/intent/tweet?text=/setup-a-taskwarrior-server/" class="twitter" title="Share on Twitter"><i class="fa fa-twitter"></i><span> Twitter</span></a>
+    </li>
+    <li>
+      <a href="https://www.facebook.com/sharer/sharer.php?u=/setup-a-taskwarrior-server/" class="facebook" title="Share on Facebook"><i class="fa fa-facebook"></i><span> Facebook</span></a>
+    </li>
+    <li>
+      <a href="https://plus.google.com/share?url=/setup-a-taskwarrior-server/" class="google-plus" title="Share on Google Plus"><i class="fa fa-google-plus"></i><span> Google+</span></a>
+    </li>
+  </ul>
+</div><!-- /.social-share -->
+        <p class="byline"><strong>Setup a Taskwarrior server</strong> was published on <time datetime="2016-10-03T00:00:00+02:00">October 03, 2016</time>.</p>
+      </footer>
+    </div><!-- /.article-wrap -->
+  
+    <section id="disqus_thread"></section><!-- /#disqus_thread -->
+  
+  </article>
+</div><!-- /#main -->
+
+<div class="footer-wrap">
+  <div class="related-articles">
+  <h4>You might also enjoy <small class="pull-right">(<a href="/posts/">View all posts</a>)</small></h4>
+    <ul>
+    
+      <li><a href="/writing-about-stuff/" title="Writing About Stuff">Writing About Stuff</a></li>
+    
+      <li><a href="/teepee/" title="TeePee">TeePee</a></li>
+    
+      <li><a href="/changes-nags-and-git-hooks/" title="Changes, nags and git hooks">Changes, nags and git hooks</a></li>
+    
+    </ul>
+    <hr />
+  </div><!-- /.related-articles -->
+  <footer>
+    
+
+<span>&copy; 2016 Flavio Poletti. Powered by <a href="http://jekyllrb.com" rel="nofollow">Jekyll</a> using the <a href="http://mademistakes.com/minimal-mistakes/" rel="nofollow">Minimal Mistakes</a> theme.</span>
+
+  </footer>
+</div><!-- /.footer-wrap -->
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script src="/assets/js/scripts.min.js"></script>
+
+
+  
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'polettix'; // required: replace example with your forum shortname
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = '//' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+
+</body>
+</html>
