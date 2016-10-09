@@ -4,13 +4,1086 @@
 <generator uri="https://github.com/jekyll/jekyll">Jekyll</generator>
 <link rel="self" type="application/atom+xml" href="/feed.xml" />
 <link rel="alternate" type="text/html" href="" />
-<updated>2016-10-03T01:08:21+02:00</updated>
+<updated>2016-10-09T09:24:10+02:00</updated>
 <id>/</id>
 <author>
   <name>Flavio Poletti</name>
   <uri>/</uri>
   <email>flavio@polettix.it</email>
 </author>
+
+
+  
+
+<entry>
+  <title type="html"><![CDATA[Dokku - Your Tiny PaaS]]></title>
+  <link rel="alternate" type="text/html" href="/dokku-your-tiny-paas/" />
+  <id>/dokku-your-tiny-paas</id>
+  <published>2016-10-09T00:00:00+02:00</published>
+  <updated>2016-10-09T00:00:00+02:00</updated>
+  <author>
+    <name>Flavio Poletti</name>
+    <uri></uri>
+    <email>flavio@polettix.it</email>
+  </author>
+  <content type="html">
+    &lt;p&gt;Do you like &lt;a href=&quot;https://en.wikipedia.org/wiki/Platform_as_a_service&quot;&gt;Platform as a Service&lt;/a&gt;? Ever wondered about rolling
+your own, especially if you have some capacity that you don’t use and you
+are always struggling deploying your stuff? Meet &lt;a href=&quot;http://dokku.viewdocs.io/dokku/&quot;&gt;Dokku&lt;/a&gt;, &lt;em&gt;[t]he smallest
+PaaS implementation you’ve ever seen&lt;/em&gt;.&lt;/p&gt;
+
+&lt;h2 id=&quot;platform-as-a-service&quot;&gt;Platform as a Service?&lt;/h2&gt;
+
+&lt;p&gt;Wikipedia describes &lt;a href=&quot;https://en.wikipedia.org/wiki/Platform_as_a_service&quot;&gt;Platform as a Service&lt;/a&gt; (abbreviated PaaS) like
+this:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Platform as a service (PaaS) is a category of cloud computing services
+that provides a platform allowing customers to develop, run, and manage
+applications without the complexity of building and maintaining the
+infrastructure typically associated with developing and launching an
+app.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;One of the most widely used &lt;a href=&quot;https://en.wikipedia.org/wiki/Platform_as_a_service&quot;&gt;PaaS&lt;/a&gt; platforms that I know of is
+&lt;a href=&quot;https://www.heroku.com/&quot;&gt;Heroku&lt;/a&gt;. Once you set up your project on Heroku (which takes very
+little energy with a few commands and configuration files), the promise is
+that your development/deployment workflow will be this:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;# hack on your code
+$ vi app.pl
+
+# commit your changes
+$ git commit app.pl -m &amp;#39;Add killer feature&amp;#39;
+[master 7bb308e] Add killer feature
+1 file changed...
+
+# push new commit(s) to the repository in Heroku
+$ git push heroku master
+Counting objects: 6, done.
+# ... several lines of automated deployment...
+=====&amp;gt; Application deployed:
+       http://sample-mojo.example.com&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;So yes, the promise is that all your deployment effort is &lt;em&gt;just&lt;/em&gt; the &lt;code&gt;git
+push&lt;/code&gt; command. Nifty, uh?&lt;/p&gt;
+
+&lt;h3 id=&quot;is-it-right-for-me&quot;&gt;Is it right for me?&lt;/h3&gt;
+
+&lt;p&gt;Should you use this? It depends on you, what your goals are and what level
+of control you want to retain. Do you have a personal project, or are just
+starting a new one and you want to get something up and running before you
+lose momentum? Then it’s probably for you. Do you have a well-established
+project with some complex gating rules for going in production? Chances
+are you already have something in place, and switching would not be
+beneficial.&lt;/p&gt;
+
+&lt;p&gt;Unless… you want to have a sandbox/staging environment where you want to
+be able to hack quickly. So, there are plenty of occasions in which
+&lt;a href=&quot;https://en.wikipedia.org/wiki/Platform_as_a_service&quot;&gt;PaaS&lt;/a&gt; can be beneficial, especially if you want to concentrate on the
+coding part and have little to no resources to take care of the system
+management part.&lt;/p&gt;
+
+&lt;p&gt;Public &lt;a href=&quot;https://en.wikipedia.org/wiki/Platform_as_a_service&quot;&gt;PaaS&lt;/a&gt; services like &lt;a href=&quot;https://www.heroku.com/&quot;&gt;Heroku&lt;/a&gt; come with a cost, of course. You
+might be a shiny new startup in Silicon Valley and got a voucher for one
+of them, of course; in this case you just have to reclaim your voucher.
+Like other cloud services (e.g. IaaS), it’s a nice way for investors to
+give you money that they know will be invested in the infrastructure for
+your services, instead of parties.&lt;/p&gt;
+
+&lt;p&gt;For the average people in the rest of the world, anyway, the story can be
+different. Whether it’s the right choiche to shell out money for
+a &lt;a href=&quot;https://en.wikipedia.org/wiki/Platform_as_a_service&quot;&gt;PaaS&lt;/a&gt; service or not is something that only you can assess; it’s good
+to know about it anyway. And also know what the alternatives are.&lt;/p&gt;
+
+&lt;h3 id=&quot;i-like-it-but-i-have-this-server&quot;&gt;I like it, but I have this server…&lt;/h3&gt;
+
+&lt;p&gt;Doubts about using &lt;a href=&quot;https://en.wikipedia.org/wiki/Platform_as_a_service&quot;&gt;PaaS&lt;/a&gt; are especially fit if you already have
+capacity that you are using, or planning to use, for your project. It
+feels like a waste of resources, doesn’t it? This is where &lt;em&gt;DIY&lt;/em&gt; &lt;a href=&quot;https://en.wikipedia.org/wiki/Platform_as_a_service&quot;&gt;PaaS&lt;/a&gt;
+projects come to the rescue: they allow you to setup a &lt;a href=&quot;https://en.wikipedia.org/wiki/Platform_as_a_service&quot;&gt;PaaS&lt;/a&gt;-like
+workflow but leveraging on infrastructure that you might already have (or
+that you feel more comfortable with).&lt;/p&gt;
+
+&lt;p&gt;One use case I find particularly useful is for test services or very
+little personal projects. &lt;em&gt;Dynos&lt;/em&gt; in &lt;a href=&quot;https://www.heroku.com/&quot;&gt;Heroku&lt;/a&gt; each have a cost,
+independently of how much resources they actually consume: in my private
+&lt;a href=&quot;https://en.wikipedia.org/wiki/Platform_as_a_service&quot;&gt;PaaS&lt;/a&gt; I can easily stuff a lot of them inside a single VPS, spending
+a lot less money. The drawback is more administration on my side and less
+robustness, of course.&lt;/p&gt;
+
+&lt;h2 id=&quot;dokku&quot;&gt;Dokku&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://dokku.viewdocs.io/dokku/&quot;&gt;Dokku&lt;/a&gt; is a tiny &lt;a href=&quot;https://en.wikipedia.org/wiki/Platform_as_a_service&quot;&gt;PaaS&lt;/a&gt; platform that you can install on your server.
+Note that I used the singular form: it’s meant for very restricted
+environments where all you have &lt;em&gt;and need&lt;/em&gt; is one single server; nothing
+important or &lt;em&gt;production&lt;/em&gt; that you care too much, so.&lt;/p&gt;
+
+&lt;p&gt;It is described as:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;The smallest PaaS implementation you’ve ever seen&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;and rightly so: it’s a smart integration of other tools that can keep the
+project itself up in a few (well, a couple thousand) lines of Bash code.&lt;/p&gt;
+
+&lt;p&gt;It’s easy to &lt;a href=&quot;http://dokku.viewdocs.io/dokku/getting-started/installation/&quot;&gt;get
+started&lt;/a&gt; so
+I will not repeat the official steps here.&lt;/p&gt;
+
+&lt;p&gt;If you want to give it a try, you can also head to &lt;a href=&quot;https://www.digitalocean.com/&quot;&gt;Digital Ocean&lt;/a&gt; and
+use one of their &lt;a href=&quot;https://www.digitalocean.com/products/one-click-apps/&quot;&gt;one-click
+apps&lt;/a&gt;. I don’t
+&lt;em&gt;completely&lt;/em&gt; like this approach because their deployment is Ubuntu (I tend
+to like Debian more) and their &lt;a href=&quot;http://dokku.viewdocs.io/dokku/&quot;&gt;Dokku&lt;/a&gt; version is &lt;code&gt;0.6.5&lt;/code&gt; (there’s
+&lt;code&gt;0.7.2&lt;/code&gt; around) right now.&lt;/p&gt;
+
+&lt;p&gt;You can find a small project &lt;a href=&quot;https://github.com/polettix/dokku-boot&quot;&gt;dokku-boot&lt;/a&gt; on GitHub that will help you
+set up &lt;code&gt;0.7.2&lt;/code&gt; on a new Debian instance (it should work just fine on
+Ubuntu too). It’s more or less a simple wrapper around the main
+installation instructions, but it also installs a couple of handy
+extensions for &lt;a href=&quot;http://dokku.viewdocs.io/dokku/&quot;&gt;Dokku&lt;/a&gt;, like support for &lt;a href=&quot;https://github.com/dokku/dokku-letsencrypt&quot;&gt;Let’s Encrypt&lt;/a&gt; (for free and hassle-free SSL certificates), &lt;a href=&quot;https://github.com/dokku/dokku-redis&quot;&gt;Redis&lt;/a&gt; and
+&lt;a href=&quot;https://github.com/dokku/dokku-postgres&quot;&gt;Postgres&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;From the &lt;code&gt;README&lt;/code&gt;:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;Spin up a new VPS somewhere, e.g. [DigitalOcean][]. I usually choose
+the latest Debian release. You can select the smallest size if you just
+want to give it a try. (And please… set up and use SSH keys, it’s
+2016 or later!). Let’s say we save the IP address of this VPS in
+variable &lt;code&gt;DOKKU_IP&lt;/code&gt;&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Log in a shell in the VPS as user &lt;code&gt;root&lt;/code&gt; and run:&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;curl -LO https://github.com/polettix/dokku-boot/raw/master/dokku-boot.pl
+perl dokku-boot.pl&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Wait for installation to complete, then go to &lt;code&gt;http://$DOKKU_IP/&lt;/code&gt; and
+complete the setup of &lt;a href=&quot;http://dokku.viewdocs.io/dokku/&quot;&gt;Dokku&lt;/a&gt;.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;You end up with a reasonably &lt;em&gt;close&lt;/em&gt; system (only ports &lt;code&gt;22&lt;/code&gt;, &lt;code&gt;80&lt;/code&gt; and &lt;code&gt;443&lt;/code&gt;
+will be open for incoming traffic). The last point can be somehow commented
+further.&lt;/p&gt;
+
+&lt;p&gt;You will land in a page where the SSH keys you defined for user &lt;code&gt;root&lt;/code&gt; are used
+by default to initialize access to user &lt;code&gt;dokku&lt;/code&gt; too. If you defined more keys,
+only the first one will &lt;em&gt;actually&lt;/em&gt; be used, so ensure that the one you will use
+is actually the first one.&lt;/p&gt;
+
+&lt;p&gt;Next, you can define the hostname. Here we will assume that you &lt;em&gt;do own&lt;/em&gt;
+something registered directly after a &lt;a href=&quot;https://publicsuffix.org/&quot;&gt;public suffix&lt;/a&gt;. You can do &lt;em&gt;most&lt;/em&gt; of
+what we describe in the following if you don’t (actually, the only thing
+you will struggle with is the &lt;a href=&quot;https://github.com/dokku/dokku-letsencrypt&quot;&gt;Let’s Encrypt plugin&lt;/a&gt;). As of October
+2016, owning one such domain can cost as low as about 3$ (&lt;a href=&quot;https://www.cloudns.net/&quot;&gt;ClouDNS&lt;/a&gt;
+usually has a few offers in their &lt;a href=&quot;https://www.cloudns.net/domain-pricing-list/&quot;&gt;pricing
+list&lt;/a&gt;). In this example we will assume to own the
+ever-present &lt;code&gt;example.com&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;After this, you get to decide how your application will appear to the world.
+There are two alternatives:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Take the form &lt;code&gt;application-name.example.com&lt;/code&gt;. This is probably the most
+elegant, but it is available only if you actually set a hostname and not an
+IP address. We will stick with this as we are assuming to own &lt;code&gt;example.com&lt;/code&gt;
+(which we don’t… of course!)&lt;/li&gt;
+  &lt;li&gt;Take the form &lt;code&gt;&amp;lt;domain-or-ip&amp;gt;:&amp;lt;port&amp;gt;&lt;/code&gt;, where &lt;a href=&quot;http://dokku.viewdocs.io/dokku/&quot;&gt;Dokku&lt;/a&gt; will allocate a port
+for each application. This will not be described here, as it requires some
+additional settings on the &lt;code&gt;iptables&lt;/code&gt; firewall rules for letting the ports to
+be accessible from the outside.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;After all of this, you can just submit the form in the page and you will be all
+set (you will be redirected to &lt;a href=&quot;http://dokku.viewdocs.io/dokku/&quot;&gt;Dokku&lt;/a&gt;’s documentation page after this step).&lt;/p&gt;
+
+&lt;p&gt;In the case you actually own a domain and you have control over its DNS
+settings (as in our example), you should also set up a wildcard resolution
+towards your &lt;a href=&quot;http://dokku.viewdocs.io/dokku/&quot;&gt;Dokku&lt;/a&gt; installation, with a A record like this:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;*.example.com IN A $DOKKU_IP&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;where &lt;code&gt;$DOKKU_IP&lt;/code&gt; must be expanded with your installation’s IP address, of
+course. This setting will guarantee that a resolution for &lt;code&gt;someapp.example.com&lt;/code&gt;
+will actually be pointed towards your personal &lt;a href=&quot;https://en.wikipedia.org/wiki/Platform_as_a_service&quot;&gt;PaaS&lt;/a&gt; system.&lt;/p&gt;
+
+&lt;h2 id=&quot;work-on-a-project&quot;&gt;Work On A Project&lt;/h2&gt;
+
+&lt;p&gt;Now you have your personal &lt;a href=&quot;https://en.wikipedia.org/wiki/Platform_as_a_service&quot;&gt;PaaS&lt;/a&gt; instance up and running, waiting for
+your code to come. I’m a Perl enthusiast, so my example will be in Perl.&lt;/p&gt;
+
+&lt;p&gt;In the following sub-sections, we’ll see:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;a few assumptions about how your project is structured&lt;/li&gt;
+  &lt;li&gt;what you have to do for connecting it to your &lt;a href=&quot;http://dokku.viewdocs.io/dokku/&quot;&gt;Dokku&lt;/a&gt; instance&lt;/li&gt;
+  &lt;li&gt;enjoy!&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;starting-point&quot;&gt;Starting point&lt;/h3&gt;
+
+&lt;p&gt;Our starting point is a project that tracked with &lt;a href=&quot;https://git-scm.com/&quot;&gt;git&lt;/a&gt;. In this
+example, we will assume that we want to work on a simple &lt;code&gt;Hello World!&lt;/code&gt;
+application (what else) built with &lt;a href=&quot;https://metacpan.org/pod/Mojolicious&quot;&gt;Mojolicious&lt;/a&gt;, and we will see
+a couple of directions for evolving to a more complex application. You can
+find the whole example in &lt;a href=&quot;https://github.com/polettix/sample-mojo&quot;&gt;this repository&lt;/a&gt; in GitHub if you
+want to skip its construction.&lt;/p&gt;
+
+&lt;p&gt;The application itself (in file &lt;code&gt;app.pl&lt;/code&gt;) is quite straightforward:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-perl&quot; data-lang=&quot;perl&quot;&gt;&lt;span class=&quot;c1&quot;&gt;#!/usr/bin/env perl&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;use&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;Mojolicious::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Lite&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;get&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;/&amp;#39;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;sub &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;my&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$c&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;shift&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+   &lt;span class=&quot;nv&quot;&gt;$c&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;res&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;headers&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;content_type&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;#39;text/plain&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+   &lt;span class=&quot;nv&quot;&gt;$c&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;render&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;text&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;Hello, World!\n&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;app&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;start&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;You are probably already using something to track the automation of
+installing the dependencies, we will use a &lt;code&gt;cpanfile&lt;/code&gt; because it’s used by
+both [cpanm][] and [carton][] (the former being quite important for our
+later automation, as we will see). It’s quite straightforward in this
+case:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-perl&quot; data-lang=&quot;perl&quot;&gt;&lt;span class=&quot;n&quot;&gt;requires&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;Mojolicious&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;7.08&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;We can install the module locally and check that it works actually:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;$ cpanm -L local --notest --quiet --installdeps .
+Successfully installed IO-Socket-IP-0.38
+Successfully installed Mojolicious-7.08
+2 distributions installed
+
+$ alias ploc=&amp;quot;perl -I&amp;#39;$PWD&amp;#39;/local/lib/perl5&amp;quot;
+
+$ ploc app.pl get /
+[Sat Oct  8 18:40:34 2016] [debug] GET &amp;quot;/&amp;quot;
+[Sat Oct  8 18:40:34 2016] [debug] Routing to a callback
+[Sat Oct  8 18:40:34 2016] [debug] 200 OK (0.000391s, 2557.545/s)
+Hello, World!&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;We only lack tracking it with &lt;a href=&quot;https://git-scm.com/&quot;&gt;git&lt;/a&gt; at this point:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;# https://hackernoon.com/lesser-known-git-commands-151a1918a60
+# see hint about `git it`
+$ git init . &amp;amp;&amp;amp; git commit -m Root --allow-empty
+
+$ git add . &amp;amp;&amp;amp; git commit -m &amp;#39;Import initial files&amp;#39;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Up to this point there was almost no overhead related to &lt;a href=&quot;http://dokku.viewdocs.io/dokku/&quot;&gt;Dokku&lt;/a&gt;: we
+would have written or application, installed the needed modules and
+tracked changes with &lt;a href=&quot;https://git-scm.com/&quot;&gt;git&lt;/a&gt; anyway.&lt;/p&gt;
+
+&lt;h3 id=&quot;paas-project-setup-in-dokku&quot;&gt;PaaS project setup in Dokku&lt;/h3&gt;
+
+&lt;p&gt;Dokku mostly works sending commands via &lt;code&gt;ssh&lt;/code&gt; to the user &lt;code&gt;dokku&lt;/code&gt; in the
+machine where it is installed. For this reason, it’s useful to define the
+following alias:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;$ alias dokku=&amp;quot;ssh &amp;#39;dokku@$DOKKU_IP&amp;#39;&amp;quot;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;The following steps are needed whatever application you want to deploy via&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;# we will call our application &amp;quot;sample-mojo&amp;quot;
+$ dokku apps:create sample-mojo
+
+# we assume to be in our project sample-mojo directory
+$ git remote add dokku &amp;quot;dokku@$DOKKU_IP:sample-mojo&amp;quot;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Are we ready for the first push? Well… not yet. We still have to fix a couple
+things:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;how will &lt;a href=&quot;http://dokku.viewdocs.io/dokku/&quot;&gt;Dokku&lt;/a&gt; figure out how to build our project? Like installing the
+right modules, etc.?&lt;/li&gt;
+  &lt;li&gt;how will it know what to run?&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;It turns out the &lt;a href=&quot;https://github.com/polettix/heroku-buildpack-perl-procfile&quot;&gt;heroku-buildpack-perl-procfile&lt;/a&gt; project on GitHub can ease
+our life for both steps, let’s see how.&lt;/p&gt;
+
+&lt;h4 id=&quot;how-to-build-buildpacks&quot;&gt;How to build: &lt;code&gt;.buildpacks&lt;/code&gt;&lt;/h4&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://www.heroku.com/&quot;&gt;Heroku&lt;/a&gt; and &lt;a href=&quot;http://dokku.viewdocs.io/dokku/&quot;&gt;Dokku&lt;/a&gt; don’t support &lt;a href=&quot;http://www.perl.org/ [CPAN]: http://metacpan.org&quot;&gt;Perl&lt;/a&gt; applications out of the box.
+I know, it’s a shame, but it’s easy to fix this via so-called &lt;a href=&quot;https://github.com/dokku/dokku/blob/master/docs/deployment/methods/buildpacks.md&quot;&gt;custom
+buildpacks&lt;/a&gt; (which are the same as &lt;a href=&quot;https://www.heroku.com/&quot;&gt;Heroku&lt;/a&gt;’s) and many different clever
+persons did this in slightly different ways.&lt;/p&gt;
+
+&lt;p&gt;The philosophy under &lt;a href=&quot;https://github.com/polettix/heroku-buildpack-perl-procfile&quot;&gt;heroku-buildpack-perl-procfile&lt;/a&gt; is to make no
+assumption on your application, apart that it’s written in &lt;a href=&quot;http://www.perl.org/ [CPAN]: http://metacpan.org&quot;&gt;Perl&lt;/a&gt; and will
+need modules from either [CPAN][] or from some project-local directory.&lt;/p&gt;
+
+&lt;p&gt;If you mostly stick with web projects and you want to run them via [Starman][],
+you will probably want to look into some other package. I wanted to keep
+control, so evolved the awesome &lt;a href=&quot;https://github.com/kazeburo/heroku-buildpack-perl-procfile&quot;&gt;original
+heroku-buildpack-perl-procfile&lt;/a&gt; by &lt;a href=&quot;https://github.com/kazeburo&quot;&gt;kazeburo&lt;/a&gt; to suit my needs.&lt;/p&gt;
+
+&lt;p&gt;To tell &lt;a href=&quot;http://dokku.viewdocs.io/dokku/&quot;&gt;Dokku&lt;/a&gt; that you want to use a buildpack you have a couple options
+(see &lt;a href=&quot;https://github.com/dokku/dokku/blob/master/docs/deployment/methods/buildpacks.md&quot;&gt;custom buildpacks&lt;/a&gt; for some alternatives), in our case we will just add
+a &lt;code&gt;.buildpacks&lt;/code&gt; file in our project’s root directory:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;# in the project&amp;#39;s root directory
+$ echo https://github.com/polettix/heroku-buildpack-perl-procfile.git \
+     &amp;gt; .buildpacks
+
+$ git add .buildpacks &amp;amp;&amp;amp; git commit -m &amp;#39;Add .buildpacks for Dokku builds&amp;#39;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h4 id=&quot;how-to-run-procfile&quot;&gt;How to run: &lt;code&gt;Procfile&lt;/code&gt;&lt;/h4&gt;
+
+&lt;p&gt;The &lt;em&gt;standard&lt;/em&gt; way to describe an application in &lt;a href=&quot;https://www.heroku.com/&quot;&gt;Heroku&lt;/a&gt; is via a so-called
+&lt;code&gt;Procfile&lt;/code&gt; (so-called in this context means that you &lt;em&gt;MUST&lt;/em&gt; call it with the
+initial uppercase an the rest, otherwise it will not work!). It contains a line
+for each component of your application, so that you can have e.g. a &lt;code&gt;web&lt;/code&gt; part,
+a &lt;code&gt;database&lt;/code&gt; part, some &lt;code&gt;worker&lt;/code&gt;s and so on.&lt;/p&gt;
+
+&lt;p&gt;You can name components with almost any reasonable name (e.g. use alphanumerics
+or look for the rules). &lt;a href=&quot;http://dokku.viewdocs.io/dokku/&quot;&gt;Dokku&lt;/a&gt; assign no particular semantic to the names,
+&lt;em&gt;except&lt;/em&gt; to &lt;code&gt;web&lt;/code&gt; which has (at least) to attached strings:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;one instance of a &lt;code&gt;web&lt;/code&gt; service is always started initially (unless
+explicitly configured differently or no &lt;code&gt;web&lt;/code&gt; is defined)&lt;/li&gt;
+  &lt;li&gt;&lt;code&gt;web&lt;/code&gt; instances are accessible from the outside, there’s an [nginx][] reverse
+proxy that is set-up automatically.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;We will start with one single &lt;code&gt;web&lt;/code&gt; component, so our &lt;code&gt;Procfile&lt;/code&gt; is quite
+simple:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;web: ./app.pl daemon --listen &amp;quot;http://*:$PORT&amp;quot;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;As you can see, when &lt;a href=&quot;http://dokku.viewdocs.io/dokku/&quot;&gt;Dokku&lt;/a&gt; starts a new web instance, it also passes the
+&lt;code&gt;PORT&lt;/code&gt; environment variable so that your application can bind to the correct
+port. How this parameter is used is dependent on the specific application
+and/or framework that the application is using.&lt;/p&gt;
+
+&lt;p&gt;As for the &lt;code&gt;.buildpacks&lt;/code&gt; file, we have to add &lt;code&gt;Procfile&lt;/code&gt; to our &lt;a href=&quot;https://git-scm.com/&quot;&gt;git&lt;/a&gt; project
+and commit:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;$ git add Procfile &amp;amp;&amp;amp; git commit -m &amp;#39;Add Procfile for Dokku runs&amp;#39;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h4 id=&quot;ready&quot;&gt;Ready!&lt;/h4&gt;
+
+&lt;p&gt;At this point, we are ready for our first push to our &lt;a href=&quot;http://dokku.viewdocs.io/dokku/&quot;&gt;Dokku&lt;/a&gt; instance, YAY!
+In our first push we will also set the &lt;code&gt;--set-upstream&lt;/code&gt; so that our following
+&lt;code&gt;push&lt;/code&gt;es of &lt;code&gt;master&lt;/code&gt; will be automatically sent to the remote &lt;code&gt;dokku&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;$ git push --set-upstream dokku master
+Counting objects: 6, done.
+# ... several lines of automated deployment...
+=====&amp;gt; Application deployed:
+       http://sample-mojo.example.com
+
+To dokku@example.com:sample-mojo
+* [new branch]      master -&amp;gt; master
+Branch master set up to track remote branch master from dokku.&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Now we are ready to send the very first HTTP request towards our new service.
+As you can see, there’s a couple of lines that tells us where the service
+lives:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;=====&amp;gt; Application deployed:
+http://sample-mojo.example.com&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;So, it’s easy to send the request:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;$ curl http://sample-mojo.foobar.example.com
+Hello, World!&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Seems to work!&lt;/p&gt;
+
+&lt;p&gt;At this point you can start hacking on your application and follow the pattern
+we described in the beginning:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;# hack on your code
+$ vi app.pl
+
+# commit your changes
+$ git commit app.pl -m &amp;#39;Add killer feature&amp;#39;
+[master 7bb308e] Add killer feature
+1 file changed...
+
+# push new commit(s) to the repository in Heroku
+$ git push heroku master
+Counting objects: 6, done.
+# ... several lines of automated deployment...
+=====&amp;gt; Application deployed: http://sample-mojo.example.com&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;moar-moar-moar&quot;&gt;Moar! Moar! Moar!&lt;/h2&gt;
+
+&lt;p&gt;You can get tired of your single-service application pretty soon. Want to add
+a database and cannot live with &lt;a href=&quot;https://www.sqlite.org/&quot;&gt;SQLite&lt;/a&gt; for too long? Need to add some
+&lt;em&gt;worker&lt;/em&gt; process to handle housekeeping or long-running jobs? Concentrating all
+in a single instance of a &lt;em&gt;web&lt;/em&gt; thingie is clearly not the right way to go
+unless you’re out of headaches.&lt;/p&gt;
+
+&lt;p&gt;This is where your &lt;code&gt;Procfile&lt;/code&gt; comes to the rescue. For every &lt;em&gt;kind&lt;/em&gt; of
+additional service, you just need to add a line with the name of the service
+and the command line to start it.&lt;/p&gt;
+
+&lt;h3 id=&quot;first-evolve-the-code&quot;&gt;First, evolve the code…&lt;/h3&gt;
+
+&lt;p&gt;In our example, we will add support for a &lt;a href=&quot;https://metacpan.org/pod/Minion&quot;&gt;Minion&lt;/a&gt; worker trying to replicate
+the example in the &lt;a href=&quot;https://metacpan.org/pod/Minion#DESCRIPTION&quot;&gt;DESCRIPTION&lt;/a&gt;, with just a little twist
+in the database used (we’re going to use &lt;a href=&quot;https://www.sqlite.org/&quot;&gt;SQLite&lt;/a&gt; in this example). This is
+how we transform our &lt;code&gt;app.pl&lt;/code&gt; into:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-perl&quot; data-lang=&quot;perl&quot;&gt;&lt;span class=&quot;c1&quot;&gt;#!/usr/bin/env perl&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;use&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;Mojolicious::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Lite&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;plugin&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Minion&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;SQLite&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;sqlite:test.db&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;# Slow task&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;app&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;minion&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;add_task&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;poke_mojo&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;sub &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+ &lt;span class=&quot;k&quot;&gt;my&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$job&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;shift&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+ &lt;span class=&quot;nv&quot;&gt;$job&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;app&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ua&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;#39;mojolicious.org&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+ &lt;span class=&quot;nv&quot;&gt;$job&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;app&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;debug&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;#39;We have poked mojolicious.org for a visitor&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;# Perform job in a background worker process&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;get&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;/&amp;#39;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;sub &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+ &lt;span class=&quot;k&quot;&gt;my&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$c&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;shift&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+ &lt;span class=&quot;nv&quot;&gt;$c&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;minion&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;enqueue&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;#39;poke_mojo&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+ &lt;span class=&quot;nv&quot;&gt;$c&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;render&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;text&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;We will poke mojolicious.org for you soon.&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;app&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;start&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Of course we will need to make sure that the needed plugins are correctly
+installed, so our &lt;code&gt;cpanfile&lt;/code&gt; becomes:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-perl&quot; data-lang=&quot;perl&quot;&gt;&lt;span class=&quot;n&quot;&gt;requires&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;Mojolicious&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;7.08&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;requires&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;Minion&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;6.0&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;requires&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;Minion::Backend::SQLite&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;0.007&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Again, we can install them locally and make sure that everything works fine:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;$ cpanm -L local --notest --quiet --installdeps .
+...&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Now, let’s make a little local test: we first generate a &lt;code&gt;get&lt;/code&gt; to the regular
+web application, then we start the minion (we might make it in two different
+shells but it will work anyway because &lt;a href=&quot;https://metacpan.org/pod/Minion&quot;&gt;Minion&lt;/a&gt; is decoupled through the
+database):&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;$ alias ploc=&amp;quot;perl -I&amp;#39;$PWD&amp;#39;/local/lib/perl5&amp;quot;
+
+$ ploc app.pl get /
+[Sat Oct  8 22:53:42 2016] [debug] GET &amp;quot;/&amp;quot;
+[Sat Oct  8 22:53:42 2016] [debug] Routing to a callback
+[Sat Oct  8 22:53:42 2016] [debug] 200 OK (0.012938s, 77.292/s) 
+We will poke mojolicious.org for you soon.
+
+$ ploc app.pl minion worker
+[Sat Oct  8 22:53:47 2016] [debug] Worker 18861 started
+[Sat Oct  8 22:53:47 2016] [debug] Checking worker registry and job queue
+[Sat Oct  8 22:53:47 2016] [debug] Performing job &amp;quot;1&amp;quot; with task &amp;quot;poke_mojo&amp;quot; in process 18862
+[Sat Oct  8 22:53:47 2016] [debug] We have poked mojolicious.org for a visitor&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;then-add-a-new-service&quot;&gt;Then, add a new service…&lt;/h3&gt;
+
+&lt;p&gt;Now, we make sure that the Minion worker is defined in &lt;code&gt;Procfile&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;web: ./app.pl daemon --listen &amp;quot;http://*:$PORT&amp;quot;
+minion: ./app.pl minion worker&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;then-learn-about-scaling&quot;&gt;Then, learn about scaling…!&lt;/h3&gt;
+
+&lt;p&gt;At this stage, we &lt;em&gt;just&lt;/em&gt; need to commit and push, right? Let’s see:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;$ git commit -am &amp;#39;Evolve example to use Minion&amp;#39;
+[master af4ba9d] Evolve example to use Minion
+3 files changed, 18 insertions(+), 3 deletions(-)
+
+$ git push
+Counting objects: 9, done.
+#... some building happens here...
+-----&amp;gt; Discovering process types
+       Procfile declares types -&amp;gt; web, minion
+#... something else happens...
+=====&amp;gt; web=1
+-----&amp;gt; Attempting...&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;So, it seems that &lt;a href=&quot;http://dokku.viewdocs.io/dokku/&quot;&gt;Dokku&lt;/a&gt; knows about our &lt;code&gt;minion&lt;/code&gt; service type, but it
+starts none. Now you understand what we meant before when we said that &lt;code&gt;web&lt;/code&gt; is
+special because &lt;a href=&quot;http://dokku.viewdocs.io/dokku/&quot;&gt;Dokku&lt;/a&gt; starts one by default!&lt;/p&gt;
+
+&lt;p&gt;A quick look to the current scaling setup is worth the time as a double check:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;$ dokku ps:scale sample-mojo
+-----&amp;gt; Scaling for mojo-example
+-----&amp;gt; proctype           qty                                                                          
+-----&amp;gt; --------           ---                                                                          
+-----&amp;gt; web                1&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;So… no &lt;code&gt;minion&lt;/code&gt;, no party? Fortunately, &lt;code&gt;ps:scale&lt;/code&gt; is not only for querying
+the current status, but for changing it as well; let’s bump &lt;code&gt;minion&lt;/code&gt; then:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;$ dokku ps:scale sample-mojo minion=1
+-----&amp;gt; Scaling mojo-example:minion to 1
+#... some lines...
+=====&amp;gt; web=1
+=====&amp;gt; minion=1
+#... some lines...
+=====&amp;gt; Application deployed:
+       http://sample-mojo.example.com&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Now that’s right!&lt;/p&gt;
+
+&lt;h3 id=&quot;then-we-think-were-ready-but&quot;&gt;Then, we think we’re ready &lt;strong&gt;but&lt;/strong&gt;…&lt;/h3&gt;
+
+&lt;p&gt;Are we ready now? Well… let’s see!&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;$ curl http://sample-mojo.example.com
+We will poke mojolicious.org for you soon.
+
+# now we wait a few seconds to give the worker process the time get hold of the
+# new task. The number of seconds might be reduced but let&amp;#39;s play safely
+$ sleep 5
+
+$ dokku logs sample-mojo
+2016-10-08T21:10:42.160743389Z app[minion.1]: [Sat Oct  8 21:10:42 2016] [debug] Worker 8 started
+2016-10-08T21:10:42.182393541Z app[minion.1]: [Sat Oct  8 21:10:42 2016] [debug] Checking worker registry and job queue
+2016-10-08T21:10:30.978550240Z app[web.1]: [Sat Oct  8 21:10:30 2016] [info] Listening at &amp;quot;http://*:5000&amp;quot;
+2016-10-08T21:14:44.107362361Z app[web.1]: [Sat Oct  8 21:14:44 2016] [debug] GET &amp;quot;/&amp;quot;
+2016-10-08T21:14:44.108955921Z app[web.1]: [Sat Oct  8 21:14:44 2016] [debug] Routing to a callback
+2016-10-08T21:14:44.127066080Z app[web.1]: [Sat Oct 8 21:14:44 2016] [debug] 200 OK (0.019002s, 52.626/s)&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Uhm… the &lt;code&gt;worker&lt;/code&gt; seems still unaware of the request from the frontend…
+what’s happening?&lt;/p&gt;
+
+&lt;p&gt;It turns out that it’s a database issue here. When we run the example in our
+development box, &lt;em&gt;both&lt;/em&gt; the web service and the minion worker were running in
+the same directory of the same box. On the other hand, in this case the two are
+running inside two separate &lt;em&gt;Linux containers&lt;/em&gt; created via &lt;a href=&quot;http://docker.io/&quot;&gt;Docker&lt;/a&gt;, so it’s
+&lt;em&gt;like&lt;/em&gt; they are running in separate hosts.&lt;/p&gt;
+
+&lt;p&gt;Fact is that &lt;a href=&quot;https://www.sqlite.org/&quot;&gt;SQLite&lt;/a&gt; is a &lt;strong&gt;single&lt;/strong&gt; file database: for our system to work,
+both the web and the minion services MUST operate on the same file! Now you
+understand why &lt;a href=&quot;https://github.com/polettix/dokku-boot&quot;&gt;dokku-boot&lt;/a&gt; includes &lt;a href=&quot;https://github.com/dokku/dokku-postgres&quot;&gt;Postgres&lt;/a&gt; and &lt;a href=&quot;https://github.com/dokku/dokku-redis&quot;&gt;Redis&lt;/a&gt; plugins,
+don’t you?&lt;/p&gt;
+
+&lt;h3 id=&quot;it-will-not-take-long-now&quot;&gt;It will not take long now!&lt;/h3&gt;
+
+&lt;p&gt;The problem still remains though: how do I manage to share files/directory
+across services? That’s simple… use &lt;em&gt;persistent&lt;/em&gt; &lt;code&gt;storage&lt;/code&gt;! They are
+directories created in the &lt;a href=&quot;http://dokku.viewdocs.io/dokku/&quot;&gt;Dokku&lt;/a&gt; node that will be &lt;em&gt;mounted&lt;/em&gt; in your
+services, let’s see how to do this.&lt;/p&gt;
+
+&lt;p&gt;First, we need a place where our shared directory will live. It MUST be
+accessible with full permissions by user &lt;code&gt;dokku&lt;/code&gt;, so we will stick with the
+best practice (as of October 2016, at least) of using
+&lt;code&gt;/var/lib/dokku/data/storage&lt;/code&gt; and we will ask &lt;a href=&quot;http://dokku.viewdocs.io/dokku/&quot;&gt;Dokku&lt;/a&gt; to use sub-directory
+&lt;code&gt;sample-mojo&lt;/code&gt; inside it:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;$ dokku storage:mount mojo-example \
+     /var/lib/dokku/data/storage/sample-mojo:/app/shared&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;The command above tells us that the &lt;em&gt;host&lt;/em&gt; directory &lt;code&gt;/var/lib/.../sample-mojo&lt;/code&gt;
+will be mapped to directory &lt;code&gt;/app/shared&lt;/code&gt; inside the containers (all of them)
+where the application will run.&lt;/p&gt;
+
+&lt;p&gt;As of version &lt;code&gt;0.7.2&lt;/code&gt;, you don’t need to create the shared directory
+beforehand: &lt;a href=&quot;http://dokku.viewdocs.io/dokku/&quot;&gt;Dokku&lt;/a&gt; will take care to create one for you. The directory
+will be created only when the first container will need it.&lt;/p&gt;
+
+&lt;p&gt;Now we just have to tell our application where to put/look for the shared
+database, which is a single-line change:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;$ git diff
+diff --git a/app.pl b/app.pl
+index 70b7418..25183d8 100755
+--- a/app.pl
++++ b/app.pl @@ -1,7 +1,7 @@ #!/usr/bin/env perl use Mojolicious::Lite;
+ 
+-plugin Minion =&amp;gt; {SQLite =&amp;gt; &amp;#39;sqlite:test.db&amp;#39;};
++plugin Minion =&amp;gt; {SQLite =&amp;gt; &amp;#39;sqlite:/app/shared/test.db&amp;#39;};
+ 
+ # Slow task
+ app-&amp;gt;minion-&amp;gt;add_task(poke_mojo =&amp;gt; sub {
+
+$ git commit -am &amp;#39;Change position of Minion database&amp;#39;
+[master 8a139bc] Change position of Minion database
+ 1 file changed, 1 insertion(+), 1 deletion(-)&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Now let’s push and try again:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;$ git push
+#... wait for it...
+
+$ curl http://sample-mojo.example.com/
+We will poke mojolicious.org for you soon.
+
+# now we wait a few seconds to give the worker process the time get hold of the
+# new task. The number of seconds might be reduced but let&amp;#39;s play safely
+$ sleep 5
+
+$ dokku logs sample-mojo
+2016-10-08T21:53:17.079481775Z app[minion.1]: [Sat Oct  8 21:53:17 2016] [debug] Worker 7 started
+2016-10-08T21:53:17.106477103Z app[minion.1]: [Sat Oct  8 21:53:17 2016] [debug] Checking worker registry and job queue
+2016-10-08T21:54:42.166105068Z app[minion.1]: [Sat Oct  8 21:54:42 2016] [debug] Performing job &amp;quot;1&amp;quot; with task &amp;quot;poke_mojo&amp;quot; in process 143
+2016-10-08T21:54:42.245450605Z app[minion.1]: [Sat Oct  8 21:54:42 2016] [debug] We have poked mojolicious.org for a visitor
+2016-10-08T21:53:05.831553141Z app[web.1]: [Sat Oct  8 21:53:05 2016] [info] Listening at &amp;quot;http://*:5000&amp;quot;
+2016-10-08T21:54:41.207238916Z app[web.1]: [Sat Oct  8 21:54:41 2016] [debug] GET &amp;quot;/&amp;quot;
+2016-10-08T21:54:41.210001387Z app[web.1]: [Sat Oct  8 21:54:41 2016] [debug] Routing to a callback
+2016-10-08T21:54:41.221802741Z app[web.1]: [Sat Oct  8 21:54:41 2016] [debug] 200 OK (0.013645s, 73.287/s)&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;It works! As you can see, there are two logs line from the &lt;code&gt;minion.1&lt;/code&gt; app component that say:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;[...] [debug] Performing job &amp;quot;1&amp;quot; with task &amp;quot;poke_mojo&amp;quot; in process 143
+[...] [debug] We have poked mojolicious.org for a visitor&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;which tell us that the &lt;code&gt;minion&lt;/code&gt; received the task and executed it.&lt;/p&gt;
+
+&lt;p&gt;It’s instructive at this point to take a look at the directory that was
+created as &lt;code&gt;/var/lib/dokku/data/storage/sample-mojo&lt;/code&gt;; we will need to
+impersonate &lt;code&gt;root&lt;/code&gt; on the &lt;a href=&quot;http://dokku.viewdocs.io/dokku/&quot;&gt;Dokku&lt;/a&gt; node this time:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;$ ssh &amp;quot;root@$DOKKU_IP&amp;quot; ls -l /var/lib/dokku/data/storage
+total 8
+drwxr-xr-x 2 32767 32767 4096 Oct  8 21:53 sample-mojo&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;What’s this thing with user and group ids &lt;code&gt;32767&lt;/code&gt;? Simple: when &lt;a href=&quot;http://docker.io/&quot;&gt;Docker&lt;/a&gt;
+is instructed to run containers by &lt;a href=&quot;http://dokku.viewdocs.io/dokku/&quot;&gt;Dokku&lt;/a&gt;, it is told to start them as
+these user and group id. They are &lt;em&gt;different enough&lt;/em&gt; from what you have in
+the machine (the highest user id is &lt;code&gt;dokku&lt;/code&gt;’s at &lt;code&gt;1000&lt;/code&gt;, the highest group
+id is still &lt;code&gt;dokku&lt;/code&gt;’s at &lt;code&gt;1000&lt;/code&gt; except for a few service group ids that
+are at &lt;code&gt;65534&lt;/code&gt;, so still very &lt;em&gt;distant&lt;/em&gt; from &lt;code&gt;32767&lt;/code&gt;) so that you can be
+reasonably sure there will be no clash or overlapping &lt;em&gt;by chance&lt;/em&gt;.&lt;/p&gt;
+
+&lt;h2 id=&quot;backing-services&quot;&gt;Backing Services&lt;/h2&gt;
+
+&lt;p&gt;As we saw in the previous section, each service instance runs inside its
+own container and is quite isolated from the other ones, even though they
+actually run on the same node. That’s what makes &lt;a href=&quot;http://dokku.viewdocs.io/dokku/&quot;&gt;Dokku&lt;/a&gt; powerful: it
+allows you to run multiple services, which might each have their own quirk
+about filesystem, configurations, running processes, library versions and
+so on, but still guarantee that they will play nicely in the same host.&lt;/p&gt;
+
+&lt;p&gt;One of the consequences is that you have to take explicit actions to have
+them share files/directories: in our case, we wanted the &lt;code&gt;web&lt;/code&gt; and
+&lt;code&gt;minion&lt;/code&gt; services to share a common directory where they would be able to
+operate on the same &lt;code&gt;SQLite&lt;/code&gt; file. We were lucky that there is the storage
+management to help us with this.&lt;/p&gt;
+
+&lt;p&gt;What if we want to connect services &lt;em&gt;differently&lt;/em&gt;? For example, we might
+need to use a different database technology, and choose &lt;a href=&quot;https://www.postgresql.org/&quot;&gt;PostgreSQL&lt;/a&gt;
+instead. &lt;a href=&quot;https://www.heroku.com/&quot;&gt;Heroku&lt;/a&gt; and &lt;a href=&quot;http://dokku.viewdocs.io/dokku/&quot;&gt;Dokku&lt;/a&gt; can get you covered for a lot of
+technologies, and lucky for us there’s the &lt;a href=&quot;https://github.com/dokku/dokku-postgres&quot;&gt;Postgres&lt;/a&gt; plugin that will
+help us right out of the box.&lt;/p&gt;
+
+&lt;p&gt;The initial &lt;a href=&quot;http://dokku.viewdocs.io/dokku/deployment/application-deployment/&quot;&gt;Dokku tutorial&lt;/a&gt; help us here, so we will just take the
+relevant command without too many comments. First, we take care to see
+whether the plugin is really installed or not:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;$ dokku help
+Usage: dokku [--quiet|...
+
+Primary help options, ...
+
+Commands:
+
+    apps             L...
+    certs            M...
+    ...
+
+Community plugin commands:
+
+    letsencrypt &amp;lt;app&amp;gt; ...
+    ...
+    postgres          ...
+    redis             ...&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Fine, we do have plugins for &lt;a href=&quot;https://github.com/dokku/dokku-letsencrypt&quot;&gt;Let’s Encrypt&lt;/a&gt;,
+&lt;a href=&quot;https://github.com/dokku/dokku-redis&quot;&gt;Redis&lt;/a&gt; and &lt;a href=&quot;https://github.com/dokku/dokku-postgres&quot;&gt;Postgres&lt;/a&gt;, listed in the &lt;code&gt;Community plugin commands&lt;/code&gt; section.&lt;/p&gt;
+
+&lt;p&gt;These services provided out of the box are called &lt;em&gt;backing services&lt;/em&gt;;
+there are quite a number of them (e.g. &lt;a href=&quot;http://dokku.viewdocs.io/dokku/community/plugins/#official-plugins-beta&quot;&gt;see the official ones&lt;/a&gt;) and they should get you covered in most situations.&lt;/p&gt;
+
+&lt;p&gt;Let’s define one backing service for our application then, by first
+creating it and then linking to our application:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;$ dokku postgres:create sample-mojo-pg
+       Waiting for container to be ready
+       Creating container database
+       Securing connection to database
+=====&amp;gt; Postgres container created: sample-mojo-db
+=====&amp;gt; Container Information
+       Config dir:          /var/lib/dokku/services/postgres/sample-mojo-db/config
+       Data dir:            /var/lib/dokku/services/postgres/sample-mojo-db/data
+       Dsn:                 postgres://postgres:1b8c1fb63db2cbee3c407c8fd815152a@dokku-po...
+       Exposed ports:       -                        
+       Id:                  ecaf7be1f12cc146da63c2da1b4f9c737e26ccce6f3aef27d7af302feb1d674d
+       Internal ip:         172.17.0.5               
+       Links:               -                        
+       Service root:        /var/lib/dokku/services/postgres/sample-mojo-db
+       Status:              running
+       Version:             postgres:9.5.4
+
+$ dokku postgres:link sample-mojo-pg sample-mojo
+-----&amp;gt; Setting config vars
+       DATABASE_URL: postgres://postgres:1b8c1fb63db2cbee3c407c8fd815152a@dokku-postgres-...
+-----&amp;gt; Restarting app mojo-example
+... other lines about application restart..&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;As we can see, the plugin took care to set the environment variable
+&lt;code&gt;DATABASE_URL&lt;/code&gt; in our application to the right value for consumption by
+the application itself. We can now use it in our code then, so the
+&lt;code&gt;app.pl&lt;/code&gt; file is modified as follows:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-perl&quot; data-lang=&quot;perl&quot;&gt;&lt;span class=&quot;c1&quot;&gt;#!/usr/bin/env perl&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;use&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;Mojolicious::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Lite&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;my&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$dsn&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$ENV&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;DATABASE_URL&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;||&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;sqlite:/app/shared/test.db&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;my&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$type&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$dsn&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=~&lt;/span&gt; &lt;span class=&quot;sr&quot;&gt;m{^postgres:}mxs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;?&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;Pg&amp;#39;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;SQLite&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;plugin&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Minion&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$type&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$dsn&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;# Slow task&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;app&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;minion&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;add_task&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;poke_mojo&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;sub &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+ &lt;span class=&quot;k&quot;&gt;my&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$job&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;shift&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+ &lt;span class=&quot;nv&quot;&gt;$job&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;app&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ua&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;#39;mojolicious.org&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+ &lt;span class=&quot;nv&quot;&gt;$job&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;app&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;debug&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;#39;We have poked mojolicious.org for a visitor&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;# Perform job in a background worker process&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;get&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;/&amp;#39;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;sub &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+ &lt;span class=&quot;k&quot;&gt;my&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$c&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;shift&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+ &lt;span class=&quot;nv&quot;&gt;$c&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;minion&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;enqueue&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;#39;poke_mojo&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+ &lt;span class=&quot;nv&quot;&gt;$c&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;render&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;text&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;We will poke mojolicious.org for you soon.&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;app&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;start&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;This will make sure that we can continue to use &lt;a href=&quot;https://www.sqlite.org/&quot;&gt;SQLite&lt;/a&gt; locally and
+&lt;a href=&quot;https://www.postgresql.org/&quot;&gt;PostgreSQL&lt;/a&gt; remotely (even though you should strive to have perfect
+alignment across all your deployment environments!).&lt;/p&gt;
+
+&lt;p&gt;We just have to make sure that our Perl application will be able to use
+&lt;a href=&quot;https://www.postgresql.org/&quot;&gt;PostgreSQL&lt;/a&gt; now, so the &lt;code&gt;cpanfile&lt;/code&gt; becomes as follows:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-perl&quot; data-lang=&quot;perl&quot;&gt;&lt;span class=&quot;n&quot;&gt;requires&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;Mojolicious&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;7.08&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;requires&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;Minion&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;6.0&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;requires&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;Minion::Backend::SQLite&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;0.007&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;requires&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;Mojo::Pg&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;2.30&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Commit, then push:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;$ git commit -am &amp;#39;Add support for PostgreSQL backing service&amp;#39;
+[master 4ad17b9] Add support for PostgreSQL backing service
+ 2 files changed, 4 insertions(+), 1 deletion(-)
+
+$ git push
+Counting objects: 7, done.
+Compressing objects: 100% (4/4), done.
+Writing objects: 100% (4/4), 578 bytes, done.
+Total 4 (delta 2), reused 0 (delta 0)
+-----&amp;gt; Cleaning up...
+-----&amp;gt; Building mojo-example from herokuish...
+-----&amp;gt; Adding BUILD_ENV to build environment...
+-----&amp;gt; Multipack app detected
+=====&amp;gt; Downloading Buildpack: https://github.com/polettix/heroku-buildpack-perl-procfile.git
+=====&amp;gt; Detected Framework: Perl/Procfile
+-----&amp;gt; Installing dependencies
+       Successfully installed DBD-Pg-3.5.3
+       Successfully installed Mojo-Pg-2.30
+       2 distributions installed
+... all good up to now...
+remote: App container failed to start!!
+=====&amp;gt; mojo-example web container output:
+       Invalid PostgreSQL connection string &amp;quot;postgres://postgres:1b8c1fb63db2...
+... last message repeated a few times...
+ ! [remote rejected] master -&amp;gt; master (pre-receive hook declined) error:
+ failed to push some refs to &amp;#39;flobot:mojo-example&amp;#39;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Ouch! Well, I think &lt;a href=&quot;http://blog.plover.com/&quot;&gt;Mark Jason Dominus&lt;/a&gt; got it right at this point:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://perl.plover.com/pics/jc8.gif&quot; alt=&quot;You can&#39;t just make...&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Simply put, the &lt;code&gt;DATABASE_URL&lt;/code&gt; environment variable will need some
+adaptation before we can use it, right? This error at least told us one
+thing though: the application we are trying to deploy is &lt;em&gt;actually&lt;/em&gt;
+attempting to use the &lt;a href=&quot;https://www.postgresql.org/&quot;&gt;PostgreSQL&lt;/a&gt; database backing service after all!&lt;/p&gt;
+
+&lt;p&gt;It turns out that we just have to force the URL scheme to &lt;code&gt;postgresql&lt;/code&gt;
+(with the final &lt;code&gt;ql&lt;/code&gt; part):&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-perl&quot; data-lang=&quot;perl&quot;&gt;&lt;span class=&quot;c1&quot;&gt;#!/usr/bin/env perl&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;use&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;Mojolicious::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Lite&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+
+&lt;span class=&quot;k&quot;&gt;my&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$dsn&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$ENV&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;DATABASE_URL&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;||&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;sqlite:/app/shared/test.db&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$dsn&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=~&lt;/span&gt; &lt;span class=&quot;sr&quot;&gt;s{^postgres.*?:}{postgresql:}mxs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;my&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$type&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$dsn&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=~&lt;/span&gt; &lt;span class=&quot;sr&quot;&gt;m{^postgresql:}mxs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;?&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;Pg&amp;#39;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;SQLite&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;plugin&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Minion&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$type&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$dsn&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;# Slow task&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;app&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;minion&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;add_task&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;poke_mojo&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;sub &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+ &lt;span class=&quot;k&quot;&gt;my&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$job&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;shift&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+ &lt;span class=&quot;nv&quot;&gt;$job&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;app&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;ua&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;get&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;#39;mojolicious.org&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+ &lt;span class=&quot;nv&quot;&gt;$job&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;app&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;debug&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;#39;We have poked mojolicious.org for a visitor&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
+
+&lt;span class=&quot;c1&quot;&gt;# Perform job in a background worker process&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;get&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;/&amp;#39;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;sub &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+ &lt;span class=&quot;k&quot;&gt;my&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$c&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;shift&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+ &lt;span class=&quot;nv&quot;&gt;$c&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;minion&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;enqueue&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;#39;poke_mojo&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+ &lt;span class=&quot;nv&quot;&gt;$c&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;render&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;text&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;We will poke mojolicious.org for you soon.&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;app&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;start&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Again, commit, push and check:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;$ git commit -am &amp;#39;Adapt DATABASE_URL to Mojo::Pg URL scheme&amp;#39;
+[master c7f2d50] Adapt DATABASE_URL to Mojo::Pg URL scheme
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+poletti@Polebian2:sm (master)$ git push
+...
+=====&amp;gt; Application deployed:
+       http://sample-mojo.example.com
+...
+
+# deployment was fine, let&amp;#39;s send a GET
+$ curl http://sample-mojo.example.com
+We will poke mojolicious.org for you soon.
+
+# take some time
+$ sleep 5
+
+# check logs
+$ dokku logs sample-mojo
+... app[minion.1]:... Worker 8 started
+... app[minion.1]:... Checking worker registry and job queue
+... app[minion.1]:... Performing job &amp;quot;1&amp;quot; with task &amp;quot;poke_mojo&amp;quot; in process 145
+... app[minion.1]:... We have poked mojolicious.org for a visitor
+...&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;The fact that it’s performing job &lt;code&gt;1&lt;/code&gt; again is another hint that it is
+actually using &lt;a href=&quot;https://www.postgresql.org/&quot;&gt;PostgreSQL&lt;/a&gt;, because the jobs numbering was restarted.
+Anyway, we don’t need the persistent storage any more at this time, so we
+can double check by just removing it:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;$ dokku storage:list sample-mojo
+sample-mojo volume bind-mounts:
+     /var/lib/dokku/data/storage/sample-mojo:/app/shared
+
+$ dokku storage:unmount sample-mojo /var/lib/dokku/data/storage/sample-mojo:/app/shared
+
+$ dokku storage:list sample-mojo
+sample-mojo volume bind-mounts:
+
+$ dokku ps:restart sample-mojo
+... usual stuff here...
+
+$ curl http://sample-mojo.example.com
+We will poke mojolicious.org for you soon.
+
+# take some time
+$ sleep 5
+
+# check logs
+$ dokku logs sample-mojo
+... app[minion.1]:... Worker 7 started
+... app[minion.1]:... Checking worker registry and job queue
+... app[minion.1]:... Performing job &amp;quot;2&amp;quot; with task &amp;quot;poke_mojo&amp;quot; in process 145
+... app[minion.1]:... We have poked mojolicious.org for a visitor
+...&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;YAY, it’s still working indeed!&lt;/p&gt;
+
+&lt;h2 id=&quot;encryption-anyone&quot;&gt;Encryption Anyone?&lt;/h2&gt;
+
+&lt;p&gt;Up to this point, all our traffic has been left into the wilderness of
+plain text. If you think that encrypting communications can be a good
+thing, though, you probably already started wondering how to add TLS to
+the lot.&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://dokku.viewdocs.io/dokku/&quot;&gt;Dokku&lt;/a&gt; provides you means for managing certificates via the &lt;code&gt;certs&lt;/code&gt;
+group of commands:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;$ dokku certs:help
+Usage: dokku certs:COMMAND
+
+Manage Dokku apps SSL (TLS) certs.
+
+Additional commands:
+    certs:add &amp;lt;app&amp;gt; CRT KEY             Add an ssl endpoint to an app. Can also import from a tarball on stdin
+    certs:chain CRT [CRT ...]           [NOT IMPLEMENTED] Print the ordered and complete chain for the given certificate
+    certs:generate &amp;lt;app&amp;gt; DOMAIN         Generate a key and certificate signing request (and self-signed certificate)
+    certs:info &amp;lt;app&amp;gt;                    Show certificate information for an ssl endpoint
+    certs:key &amp;lt;app&amp;gt; CRT KEY [KEY ...]   [NOT IMPLEMENTED] Print the correct key for the given certificate
+    certs                               Manage Dokku apps SSL (TLS) certs
+    certs:remove &amp;lt;app&amp;gt;                  Remove an SSL Endpoint from an app
+    certs:rollback &amp;lt;app&amp;gt;                [NOT IMPLEMENTED] Rollback an SSL Endpoint for an app
+    certs:update &amp;lt;app&amp;gt; CRT KEY          Update an SSL Endpoint on an app. Can also import from a tarball on stdin&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;This is definitely the way to go if you are using a domain where you can’t
+define a wildcard resolution or it’s not immediately below a &lt;a href=&quot;https://publicsuffix.org/&quot;&gt;public
+suffix&lt;/a&gt;, or more simply you want to use your homebrewn self-signed
+certificates (which is perfectly secure if you have full control on all
+clients, of course!).&lt;/p&gt;
+
+&lt;p&gt;If you instead:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;have control over your domain DNS configurations&lt;/li&gt;
+  &lt;li&gt;the domain is immediately below a &lt;a href=&quot;https://publicsuffix.org/&quot;&gt;public suffix&lt;/a&gt;)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;then you can enjoy the services of the &lt;a href=&quot;https://github.com/dokku/dokku-letsencrypt&quot;&gt;Let’s Encrypt plugin&lt;/a&gt;. Let’s see how.&lt;/p&gt;
+
+&lt;p&gt;The only real setup you have to do is define an email address; this is
+used by &lt;a href=&quot;https://letsencrypt.org/&quot;&gt;Let’s Encrypt&lt;/a&gt; to notify you about certificates that are about
+to expire (this will be our safenet, because we can setup the plugin to
+renew the certificates automatically). Then you just have to activate the
+plugin.&lt;/p&gt;
+
+&lt;p&gt;If you’re lazy like me, you can set the email address up as a global
+variable, so that every project will use the same. You can still override
+this on a per-project basis, anyway.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;$ dokku config:set --global DOKKU_LETSENCRYPT_EMAIL=you@example.com
+-----&amp;gt; Setting config vars
+       DOKKU_LETSENCRYPT_EMAIL: you@example.com&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Then, you just have to activate the plugin for your app:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;$ dokku letsencrypt sample-mojo
+=====&amp;gt; Let&amp;#39;s Encrypt mojo-example
+-----&amp;gt; Updating letsencrypt docker image...
+latest: Pulling from dokkupaas/letsencrypt-simp_le
+420890c9e918: Already exists
+e4a2ae244258: Already exists
+5c6ac6d1c950: Already exists
+Digest: sha256:18a19b34beceba79dd5be458abe7e132fc7486da1da19cc4d0395ad4578031ef
+Status: Image is up to date for dokkupaas/letsencrypt-simp_le:latest
+       done updating
+-----&amp;gt; Enabling ACME proxy for mojo-example...
+-----&amp;gt; Getting letsencrypt certificate for mojo-example...
+        - Domain &amp;#39;sample-mojo.example.com&amp;#39;
+darkhttpd/1.11, copyright (c) 2003-2015 Emil Mikulic.
+listening on: http://0.0.0.0:80/
+2016-10-09 07:05:42,620:INFO:__main__:1211: Generating new account key
+2016-10-09 07:05:44,514:INFO:requests.packages.urllib3.connectionpool:758: Starting new HTTPS connection (1): acme-v01.api.letsencrypt.org
+2016-10-09 07:05:44,762:INFO:requests.packages.urllib3.connectionpool:758: Starting new HTTPS connection (1): acme-v01.api.letsencrypt.org
+2016-10-09 07:05:45,019:INFO:requests.packages.urllib3.connectionpool:758: Starting new HTTPS connection (1): acme-v01.api.letsencrypt.org
+2016-10-09 07:05:46,032:INFO:requests.packages.urllib3.connectionpool:758: Starting new HTTPS connection (1): letsencrypt.org
+2016-10-09 07:05:46,762:INFO:requests.packages.urllib3.connectionpool:758: Starting new HTTPS connection (1): acme-v01.api.letsencrypt.org
+2016-10-09 07:05:47,015:INFO:requests.packages.urllib3.connectionpool:758: Starting new HTTPS connection (1): acme-v01.api.letsencrypt.org
+2016-10-09 07:05:47,283:INFO:requests.packages.urllib3.connectionpool:207: Starting new HTTP connection (1): sample-mojo.example.com
+2016-10-09 07:05:47,359:INFO:__main__:1305: sample-mojo.example.com was successfully self-verified
+2016-10-09 07:05:47,381:INFO:requests.packages.urllib3.connectionpool:758: Starting new HTTPS connection (1): acme-v01.api.letsencrypt.org
+2016-10-09 07:05:47,749:INFO:__main__:1313: Generating new certificate private key
+2016-10-09 07:05:48,211:INFO:requests.packages.urllib3.connectionpool:758: Starting new HTTPS connection (1): acme-v01.api.letsencrypt.org
+2016-10-09 07:05:52,438:INFO:requests.packages.urllib3.connectionpool:758: Starting new HTTPS connection (1): acme-v01.api.letsencrypt.org
+2016-10-09 07:05:52,693:INFO:requests.packages.urllib3.connectionpool:758: Starting new HTTPS connection (1): acme-v01.api.letsencrypt.org
+2016-10-09 07:05:53,007:INFO:requests.packages.urllib3.connectionpool:758: Starting new HTTPS connection (1): acme-v01.api.letsencrypt.org
+2016-10-09 07:05:53,260:INFO:__main__:391: Saving account_key.json
+2016-10-09 07:05:53,261:INFO:__main__:391: Saving fullchain.pem
+2016-10-09 07:05:53,262:INFO:__main__:391: Saving chain.pem
+2016-10-09 07:05:53,262:INFO:__main__:391: Saving cert.pem
+2016-10-09 07:05:53,263:INFO:__main__:391: Saving key.pem
+-----&amp;gt; Certificate retrieved successfully.
+-----&amp;gt; Installing let&amp;#39;s encrypt certificates
+-----&amp;gt; Unsetting sample-mojo
+-----&amp;gt; Unsetting DOKKU_NGINX_PORT
+-----&amp;gt; Setting config vars
+       DOKKU_PROXY_PORT_MAP: http:80:5000
+-----&amp;gt; Setting config vars
+       DOKKU_PROXY_PORT_MAP: http:80:5000 https:443:5000
+-----&amp;gt; Setting config vars
+       DOKKU_NGINX_PORT: 80
+-----&amp;gt; Setting config vars
+       DOKKU_NGINX_SSL_PORT: 443
+-----&amp;gt; Configuring sample-mojo.example.com...(using built-in template)
+-----&amp;gt; Creating https nginx.conf
+-----&amp;gt; Running nginx-pre-reload
+       Reloading nginx
+-----&amp;gt; Configuring sample-mojo.example.com...(using built-in template)
+-----&amp;gt; Creating https nginx.conf
+-----&amp;gt; Running nginx-pre-reload
+       Reloading nginx
+-----&amp;gt; Disabling ACME proxy for sample-mojo...
+       done&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;So, after a bunch of back and forth with &lt;a href=&quot;https://letsencrypt.org/&quot;&gt;Let’s Encrypt&lt;/a&gt;, the plugin
+took care to reconfigure the reverse proxy to:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;redirect all traffic from port &lt;code&gt;80&lt;/code&gt; to port &lt;code&gt;443&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;accept traffic on port &lt;code&gt;443&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Let’s see the redirection part:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;$ curl -v http://sample-mojo.example.com/
+* About to connect() to sample-mojo.example.com port 80 (#0)
+...
+&amp;gt; GET / HTTP/1.1
+&amp;gt; User-Agent: curl/7.26.0
+&amp;gt; Host: mojo-example.introm.it
+&amp;gt; Accept: */*
+&amp;gt; 
+...
+&amp;lt; HTTP/1.1 301 Moved Permanently
+&amp;lt; Server: nginx
+&amp;lt; Date: Sun, 09 Oct 2016 07:09:55 GMT
+&amp;lt; Content-Type: text/html
+&amp;lt; Content-Length: 178
+&amp;lt; Connection: keep-alive
+&amp;lt; Location: https://sample-mojo.example.com:443/
+...&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Let’s follow the redirection now, note that &lt;code&gt;curl&lt;/code&gt; does not complain at
+all about the certificate:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;$ curl -L http://sample-mojo.example.com/
+We will poke mojolicious.org for you soon.&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Last thing we want to do is to set up automatic renewal of the
+certificates for all applications, because they expire every &lt;code&gt;90&lt;/code&gt; days
+(this short time is to encourage automation):&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;$ dokku letsencrypt:cron-job --add
+-----&amp;gt; Added cron job to dokku&amp;#39;s crontab.
+no crontab for dokku&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Done! Don’t worry about the last line, it appears if our &lt;a href=&quot;http://dokku.viewdocs.io/dokku/&quot;&gt;Dokku&lt;/a&gt;
+instance is brand new and no previous &lt;code&gt;crontab&lt;/code&gt; setting was present for
+user &lt;code&gt;dokku&lt;/code&gt;.&lt;/p&gt;
+
+&lt;h2 id=&quot;summing-up&quot;&gt;Summing Up&lt;/h2&gt;
+
+&lt;p&gt;After this (admittedly) long journey, we got to this point:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;we have a &lt;a href=&quot;http://dokku.viewdocs.io/dokku/&quot;&gt;Dokku&lt;/a&gt; node where we can easily deploy our applications - the
+Perler, the better in my opinion, but you’re not necessarily limited to it;&lt;/li&gt;
+  &lt;li&gt;we know how to share a directory across different components of an
+application&lt;/li&gt;
+  &lt;li&gt;we know how to connect to backing services, like a &lt;a href=&quot;https://www.postgresql.org/&quot;&gt;PostgreSQL&lt;/a&gt; database
+for example&lt;/li&gt;
+  &lt;li&gt;we secured our application web frontend communications via TLS&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;This is probably something that should get you more than started! For going
+beyond, you should definitely check the excellent documentation in &lt;a href=&quot;http://dokku.viewdocs.io/dokku/&quot;&gt;Dokku&lt;/a&gt;’s
+website.&lt;/p&gt;
+
+&lt;p&gt;Have fun!&lt;/p&gt;
+
+
+    &lt;p&gt;&lt;a href=&quot;/dokku-your-tiny-paas/&quot;&gt;Dokku - Your Tiny PaaS&lt;/a&gt; was originally published by Flavio Poletti at &lt;a href=&quot;&quot;&gt;PolettiX!&lt;/a&gt; on October 09, 2016.&lt;/p&gt;
+  </content>
+</entry>
 
 
   
@@ -5361,29 +6434,6 @@ bundle Pure-Perl modules inside a script. I put it in
 &lt;a href=&quot;http://repo.or.cz/&quot;&gt;repo.org.cz&lt;/a&gt;, for anyone to have a good laugh.&lt;/p&gt;
 
     &lt;p&gt;&lt;a href=&quot;/mobundle/&quot;&gt;RTFM, you geek!&lt;/a&gt; was originally published by Flavio Poletti at &lt;a href=&quot;&quot;&gt;PolettiX!&lt;/a&gt; on November 24, 2009.&lt;/p&gt;
-  </content>
-</entry>
-
-
-  
-
-<entry>
-  <title type="html"><![CDATA[Perl.org has a new face!]]></title>
-  <link rel="alternate" type="text/html" href="/perl_org_new_face/" />
-  <id>/perl_org_new_face</id>
-  <published>2009-11-15T00:00:00+01:00</published>
-  <updated>2009-11-15T00:00:00+01:00</updated>
-  <author>
-    <name>Flavio Poletti</name>
-    <uri></uri>
-    <email>flavio@polettix.it</email>
-  </author>
-  <content type="html">
-    &lt;p&gt;Wow, I’m very pleased to see the new face of
-&lt;a href=&quot;http://www.perl.org/&quot;&gt;Perl.org&lt;/a&gt;. I have to thank &lt;a href=&quot;https://twitter.com/pjf&quot;&gt;Paul
-Fenwick&lt;/a&gt; for the hint!&lt;/p&gt;
-
-    &lt;p&gt;&lt;a href=&quot;/perl_org_new_face/&quot;&gt;Perl.org has a new face!&lt;/a&gt; was originally published by Flavio Poletti at &lt;a href=&quot;&quot;&gt;PolettiX!&lt;/a&gt; on November 15, 2009.&lt;/p&gt;
   </content>
 </entry>
 
