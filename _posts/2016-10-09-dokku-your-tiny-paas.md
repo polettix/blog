@@ -979,7 +979,7 @@ clients, of course!).
 If you instead:
 
 - have control over your domain DNS configurations
-- the domain is immediately below a [public suffix][])
+- the domain is immediately below a [public suffix][]
 
 then you can enjoy the services of the [Let's Encrypt plugin][]. Let's see how.
 
