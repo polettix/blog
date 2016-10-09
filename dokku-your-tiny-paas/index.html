@@ -662,7 +662,7 @@ special because <a href="http://dokku.viewdocs.io/dokku/">Dokku</a> starts one b
 <p>A quick look to the current scaling setup is worth the time as a double check:</p>
 
 <div class="highlight"><pre><code class="language-text" data-lang="text">$ dokku ps:scale sample-mojo
------&gt; Scaling for mojo-example
+-----&gt; Scaling for sample-mojo
 -----&gt; proctype           qty                                                                          
 -----&gt; --------           ---                                                                          
 -----&gt; web                1</code></pre></div>
@@ -671,7 +671,7 @@ special because <a href="http://dokku.viewdocs.io/dokku/">Dokku</a> starts one b
 the current status, but for changing it as well; let’s bump <code>minion</code> then:</p>
 
 <div class="highlight"><pre><code class="language-text" data-lang="text">$ dokku ps:scale sample-mojo minion=1
------&gt; Scaling mojo-example:minion to 1
+-----&gt; Scaling sample-mojo:minion to 1
 #... some lines...
 =====&gt; web=1
 =====&gt; minion=1
@@ -727,7 +727,7 @@ best practice (as of October 2016, at least) of using
 <code>/var/lib/dokku/data/storage</code> and we will ask <a href="http://dokku.viewdocs.io/dokku/">Dokku</a> to use sub-directory
 <code>sample-mojo</code> inside it:</p>
 
-<div class="highlight"><pre><code class="language-text" data-lang="text">$ dokku storage:mount mojo-example \
+<div class="highlight"><pre><code class="language-text" data-lang="text">$ dokku storage:mount sample-mojo \
      /var/lib/dokku/data/storage/sample-mojo:/app/shared</code></pre></div>
 
 <p>The command above tells us that the <em>host</em> directory <code>/var/lib/.../sample-mojo</code>
@@ -874,7 +874,7 @@ creating it and then linking to our application:</p>
 $ dokku postgres:link sample-mojo-pg sample-mojo
 -----&gt; Setting config vars
        DATABASE_URL: postgres://postgres:1b8c1fb63db2cbee3c407c8fd815152a@dokku-postgres-...
------&gt; Restarting app mojo-example
+-----&gt; Restarting app sample-mojo
 ... other lines about application restart..</code></pre></div>
 
 <p>As we can see, the plugin took care to set the environment variable
@@ -929,7 +929,7 @@ Compressing objects: 100% (4/4), done.
 Writing objects: 100% (4/4), 578 bytes, done.
 Total 4 (delta 2), reused 0 (delta 0)
 -----&gt; Cleaning up...
------&gt; Building mojo-example from herokuish...
+-----&gt; Building sample-mojo from herokuish...
 -----&gt; Adding BUILD_ENV to build environment...
 -----&gt; Multipack app detected
 =====&gt; Downloading Buildpack: https://github.com/polettix/heroku-buildpack-perl-procfile.git
@@ -940,11 +940,11 @@ Total 4 (delta 2), reused 0 (delta 0)
        2 distributions installed
 ... all good up to now...
 remote: App container failed to start!!
-=====&gt; mojo-example web container output:
+=====&gt; sample-mojo web container output:
        Invalid PostgreSQL connection string &quot;postgres://postgres:1b8c1fb63db2...
 ... last message repeated a few times...
  ! [remote rejected] master -&gt; master (pre-receive hook declined) error:
- failed to push some refs to &#39;flobot:mojo-example&#39;</code></pre></div>
+ failed to push some refs to ...</code></pre></div>
 
 <p>Ouch! Well, I think <a href="http://blog.plover.com/">Mark Jason Dominus</a> got it right at this point:</p>
 
@@ -1100,7 +1100,7 @@ this on a per-project basis, anyway.</p>
 <p>Then, you just have to activate the plugin for your app:</p>
 
 <div class="highlight"><pre><code class="language-text" data-lang="text">$ dokku letsencrypt sample-mojo
-=====&gt; Let&#39;s Encrypt mojo-example
+=====&gt; Let&#39;s Encrypt sample-mojo
 -----&gt; Updating letsencrypt docker image...
 latest: Pulling from dokkupaas/letsencrypt-simp_le
 420890c9e918: Already exists
@@ -1109,8 +1109,8 @@ e4a2ae244258: Already exists
 Digest: sha256:18a19b34beceba79dd5be458abe7e132fc7486da1da19cc4d0395ad4578031ef
 Status: Image is up to date for dokkupaas/letsencrypt-simp_le:latest
        done updating
------&gt; Enabling ACME proxy for mojo-example...
------&gt; Getting letsencrypt certificate for mojo-example...
+-----&gt; Enabling ACME proxy for sample-mojo...
+-----&gt; Getting letsencrypt certificate for sample-mojo...
         - Domain &#39;sample-mojo.example.com&#39;
 darkhttpd/1.11, copyright (c) 2003-2015 Emil Mikulic.
 listening on: http://0.0.0.0:80/
@@ -1172,7 +1172,7 @@ took care to reconfigure the reverse proxy to:</p>
 ...
 &gt; GET / HTTP/1.1
 &gt; User-Agent: curl/7.26.0
-&gt; Host: mojo-example.introm.it
+&gt; Host: sample-mojo.example.com
 &gt; Accept: */*
 &gt; 
 ...

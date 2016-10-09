@@ -4,7 +4,7 @@
 <generator uri="https://github.com/jekyll/jekyll">Jekyll</generator>
 <link rel="self" type="application/atom+xml" href="/feed.xml" />
 <link rel="alternate" type="text/html" href="" />
-<updated>2016-10-09T09:24:10+02:00</updated>
+<updated>2016-10-09T09:30:37+02:00</updated>
 <id>/</id>
 <author>
   <name>Flavio Poletti</name>
@@ -519,7 +519,7 @@ special because &lt;a href=&quot;http://dokku.viewdocs.io/dokku/&quot;&gt;Dokku&
 &lt;p&gt;A quick look to the current scaling setup is worth the time as a double check:&lt;/p&gt;
 
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;$ dokku ps:scale sample-mojo
------&amp;gt; Scaling for mojo-example
+-----&amp;gt; Scaling for sample-mojo
 -----&amp;gt; proctype           qty                                                                          
 -----&amp;gt; --------           ---                                                                          
 -----&amp;gt; web                1&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
@@ -528,7 +528,7 @@ special because &lt;a href=&quot;http://dokku.viewdocs.io/dokku/&quot;&gt;Dokku&
 the current status, but for changing it as well; let’s bump &lt;code&gt;minion&lt;/code&gt; then:&lt;/p&gt;
 
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;$ dokku ps:scale sample-mojo minion=1
------&amp;gt; Scaling mojo-example:minion to 1
+-----&amp;gt; Scaling sample-mojo:minion to 1
 #... some lines...
 =====&amp;gt; web=1
 =====&amp;gt; minion=1
@@ -584,7 +584,7 @@ best practice (as of October 2016, at least) of using
 &lt;code&gt;/var/lib/dokku/data/storage&lt;/code&gt; and we will ask &lt;a href=&quot;http://dokku.viewdocs.io/dokku/&quot;&gt;Dokku&lt;/a&gt; to use sub-directory
 &lt;code&gt;sample-mojo&lt;/code&gt; inside it:&lt;/p&gt;
 
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;$ dokku storage:mount mojo-example \
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;$ dokku storage:mount sample-mojo \
      /var/lib/dokku/data/storage/sample-mojo:/app/shared&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;The command above tells us that the &lt;em&gt;host&lt;/em&gt; directory &lt;code&gt;/var/lib/.../sample-mojo&lt;/code&gt;
@@ -731,7 +731,7 @@ creating it and then linking to our application:&lt;/p&gt;
 $ dokku postgres:link sample-mojo-pg sample-mojo
 -----&amp;gt; Setting config vars
        DATABASE_URL: postgres://postgres:1b8c1fb63db2cbee3c407c8fd815152a@dokku-postgres-...
------&amp;gt; Restarting app mojo-example
+-----&amp;gt; Restarting app sample-mojo
 ... other lines about application restart..&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;As we can see, the plugin took care to set the environment variable
@@ -786,7 +786,7 @@ Compressing objects: 100% (4/4), done.
 Writing objects: 100% (4/4), 578 bytes, done.
 Total 4 (delta 2), reused 0 (delta 0)
 -----&amp;gt; Cleaning up...
------&amp;gt; Building mojo-example from herokuish...
+-----&amp;gt; Building sample-mojo from herokuish...
 -----&amp;gt; Adding BUILD_ENV to build environment...
 -----&amp;gt; Multipack app detected
 =====&amp;gt; Downloading Buildpack: https://github.com/polettix/heroku-buildpack-perl-procfile.git
@@ -797,11 +797,11 @@ Total 4 (delta 2), reused 0 (delta 0)
        2 distributions installed
 ... all good up to now...
 remote: App container failed to start!!
-=====&amp;gt; mojo-example web container output:
+=====&amp;gt; sample-mojo web container output:
        Invalid PostgreSQL connection string &amp;quot;postgres://postgres:1b8c1fb63db2...
 ... last message repeated a few times...
  ! [remote rejected] master -&amp;gt; master (pre-receive hook declined) error:
- failed to push some refs to &amp;#39;flobot:mojo-example&amp;#39;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+ failed to push some refs to ...&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;Ouch! Well, I think &lt;a href=&quot;http://blog.plover.com/&quot;&gt;Mark Jason Dominus&lt;/a&gt; got it right at this point:&lt;/p&gt;
 
@@ -957,7 +957,7 @@ this on a per-project basis, anyway.&lt;/p&gt;
 &lt;p&gt;Then, you just have to activate the plugin for your app:&lt;/p&gt;
 
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;$ dokku letsencrypt sample-mojo
-=====&amp;gt; Let&amp;#39;s Encrypt mojo-example
+=====&amp;gt; Let&amp;#39;s Encrypt sample-mojo
 -----&amp;gt; Updating letsencrypt docker image...
 latest: Pulling from dokkupaas/letsencrypt-simp_le
 420890c9e918: Already exists
@@ -966,8 +966,8 @@ e4a2ae244258: Already exists
 Digest: sha256:18a19b34beceba79dd5be458abe7e132fc7486da1da19cc4d0395ad4578031ef
 Status: Image is up to date for dokkupaas/letsencrypt-simp_le:latest
        done updating
------&amp;gt; Enabling ACME proxy for mojo-example...
------&amp;gt; Getting letsencrypt certificate for mojo-example...
+-----&amp;gt; Enabling ACME proxy for sample-mojo...
+-----&amp;gt; Getting letsencrypt certificate for sample-mojo...
         - Domain &amp;#39;sample-mojo.example.com&amp;#39;
 darkhttpd/1.11, copyright (c) 2003-2015 Emil Mikulic.
 listening on: http://0.0.0.0:80/
@@ -1029,7 +1029,7 @@ took care to reconfigure the reverse proxy to:&lt;/p&gt;
 ...
 &amp;gt; GET / HTTP/1.1
 &amp;gt; User-Agent: curl/7.26.0
-&amp;gt; Host: mojo-example.introm.it
+&amp;gt; Host: sample-mojo.example.com
 &amp;gt; Accept: */*
 &amp;gt; 
 ...
