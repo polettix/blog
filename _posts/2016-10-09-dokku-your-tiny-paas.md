@@ -528,7 +528,7 @@ A quick look to the current scaling setup is worth the time as a double check:
 
 {% highlight text %}
 $ dokku ps:scale sample-mojo
------> Scaling for mojo-example
+-----> Scaling for sample-mojo
 -----> proctype           qty                                                                          
 -----> --------           ---                                                                          
 -----> web                1
@@ -539,7 +539,7 @@ the current status, but for changing it as well; let's bump `minion` then:
 
 {% highlight text %}
 $ dokku ps:scale sample-mojo minion=1
------> Scaling mojo-example:minion to 1
+-----> Scaling sample-mojo:minion to 1
 #... some lines...
 =====> web=1
 =====> minion=1
@@ -600,7 +600,7 @@ best practice (as of October 2016, at least) of using
 `sample-mojo` inside it:
 
 {% highlight text %}
-$ dokku storage:mount mojo-example \
+$ dokku storage:mount sample-mojo \
      /var/lib/dokku/data/storage/sample-mojo:/app/shared
 {% endhighlight %}
 
@@ -761,7 +761,7 @@ $ dokku postgres:create sample-mojo-pg
 $ dokku postgres:link sample-mojo-pg sample-mojo
 -----> Setting config vars
        DATABASE_URL: postgres://postgres:1b8c1fb63db2cbee3c407c8fd815152a@dokku-postgres-...
------> Restarting app mojo-example
+-----> Restarting app sample-mojo
 ... other lines about application restart..
 {% endhighlight %}
 
@@ -822,7 +822,7 @@ Compressing objects: 100% (4/4), done.
 Writing objects: 100% (4/4), 578 bytes, done.
 Total 4 (delta 2), reused 0 (delta 0)
 -----> Cleaning up...
------> Building mojo-example from herokuish...
+-----> Building sample-mojo from herokuish...
 -----> Adding BUILD_ENV to build environment...
 -----> Multipack app detected
 =====> Downloading Buildpack: https://github.com/polettix/heroku-buildpack-perl-procfile.git
@@ -833,11 +833,11 @@ Total 4 (delta 2), reused 0 (delta 0)
        2 distributions installed
 ... all good up to now...
 remote: App container failed to start!!
-=====> mojo-example web container output:
+=====> sample-mojo web container output:
        Invalid PostgreSQL connection string "postgres://postgres:1b8c1fb63db2...
 ... last message repeated a few times...
  ! [remote rejected] master -> master (pre-receive hook declined) error:
- failed to push some refs to 'flobot:mojo-example'
+ failed to push some refs to ...
 {% endhighlight %}
 
 Ouch! Well, I think [Mark Jason Dominus][] got it right at this point:
@@ -1003,7 +1003,7 @@ Then, you just have to activate the plugin for your app:
 
 {% highlight text %}
 $ dokku letsencrypt sample-mojo
-=====> Let's Encrypt mojo-example
+=====> Let's Encrypt sample-mojo
 -----> Updating letsencrypt docker image...
 latest: Pulling from dokkupaas/letsencrypt-simp_le
 420890c9e918: Already exists
@@ -1012,8 +1012,8 @@ e4a2ae244258: Already exists
 Digest: sha256:18a19b34beceba79dd5be458abe7e132fc7486da1da19cc4d0395ad4578031ef
 Status: Image is up to date for dokkupaas/letsencrypt-simp_le:latest
        done updating
------> Enabling ACME proxy for mojo-example...
------> Getting letsencrypt certificate for mojo-example...
+-----> Enabling ACME proxy for sample-mojo...
+-----> Getting letsencrypt certificate for sample-mojo...
         - Domain 'sample-mojo.example.com'
 darkhttpd/1.11, copyright (c) 2003-2015 Emil Mikulic.
 listening on: http://0.0.0.0:80/
@@ -1075,7 +1075,7 @@ $ curl -v http://sample-mojo.example.com/
 ...
 > GET / HTTP/1.1
 > User-Agent: curl/7.26.0
-> Host: mojo-example.introm.it
+> Host: sample-mojo.example.com
 > Accept: */*
 > 
 ...
