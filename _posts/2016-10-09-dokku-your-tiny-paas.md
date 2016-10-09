@@ -3,7 +3,7 @@
 layout: post
 title: Dokku - Your Tiny PaaS
 image:
-   feature: kakdu-volo-insieme.jpg
+   feature: kakadu-volo-insieme.jpg
    credit: Uccelli al Kakadu National Park, Australia
    creditlink: https://en.wikipedia.org/wiki/Kakadu_National_Park
 comments: true
