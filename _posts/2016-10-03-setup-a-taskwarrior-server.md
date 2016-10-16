@@ -13,6 +13,11 @@ Do you use [Taskwarrior][] and want to setup a private remote server for
 backing stuff up and sync across multiple devices? Here's a few notes
 you might find interesting.
 
+## Table of Contents
+
+- TOC
+{:toc}
+
 ## What will we talk about?
 
 First of all, the [Taskwarrior][] site has comprehensive instructions on
