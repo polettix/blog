@@ -1129,6 +1129,13 @@ website.
 
 Have fun!
 
+## Updates
+
+- `2016-10-16` most of the stuff in this article has been compressed in a
+  cheatsheet available in this [wiki][]. Nice thing about [GitLab][] is that
+  it's possible to also whip up a few [snippets][].
+
+
 [PaaS]: https://en.wikipedia.org/wiki/Platform_as_a_service
 [Dokku]: http://dokku.viewdocs.io/dokku/
 [Heroku]: https://www.heroku.com/
@@ -1157,3 +1164,6 @@ Have fun!
 [Dokku tutorial]: http://dokku.viewdocs.io/dokku/deployment/application-deployment/
 [Official Dokku plugins]: http://dokku.viewdocs.io/dokku/community/plugins/#official-plugins-beta
 [Mark Jason Dominus]: http://blog.plover.com/
+[wiki]: https://gitlab.com/polettix/dokku-notes/wikis/Cheatsheet
+[snippets]: https://gitlab.com/polettix/dokku-notes/snippets
+[GitLab]: https://gitlab.com/
