@@ -14,6 +14,11 @@ your own, especially if you have some capacity that you don't use and you
 are always struggling deploying your stuff? Meet [Dokku], *[t]he smallest
 PaaS implementation you've ever seen*.
 
+## Table of Contents
+
+- TOC
+{:toc}
+
 ## Platform as a Service?
 
 Wikipedia describes [Platform as a Service][PaaS] (abbreviated PaaS) like
@@ -687,12 +692,13 @@ reasonably sure there will be no clash or overlapping *by chance*.
 
 ## Backing Services
 
-As we saw in the previous section, each service instance runs inside its
-own container and is quite isolated from the other ones, even though they
-actually run on the same node. That's what makes [Dokku][] powerful: it
-allows you to run multiple services, which might each have their own quirk
-about filesystem, configurations, running processes, library versions and
-so on, but still guarantee that they will play nicely in the same host.
+As we saw in a previous [section](#then-we-think-were-ready-but), each
+service instance runs inside its own container and is quite isolated from the
+other ones, even though they actually run on the same node. That's what makes
+[Dokku][] powerful: it allows you to run multiple services, which might each
+have their own quirk about filesystem, configurations, running processes,
+library versions and so on, but still guarantee that they will play nicely in
+the same host.
 
 One of the consequences is that you have to take explicit actions to have
 them share files/directories: in our case, we wanted the `web` and
@@ -877,6 +883,10 @@ get '/' => sub {
 
 app->start;
 {% endhighlight %}
+
+>As of release `2.31` of [Mojo::Pg] this should not be necessary any more,
+>although it's still not out as of `2016-10-16`. See [Updates](#updates)
+>for details.
 
 Again, commit, push and check:
 
@@ -1131,9 +1141,18 @@ Have fun!
 
 ## Updates
 
+- `2016-10-09` a change for supporting the `postgres://` url scheme in
+  addition to `postgresql://` is on its way (see [this
+  commit][pg-commit]). This makes using environment variable
+  `DATABASE_URL` a breeze (see [Backing Services](#backing-services)) as
+  it will be immediately consumable by [Mojo::Pg][Mojo::Pg] and the
+  associated [Minion][] backend, YAY! (We will have to wait for the new release
+  of [Mojo::Pg] though!).
 - `2016-10-16` most of the stuff in this article has been compressed in a
   cheatsheet available in this [wiki][]. Nice thing about [GitLab][] is that
   it's possible to also whip up a few [snippets][].
+- `2016-10-16` added a [Table of Contents](#table-of-contents) for better
+  navigation of the document.
 
 
 [PaaS]: https://en.wikipedia.org/wiki/Platform_as_a_service
@@ -1167,3 +1186,5 @@ Have fun!
 [wiki]: https://gitlab.com/polettix/dokku-notes/wikis/Cheatsheet
 [snippets]: https://gitlab.com/polettix/dokku-notes/snippets
 [GitLab]: https://gitlab.com/
+[pg-commit]: https://github.com/kraih/mojo-pg/commit/4414d784b7e22a4b4eca7657e91a6eec25ce923c
+[Mojo::Pg]: https://metacpan.org/pod/Mojo::Pg
