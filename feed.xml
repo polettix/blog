@@ -4,7 +4,7 @@
 <generator uri="https://github.com/jekyll/jekyll">Jekyll</generator>
 <link rel="self" type="application/atom+xml" href="/feed.xml" />
 <link rel="alternate" type="text/html" href="" />
-<updated>2016-10-16T16:44:44+02:00</updated>
+<updated>2016-10-16T17:07:48+02:00</updated>
 <id>/</id>
 <author>
   <name>Flavio Poletti</name>
@@ -31,6 +31,40 @@
 your own, especially if you have some capacity that you don’t use and you
 are always struggling deploying your stuff? Meet &lt;a href=&quot;http://dokku.viewdocs.io/dokku/&quot;&gt;Dokku&lt;/a&gt;, &lt;em&gt;[t]he smallest
 PaaS implementation you’ve ever seen&lt;/em&gt;.&lt;/p&gt;
+
+&lt;h2 id=&quot;table-of-contents&quot;&gt;Table of Contents&lt;/h2&gt;
+
+&lt;ul id=&quot;markdown-toc&quot;&gt;
+  &lt;li&gt;&lt;a href=&quot;#table-of-contents&quot; id=&quot;markdown-toc-table-of-contents&quot;&gt;Table of Contents&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#platform-as-a-service&quot; id=&quot;markdown-toc-platform-as-a-service&quot;&gt;Platform as a Service?&lt;/a&gt;    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#is-it-right-for-me&quot; id=&quot;markdown-toc-is-it-right-for-me&quot;&gt;Is it right for me?&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#i-like-it-but-i-have-this-server&quot; id=&quot;markdown-toc-i-like-it-but-i-have-this-server&quot;&gt;I like it, but I have this server…&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#dokku&quot; id=&quot;markdown-toc-dokku&quot;&gt;Dokku&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#work-on-a-project&quot; id=&quot;markdown-toc-work-on-a-project&quot;&gt;Work On A Project&lt;/a&gt;    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#starting-point&quot; id=&quot;markdown-toc-starting-point&quot;&gt;Starting point&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#paas-project-setup-in-dokku&quot; id=&quot;markdown-toc-paas-project-setup-in-dokku&quot;&gt;PaaS project setup in Dokku&lt;/a&gt;        &lt;ul&gt;
+          &lt;li&gt;&lt;a href=&quot;#how-to-build-buildpacks&quot; id=&quot;markdown-toc-how-to-build-buildpacks&quot;&gt;How to build: &lt;code&gt;.buildpacks&lt;/code&gt;&lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;a href=&quot;#how-to-run-procfile&quot; id=&quot;markdown-toc-how-to-run-procfile&quot;&gt;How to run: &lt;code&gt;Procfile&lt;/code&gt;&lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;a href=&quot;#ready&quot; id=&quot;markdown-toc-ready&quot;&gt;Ready!&lt;/a&gt;&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#moar-moar-moar&quot; id=&quot;markdown-toc-moar-moar-moar&quot;&gt;Moar! Moar! Moar!&lt;/a&gt;    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#first-evolve-the-code&quot; id=&quot;markdown-toc-first-evolve-the-code&quot;&gt;First, evolve the code…&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#then-add-a-new-service&quot; id=&quot;markdown-toc-then-add-a-new-service&quot;&gt;Then, add a new service…&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#then-learn-about-scaling&quot; id=&quot;markdown-toc-then-learn-about-scaling&quot;&gt;Then, learn about scaling…!&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#then-we-think-were-ready-but&quot; id=&quot;markdown-toc-then-we-think-were-ready-but&quot;&gt;Then, we think we’re ready &lt;strong&gt;but&lt;/strong&gt;…&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#it-will-not-take-long-now&quot; id=&quot;markdown-toc-it-will-not-take-long-now&quot;&gt;It will not take long now!&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#backing-services&quot; id=&quot;markdown-toc-backing-services&quot;&gt;Backing Services&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#encryption-anyone&quot; id=&quot;markdown-toc-encryption-anyone&quot;&gt;Encryption Anyone?&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#summing-up&quot; id=&quot;markdown-toc-summing-up&quot;&gt;Summing Up&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#updates&quot; id=&quot;markdown-toc-updates&quot;&gt;Updates&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
 
 &lt;h2 id=&quot;platform-as-a-service&quot;&gt;Platform as a Service?&lt;/h2&gt;
 
@@ -661,12 +695,13 @@ reasonably sure there will be no clash or overlapping &lt;em&gt;by chance&lt;/em
 
 &lt;h2 id=&quot;backing-services&quot;&gt;Backing Services&lt;/h2&gt;
 
-&lt;p&gt;As we saw in the previous section, each service instance runs inside its
-own container and is quite isolated from the other ones, even though they
-actually run on the same node. That’s what makes &lt;a href=&quot;http://dokku.viewdocs.io/dokku/&quot;&gt;Dokku&lt;/a&gt; powerful: it
-allows you to run multiple services, which might each have their own quirk
-about filesystem, configurations, running processes, library versions and
-so on, but still guarantee that they will play nicely in the same host.&lt;/p&gt;
+&lt;p&gt;As we saw in a previous &lt;a href=&quot;#then-we-think-were-ready-but&quot;&gt;section&lt;/a&gt;, each
+service instance runs inside its own container and is quite isolated from the
+other ones, even though they actually run on the same node. That’s what makes
+&lt;a href=&quot;http://dokku.viewdocs.io/dokku/&quot;&gt;Dokku&lt;/a&gt; powerful: it allows you to run multiple services, which might each
+have their own quirk about filesystem, configurations, running processes,
+library versions and so on, but still guarantee that they will play nicely in
+the same host.&lt;/p&gt;
 
 &lt;p&gt;One of the consequences is that you have to take explicit actions to have
 them share files/directories: in our case, we wanted the &lt;code&gt;web&lt;/code&gt; and
@@ -838,6 +873,12 @@ attempting to use the &lt;a href=&quot;https://www.postgresql.org/&quot;&gt;Post
 &lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
 
 &lt;span class=&quot;n&quot;&gt;app&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;start&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;As of release &lt;code&gt;2.31&lt;/code&gt; of &lt;a href=&quot;https://metacpan.org/pod/Mojo::Pg&quot;&gt;Mojo::Pg&lt;/a&gt; this should not be necessary any more,
+although it’s still not out as of &lt;code&gt;2016-10-16&lt;/code&gt;. See &lt;a href=&quot;#updates&quot;&gt;Updates&lt;/a&gt;
+for details.&lt;/p&gt;
+&lt;/blockquote&gt;
 
 &lt;p&gt;Again, commit, push and check:&lt;/p&gt;
 
@@ -1083,9 +1124,18 @@ website.&lt;/p&gt;
 &lt;h2 id=&quot;updates&quot;&gt;Updates&lt;/h2&gt;
 
 &lt;ul&gt;
+  &lt;li&gt;&lt;code&gt;2016-10-09&lt;/code&gt; a change for supporting the &lt;code&gt;postgres://&lt;/code&gt; url scheme in
+addition to &lt;code&gt;postgresql://&lt;/code&gt; is on its way (see &lt;a href=&quot;https://github.com/kraih/mojo-pg/commit/4414d784b7e22a4b4eca7657e91a6eec25ce923c&quot;&gt;this
+commit&lt;/a&gt;). This makes using environment variable
+&lt;code&gt;DATABASE_URL&lt;/code&gt; a breeze (see &lt;a href=&quot;#backing-services&quot;&gt;Backing Services&lt;/a&gt;) as
+it will be immediately consumable by &lt;a href=&quot;https://metacpan.org/pod/Mojo::Pg&quot;&gt;Mojo::Pg&lt;/a&gt; and the
+associated &lt;a href=&quot;https://metacpan.org/pod/Minion&quot;&gt;Minion&lt;/a&gt; backend, YAY! (We will have to wait for the new release
+of &lt;a href=&quot;https://metacpan.org/pod/Mojo::Pg&quot;&gt;Mojo::Pg&lt;/a&gt; though!).&lt;/li&gt;
   &lt;li&gt;&lt;code&gt;2016-10-16&lt;/code&gt; most of the stuff in this article has been compressed in a
 cheatsheet available in this &lt;a href=&quot;https://gitlab.com/polettix/dokku-notes/wikis/Cheatsheet&quot;&gt;wiki&lt;/a&gt;. Nice thing about &lt;a href=&quot;https://gitlab.com/&quot;&gt;GitLab&lt;/a&gt; is that
 it’s possible to also whip up a few &lt;a href=&quot;https://gitlab.com/polettix/dokku-notes/snippets&quot;&gt;snippets&lt;/a&gt;.&lt;/li&gt;
+  &lt;li&gt;&lt;code&gt;2016-10-16&lt;/code&gt; added a &lt;a href=&quot;#table-of-contents&quot;&gt;Table of Contents&lt;/a&gt; for better
+navigation of the document.&lt;/li&gt;
 &lt;/ul&gt;
 
 

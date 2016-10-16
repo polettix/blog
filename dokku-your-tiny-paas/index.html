@@ -175,6 +175,40 @@ your own, especially if you have some capacity that you don’t use and you
 are always struggling deploying your stuff? Meet <a href="http://dokku.viewdocs.io/dokku/">Dokku</a>, <em>[t]he smallest
 PaaS implementation you’ve ever seen</em>.</p>
 
+<h2 id="table-of-contents">Table of Contents</h2>
+
+<ul id="markdown-toc">
+  <li><a href="#table-of-contents" id="markdown-toc-table-of-contents">Table of Contents</a></li>
+  <li><a href="#platform-as-a-service" id="markdown-toc-platform-as-a-service">Platform as a Service?</a>    <ul>
+      <li><a href="#is-it-right-for-me" id="markdown-toc-is-it-right-for-me">Is it right for me?</a></li>
+      <li><a href="#i-like-it-but-i-have-this-server" id="markdown-toc-i-like-it-but-i-have-this-server">I like it, but I have this server…</a></li>
+    </ul>
+  </li>
+  <li><a href="#dokku" id="markdown-toc-dokku">Dokku</a></li>
+  <li><a href="#work-on-a-project" id="markdown-toc-work-on-a-project">Work On A Project</a>    <ul>
+      <li><a href="#starting-point" id="markdown-toc-starting-point">Starting point</a></li>
+      <li><a href="#paas-project-setup-in-dokku" id="markdown-toc-paas-project-setup-in-dokku">PaaS project setup in Dokku</a>        <ul>
+          <li><a href="#how-to-build-buildpacks" id="markdown-toc-how-to-build-buildpacks">How to build: <code>.buildpacks</code></a></li>
+          <li><a href="#how-to-run-procfile" id="markdown-toc-how-to-run-procfile">How to run: <code>Procfile</code></a></li>
+          <li><a href="#ready" id="markdown-toc-ready">Ready!</a></li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li><a href="#moar-moar-moar" id="markdown-toc-moar-moar-moar">Moar! Moar! Moar!</a>    <ul>
+      <li><a href="#first-evolve-the-code" id="markdown-toc-first-evolve-the-code">First, evolve the code…</a></li>
+      <li><a href="#then-add-a-new-service" id="markdown-toc-then-add-a-new-service">Then, add a new service…</a></li>
+      <li><a href="#then-learn-about-scaling" id="markdown-toc-then-learn-about-scaling">Then, learn about scaling…!</a></li>
+      <li><a href="#then-we-think-were-ready-but" id="markdown-toc-then-we-think-were-ready-but">Then, we think we’re ready <strong>but</strong>…</a></li>
+      <li><a href="#it-will-not-take-long-now" id="markdown-toc-it-will-not-take-long-now">It will not take long now!</a></li>
+    </ul>
+  </li>
+  <li><a href="#backing-services" id="markdown-toc-backing-services">Backing Services</a></li>
+  <li><a href="#encryption-anyone" id="markdown-toc-encryption-anyone">Encryption Anyone?</a></li>
+  <li><a href="#summing-up" id="markdown-toc-summing-up">Summing Up</a></li>
+  <li><a href="#updates" id="markdown-toc-updates">Updates</a></li>
+</ul>
+
 <h2 id="platform-as-a-service">Platform as a Service?</h2>
 
 <p>Wikipedia describes <a href="https://en.wikipedia.org/wiki/Platform_as_a_service">Platform as a Service</a> (abbreviated PaaS) like
@@ -804,12 +838,13 @@ reasonably sure there will be no clash or overlapping <em>by chance</em>.</p>
 
 <h2 id="backing-services">Backing Services</h2>
 
-<p>As we saw in the previous section, each service instance runs inside its
-own container and is quite isolated from the other ones, even though they
-actually run on the same node. That’s what makes <a href="http://dokku.viewdocs.io/dokku/">Dokku</a> powerful: it
-allows you to run multiple services, which might each have their own quirk
-about filesystem, configurations, running processes, library versions and
-so on, but still guarantee that they will play nicely in the same host.</p>
+<p>As we saw in a previous <a href="#then-we-think-were-ready-but">section</a>, each
+service instance runs inside its own container and is quite isolated from the
+other ones, even though they actually run on the same node. That’s what makes
+<a href="http://dokku.viewdocs.io/dokku/">Dokku</a> powerful: it allows you to run multiple services, which might each
+have their own quirk about filesystem, configurations, running processes,
+library versions and so on, but still guarantee that they will play nicely in
+the same host.</p>
 
 <p>One of the consequences is that you have to take explicit actions to have
 them share files/directories: in our case, we wanted the <code>web</code> and
@@ -981,6 +1016,12 @@ attempting to use the <a href="https://www.postgresql.org/">PostgreSQL</a> datab
 <span class="p">};</span>
 
 <span class="n">app</span><span class="o">-&gt;</span><span class="n">start</span><span class="p">;</span></code></pre></div>
+
+<blockquote>
+  <p>As of release <code>2.31</code> of <a href="https://metacpan.org/pod/Mojo::Pg">Mojo::Pg</a> this should not be necessary any more,
+although it’s still not out as of <code>2016-10-16</code>. See <a href="#updates">Updates</a>
+for details.</p>
+</blockquote>
 
 <p>Again, commit, push and check:</p>
 
@@ -1226,9 +1267,18 @@ website.</p>
 <h2 id="updates">Updates</h2>
 
 <ul>
+  <li><code>2016-10-09</code> a change for supporting the <code>postgres://</code> url scheme in
+addition to <code>postgresql://</code> is on its way (see <a href="https://github.com/kraih/mojo-pg/commit/4414d784b7e22a4b4eca7657e91a6eec25ce923c">this
+commit</a>). This makes using environment variable
+<code>DATABASE_URL</code> a breeze (see <a href="#backing-services">Backing Services</a>) as
+it will be immediately consumable by <a href="https://metacpan.org/pod/Mojo::Pg">Mojo::Pg</a> and the
+associated <a href="https://metacpan.org/pod/Minion">Minion</a> backend, YAY! (We will have to wait for the new release
+of <a href="https://metacpan.org/pod/Mojo::Pg">Mojo::Pg</a> though!).</li>
   <li><code>2016-10-16</code> most of the stuff in this article has been compressed in a
 cheatsheet available in this <a href="https://gitlab.com/polettix/dokku-notes/wikis/Cheatsheet">wiki</a>. Nice thing about <a href="https://gitlab.com/">GitLab</a> is that
 it’s possible to also whip up a few <a href="https://gitlab.com/polettix/dokku-notes/snippets">snippets</a>.</li>
+  <li><code>2016-10-16</code> added a <a href="#table-of-contents">Table of Contents</a> for better
+navigation of the document.</li>
 </ul>
 
 
