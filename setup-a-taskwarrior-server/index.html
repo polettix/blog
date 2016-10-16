@@ -171,6 +171,42 @@ you might find interesting.
 backing stuff up and sync across multiple devices? Here’s a few notes
 you might find interesting.</p>
 
+<h2 id="table-of-contents">Table of Contents</h2>
+
+<ul id="markdown-toc">
+  <li><a href="#table-of-contents" id="markdown-toc-table-of-contents">Table of Contents</a></li>
+  <li><a href="#what-will-we-talk-about" id="markdown-toc-what-will-we-talk-about">What will we talk about?</a></li>
+  <li><a href="#securing-the-communications" id="markdown-toc-securing-the-communications">Securing The Communications</a>    <ul>
+      <li><a href="#keys" id="markdown-toc-keys">Keys</a></li>
+      <li><a href="#certificates" id="markdown-toc-certificates">Certificates</a></li>
+      <li><a href="#certification-authorities" id="markdown-toc-certification-authorities">Certification Authorities</a>        <ul>
+          <li><a href="#a-chain-of-cas" id="markdown-toc-a-chain-of-cas">A chain of CAs</a></li>
+          <li><a href="#which-ca-for-taskwarrior" id="markdown-toc-which-ca-for-taskwarrior">Which CA for Taskwarrior?</a></li>
+        </ul>
+      </li>
+      <li><a href="#what-about-clients" id="markdown-toc-what-about-clients">What about clients?</a></li>
+      <li><a href="#expiration-and-certificate-revocation-list" id="markdown-toc-expiration-and-certificate-revocation-list">Expiration and Certificate Revocation List</a></li>
+      <li><a href="#summary" id="markdown-toc-summary">Summary</a></li>
+    </ul>
+  </li>
+  <li><a href="#setup-remote-sync" id="markdown-toc-setup-remote-sync">Setup Remote Sync</a>    <ul>
+      <li><a href="#user-accounts" id="markdown-toc-user-accounts">User accounts</a></li>
+      <li><a href="#alternative-1-diy" id="markdown-toc-alternative-1-diy">Alternative 1: DIY</a>        <ul>
+          <li><a href="#server-configuration" id="markdown-toc-server-configuration">Server configuration</a></li>
+          <li><a href="#client-configuration" id="markdown-toc-client-configuration">Client configuration</a></li>
+        </ul>
+      </li>
+      <li><a href="#alternative-2-real-certificate" id="markdown-toc-alternative-2-real-certificate">Alternative 2: <em>Real</em> certificate</a>        <ul>
+          <li><a href="#server-configuration-1" id="markdown-toc-server-configuration-1">Server configuration</a></li>
+          <li><a href="#client-configuration-1" id="markdown-toc-client-configuration-1">Client configuration</a></li>
+        </ul>
+      </li>
+      <li><a href="#quick-consideration-on-clients-authentication" id="markdown-toc-quick-consideration-on-clients-authentication">Quick consideration on clients authentication</a></li>
+    </ul>
+  </li>
+  <li><a href="#summing-up" id="markdown-toc-summing-up">Summing Up</a></li>
+</ul>
+
 <h2 id="what-will-we-talk-about">What will we talk about?</h2>
 
 <p>First of all, the <a href="https://taskwarrior.org/">Taskwarrior</a> site has comprehensive instructions on

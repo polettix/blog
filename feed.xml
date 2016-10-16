@@ -4,7 +4,7 @@
 <generator uri="https://github.com/jekyll/jekyll">Jekyll</generator>
 <link rel="self" type="application/atom+xml" href="/feed.xml" />
 <link rel="alternate" type="text/html" href="" />
-<updated>2016-10-16T17:07:48+02:00</updated>
+<updated>2016-10-16T17:10:17+02:00</updated>
 <id>/</id>
 <author>
   <name>Flavio Poletti</name>
@@ -1161,6 +1161,42 @@ navigation of the document.&lt;/li&gt;
     &lt;p&gt;Do you use &lt;a href=&quot;https://taskwarrior.org/&quot;&gt;Taskwarrior&lt;/a&gt; and want to setup a private remote server for
 backing stuff up and sync across multiple devices? Here’s a few notes
 you might find interesting.&lt;/p&gt;
+
+&lt;h2 id=&quot;table-of-contents&quot;&gt;Table of Contents&lt;/h2&gt;
+
+&lt;ul id=&quot;markdown-toc&quot;&gt;
+  &lt;li&gt;&lt;a href=&quot;#table-of-contents&quot; id=&quot;markdown-toc-table-of-contents&quot;&gt;Table of Contents&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#what-will-we-talk-about&quot; id=&quot;markdown-toc-what-will-we-talk-about&quot;&gt;What will we talk about?&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#securing-the-communications&quot; id=&quot;markdown-toc-securing-the-communications&quot;&gt;Securing The Communications&lt;/a&gt;    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#keys&quot; id=&quot;markdown-toc-keys&quot;&gt;Keys&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#certificates&quot; id=&quot;markdown-toc-certificates&quot;&gt;Certificates&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#certification-authorities&quot; id=&quot;markdown-toc-certification-authorities&quot;&gt;Certification Authorities&lt;/a&gt;        &lt;ul&gt;
+          &lt;li&gt;&lt;a href=&quot;#a-chain-of-cas&quot; id=&quot;markdown-toc-a-chain-of-cas&quot;&gt;A chain of CAs&lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;a href=&quot;#which-ca-for-taskwarrior&quot; id=&quot;markdown-toc-which-ca-for-taskwarrior&quot;&gt;Which CA for Taskwarrior?&lt;/a&gt;&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#what-about-clients&quot; id=&quot;markdown-toc-what-about-clients&quot;&gt;What about clients?&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#expiration-and-certificate-revocation-list&quot; id=&quot;markdown-toc-expiration-and-certificate-revocation-list&quot;&gt;Expiration and Certificate Revocation List&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#summary&quot; id=&quot;markdown-toc-summary&quot;&gt;Summary&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#setup-remote-sync&quot; id=&quot;markdown-toc-setup-remote-sync&quot;&gt;Setup Remote Sync&lt;/a&gt;    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#user-accounts&quot; id=&quot;markdown-toc-user-accounts&quot;&gt;User accounts&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#alternative-1-diy&quot; id=&quot;markdown-toc-alternative-1-diy&quot;&gt;Alternative 1: DIY&lt;/a&gt;        &lt;ul&gt;
+          &lt;li&gt;&lt;a href=&quot;#server-configuration&quot; id=&quot;markdown-toc-server-configuration&quot;&gt;Server configuration&lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;a href=&quot;#client-configuration&quot; id=&quot;markdown-toc-client-configuration&quot;&gt;Client configuration&lt;/a&gt;&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#alternative-2-real-certificate&quot; id=&quot;markdown-toc-alternative-2-real-certificate&quot;&gt;Alternative 2: &lt;em&gt;Real&lt;/em&gt; certificate&lt;/a&gt;        &lt;ul&gt;
+          &lt;li&gt;&lt;a href=&quot;#server-configuration-1&quot; id=&quot;markdown-toc-server-configuration-1&quot;&gt;Server configuration&lt;/a&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;a href=&quot;#client-configuration-1&quot; id=&quot;markdown-toc-client-configuration-1&quot;&gt;Client configuration&lt;/a&gt;&lt;/li&gt;
+        &lt;/ul&gt;
+      &lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#quick-consideration-on-clients-authentication&quot; id=&quot;markdown-toc-quick-consideration-on-clients-authentication&quot;&gt;Quick consideration on clients authentication&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#summing-up&quot; id=&quot;markdown-toc-summing-up&quot;&gt;Summing Up&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
 
 &lt;h2 id=&quot;what-will-we-talk-about&quot;&gt;What will we talk about?&lt;/h2&gt;
 
