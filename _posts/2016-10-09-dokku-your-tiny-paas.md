@@ -135,7 +135,7 @@ plugin] (for free and hassle-free SSL certificates), [Redis] and
 
 From the `README`:
 
-1. Spin up a new VPS somewhere, e.g. [DigitalOcean][]. I usually choose
+1. Spin up a new VPS somewhere, e.g. [Digital Ocean][]. I usually choose
    the latest Debian release. You can select the smallest size if you just
    want to give it a try. (And please... set up and use SSH keys, it's
    2016 or later!). Let's say we save the IP address of this VPS in
