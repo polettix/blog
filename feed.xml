@@ -4,13 +4,350 @@
 <generator uri="https://github.com/jekyll/jekyll">Jekyll</generator>
 <link rel="self" type="application/atom+xml" href="/feed.xml" />
 <link rel="alternate" type="text/html" href="" />
-<updated>2016-11-18T18:06:13+01:00</updated>
+<updated>2016-11-26T19:32:26+01:00</updated>
 <id>/</id>
 <author>
   <name>Flavio Poletti</name>
   <uri>/</uri>
   <email>flavio@polettix.it</email>
 </author>
+
+
+  
+
+<entry>
+  <title type="html"><![CDATA[WebService::Fake - but still usable!]]></title>
+  <link rel="alternate" type="text/html" href="/webservice-fake-but-still-usable/" />
+  <id>/webservice-fake-but-still-usable</id>
+  <published>2016-11-26T00:00:00+01:00</published>
+  <updated>2016-11-26T00:00:00+01:00</updated>
+  <author>
+    <name>Flavio Poletti</name>
+    <uri></uri>
+    <email>flavio@polettix.it</email>
+  </author>
+  <content type="html">
+    &lt;p&gt;Some time ago one of the rites of passage for a wannabe Perl programmer
+was having its own take on a templating system. I duly complied with
+&lt;a href=&quot;https://metacpan.org/pod/Template::Perlish&quot;&gt;Template::Perlish&lt;/a&gt;, which I’m quite happy about and I use anywhere
+I can. Later, it seems that many people thought they would have a take at
+building the next cool web service/application framework; here, I set
+quite low expectactions, but it’s still useful!&lt;/p&gt;
+
+&lt;h2 id=&quot;table-of-contents&quot;&gt;Table of Contents&lt;/h2&gt;
+
+&lt;ul id=&quot;markdown-toc&quot;&gt;
+  &lt;li&gt;&lt;a href=&quot;#table-of-contents&quot; id=&quot;markdown-toc-table-of-contents&quot;&gt;Table of Contents&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#what-is-it-about&quot; id=&quot;markdown-toc-what-is-it-about&quot;&gt;What is it about?&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#care-to-show-an-example&quot; id=&quot;markdown-toc-care-to-show-an-example&quot;&gt;Care to show an example?&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#should-i-be-impressed&quot; id=&quot;markdown-toc-should-i-be-impressed&quot;&gt;Should I be impressed?&lt;/a&gt;    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#use-the-headers&quot; id=&quot;markdown-toc-use-the-headers&quot;&gt;Use the head(ers)&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#craft-your-answer&quot; id=&quot;markdown-toc-craft-your-answer&quot;&gt;Craft your answer&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#ive-only-2-minutes-left&quot; id=&quot;markdown-toc-ive-only-2-minutes-left&quot;&gt;I’ve only 2 minutes left…&lt;/a&gt;    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#using-templates&quot; id=&quot;markdown-toc-using-templates&quot;&gt;Using Templates&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#accessing-variables&quot; id=&quot;markdown-toc-accessing-variables&quot;&gt;Accessing variables&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#placeholders&quot; id=&quot;markdown-toc-placeholders&quot;&gt;Placeholders&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#defaults&quot; id=&quot;markdown-toc-defaults&quot;&gt;Defaults&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#body-wrapper&quot; id=&quot;markdown-toc-body-wrapper&quot;&gt;Body wrapper&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#times-up&quot; id=&quot;markdown-toc-times-up&quot;&gt;Time’s up!&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;what-is-it-about&quot;&gt;What is it about?&lt;/h2&gt;
+
+&lt;p&gt;When building &lt;em&gt;real&lt;/em&gt; stuff, quite often I have to interact with some
+external API, usually provided as a webservice of some sort. Not always
+I have direct access to it (especially from my laptop in some casual
+place), or want to hammer the service while doing development. The classic
+use case where a &lt;em&gt;mock&lt;/em&gt; can be useful.&lt;/p&gt;
+
+&lt;p&gt;It’s quite easy to setup such an example application by directly using one
+of the available web frameworks. Among them, &lt;a href=&quot;https://metacpan.org/pod/Mojolicious&quot;&gt;Mojolicious&lt;/a&gt; is probably
+best suited for the job, as it has a really low &lt;em&gt;entrance fee&lt;/em&gt; for setting
+it up (a basic installation takes only two distributions and is usually
+very, very quick). If you already have &lt;a href=&quot;https://metacpan.org/pod/Dancer&quot;&gt;Dancer&lt;/a&gt; around, anyway, it’s
+also very easy to setup a simple application with it too. So, this is the
+perfect scenario for &lt;em&gt;reinventing the wheel&lt;/em&gt; and have a personal shot to
+the problem.&lt;/p&gt;
+
+&lt;p&gt;I’m actually cheating a lot in this, because &lt;a href=&quot;https://metacpan.org/pod/distribution/WebService-Fake/script/wsf&quot;&gt;WebService::Fake&lt;/a&gt; uses
+&lt;a href=&quot;https://metacpan.org/pod/Mojolicious&quot;&gt;Mojolicious&lt;/a&gt; behind the scenes. &lt;em&gt;But hey, what did you expect from
+something with &lt;code&gt;Fake&lt;/code&gt; in its name&lt;/em&gt;?!?&lt;/p&gt;
+
+&lt;p&gt;So there you go, &lt;a href=&quot;https://metacpan.org/pod/distribution/WebService-Fake/script/wsf&quot;&gt;WebService::Fake&lt;/a&gt; is my personal take to having
+something that lets you build your webservice (or web application, for
+what it’s worth) in some way. I’ve not prove it formally, but it &lt;em&gt;should&lt;/em&gt;
+let you do almost anything, in some strange and skewed perlish way: easy
+things are easy, complicate things are somehow possible but you’d better
+do them with something different!&lt;/p&gt;
+
+&lt;h2 id=&quot;care-to-show-an-example&quot;&gt;Care to show an example?&lt;/h2&gt;
+
+&lt;p&gt;Sure! The web service definition is provided via a YAML file, like this:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-yaml&quot; data-lang=&quot;yaml&quot;&gt;&lt;span class=&quot;l-Scalar-Plain&quot;&gt;routes&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;p-Indicator&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;path&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;/&amp;#39;&lt;/span&gt;
+    &lt;span class=&quot;l-Scalar-Plain&quot;&gt;body&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;{&amp;quot;message&amp;quot;:&amp;quot;Hello,&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;World!&amp;quot;}&amp;#39;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Suppose it’s saved as &lt;code&gt;hello-world.wsf&lt;/code&gt;. You can then start the faker in
+a shell (assuming &lt;code&gt;wsf&lt;/code&gt; is in &lt;code&gt;PATH&lt;/code&gt;):&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-yaml&quot; data-lang=&quot;yaml&quot;&gt;&lt;span class=&quot;l-Scalar-Plain&quot;&gt;shell$ WEBSERVICE_FAKE=hello-world.wsf wsf daemon&lt;/span&gt;
+&lt;span class=&quot;l-Scalar-Plain&quot;&gt;[Sat Nov 26 15:30:00 2016] [info] Listening at &amp;quot;http://*:3000&amp;quot;&lt;/span&gt;
+&lt;span class=&quot;l-Scalar-Plain&quot;&gt;Server available at http://127.0.0.1:3000&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;The &lt;code&gt;daemon&lt;/code&gt; should ring some bell about &lt;a href=&quot;https://metacpan.org/pod/Mojolicious&quot;&gt;Mojolicious&lt;/a&gt; I guess. We can
+now do a &lt;code&gt;GET&lt;/code&gt; in another shell and see what happens:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;shell$ curl -v http://localhost:3000/
+* About to connect() to localhost port 3000 (#0)
+*   Trying ::1...
+* Connection refused
+*   Trying 127.0.0.1...
+* connected
+* Connected to localhost (127.0.0.1) port 3000 (#0)
+&amp;gt; GET / HTTP/1.1
+&amp;gt; User-Agent: curl/7.26.0
+&amp;gt; Host: localhost:3000
+&amp;gt; Accept: */*
+&amp;gt; 
+* additional stuff not fine transfer.c:1037: 0 0
+* HTTP 1.1 or later with persistent connection, pipelining supported
+&amp;lt; HTTP/1.1 200 OK
+&amp;lt; Content-Type: application/json
+&amp;lt; Server: Mojolicious (Perl)
+&amp;lt; Content-Length: 27
+&amp;lt; Date: Sat, 26 Nov 2016 14:30:03 GMT
+&amp;lt; 
+* Connection #0 to host localhost left intact
+{&amp;quot;message&amp;quot;:&amp;quot;Hello, World!&amp;quot;}* Closing connection #0&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;A few comments:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;it works! This can be surprising for something that prides to be &lt;em&gt;fake&lt;/em&gt;;&lt;/li&gt;
+  &lt;li&gt;the &lt;code&gt;Server&lt;/code&gt; is another confirmation we’re building on top of
+&lt;a href=&quot;https://metacpan.org/pod/Mojolicious&quot;&gt;Mojolicious&lt;/a&gt;…&lt;/li&gt;
+  &lt;li&gt;the default &lt;code&gt;Content-Type&lt;/code&gt; is set to &lt;code&gt;application/json&lt;/code&gt;. There’s
+a reason why the module name starts with &lt;code&gt;WebService&lt;/code&gt;, after all,
+although you can change it as we will see shortly&lt;/li&gt;
+  &lt;li&gt;whatever we set as the &lt;code&gt;body&lt;/code&gt; is returned as… the body.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;should-i-be-impressed&quot;&gt;Should I be impressed?&lt;/h2&gt;
+
+&lt;p&gt;Just for comparison, the equivalent &lt;a href=&quot;https://metacpan.org/pod/Mojolicious::Lite&quot;&gt;Mojolicious::Lite&lt;/a&gt; code for the
+previous section would be (without too much golfing, I admit):&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-perl&quot; data-lang=&quot;perl&quot;&gt;&lt;span class=&quot;k&quot;&gt;use&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;Mojolicious::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Lite&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;get&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;/&amp;#39;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;sub &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;shift&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;render&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;json&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;message&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;Hello, World!&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;})};&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;app&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;start&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;So yeah… &lt;a href=&quot;https://metacpan.org/pod/distribution/WebService-Fake/script/wsf&quot;&gt;WebService::Fake&lt;/a&gt; lets you spare a few strokes, but it’s
+nothing you couldn’t get directly from &lt;a href=&quot;https://metacpan.org/pod/Mojolicious&quot;&gt;Mojolicious&lt;/a&gt; anyway.&lt;/p&gt;
+
+&lt;h3 id=&quot;use-the-headers&quot;&gt;Use the head(ers)&lt;/h3&gt;
+
+&lt;p&gt;Let’s complicate the web service definition a bit, for example to set
+a new server name and set a customized header too:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-yaml&quot; data-lang=&quot;yaml&quot;&gt;&lt;span class=&quot;l-Scalar-Plain&quot;&gt;routes&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;p-Indicator&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;path&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;/&amp;#39;&lt;/span&gt;
+    &lt;span class=&quot;l-Scalar-Plain&quot;&gt;body&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;{&amp;quot;message&amp;quot;:&amp;quot;Hello,&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;World!&amp;quot;}&amp;#39;&lt;/span&gt;
+    &lt;span class=&quot;l-Scalar-Plain&quot;&gt;headers&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+      &lt;span class=&quot;p-Indicator&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;Server&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;WebService::Fake/0.001&amp;#39;&lt;/span&gt;
+        &lt;span class=&quot;l-Scalar-Plain&quot;&gt;X-Whatever&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;whatever&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;is&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;whatever&amp;#39;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;It does what you expect:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;shell$ curl -v http://localhost:3000/
+#....
+&amp;lt; HTTP/1.1 200 OK
+&amp;lt; Content-Length: 27
+&amp;lt; Date: Sat, 26 Nov 2016 14:46:10 GMT
+&amp;lt; X-Whatever: whatever is whatever
+&amp;lt; Server: WebService::Fake/0.001
+&amp;lt; Content-Type: application/json
+&amp;lt; 
+* Connection #0 to host localhost left intact
+{&amp;quot;message&amp;quot;:&amp;quot;Hello, World!&amp;quot;}* Closing connection #0&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;This is easy with &lt;a href=&quot;https://metacpan.org/pod/Mojolicious::Lite&quot;&gt;Mojolicious::Lite&lt;/a&gt; too of course:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-perl&quot; data-lang=&quot;perl&quot;&gt;&lt;span class=&quot;k&quot;&gt;use&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;Mojolicious::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Lite&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;get&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;/&amp;#39;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;sub &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;my&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$c&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;shift&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;my&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$headers&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$c&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;res&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;headers&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;nv&quot;&gt;$headers&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;server&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;#39;WebService::Fake/0.001&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;nv&quot;&gt;$headers&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;header&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;#39;X-Whatever&amp;#39;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;whatever is whatever&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;nv&quot;&gt;$c&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;render&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;json&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;message&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;Hello, World!&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;app&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;start&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;It’s just &lt;em&gt;slightly&lt;/em&gt; more complicated but still quite compact.
+&lt;a href=&quot;https://metacpan.org/pod/Mojolicious&quot;&gt;Mojolicious&lt;/a&gt; provides a few headers shortcuts but you have somehow to
+remember them, although you can fallback with the generic &lt;code&gt;header&lt;/code&gt; method
+for both known and custom ones.&lt;/p&gt;
+
+&lt;p&gt;The real difference is actually that &lt;a href=&quot;https://metacpan.org/pod/Mojolicious&quot;&gt;Mojolicious&lt;/a&gt; provides a complete
+(and consistent) set of tools as part of the toolkit, while
+&lt;a href=&quot;https://metacpan.org/pod/distribution/WebService-Fake/script/wsf&quot;&gt;WebService::Fake&lt;/a&gt; tries to optimize for the case where you somehow
+&lt;em&gt;already know&lt;/em&gt; the shape of the answer you want to get, and want to
+describe it as quickly as possible.&lt;/p&gt;
+
+&lt;h3 id=&quot;craft-your-answer&quot;&gt;Craft your answer&lt;/h3&gt;
+
+&lt;p&gt;As a last example for this section, suppose you also want to provide
+a different return code, e.g. &lt;code&gt;203 Non-Authoritative Information&lt;/code&gt;. It’s
+easy to do this in our definition YAML:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-yaml&quot; data-lang=&quot;yaml&quot;&gt;&lt;span class=&quot;l-Scalar-Plain&quot;&gt;routes&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;p-Indicator&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;path&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;/&amp;#39;&lt;/span&gt;
+    &lt;span class=&quot;l-Scalar-Plain&quot;&gt;body&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;{&amp;quot;message&amp;quot;:&amp;quot;Hello,&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;World!&amp;quot;}&amp;#39;&lt;/span&gt;
+    &lt;span class=&quot;l-Scalar-Plain&quot;&gt;code&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;203&lt;/span&gt;
+    &lt;span class=&quot;l-Scalar-Plain&quot;&gt;headers&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+      &lt;span class=&quot;p-Indicator&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;Server&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;WebService::Fake/0.001&amp;#39;&lt;/span&gt;
+        &lt;span class=&quot;l-Scalar-Plain&quot;&gt;X-Whatever&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;whatever&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;is&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;whatever&amp;#39;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Again, it’s up to the promise:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;shell$ curl -v http://localhost:3000/
+#....
+&amp;lt; HTTP/1.1 203 Non-Authoritative Information
+&amp;lt; X-Whatever: whatever is whatever
+&amp;lt; Content-Length: 27
+&amp;lt; Server: WebService::Fake/0.001
+&amp;lt; Date: Sat, 26 Nov 2016 14:58:20 GMT
+&amp;lt; Content-Type: application/json
+&amp;lt; 
+* Connection #0 to host localhost left intact
+{&amp;quot;message&amp;quot;:&amp;quot;Hello, World!&amp;quot;}* Closing connection #0&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;The same thing in &lt;a href=&quot;https://metacpan.org/pod/Mojolicious::Lite&quot;&gt;Mojolicious::Lite&lt;/a&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-perl&quot; data-lang=&quot;perl&quot;&gt;&lt;span class=&quot;k&quot;&gt;use&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;Mojolicious::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Lite&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;get&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;/&amp;#39;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;sub &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;my&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$c&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;shift&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;k&quot;&gt;my&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$headers&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$c&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;res&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;headers&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+    &lt;span class=&quot;nv&quot;&gt;$headers&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;content_type&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;#39;application/json&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;nv&quot;&gt;$headers&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;server&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;#39;WebService::Fake/0.001&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;nv&quot;&gt;$headers&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;header&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;#39;X-Whatever&amp;#39;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;whatever is whatever&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;nv&quot;&gt;$c&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;res&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;body&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;#39;{&amp;quot;message&amp;quot;: &amp;quot;Hello, World!&amp;quot;}&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+    &lt;span class=&quot;nv&quot;&gt;$c&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rendered&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;204&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;app&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;start&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Things get a bit more complicated. To set the custom HTTP status code, we
+have to take a different route for rendering the body (I hereby declare my
+ignorance with respect to how keep the &lt;code&gt;json =&amp;gt; {...}&lt;/code&gt; alive, but it’s not
+essential), because &lt;code&gt;render&lt;/code&gt; is not useful here.&lt;/p&gt;
+
+&lt;p&gt;Again, it’s a matter of understanding what shortcuts are most useful in
+the general case: in a real application/service, &lt;a href=&quot;https://metacpan.org/pod/Mojolicious&quot;&gt;Mojolicious&lt;/a&gt; takes
+sane defaults, in this whole &lt;em&gt;faking someone else’s webservice&lt;/em&gt; context
+&lt;a href=&quot;https://metacpan.org/pod/distribution/WebService-Fake/script/wsf&quot;&gt;WebService::Fake&lt;/a&gt; goes for a different optimization route.&lt;/p&gt;
+
+&lt;h2 id=&quot;ive-only-2-minutes-left&quot;&gt;I’ve only 2 minutes left…&lt;/h2&gt;
+
+&lt;p&gt;So let’s go fast. If you already have the right answers to the requests
+you want to fake, then you should be all set. If you need to add a bit of
+logic though…&lt;/p&gt;
+
+&lt;h3 id=&quot;using-templates&quot;&gt;Using Templates&lt;/h3&gt;
+
+&lt;p&gt;Body and headers are actually defined in terms of &lt;a href=&quot;https://metacpan.org/pod/Template::Perlish&quot;&gt;Template::Perlish&lt;/a&gt;
+templates, so this does what you think:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-yaml&quot; data-lang=&quot;yaml&quot;&gt;&lt;span class=&quot;l-Scalar-Plain&quot;&gt;routes&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;p-Indicator&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;path&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;/&amp;#39;&lt;/span&gt;
+    &lt;span class=&quot;l-Scalar-Plain&quot;&gt;body&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;{&amp;quot;now&amp;quot;:&amp;quot;[%=&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;scalar&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;localtime&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;%]&amp;quot;}&amp;#39;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;accessing-variables&quot;&gt;Accessing variables&lt;/h3&gt;
+
+&lt;p&gt;You can &lt;em&gt;spice up&lt;/em&gt; your fake answers including a few elements from the
+request too, e.g. parameters:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-yaml&quot; data-lang=&quot;yaml&quot;&gt;&lt;span class=&quot;l-Scalar-Plain&quot;&gt;routes&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;p-Indicator&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;path&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;/&amp;#39;&lt;/span&gt;
+    &lt;span class=&quot;l-Scalar-Plain&quot;&gt;body&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;{&amp;quot;name&amp;quot;:&amp;quot;[%&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;params.name&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;%]&amp;quot;}&amp;#39;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;placeholders&quot;&gt;Placeholders&lt;/h3&gt;
+
+&lt;p&gt;Did I mention that there’s &lt;a href=&quot;https://metacpan.org/pod/Mojolicious&quot;&gt;Mojolicious&lt;/a&gt; providing features? You can
+define routes with placeholders, and later access them:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-yaml&quot; data-lang=&quot;yaml&quot;&gt;&lt;span class=&quot;l-Scalar-Plain&quot;&gt;routes&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;p-Indicator&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;path&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;/hello/:name&amp;#39;&lt;/span&gt;
+    &lt;span class=&quot;l-Scalar-Plain&quot;&gt;body&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;{&amp;quot;greeting&amp;quot;:&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;hello&amp;quot;,&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;name&amp;quot;:&amp;quot;[%&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;stash.name&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;%]&amp;quot;}&amp;#39;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;defaults&quot;&gt;Defaults&lt;/h3&gt;
+
+&lt;p&gt;Have a lot of routes and want to set common things once and for all?&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-yaml&quot; data-lang=&quot;yaml&quot;&gt;&lt;span class=&quot;l-Scalar-Plain&quot;&gt;defaults&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;l-Scalar-Plain&quot;&gt;headers&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;p-Indicator&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;Content-Type&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;text/plain&lt;/span&gt;
+      &lt;span class=&quot;l-Scalar-Plain&quot;&gt;X-Whatever&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;whatever&lt;/span&gt;
+      &lt;span class=&quot;l-Scalar-Plain&quot;&gt;Server&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;Something/Fake&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;1.0&amp;#39;&lt;/span&gt;
+&lt;span class=&quot;l-Scalar-Plain&quot;&gt;routes&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;p-Indicator&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;path&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;/hello/:name&amp;#39;&lt;/span&gt;
+    &lt;span class=&quot;l-Scalar-Plain&quot;&gt;body&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;Hello,&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;[%&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;stash.name&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;%]!&amp;#39;&lt;/span&gt;
+  &lt;span class=&quot;p-Indicator&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;path&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;/negate/:something&amp;#39;&lt;/span&gt;
+    &lt;span class=&quot;l-Scalar-Plain&quot;&gt;body&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;[%&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;stash.something&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;%]&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;is&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;no-no!&amp;#39;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;body-wrapper&quot;&gt;Body wrapper&lt;/h3&gt;
+
+&lt;p&gt;Suppose you have to fake some API that has some boilerplate that never
+changes across different routes, and you want to change only a single
+part. This is where a body wrapper comes handy:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-yaml&quot; data-lang=&quot;yaml&quot;&gt;&lt;span class=&quot;l-Scalar-Plain&quot;&gt;defaults&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;l-Scalar-Plain&quot;&gt;body_wrapper&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p-Indicator&quot;&gt;|&lt;/span&gt;
+    &lt;span class=&quot;no&quot;&gt;{&lt;/span&gt;
+      &lt;span class=&quot;no&quot;&gt;&amp;quot;status&amp;quot;: &amp;quot;OK&amp;quot;,&lt;/span&gt;
+      &lt;span class=&quot;no&quot;&gt;&amp;quot;timestamp&amp;quot;: &amp;quot;[%= scalar localtime %]&amp;quot;,&lt;/span&gt;
+      &lt;span class=&quot;no&quot;&gt;&amp;quot;data&amp;quot;: [% content %]&lt;/span&gt;
+    &lt;span class=&quot;no&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;l-Scalar-Plain&quot;&gt;routes&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;p-Indicator&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;path&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;/hello/:name&amp;#39;&lt;/span&gt;
+    &lt;span class=&quot;l-Scalar-Plain&quot;&gt;body&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;{&amp;quot;greeting&amp;quot;:&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;hello&amp;quot;,&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;name&amp;quot;:&amp;quot;[%&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;stash.name&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;%]&amp;quot;}&amp;#39;&lt;/span&gt;
+  &lt;span class=&quot;p-Indicator&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;path&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;/negate/:something&amp;#39;&lt;/span&gt;
+    &lt;span class=&quot;l-Scalar-Plain&quot;&gt;body&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;{&amp;quot;action&amp;quot;:&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;negate&amp;quot;,&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;what&amp;quot;:&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;[%&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;stash.something&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;%]&amp;quot;}&amp;#39;&lt;/span&gt;
+  &lt;span class=&quot;p-Indicator&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;path&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;/text/hello/:name&amp;#39;&lt;/span&gt;
+    &lt;span class=&quot;l-Scalar-Plain&quot;&gt;headers&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+      &lt;span class=&quot;p-Indicator&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;Content-Type&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;text/plain&lt;/span&gt;
+    &lt;span class=&quot;l-Scalar-Plain&quot;&gt;body_wrapper&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;~&lt;/span&gt;
+    &lt;span class=&quot;l-Scalar-Plain&quot;&gt;body&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;Hello,&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;[%&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;stash.name&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;%]!&amp;#39;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;As you can see from the last route, you can selectively disable the
+wrapper on a per-route basis.&lt;/p&gt;
+
+&lt;h2 id=&quot;times-up&quot;&gt;Time’s up!&lt;/h2&gt;
+
+&lt;p&gt;You have surely noticed that there’s no specific support for security and
+the like, there’s no explicit support for sanitizing your inputs, escaping
+your output, etc. etc. i.e. all those goodies that help you build
+something robust to put into the wild.&lt;/p&gt;
+
+&lt;p&gt;So what’s it good for?!? I told you in the beginning… fake web services,
+that’s it! It’s meant to be a sparring partner for your programs to
+excercise against something that can actually answer them something, not
+to put in front of your “customers” (so don’t try to do that!).&lt;/p&gt;
+
+&lt;p&gt;We didn’t go too much in depth, and you might find a few additional tricks
+if you’re curious enough to take a look at the &lt;a href=&quot;https://metacpan.org/pod/distribution/WebService-Fake/script/wsf&quot;&gt;docs&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;It would be great to hear from you! Comment below, or abuse the code and
+find bugs, or file suggestions on &lt;a href=&quot;https://github.com/polettix/WebService-Fake&quot;&gt;GitHub&lt;/a&gt; but whatever you decide to
+make of it… happy faking!&lt;/p&gt;
+
+
+    &lt;p&gt;&lt;a href=&quot;/webservice-fake-but-still-usable/&quot;&gt;WebService::Fake - but still usable!&lt;/a&gt; was originally published by Flavio Poletti at &lt;a href=&quot;&quot;&gt;PolettiX!&lt;/a&gt; on November 26, 2016.&lt;/p&gt;
+  </content>
+</entry>
 
 
   
@@ -6500,58 +6837,6 @@ property here, and it seems just… &lt;em&gt;weird&lt;/em&gt;, even though it m
 perfectly sense.&lt;/p&gt;
 
     &lt;p&gt;&lt;a href=&quot;/perl6-junction/&quot;&gt;Equality is reflexive... isn&#39;t it?&lt;/a&gt; was originally published by Flavio Poletti at &lt;a href=&quot;&quot;&gt;PolettiX!&lt;/a&gt; on November 29, 2009.&lt;/p&gt;
-  </content>
-</entry>
-
-
-  
-
-<entry>
-  <title type="html"><![CDATA[RTFM, you geek!]]></title>
-  <link rel="alternate" type="text/html" href="/mobundle/" />
-  <id>/mobundle</id>
-  <published>2009-11-24T00:00:00+01:00</published>
-  <updated>2009-11-24T00:00:00+01:00</updated>
-  <author>
-    <name>Flavio Poletti</name>
-    <uri></uri>
-    <email>flavio@polettix.it</email>
-  </author>
-  <content type="html">
-    &lt;p&gt;After the previous post, I shipped the script and the related libraries
-to the recipient and slept as a baby. Just to discover that they didn’t
-figure out how to use it properly!&lt;/p&gt;
-
-&lt;p&gt;The main issue is that geeks and technical people generally don’t read
-the documentation. I admit, most of the times I don’t do this as well.
-In this case, my good colleague saw a Perl script, made the
-too-simple-to-seem-true association between Perl and the Web and
-installed Apache! Well, as a matter of fact &lt;em&gt;it is&lt;/em&gt; a web
-application, but I strived to make it self-contained and you end up with
-Apache?!?&lt;/p&gt;
-
-&lt;p&gt;Luck was that I was there some thirty minutes after to correct the
-problem and let Perl shine: “hey bro, it’s a single program with an
-embedded web server!”. That was the lucky part, anyway: the environment
-we’re working into is &lt;em&gt;particularly&lt;/em&gt; hostile, to the point that
-two machines in the very same network can’t ping one another!
-Fortunately when I did use the program to make some tests the network
-connectivity was not that bad and we managed to do them.&lt;/p&gt;
-
-&lt;p&gt;Another thing that annoyed me a bit was that the script was not
-&lt;em&gt;fully&lt;/em&gt; self-contained. Yes, I have to ship a hole tar.gz file…
-so I thought that it would be great to distribute a single script
-without anything more. One option is PAR, of course, but I always
-regretted to use it because you basically have to compile for a target
-architecture (at least in my understanding). In case of Pure-Perl stuff
-this does not make me happy.&lt;/p&gt;
-
-&lt;p&gt;Some time ago I had a similar problem that I solved with a script to
-bundle Pure-Perl modules inside a script. I put it in
-&lt;a href=&quot;http://repo.or.cz/w/mobundle.git&quot;&gt;repository&lt;/a&gt; in
-&lt;a href=&quot;http://repo.or.cz/&quot;&gt;repo.org.cz&lt;/a&gt;, for anyone to have a good laugh.&lt;/p&gt;
-
-    &lt;p&gt;&lt;a href=&quot;/mobundle/&quot;&gt;RTFM, you geek!&lt;/a&gt; was originally published by Flavio Poletti at &lt;a href=&quot;&quot;&gt;PolettiX!&lt;/a&gt; on November 24, 2009.&lt;/p&gt;
   </content>
 </entry>
 

@@ -1,0 +1,575 @@
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if (IE 7)&!(IEMobile)]><html class="no-js lt-ie9 lt-ie8" lang="en"><![endif]-->
+<!--[if (IE 8)&!(IEMobile)]><html class="no-js lt-ie9" lang="en"><![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"><!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<title>WebService::Fake - but still usable! &#8211; PolettiX!</title>
+<meta name="description" content="Some time ago one of the rites of passage for a wannabe Perl programmer
+was having its own take on a templating system. I duly complied with
+Template::Perlish, which I’m quite happy about and I use anywhere
+I can. Later, it seems that many people thought they would have a take at
+building the next cool web service/application framework; here, I set
+quite low expectactions, but it’s still useful!
+
+">
+<meta name="keywords" content="">
+
+
+
+<!-- Twitter Cards -->
+<meta name="twitter:title" content="WebService::Fake - but still usable!">
+<meta name="twitter:description" content="Some time ago one of the rites of passage for a wannabe Perl programmer
+was having its own take on a templating system. I duly complied with
+Template::Perlish, which I’m quite happy about and I use anywhere
+I can. Later, it seems that many people thought they would have a take at
+building the next cool web service/application framework; here, I set
+quite low expectactions, but it’s still useful!
+
+">
+<meta name="twitter:site" content="@polettix">
+<meta name="twitter:creator" content="@polettix">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="/images/yellow-river.jpg">
+
+<!-- Open Graph -->
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:title" content="WebService::Fake - but still usable!">
+<meta property="og:description" content="Some time ago one of the rites of passage for a wannabe Perl programmer
+was having its own take on a templating system. I duly complied with
+Template::Perlish, which I’m quite happy about and I use anywhere
+I can. Later, it seems that many people thought they would have a take at
+building the next cool web service/application framework; here, I set
+quite low expectactions, but it’s still useful!
+
+">
+<meta property="og:url" content="/webservice-fake-but-still-usable/">
+<meta property="og:site_name" content="PolettiX!">
+
+
+
+
+
+<link rel="canonical" href="/webservice-fake-but-still-usable/">
+<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="PolettiX! Feed">
+
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+
+<meta http-equiv="cleartype" content="on">
+
+<!-- HTML5 Shiv and Media Query Support -->
+<!--[if lt IE 9]>
+	<script src="/assets/js/vendor/html5shiv.min.js"></script>
+	<script src="/assets/js/vendor/respond.min.js"></script>
+<![endif]-->
+
+<!-- Modernizr -->
+<script src="/assets/js/vendor/modernizr-2.7.1.custom.min.js"></script>
+
+<link href='//fonts.googleapis.com/css?family=PT+Sans+Narrow:400,700%7CPT+Serif:400,700,400italic' rel='stylesheet' type='text/css'>
+
+<!-- Icons -->
+<!-- 16x16 -->
+<link rel="shortcut icon" href="/favicon.ico?whatever">
+<!-- 32x32 -->
+<link rel="shortcut icon" href="/favicon.png?whatever">
+<!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
+<link rel="apple-touch-icon-precomposed" href="/images/apple-touch-icon-precomposed.png">
+<!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="/images/apple-touch-icon-72x72-precomposed.png">
+<!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="/images/apple-touch-icon-114x114-precomposed.png">
+<!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/images/apple-touch-icon-144x144-precomposed.png">
+
+</head>
+
+<body class="post">
+
+<!--[if lt IE 9]><div class="browser-upgrade alert alert-info">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</div><![endif]-->
+
+<div class="navigation-wrapper">
+	<div class="site-name">
+		<a href="/">PolettiX!</a>
+	</div><!-- /.site-name -->
+	<div class="top-navigation">
+		<nav role="navigation" id="site-nav" class="nav">
+		    <ul>
+		        
+				    
+				        
+				    
+				    <li><a href="/about/" >About</a></li>
+				
+				    
+				        
+				    
+				    <li><a href="/posts/" >Posts</a></li>
+				
+		    </ul>
+		</nav>
+	</div><!-- /.top-navigation -->
+</div><!-- /.navigation-wrapper -->
+
+
+  <div class="image-wrap">
+  <img src=
+    
+      "/images/yellow-river.jpg"
+    
+  alt="WebService::Fake - but still usable! feature image">
+  
+    <span class="image-credit"><a href="https://en.wikipedia.org/wiki/Kakadu_National_Park">Yellow Water al Kakadu National Park, Australia</a></span>
+  
+  </div><!-- /.image-wrap -->
+
+
+<div id="main" role="main">
+  <div class="article-author-side">
+    
+
+
+<div itemscope itemtype="http://schema.org/Person">
+
+
+	<img src="/images/flavio-self-color.png" class="bio-photo" alt="Flavio Poletti bio photo">
+
+
+  <h3 itemprop="name">Flavio Poletti</h3>
+  <p>Irreducible Perler.</p>
+  <a href="mailto:flavio@polettix.it" class="author-social" target="_blank"><i class="fa fa-fw fa-envelope-square"></i>Email</a>
+  <a href="http://comics.polettix.it/" class="author-social" target="_blank"><i class="fa fa-fw fa-pencil"></i> Comics</a>
+  <a href="http://twitter.com/polettix" class="author-social" target="_blank"><i class="fa fa-fw fa-twitter-square"></i> Twitter</a>
+  
+  
+  <a href="http://linkedin.com/in/flaviopoletti" class="author-social" target="_blank"><i class="fa fa-fw fa-linkedin-square"></i> LinkedIn</a>
+  
+  
+  <a href="https://metacpan.org/author/polettix" class="author-social" target="_blank"><i class="fa fa-fw fa-th-large"></i> MetaCPAN</a>
+  <a href="http://github.com/polettix" class="author-social" target="_blank"><i class="fa fa-fw fa-github"></i> Github</a>
+  <a href="http://stackoverflow.com/users/3865403/polettix" class="author-social" target="_blank"><i class="fa fa-fw fa-stack-overflow"></i> Stackoverflow</a>
+  
+  
+  <a href="http://www.pinterest.com/polettix" class="author-social" target="_blank"><i class="fa fa-fw fa-pinterest"></i> Pinterest</a>
+  
+  
+  
+  
+  
+  
+</div>
+
+  </div>
+  <article class="post">
+    <div class="headline-wrap">
+      
+        <h1><a href="/webservice-fake-but-still-usable/" rel="bookmark" title="WebService::Fake - but still usable!">WebService::Fake - but still usable!</a></h1>
+      
+    </div><!--/ .headline-wrap -->
+    <div class="article-wrap">
+      <p>Some time ago one of the rites of passage for a wannabe Perl programmer
+was having its own take on a templating system. I duly complied with
+<a href="https://metacpan.org/pod/Template::Perlish">Template::Perlish</a>, which I’m quite happy about and I use anywhere
+I can. Later, it seems that many people thought they would have a take at
+building the next cool web service/application framework; here, I set
+quite low expectactions, but it’s still useful!</p>
+
+<h2 id="table-of-contents">Table of Contents</h2>
+
+<ul id="markdown-toc">
+  <li><a href="#table-of-contents" id="markdown-toc-table-of-contents">Table of Contents</a></li>
+  <li><a href="#what-is-it-about" id="markdown-toc-what-is-it-about">What is it about?</a></li>
+  <li><a href="#care-to-show-an-example" id="markdown-toc-care-to-show-an-example">Care to show an example?</a></li>
+  <li><a href="#should-i-be-impressed" id="markdown-toc-should-i-be-impressed">Should I be impressed?</a>    <ul>
+      <li><a href="#use-the-headers" id="markdown-toc-use-the-headers">Use the head(ers)</a></li>
+      <li><a href="#craft-your-answer" id="markdown-toc-craft-your-answer">Craft your answer</a></li>
+    </ul>
+  </li>
+  <li><a href="#ive-only-2-minutes-left" id="markdown-toc-ive-only-2-minutes-left">I’ve only 2 minutes left…</a>    <ul>
+      <li><a href="#using-templates" id="markdown-toc-using-templates">Using Templates</a></li>
+      <li><a href="#accessing-variables" id="markdown-toc-accessing-variables">Accessing variables</a></li>
+      <li><a href="#placeholders" id="markdown-toc-placeholders">Placeholders</a></li>
+      <li><a href="#defaults" id="markdown-toc-defaults">Defaults</a></li>
+      <li><a href="#body-wrapper" id="markdown-toc-body-wrapper">Body wrapper</a></li>
+    </ul>
+  </li>
+  <li><a href="#times-up" id="markdown-toc-times-up">Time’s up!</a></li>
+</ul>
+
+<h2 id="what-is-it-about">What is it about?</h2>
+
+<p>When building <em>real</em> stuff, quite often I have to interact with some
+external API, usually provided as a webservice of some sort. Not always
+I have direct access to it (especially from my laptop in some casual
+place), or want to hammer the service while doing development. The classic
+use case where a <em>mock</em> can be useful.</p>
+
+<p>It’s quite easy to setup such an example application by directly using one
+of the available web frameworks. Among them, <a href="https://metacpan.org/pod/Mojolicious">Mojolicious</a> is probably
+best suited for the job, as it has a really low <em>entrance fee</em> for setting
+it up (a basic installation takes only two distributions and is usually
+very, very quick). If you already have <a href="https://metacpan.org/pod/Dancer">Dancer</a> around, anyway, it’s
+also very easy to setup a simple application with it too. So, this is the
+perfect scenario for <em>reinventing the wheel</em> and have a personal shot to
+the problem.</p>
+
+<p>I’m actually cheating a lot in this, because <a href="https://metacpan.org/pod/distribution/WebService-Fake/script/wsf">WebService::Fake</a> uses
+<a href="https://metacpan.org/pod/Mojolicious">Mojolicious</a> behind the scenes. <em>But hey, what did you expect from
+something with <code>Fake</code> in its name</em>?!?</p>
+
+<p>So there you go, <a href="https://metacpan.org/pod/distribution/WebService-Fake/script/wsf">WebService::Fake</a> is my personal take to having
+something that lets you build your webservice (or web application, for
+what it’s worth) in some way. I’ve not prove it formally, but it <em>should</em>
+let you do almost anything, in some strange and skewed perlish way: easy
+things are easy, complicate things are somehow possible but you’d better
+do them with something different!</p>
+
+<h2 id="care-to-show-an-example">Care to show an example?</h2>
+
+<p>Sure! The web service definition is provided via a YAML file, like this:</p>
+
+<div class="highlight"><pre><code class="language-yaml" data-lang="yaml"><span class="l-Scalar-Plain">routes</span><span class="p-Indicator">:</span>
+  <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">path</span><span class="p-Indicator">:</span> <span class="s">&#39;/&#39;</span>
+    <span class="l-Scalar-Plain">body</span><span class="p-Indicator">:</span> <span class="s">&#39;{&quot;message&quot;:&quot;Hello,</span><span class="nv"> </span><span class="s">World!&quot;}&#39;</span></code></pre></div>
+
+<p>Suppose it’s saved as <code>hello-world.wsf</code>. You can then start the faker in
+a shell (assuming <code>wsf</code> is in <code>PATH</code>):</p>
+
+<div class="highlight"><pre><code class="language-yaml" data-lang="yaml"><span class="l-Scalar-Plain">shell$ WEBSERVICE_FAKE=hello-world.wsf wsf daemon</span>
+<span class="l-Scalar-Plain">[Sat Nov 26 15:30:00 2016] [info] Listening at &quot;http://*:3000&quot;</span>
+<span class="l-Scalar-Plain">Server available at http://127.0.0.1:3000</span></code></pre></div>
+
+<p>The <code>daemon</code> should ring some bell about <a href="https://metacpan.org/pod/Mojolicious">Mojolicious</a> I guess. We can
+now do a <code>GET</code> in another shell and see what happens:</p>
+
+<div class="highlight"><pre><code class="language-text" data-lang="text">shell$ curl -v http://localhost:3000/
+* About to connect() to localhost port 3000 (#0)
+*   Trying ::1...
+* Connection refused
+*   Trying 127.0.0.1...
+* connected
+* Connected to localhost (127.0.0.1) port 3000 (#0)
+&gt; GET / HTTP/1.1
+&gt; User-Agent: curl/7.26.0
+&gt; Host: localhost:3000
+&gt; Accept: */*
+&gt; 
+* additional stuff not fine transfer.c:1037: 0 0
+* HTTP 1.1 or later with persistent connection, pipelining supported
+&lt; HTTP/1.1 200 OK
+&lt; Content-Type: application/json
+&lt; Server: Mojolicious (Perl)
+&lt; Content-Length: 27
+&lt; Date: Sat, 26 Nov 2016 14:30:03 GMT
+&lt; 
+* Connection #0 to host localhost left intact
+{&quot;message&quot;:&quot;Hello, World!&quot;}* Closing connection #0</code></pre></div>
+
+<p>A few comments:</p>
+
+<ul>
+  <li>it works! This can be surprising for something that prides to be <em>fake</em>;</li>
+  <li>the <code>Server</code> is another confirmation we’re building on top of
+<a href="https://metacpan.org/pod/Mojolicious">Mojolicious</a>…</li>
+  <li>the default <code>Content-Type</code> is set to <code>application/json</code>. There’s
+a reason why the module name starts with <code>WebService</code>, after all,
+although you can change it as we will see shortly</li>
+  <li>whatever we set as the <code>body</code> is returned as… the body.</li>
+</ul>
+
+<h2 id="should-i-be-impressed">Should I be impressed?</h2>
+
+<p>Just for comparison, the equivalent <a href="https://metacpan.org/pod/Mojolicious::Lite">Mojolicious::Lite</a> code for the
+previous section would be (without too much golfing, I admit):</p>
+
+<div class="highlight"><pre><code class="language-perl" data-lang="perl"><span class="k">use</span> <span class="nn">Mojolicious::</span><span class="n">Lite</span><span class="p">;</span>
+<span class="n">get</span> <span class="s">&#39;/&#39;</span> <span class="o">=&gt;</span> <span class="k">sub </span><span class="p">{</span><span class="nb">shift</span><span class="o">-&gt;</span><span class="n">render</span><span class="p">(</span><span class="n">json</span> <span class="o">=&gt;</span> <span class="p">{</span><span class="n">message</span> <span class="o">=&gt;</span> <span class="s">&#39;Hello, World!&#39;</span><span class="p">})};</span>
+<span class="n">app</span><span class="o">-&gt;</span><span class="n">start</span><span class="p">;</span></code></pre></div>
+
+<p>So yeah… <a href="https://metacpan.org/pod/distribution/WebService-Fake/script/wsf">WebService::Fake</a> lets you spare a few strokes, but it’s
+nothing you couldn’t get directly from <a href="https://metacpan.org/pod/Mojolicious">Mojolicious</a> anyway.</p>
+
+<h3 id="use-the-headers">Use the head(ers)</h3>
+
+<p>Let’s complicate the web service definition a bit, for example to set
+a new server name and set a customized header too:</p>
+
+<div class="highlight"><pre><code class="language-yaml" data-lang="yaml"><span class="l-Scalar-Plain">routes</span><span class="p-Indicator">:</span>
+  <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">path</span><span class="p-Indicator">:</span> <span class="s">&#39;/&#39;</span>
+    <span class="l-Scalar-Plain">body</span><span class="p-Indicator">:</span> <span class="s">&#39;{&quot;message&quot;:&quot;Hello,</span><span class="nv"> </span><span class="s">World!&quot;}&#39;</span>
+    <span class="l-Scalar-Plain">headers</span><span class="p-Indicator">:</span>
+      <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">Server</span><span class="p-Indicator">:</span> <span class="s">&#39;WebService::Fake/0.001&#39;</span>
+        <span class="l-Scalar-Plain">X-Whatever</span><span class="p-Indicator">:</span> <span class="s">&#39;whatever</span><span class="nv"> </span><span class="s">is</span><span class="nv"> </span><span class="s">whatever&#39;</span></code></pre></div>
+
+<p>It does what you expect:</p>
+
+<div class="highlight"><pre><code class="language-text" data-lang="text">shell$ curl -v http://localhost:3000/
+#....
+&lt; HTTP/1.1 200 OK
+&lt; Content-Length: 27
+&lt; Date: Sat, 26 Nov 2016 14:46:10 GMT
+&lt; X-Whatever: whatever is whatever
+&lt; Server: WebService::Fake/0.001
+&lt; Content-Type: application/json
+&lt; 
+* Connection #0 to host localhost left intact
+{&quot;message&quot;:&quot;Hello, World!&quot;}* Closing connection #0</code></pre></div>
+
+<p>This is easy with <a href="https://metacpan.org/pod/Mojolicious::Lite">Mojolicious::Lite</a> too of course:</p>
+
+<div class="highlight"><pre><code class="language-perl" data-lang="perl"><span class="k">use</span> <span class="nn">Mojolicious::</span><span class="n">Lite</span><span class="p">;</span>
+<span class="n">get</span> <span class="s">&#39;/&#39;</span> <span class="o">=&gt;</span> <span class="k">sub </span><span class="p">{</span>
+    <span class="k">my</span> <span class="nv">$c</span> <span class="o">=</span> <span class="nb">shift</span><span class="p">;</span>
+    <span class="k">my</span> <span class="nv">$headers</span> <span class="o">=</span> <span class="nv">$c</span><span class="o">-&gt;</span><span class="n">res</span><span class="o">-&gt;</span><span class="n">headers</span><span class="p">;</span>
+    <span class="nv">$headers</span><span class="o">-&gt;</span><span class="n">server</span><span class="p">(</span><span class="s">&#39;WebService::Fake/0.001&#39;</span><span class="p">);</span>
+    <span class="nv">$headers</span><span class="o">-&gt;</span><span class="n">header</span><span class="p">(</span><span class="s">&#39;X-Whatever&#39;</span> <span class="o">=&gt;</span> <span class="s">&#39;whatever is whatever&#39;</span><span class="p">);</span>
+    <span class="nv">$c</span><span class="o">-&gt;</span><span class="n">render</span><span class="p">(</span><span class="n">json</span> <span class="o">=&gt;</span> <span class="p">{</span><span class="n">message</span> <span class="o">=&gt;</span> <span class="s">&#39;Hello, World!&#39;</span><span class="p">});</span>
+<span class="p">};</span>
+<span class="n">app</span><span class="o">-&gt;</span><span class="n">start</span><span class="p">;</span></code></pre></div>
+
+<p>It’s just <em>slightly</em> more complicated but still quite compact.
+<a href="https://metacpan.org/pod/Mojolicious">Mojolicious</a> provides a few headers shortcuts but you have somehow to
+remember them, although you can fallback with the generic <code>header</code> method
+for both known and custom ones.</p>
+
+<p>The real difference is actually that <a href="https://metacpan.org/pod/Mojolicious">Mojolicious</a> provides a complete
+(and consistent) set of tools as part of the toolkit, while
+<a href="https://metacpan.org/pod/distribution/WebService-Fake/script/wsf">WebService::Fake</a> tries to optimize for the case where you somehow
+<em>already know</em> the shape of the answer you want to get, and want to
+describe it as quickly as possible.</p>
+
+<h3 id="craft-your-answer">Craft your answer</h3>
+
+<p>As a last example for this section, suppose you also want to provide
+a different return code, e.g. <code>203 Non-Authoritative Information</code>. It’s
+easy to do this in our definition YAML:</p>
+
+<div class="highlight"><pre><code class="language-yaml" data-lang="yaml"><span class="l-Scalar-Plain">routes</span><span class="p-Indicator">:</span>
+  <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">path</span><span class="p-Indicator">:</span> <span class="s">&#39;/&#39;</span>
+    <span class="l-Scalar-Plain">body</span><span class="p-Indicator">:</span> <span class="s">&#39;{&quot;message&quot;:&quot;Hello,</span><span class="nv"> </span><span class="s">World!&quot;}&#39;</span>
+    <span class="l-Scalar-Plain">code</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">203</span>
+    <span class="l-Scalar-Plain">headers</span><span class="p-Indicator">:</span>
+      <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">Server</span><span class="p-Indicator">:</span> <span class="s">&#39;WebService::Fake/0.001&#39;</span>
+        <span class="l-Scalar-Plain">X-Whatever</span><span class="p-Indicator">:</span> <span class="s">&#39;whatever</span><span class="nv"> </span><span class="s">is</span><span class="nv"> </span><span class="s">whatever&#39;</span></code></pre></div>
+
+<p>Again, it’s up to the promise:</p>
+
+<div class="highlight"><pre><code class="language-text" data-lang="text">shell$ curl -v http://localhost:3000/
+#....
+&lt; HTTP/1.1 203 Non-Authoritative Information
+&lt; X-Whatever: whatever is whatever
+&lt; Content-Length: 27
+&lt; Server: WebService::Fake/0.001
+&lt; Date: Sat, 26 Nov 2016 14:58:20 GMT
+&lt; Content-Type: application/json
+&lt; 
+* Connection #0 to host localhost left intact
+{&quot;message&quot;:&quot;Hello, World!&quot;}* Closing connection #0</code></pre></div>
+
+<p>The same thing in <a href="https://metacpan.org/pod/Mojolicious::Lite">Mojolicious::Lite</a>:</p>
+
+<div class="highlight"><pre><code class="language-perl" data-lang="perl"><span class="k">use</span> <span class="nn">Mojolicious::</span><span class="n">Lite</span><span class="p">;</span>
+<span class="n">get</span> <span class="s">&#39;/&#39;</span> <span class="o">=&gt;</span> <span class="k">sub </span><span class="p">{</span>
+    <span class="k">my</span> <span class="nv">$c</span> <span class="o">=</span> <span class="nb">shift</span><span class="p">;</span>
+    <span class="k">my</span> <span class="nv">$headers</span> <span class="o">=</span> <span class="nv">$c</span><span class="o">-&gt;</span><span class="n">res</span><span class="o">-&gt;</span><span class="n">headers</span><span class="p">;</span>
+    <span class="nv">$headers</span><span class="o">-&gt;</span><span class="n">content_type</span><span class="p">(</span><span class="s">&#39;application/json&#39;</span><span class="p">);</span>
+    <span class="nv">$headers</span><span class="o">-&gt;</span><span class="n">server</span><span class="p">(</span><span class="s">&#39;WebService::Fake/0.001&#39;</span><span class="p">);</span>
+    <span class="nv">$headers</span><span class="o">-&gt;</span><span class="n">header</span><span class="p">(</span><span class="s">&#39;X-Whatever&#39;</span> <span class="o">=&gt;</span> <span class="s">&#39;whatever is whatever&#39;</span><span class="p">);</span>
+    <span class="nv">$c</span><span class="o">-&gt;</span><span class="n">res</span><span class="o">-&gt;</span><span class="n">body</span><span class="p">(</span><span class="s">&#39;{&quot;message&quot;: &quot;Hello, World!&quot;}&#39;</span><span class="p">);</span>
+    <span class="nv">$c</span><span class="o">-&gt;</span><span class="n">rendered</span><span class="p">(</span><span class="mi">204</span><span class="p">);</span>
+<span class="p">};</span>
+<span class="n">app</span><span class="o">-&gt;</span><span class="n">start</span><span class="p">;</span></code></pre></div>
+
+<p>Things get a bit more complicated. To set the custom HTTP status code, we
+have to take a different route for rendering the body (I hereby declare my
+ignorance with respect to how keep the <code>json =&gt; {...}</code> alive, but it’s not
+essential), because <code>render</code> is not useful here.</p>
+
+<p>Again, it’s a matter of understanding what shortcuts are most useful in
+the general case: in a real application/service, <a href="https://metacpan.org/pod/Mojolicious">Mojolicious</a> takes
+sane defaults, in this whole <em>faking someone else’s webservice</em> context
+<a href="https://metacpan.org/pod/distribution/WebService-Fake/script/wsf">WebService::Fake</a> goes for a different optimization route.</p>
+
+<h2 id="ive-only-2-minutes-left">I’ve only 2 minutes left…</h2>
+
+<p>So let’s go fast. If you already have the right answers to the requests
+you want to fake, then you should be all set. If you need to add a bit of
+logic though…</p>
+
+<h3 id="using-templates">Using Templates</h3>
+
+<p>Body and headers are actually defined in terms of <a href="https://metacpan.org/pod/Template::Perlish">Template::Perlish</a>
+templates, so this does what you think:</p>
+
+<div class="highlight"><pre><code class="language-yaml" data-lang="yaml"><span class="l-Scalar-Plain">routes</span><span class="p-Indicator">:</span>
+  <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">path</span><span class="p-Indicator">:</span> <span class="s">&#39;/&#39;</span>
+    <span class="l-Scalar-Plain">body</span><span class="p-Indicator">:</span> <span class="s">&#39;{&quot;now&quot;:&quot;[%=</span><span class="nv"> </span><span class="s">scalar</span><span class="nv"> </span><span class="s">localtime</span><span class="nv"> </span><span class="s">%]&quot;}&#39;</span></code></pre></div>
+
+<h3 id="accessing-variables">Accessing variables</h3>
+
+<p>You can <em>spice up</em> your fake answers including a few elements from the
+request too, e.g. parameters:</p>
+
+<div class="highlight"><pre><code class="language-yaml" data-lang="yaml"><span class="l-Scalar-Plain">routes</span><span class="p-Indicator">:</span>
+  <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">path</span><span class="p-Indicator">:</span> <span class="s">&#39;/&#39;</span>
+    <span class="l-Scalar-Plain">body</span><span class="p-Indicator">:</span> <span class="s">&#39;{&quot;name&quot;:&quot;[%</span><span class="nv"> </span><span class="s">params.name</span><span class="nv"> </span><span class="s">%]&quot;}&#39;</span></code></pre></div>
+
+<h3 id="placeholders">Placeholders</h3>
+
+<p>Did I mention that there’s <a href="https://metacpan.org/pod/Mojolicious">Mojolicious</a> providing features? You can
+define routes with placeholders, and later access them:</p>
+
+<div class="highlight"><pre><code class="language-yaml" data-lang="yaml"><span class="l-Scalar-Plain">routes</span><span class="p-Indicator">:</span>
+  <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">path</span><span class="p-Indicator">:</span> <span class="s">&#39;/hello/:name&#39;</span>
+    <span class="l-Scalar-Plain">body</span><span class="p-Indicator">:</span> <span class="s">&#39;{&quot;greeting&quot;:</span><span class="nv"> </span><span class="s">&quot;hello&quot;,</span><span class="nv"> </span><span class="s">&quot;name&quot;:&quot;[%</span><span class="nv"> </span><span class="s">stash.name</span><span class="nv"> </span><span class="s">%]&quot;}&#39;</span></code></pre></div>
+
+<h3 id="defaults">Defaults</h3>
+
+<p>Have a lot of routes and want to set common things once and for all?</p>
+
+<div class="highlight"><pre><code class="language-yaml" data-lang="yaml"><span class="l-Scalar-Plain">defaults</span><span class="p-Indicator">:</span>
+  <span class="l-Scalar-Plain">headers</span><span class="p-Indicator">:</span>
+    <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">Content-Type</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">text/plain</span>
+      <span class="l-Scalar-Plain">X-Whatever</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">whatever</span>
+      <span class="l-Scalar-Plain">Server</span><span class="p-Indicator">:</span> <span class="s">&#39;Something/Fake</span><span class="nv"> </span><span class="s">1.0&#39;</span>
+<span class="l-Scalar-Plain">routes</span><span class="p-Indicator">:</span>
+  <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">path</span><span class="p-Indicator">:</span> <span class="s">&#39;/hello/:name&#39;</span>
+    <span class="l-Scalar-Plain">body</span><span class="p-Indicator">:</span> <span class="s">&#39;Hello,</span><span class="nv"> </span><span class="s">[%</span><span class="nv"> </span><span class="s">stash.name</span><span class="nv"> </span><span class="s">%]!&#39;</span>
+  <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">path</span><span class="p-Indicator">:</span> <span class="s">&#39;/negate/:something&#39;</span>
+    <span class="l-Scalar-Plain">body</span><span class="p-Indicator">:</span> <span class="s">&#39;[%</span><span class="nv"> </span><span class="s">stash.something</span><span class="nv"> </span><span class="s">%]</span><span class="nv"> </span><span class="s">is</span><span class="nv"> </span><span class="s">no-no!&#39;</span></code></pre></div>
+
+<h3 id="body-wrapper">Body wrapper</h3>
+
+<p>Suppose you have to fake some API that has some boilerplate that never
+changes across different routes, and you want to change only a single
+part. This is where a body wrapper comes handy:</p>
+
+<div class="highlight"><pre><code class="language-yaml" data-lang="yaml"><span class="l-Scalar-Plain">defaults</span><span class="p-Indicator">:</span>
+  <span class="l-Scalar-Plain">body_wrapper</span><span class="p-Indicator">:</span> <span class="p-Indicator">|</span>
+    <span class="no">{</span>
+      <span class="no">&quot;status&quot;: &quot;OK&quot;,</span>
+      <span class="no">&quot;timestamp&quot;: &quot;[%= scalar localtime %]&quot;,</span>
+      <span class="no">&quot;data&quot;: [% content %]</span>
+    <span class="no">}</span>
+<span class="l-Scalar-Plain">routes</span><span class="p-Indicator">:</span>
+  <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">path</span><span class="p-Indicator">:</span> <span class="s">&#39;/hello/:name&#39;</span>
+    <span class="l-Scalar-Plain">body</span><span class="p-Indicator">:</span> <span class="s">&#39;{&quot;greeting&quot;:</span><span class="nv"> </span><span class="s">&quot;hello&quot;,</span><span class="nv"> </span><span class="s">&quot;name&quot;:&quot;[%</span><span class="nv"> </span><span class="s">stash.name</span><span class="nv"> </span><span class="s">%]&quot;}&#39;</span>
+  <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">path</span><span class="p-Indicator">:</span> <span class="s">&#39;/negate/:something&#39;</span>
+    <span class="l-Scalar-Plain">body</span><span class="p-Indicator">:</span> <span class="s">&#39;{&quot;action&quot;:</span><span class="nv"> </span><span class="s">&quot;negate&quot;,</span><span class="nv"> </span><span class="s">&quot;what&quot;:</span><span class="nv"> </span><span class="s">&quot;[%</span><span class="nv"> </span><span class="s">stash.something</span><span class="nv"> </span><span class="s">%]&quot;}&#39;</span>
+  <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">path</span><span class="p-Indicator">:</span> <span class="s">&#39;/text/hello/:name&#39;</span>
+    <span class="l-Scalar-Plain">headers</span><span class="p-Indicator">:</span>
+      <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">Content-Type</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">text/plain</span>
+    <span class="l-Scalar-Plain">body_wrapper</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">~</span>
+    <span class="l-Scalar-Plain">body</span><span class="p-Indicator">:</span> <span class="s">&#39;Hello,</span><span class="nv"> </span><span class="s">[%</span><span class="nv"> </span><span class="s">stash.name</span><span class="nv"> </span><span class="s">%]!&#39;</span></code></pre></div>
+
+<p>As you can see from the last route, you can selectively disable the
+wrapper on a per-route basis.</p>
+
+<h2 id="times-up">Time’s up!</h2>
+
+<p>You have surely noticed that there’s no specific support for security and
+the like, there’s no explicit support for sanitizing your inputs, escaping
+your output, etc. etc. i.e. all those goodies that help you build
+something robust to put into the wild.</p>
+
+<p>So what’s it good for?!? I told you in the beginning… fake web services,
+that’s it! It’s meant to be a sparring partner for your programs to
+excercise against something that can actually answer them something, not
+to put in front of your “customers” (so don’t try to do that!).</p>
+
+<p>We didn’t go too much in depth, and you might find a few additional tricks
+if you’re curious enough to take a look at the <a href="https://metacpan.org/pod/distribution/WebService-Fake/script/wsf">docs</a>.</p>
+
+<p>It would be great to hear from you! Comment below, or abuse the code and
+find bugs, or file suggestions on <a href="https://github.com/polettix/WebService-Fake">GitHub</a> but whatever you decide to
+make of it… happy faking!</p>
+
+
+      <hr />
+      <footer role="contentinfo">
+        <div class="social-share">
+  <h4>Share on</h4>
+  <ul>
+    <li>
+      <a href="https://twitter.com/intent/tweet?text=/webservice-fake-but-still-usable/" class="twitter" title="Share on Twitter"><i class="fa fa-twitter"></i><span> Twitter</span></a>
+    </li>
+    <li>
+      <a href="https://www.facebook.com/sharer/sharer.php?u=/webservice-fake-but-still-usable/" class="facebook" title="Share on Facebook"><i class="fa fa-facebook"></i><span> Facebook</span></a>
+    </li>
+    <li>
+      <a href="https://plus.google.com/share?url=/webservice-fake-but-still-usable/" class="google-plus" title="Share on Google Plus"><i class="fa fa-google-plus"></i><span> Google+</span></a>
+    </li>
+  </ul>
+</div><!-- /.social-share -->
+        <p class="byline"><strong>WebService::Fake - but still usable!</strong> was published on <time datetime="2016-11-26T00:00:00+01:00">November 26, 2016</time>.</p>
+      </footer>
+    </div><!-- /.article-wrap -->
+  
+    <section id="disqus_thread"></section><!-- /#disqus_thread -->
+  
+  </article>
+</div><!-- /#main -->
+
+<div class="footer-wrap">
+  <div class="related-articles">
+  <h4>You might also enjoy <small class="pull-right">(<a href="/posts/">View all posts</a>)</small></h4>
+    <ul>
+    
+      <li><a href="/dokku-your-tiny-paas/" title="Dokku - Your Tiny PaaS">Dokku - Your Tiny PaaS</a></li>
+    
+      <li><a href="/setup-a-taskwarrior-server/" title="Setup a Taskwarrior server">Setup a Taskwarrior server</a></li>
+    
+      <li><a href="/writing-about-stuff/" title="Writing About Stuff">Writing About Stuff</a></li>
+    
+    </ul>
+    <hr />
+  </div><!-- /.related-articles -->
+  <footer>
+    
+
+<span>&copy; 2016 Flavio Poletti. Powered by <a href="http://jekyllrb.com" rel="nofollow">Jekyll</a> using the <a href="http://mademistakes.com/minimal-mistakes/" rel="nofollow">Minimal Mistakes</a> theme.</span>
+
+  </footer>
+</div><!-- /.footer-wrap -->
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script src="/assets/js/scripts.min.js"></script>
+
+
+  
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'polettix'; // required: replace example with your forum shortname
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = '//' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+
+</body>
+</html>
