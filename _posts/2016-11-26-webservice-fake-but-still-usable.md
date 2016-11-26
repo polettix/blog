@@ -336,7 +336,9 @@ to put in front of your "customers" (so don't try to do that!).
 We didn't go too much in depth, and you might find a few additional tricks
 if you're curious enough to take a look at the [docs][WebService::Fake].
 
-Whatever you decide to make of it... happy faking!
+It would be great to hear from you! Comment below, or abuse the code and
+find bugs, or file suggestions on [GitHub][] but whatever you decide to
+make of it... happy faking!
 
 
 [Template::Perlish]: https://metacpan.org/pod/Template::Perlish
@@ -344,3 +346,4 @@ Whatever you decide to make of it... happy faking!
 [Mojolicious::Lite]: https://metacpan.org/pod/Mojolicious::Lite
 [Dancer]: https://metacpan.org/pod/Dancer
 [WebService::Fake]: https://metacpan.org/pod/distribution/WebService-Fake/script/wsf
+[GitHub]: https://github.com/polettix/WebService-Fake
