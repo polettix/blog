@@ -535,7 +535,7 @@ proxy that is set-up automatically.</li>
 <p>We will start with one single <code>web</code> component, so our <code>Procfile</code> is quite
 simple:</p>
 
-<div class="highlight"><pre><code class="language-text" data-lang="text">web: ./app.pl daemon --listen &quot;http://*:$PORT&quot;</code></pre></div>
+<div class="highlight"><pre><code class="language-text" data-lang="text">web: perl ./app.pl daemon --listen &quot;http://*:$PORT&quot;</code></pre></div>
 
 <p>As you can see, when <a href="http://dokku.viewdocs.io/dokku/">Dokku</a> starts a new web instance, it also passes the
 <code>PORT</code> environment variable so that your application can bind to the correct
@@ -669,8 +669,8 @@ $ ploc app.pl minion worker
 
 <p>Now, we make sure that the Minion worker is defined in <code>Procfile</code>:</p>
 
-<div class="highlight"><pre><code class="language-text" data-lang="text">web: ./app.pl daemon --listen &quot;http://*:$PORT&quot;
-minion: ./app.pl minion worker</code></pre></div>
+<div class="highlight"><pre><code class="language-text" data-lang="text">web:    perl ./app.pl daemon --listen &quot;http://*:$PORT&quot;
+minion: perl ./app.pl minion worker</code></pre></div>
 
 <h3 id="then-learn-about-scaling">Then, learn about scaling…!</h3>
 
