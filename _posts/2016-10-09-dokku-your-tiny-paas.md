@@ -349,7 +349,7 @@ We will start with one single `web` component, so our `Procfile` is quite
 simple:
 
 {% highlight text %}
-web: ./app.pl daemon --listen "http://*:$PORT"
+web: perl ./app.pl daemon --listen "http://*:$PORT"
 {% endhighlight %}
 
 As you can see, when [Dokku][] starts a new web instance, it also passes the
@@ -502,8 +502,8 @@ $ ploc app.pl minion worker
 Now, we make sure that the Minion worker is defined in `Procfile`:
 
 {% highlight text %}
-web: ./app.pl daemon --listen "http://*:$PORT"
-minion: ./app.pl minion worker
+web:    perl ./app.pl daemon --listen "http://*:$PORT"
+minion: perl ./app.pl minion worker
 {% endhighlight %}
 
 ### Then, learn about scaling...!
