@@ -325,26 +325,34 @@ extensions for <a href="http://dokku.viewdocs.io/dokku/">Dokku</a>, like support
 
 <p>From the <code>README</code>:</p>
 
-<ol>
+<ul>
   <li>
     <p>Spin up a new VPS somewhere, e.g. <a href="https://www.digitalocean.com/">Digital Ocean</a>. I usually choose
 the latest Debian release. You can select the smallest size if you just
-want to give it a try. (And please… set up and use SSH keys, it’s
-2016 or later!). Let’s say we save the IP address of this VPS in
-variable <code>DOKKU_IP</code></p>
+want to give it a try. (And please… set up and use SSH keys, it’s 2016
+or later!). Let’s say we save the IP address of this VPS in variable
+<code>DOKKU_IP</code></p>
   </li>
   <li>
     <p>Log in a shell in the VPS as user <code>root</code> and run:</p>
   </li>
-</ol>
+</ul>
 
 <div class="highlight"><pre><code class="language-bash" data-lang="bash">curl -LO https://github.com/polettix/dokku-boot/raw/master/dokku-boot.pl
 perl dokku-boot.pl</code></pre></div>
 
-<ol>
+<ul>
   <li>Wait for installation to complete, then go to <code>http://$DOKKU_IP/</code> and
 complete the setup of <a href="http://dokku.viewdocs.io/dokku/">Dokku</a>.</li>
-</ol>
+</ul>
+
+<p>Depending on the specific service you are using, your mileage may vary.
+For example, in <a href="https://www.vultr.com/">Vultr</a> I noticed that the initial Debian 8 image comes
+with a crippled <code>perl</code> installation that does not include system modules,
+so I had to do this before being able to run <code>perl dokku-boot.pl</code>:</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">apt-get update
+apt-get install perl</code></pre></div>
 
 <p>You end up with a reasonably <em>close</em> system (only ports <code>22</code>, <code>80</code> and <code>443</code>
 will be open for incoming traffic). The last point can be somehow commented
@@ -1279,6 +1287,7 @@ cheatsheet available in this <a href="https://gitlab.com/polettix/dokku-notes/wi
 it’s possible to also whip up a few <a href="https://gitlab.com/polettix/dokku-notes/snippets">snippets</a>.</li>
   <li><code>2016-10-16</code> added a <a href="#table-of-contents">Table of Contents</a> for better
 navigation of the document.</li>
+  <li><code>2016-12-23</code> added note on Debian 8 in <a href="https://www.vultr.com/">Vultr</a>.</li>
 </ul>
 
 
