@@ -4,7 +4,7 @@
 <generator uri="https://github.com/jekyll/jekyll">Jekyll</generator>
 <link rel="self" type="application/atom+xml" href="/feed.xml" />
 <link rel="alternate" type="text/html" href="" />
-<updated>2016-12-23T23:28:39+01:00</updated>
+<updated>2016-12-23T23:38:20+01:00</updated>
 <id>/</id>
 <author>
   <name>Flavio Poletti</name>
@@ -532,21 +532,15 @@ or later!). Let’s say we save the IP address of this VPS in variable
   &lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;curl -LO https://github.com/polettix/dokku-boot/raw/master/dokku-boot.pl
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;apt-get update
+apt-get install -y curl perl
+curl -LO https://github.com/polettix/dokku-boot/raw/master/dokku-boot.pl
 perl dokku-boot.pl&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;ul&gt;
   &lt;li&gt;Wait for installation to complete, then go to &lt;code&gt;http://$DOKKU_IP/&lt;/code&gt; and
 complete the setup of &lt;a href=&quot;http://dokku.viewdocs.io/dokku/&quot;&gt;Dokku&lt;/a&gt;.&lt;/li&gt;
 &lt;/ul&gt;
-
-&lt;p&gt;Depending on the specific service you are using, your mileage may vary.
-For example, in &lt;a href=&quot;https://www.vultr.com/&quot;&gt;Vultr&lt;/a&gt; I noticed that the initial Debian 8 image comes
-with a crippled &lt;code&gt;perl&lt;/code&gt; installation that does not include system modules,
-so I had to do this before being able to run &lt;code&gt;perl dokku-boot.pl&lt;/code&gt;:&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;apt-get update
-apt-get install perl&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;You end up with a reasonably &lt;em&gt;close&lt;/em&gt; system (only ports &lt;code&gt;22&lt;/code&gt;, &lt;code&gt;80&lt;/code&gt; and &lt;code&gt;443&lt;/code&gt;
 will be open for incoming traffic). The last point can be somehow commented

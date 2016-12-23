@@ -338,21 +338,15 @@ or later!). Let’s say we save the IP address of this VPS in variable
   </li>
 </ul>
 
-<div class="highlight"><pre><code class="language-bash" data-lang="bash">curl -LO https://github.com/polettix/dokku-boot/raw/master/dokku-boot.pl
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">apt-get update
+apt-get install -y curl perl
+curl -LO https://github.com/polettix/dokku-boot/raw/master/dokku-boot.pl
 perl dokku-boot.pl</code></pre></div>
 
 <ul>
   <li>Wait for installation to complete, then go to <code>http://$DOKKU_IP/</code> and
 complete the setup of <a href="http://dokku.viewdocs.io/dokku/">Dokku</a>.</li>
 </ul>
-
-<p>Depending on the specific service you are using, your mileage may vary.
-For example, in <a href="https://www.vultr.com/">Vultr</a> I noticed that the initial Debian 8 image comes
-with a crippled <code>perl</code> installation that does not include system modules,
-so I had to do this before being able to run <code>perl dokku-boot.pl</code>:</p>
-
-<div class="highlight"><pre><code class="language-bash" data-lang="bash">apt-get update
-apt-get install perl</code></pre></div>
 
 <p>You end up with a reasonably <em>close</em> system (only ports <code>22</code>, <code>80</code> and <code>443</code>
 will be open for incoming traffic). The last point can be somehow commented
