@@ -135,21 +135,31 @@ plugin] (for free and hassle-free SSL certificates), [Redis] and
 
 From the `README`:
 
-1. Spin up a new VPS somewhere, e.g. [Digital Ocean][]. I usually choose
-   the latest Debian release. You can select the smallest size if you just
-   want to give it a try. (And please... set up and use SSH keys, it's
-   2016 or later!). Let's say we save the IP address of this VPS in
-   variable `DOKKU_IP`
+- Spin up a new VPS somewhere, e.g. [Digital Ocean][]. I usually choose
+  the latest Debian release. You can select the smallest size if you just
+  want to give it a try. (And please... set up and use SSH keys, it's 2016
+  or later!). Let's say we save the IP address of this VPS in variable
+  `DOKKU_IP`
 
-2. Log in a shell in the VPS as user `root` and run:
+- Log in a shell in the VPS as user `root` and run:
 
 {% highlight bash %}
 curl -LO https://github.com/polettix/dokku-boot/raw/master/dokku-boot.pl
 perl dokku-boot.pl
 {% endhighlight %}
 
-3. Wait for installation to complete, then go to `http://$DOKKU_IP/` and
-   complete the setup of [Dokku][].
+- Wait for installation to complete, then go to `http://$DOKKU_IP/` and
+  complete the setup of [Dokku][].
+
+Depending on the specific service you are using, your mileage may vary.
+For example, in [Vultr][] I noticed that the initial Debian 8 image comes
+with a crippled `perl` installation that does not include system modules,
+so I had to do this before being able to run `perl dokku-boot.pl`:
+
+{% highlight bash %}
+apt-get update
+apt-get install perl
+{% endhighlight %}
 
 You end up with a reasonably *close* system (only ports `22`, `80` and `443`
 will be open for incoming traffic). The last point can be somehow commented
@@ -1153,6 +1163,7 @@ Have fun!
   it's possible to also whip up a few [snippets][].
 - `2016-10-16` added a [Table of Contents](#table-of-contents) for better
   navigation of the document.
+- `2016-12-23` added note on Debian 8 in [Vultr][].
 
 
 [PaaS]: https://en.wikipedia.org/wiki/Platform_as_a_service
@@ -1188,3 +1199,4 @@ Have fun!
 [GitLab]: https://gitlab.com/
 [pg-commit]: https://github.com/kraih/mojo-pg/commit/4414d784b7e22a4b4eca7657e91a6eec25ce923c
 [Mojo::Pg]: https://metacpan.org/pod/Mojo::Pg
+[Vultr]: https://www.vultr.com/
