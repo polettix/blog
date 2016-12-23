@@ -144,22 +144,14 @@ From the `README`:
 - Log in a shell in the VPS as user `root` and run:
 
 {% highlight bash %}
+apt-get update
+apt-get install -y curl perl
 curl -LO https://github.com/polettix/dokku-boot/raw/master/dokku-boot.pl
 perl dokku-boot.pl
 {% endhighlight %}
 
 - Wait for installation to complete, then go to `http://$DOKKU_IP/` and
   complete the setup of [Dokku][].
-
-Depending on the specific service you are using, your mileage may vary.
-For example, in [Vultr][] I noticed that the initial Debian 8 image comes
-with a crippled `perl` installation that does not include system modules,
-so I had to do this before being able to run `perl dokku-boot.pl`:
-
-{% highlight bash %}
-apt-get update
-apt-get install perl
-{% endhighlight %}
 
 You end up with a reasonably *close* system (only ports `22`, `80` and `443`
 will be open for incoming traffic). The last point can be somehow commented
