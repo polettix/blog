@@ -134,3 +134,5 @@ adventure into different encodings... let us know!
 [SharePoint]: https://en.wikipedia.org/wiki/SharePoint
 [Markdown]: https://en.wikipedia.org/wiki/Markdown
 [UTF-8]: https://en.wikipedia.org/wiki/UTF-8
+[Ruby]: https://www.ruby-lang.org/
+[GitHub Pages]: https://pages.github.com/
