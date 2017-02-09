@@ -4,13 +4,187 @@
 <generator uri="https://github.com/jekyll/jekyll">Jekyll</generator>
 <link rel="self" type="application/atom+xml" href="/feed.xml" />
 <link rel="alternate" type="text/html" href="" />
-<updated>2016-12-23T23:38:20+01:00</updated>
+<updated>2017-02-09T19:34:27+01:00</updated>
 <id>/</id>
 <author>
   <name>Flavio Poletti</name>
   <uri>/</uri>
   <email>flavio@polettix.it</email>
 </author>
+
+
+  
+
+<entry>
+  <title type="html"><![CDATA[Markdown to HTML in Windows Explorer]]></title>
+  <link rel="alternate" type="text/html" href="/markdown-to-html-in-windows-explorer/" />
+  <id>/markdown-to-html-in-windows-explorer</id>
+  <published>2017-02-09T00:00:00+01:00</published>
+  <updated>2017-02-09T00:00:00+01:00</updated>
+  <author>
+    <name>Flavio Poletti</name>
+    <uri></uri>
+    <email>flavio@polettix.it</email>
+  </author>
+  <content type="html">
+    &lt;p&gt;At work we have &lt;a href=&quot;https://en.wikipedia.org/wiki/SharePoint&quot;&gt;SharePoint&lt;/a&gt; but I don’t really like its editor in the
+Wiki (at least how it is setup in our local installation). Well, actually
+I like using &lt;a href=&quot;https://en.wikipedia.org/wiki/Markdown&quot;&gt;Markdown&lt;/a&gt; for editing most of the stuff, so here’s what
+I managed to setup.&lt;/p&gt;
+
+&lt;h2 id=&quot;table-of-contents&quot;&gt;Table of Contents&lt;/h2&gt;
+
+&lt;ul id=&quot;markdown-toc&quot;&gt;
+  &lt;li&gt;&lt;a href=&quot;#table-of-contents&quot; id=&quot;markdown-toc-table-of-contents&quot;&gt;Table of Contents&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#use-case&quot; id=&quot;markdown-toc-use-case&quot;&gt;Use Case&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#install-a-markdown-converter&quot; id=&quot;markdown-toc-install-a-markdown-converter&quot;&gt;Install a Markdown Converter&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#run-regedit&quot; id=&quot;markdown-toc-run-regedit&quot;&gt;Run &lt;code&gt;regedit&lt;/code&gt;&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#ensure-md-extension-handling&quot; id=&quot;markdown-toc-ensure-md-extension-handling&quot;&gt;Ensure &lt;code&gt;md&lt;/code&gt; Extension Handling&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#set-command-for-conversion&quot; id=&quot;markdown-toc-set-command-for-conversion&quot;&gt;Set Command for Conversion&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#use-it&quot; id=&quot;markdown-toc-use-it&quot;&gt;Use it!&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;use-case&quot;&gt;Use Case&lt;/h2&gt;
+
+&lt;p&gt;I wanted all of this to be as hassle-free as possible. Our &lt;a href=&quot;https://en.wikipedia.org/wiki/SharePoint&quot;&gt;SharePoint&lt;/a&gt;
+Wiki editor allows me to easily set the whole HTML for the article. So the
+high level workflow is the following:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Write Markdown&lt;/li&gt;
+  &lt;li&gt;Turn Markdown to HTML&lt;/li&gt;
+  &lt;li&gt;Put HTML in clipboard&lt;/li&gt;
+  &lt;li&gt;Paste HTML&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;I eventually landed on this high-level workflow for the two middle steps:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Right-click on the &lt;a href=&quot;https://en.wikipedia.org/wiki/Markdown&quot;&gt;Markdown&lt;/a&gt; file in Explorer, select an option
+called &lt;code&gt;HTML to clipboard...&lt;/code&gt;, let it work and enjoy the HTML in the
+clipboard, ready to be pasted.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;It should probably be easy to also tie the same &lt;em&gt;transform-then-copy&lt;/em&gt;
+routine to some editor hook.&lt;/p&gt;
+
+&lt;h2 id=&quot;install-a-markdown-converter&quot;&gt;Install a Markdown Converter&lt;/h2&gt;
+
+&lt;p&gt;First thing I needed a Markdown Converter. There’s a few good out there,
+two that I tried are:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;a href=&quot;http://pandoc.org/&quot;&gt;Pandoc&lt;/a&gt;: has a nice self-contained installer for Windows, so it’s
+probably the most hassle-free solution;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://kramdown.gettalong.org/&quot;&gt;Kramdown&lt;/a&gt;: requires a [Ruby][] installation but provides you what
+[GitHub Pages][] use by default.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;It’s really your call to this regard. We’ll assume in the following that
+you settled for &lt;code&gt;pandoc&lt;/code&gt;, but it’s just a word change.&lt;/p&gt;
+
+&lt;h2 id=&quot;run-regedit&quot;&gt;Run &lt;code&gt;regedit&lt;/code&gt;&lt;/h2&gt;
+
+&lt;p&gt;There will be some &lt;code&gt;regedit&lt;/code&gt; magic to do, so you have to be comfortable
+with it. To run it, open the &lt;em&gt;Windows&lt;/em&gt; menu and type &lt;code&gt;regedit&lt;/code&gt; in the
+&lt;code&gt;Search programs and files&lt;/code&gt; box (focused by default, so you might just
+start typing), then select program &lt;code&gt;regedit.exe&lt;/code&gt; in the list of results
+(it should be the only one, but your mileage may vary).&lt;/p&gt;
+
+&lt;h2 id=&quot;ensure-md-extension-handling&quot;&gt;Ensure &lt;code&gt;md&lt;/code&gt; Extension Handling&lt;/h2&gt;
+
+&lt;p&gt;In my case, I like to use extension &lt;code&gt;md&lt;/code&gt; for &lt;a href=&quot;https://en.wikipedia.org/wiki/Markdown&quot;&gt;Markdown&lt;/a&gt; files. I already
+had &lt;a href=&quot;http://markdownpad.com/&quot;&gt;MarkdownPad&lt;/a&gt; installed, which means that this file extension was
+already &lt;em&gt;known&lt;/em&gt; to the Windows system. Anyway, whatever the case, in
+&lt;code&gt;regedit&lt;/code&gt;:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;Open &lt;code&gt;HKEY_CLASSES_ROOT&lt;/code&gt; and scroll down to see if you already have
+&lt;code&gt;.md&lt;/code&gt; defined (or whatever other extension you want to associate to
+&lt;a href=&quot;https://en.wikipedia.org/wiki/Markdown&quot;&gt;Markdown&lt;/a&gt; files, of course).&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;
+        &lt;p&gt;If you have it, skip to step 2 below.&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;Otherwise, right-clik on &lt;code&gt;HKEY_CLASSES_ROOT&lt;/code&gt; at the top and
+ select &lt;code&gt;New&lt;/code&gt;, then &lt;code&gt;Key&lt;/code&gt; and name the new key &lt;code&gt;.md&lt;/code&gt; (don’t forget the
+ leading dot!).&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;In the right pane, double-click on &lt;code&gt;(Default)&lt;/code&gt; and set a value,
+ like &lt;code&gt;mymarkdown&lt;/code&gt; or so. This is the &lt;em&gt;type&lt;/em&gt; associated to the
+ extension.&lt;/p&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Take note of the value associated to &lt;code&gt;(Default)&lt;/code&gt;. It will either be
+what you found there already, or whatever you set in the previous step.
+We will assume it’s &lt;code&gt;mymarkdown&lt;/code&gt; (but, for example, I have
+&lt;code&gt;markdownpad2&lt;/code&gt; because &lt;code&gt;.md&lt;/code&gt; is associated with &lt;a href=&quot;http://markdownpad.com/&quot;&gt;MarkdownPad&lt;/a&gt;).&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;set-command-for-conversion&quot;&gt;Set Command for Conversion&lt;/h2&gt;
+
+&lt;p&gt;After the previous section, you now have the &lt;em&gt;type&lt;/em&gt;, which we will assume
+to be &lt;code&gt;mymarkdown&lt;/code&gt;. Still in &lt;code&gt;regedit&lt;/code&gt;:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;Inside &lt;code&gt;HKEY_CLASSES_ROOT&lt;/code&gt; again, locate the handler for &lt;code&gt;mymarkdown&lt;/code&gt;
+(or whatever you set/found in the previous step).&lt;/p&gt;
+
+    &lt;ul&gt;
+      &lt;li&gt;
+        &lt;p&gt;If you already have it, skip to step 2 below.&lt;/p&gt;
+      &lt;/li&gt;
+      &lt;li&gt;
+        &lt;p&gt;Otherwise, right-clik on &lt;code&gt;HKEY_CLASSES_ROOT&lt;/code&gt; at the top and select
+&lt;code&gt;New&lt;/code&gt;, then &lt;code&gt;Key&lt;/code&gt; and name the new key &lt;code&gt;mymarkdown&lt;/code&gt; (or
+whatever…).&lt;/p&gt;
+      &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;If there is no &lt;code&gt;shell&lt;/code&gt; sub-key, create with right-click, &lt;code&gt;New&lt;/code&gt;, &lt;code&gt;Key&lt;/code&gt;
+like before. There is no need to associate a value here.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Create a new key inside &lt;code&gt;shell&lt;/code&gt; from step 4, and name it &lt;code&gt;toHTML&lt;/code&gt;.
+Select it and, in the right pane, double-click on &lt;code&gt;(Default)&lt;/code&gt; and set
+it to &lt;code&gt;HTML to clipboard...&lt;/code&gt; - this is the message you will see in
+Explorer.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;Create a new key inside &lt;code&gt;toHTML&lt;/code&gt;, named &lt;code&gt;command&lt;/code&gt;. Select it and, in
+the right pane, double click on &lt;code&gt;(Default)&lt;/code&gt; and set the value to:&lt;/p&gt;
+
+    &lt;pre&gt;&lt;code&gt; cmd /C &quot;chcp 65001 &amp;amp; pandoc &#39;%1&#39; | clip&quot;
+&lt;/code&gt;&lt;/pre&gt;
+
+    &lt;p&gt;Set it to &lt;code&gt;kramdown&lt;/code&gt; or any other converter of your choice if you
+ want, of course.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;use-it&quot;&gt;Use it!&lt;/h2&gt;
+
+&lt;p&gt;This is it! Head over to Explorer, right-click on any file with &lt;code&gt;.md&lt;/code&gt;
+extension and you’re ready to paste shiny HTML!&lt;/p&gt;
+
+&lt;p&gt;The input files are assumed to be &lt;a href=&quot;https://en.wikipedia.org/wiki/UTF-8&quot;&gt;UTF-8&lt;/a&gt; encoded, as well as what you
+will eventually end up with in the clipboard (it’s the reason why we put
+the &lt;code&gt;chcp 65001&lt;/code&gt; command before the real conversion). If you want to
+adventure into different encodings… let us know!&lt;/p&gt;
+
+
+    &lt;p&gt;&lt;a href=&quot;/markdown-to-html-in-windows-explorer/&quot;&gt;Markdown to HTML in Windows Explorer&lt;/a&gt; was originally published by Flavio Poletti at &lt;a href=&quot;&quot;&gt;PolettiX!&lt;/a&gt; on February 09, 2017.&lt;/p&gt;
+  </content>
+</entry>
 
 
   
@@ -6789,57 +6963,6 @@ the &lt;code&gt;sub _open&lt;/code&gt; unneeded when substituted with this:&lt;/
 &lt;p&gt;I wonder how much Perl IO layers are used out there.&lt;/p&gt;
 
     &lt;p&gt;&lt;a href=&quot;/io-zlib/&quot;&gt;IO::Zlib and saved space&lt;/a&gt; was originally published by Flavio Poletti at &lt;a href=&quot;&quot;&gt;PolettiX!&lt;/a&gt; on December 05, 2009.&lt;/p&gt;
-  </content>
-</entry>
-
-
-  
-
-<entry>
-  <title type="html"><![CDATA[Equality is reflexive... isn't it?]]></title>
-  <link rel="alternate" type="text/html" href="/perl6-junction/" />
-  <id>/perl6-junction</id>
-  <published>2009-11-29T00:00:00+01:00</published>
-  <updated>2009-11-29T00:00:00+01:00</updated>
-  <author>
-    <name>Flavio Poletti</name>
-    <uri></uri>
-    <email>flavio@polettix.it</email>
-  </author>
-  <content type="html">
-    &lt;p&gt;I read about &lt;a href=&quot;http://search.cpan.org/dist/Perl6-Junction&quot;&gt;Perl6::Junction&lt;/a&gt;
-in an &lt;a href=&quot;http://blogs.perl.org/users/marc_sebastian_jakobs/2009/11/my-favorite-module-of-the-month-perl6junction.html&quot;&gt;article&lt;/a&gt;
-on &lt;a href=&quot;http://blogs.perl.org/&quot;&gt;blogs.perl.org&lt;/a&gt; and I was tickled. I quickly
-went on CPAN to see what the module was about beyond the post above, and
-saw two enthusiastic reviews by two bigs (at least this is what I
-consider both of them).&lt;/p&gt;
-
-&lt;p&gt;I have to say that I was a bit disappointed in seeing that they both
-talked about very clear documentation, while it seemed a bit too minimal
-for my taste. I do agree that the test suite is complete, anyway, and
-it’s a useful source for examples too! The tests are indeed quite
-extensive, and there are also tests for something that made me curious,
-i.e.: “will it be possible to use junctions on both sides?”. The answer
-turns out to be positive, and there are tests for those cases (see the
-&lt;code&gt;t/join.t&lt;/code&gt; test file for details).&lt;/p&gt;
-
-&lt;p&gt;One funny thing in the module is that the following both apply:&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-perl&quot; data-lang=&quot;perl&quot;&gt;&lt;span class=&quot;k&quot;&gt;my&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$is_true&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;all&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;any&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;));&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;my&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$is_NOT_true&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;any&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;all&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;));&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;It actually makes sense: the first says “do all elements in the &lt;code&gt;{3, 4}&lt;/code&gt;
-set have something equal to them in the &lt;code&gt;{3, 4}&lt;/code&gt; set?”. Course they do,
-because &lt;code&gt;3&lt;/code&gt; in the first set has &lt;code&gt;3&lt;/code&gt; in the second, and &lt;code&gt;4&lt;/code&gt; in the first set
-has &lt;code&gt;4&lt;/code&gt; in the second. The second says “is any element in the &lt;code&gt;{3, 4}&lt;/code&gt; equal
-to all the elements in &lt;code&gt;{3, 4}&lt;/code&gt;?”. Course there isn’t, because &lt;code&gt;3&lt;/code&gt; from the
-first set is equal to &lt;code&gt;3&lt;/code&gt; in the second set, but fails to be equal to &lt;code&gt;4&lt;/code&gt;.&lt;/p&gt;
-
-&lt;p&gt;Hence, the (numeric) equality operator does not maintain the reflexive
-property here, and it seems just… &lt;em&gt;weird&lt;/em&gt;, even though it makes
-perfectly sense.&lt;/p&gt;
-
-    &lt;p&gt;&lt;a href=&quot;/perl6-junction/&quot;&gt;Equality is reflexive... isn&#39;t it?&lt;/a&gt; was originally published by Flavio Poletti at &lt;a href=&quot;&quot;&gt;PolettiX!&lt;/a&gt; on November 29, 2009.&lt;/p&gt;
   </content>
 </entry>
 
