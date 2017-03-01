@@ -4,13 +4,185 @@
 <generator uri="https://github.com/jekyll/jekyll">Jekyll</generator>
 <link rel="self" type="application/atom+xml" href="/feed.xml" />
 <link rel="alternate" type="text/html" href="" />
-<updated>2017-02-09T19:39:21+01:00</updated>
+<updated>2017-03-02T00:14:36+01:00</updated>
 <id>/</id>
 <author>
   <name>Flavio Poletti</name>
   <uri>/</uri>
   <email>flavio@polettix.it</email>
 </author>
+
+
+  
+
+<entry>
+  <title type="html"><![CDATA[Telegram Keyboard Button Encoding]]></title>
+  <link rel="alternate" type="text/html" href="/telegram-keyboard-button-encoding/" />
+  <id>/telegram-keyboard-button-encoding</id>
+  <published>2017-03-01T00:00:00+01:00</published>
+  <updated>2017-03-01T00:00:00+01:00</updated>
+  <author>
+    <name>Flavio Poletti</name>
+    <uri></uri>
+    <email>flavio@polettix.it</email>
+  </author>
+  <content type="html">
+    &lt;p&gt;Telegram &lt;a href=&quot;https://core.telegram.org/bots#keyboards&quot;&gt;custom keyboards&lt;/a&gt; are a handy feature to provide a cleaner
+interface to your users. But unlike HTML, these buttons are doomed at
+sending their &lt;em&gt;text&lt;/em&gt; instead of a configurable &lt;em&gt;value&lt;/em&gt;. Or are they?&lt;/p&gt;
+
+&lt;h2 id=&quot;whats-the-problem-exactly&quot;&gt;What’s The Problem, Exactly?&lt;/h2&gt;
+
+&lt;p&gt;The buttons in a keyboard for Telegram have only one mandatory field
+&lt;em&gt;text&lt;/em&gt; that has the following description (as of March 1st, 2017 at
+least):&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Text of the button. If none of the optional fields are used, it will be
+sent to the bot as a message when the button is pressed.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;The &lt;em&gt;optional fields&lt;/em&gt;, if you’re curious, are available only to send
+either a location or a phone number, not some generic, programmer-defined
+value.&lt;/p&gt;
+
+&lt;p&gt;So, the bottom line is that, in the general case, a button is stuck to
+sending whatever text it also displays. As anticipated in the introductory
+teaser, this is unlike HTML buttons, where you can set independently the
+text that is shown on the button and the value that is associated to the
+button itself (which, in most cases, is also sent to the server).&lt;/p&gt;
+
+&lt;h2 id=&quot;why-is-that-a-problem-exactly&quot;&gt;Why Is That A Problem, Exactly?&lt;/h2&gt;
+
+&lt;p&gt;Suppose you want to implement a keyboard in which you want to track two
+different variables, Happyness and Relax. You want to provide a button for
+showing their current value, and some buttons to increse those values. It
+might be something like this:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;+-----------+-----------+-----------+-----------+
+| Happyness |    +1     |    +2     |    +3     |
++-----------+-----------+-----------+-----------+
+|   Relax   |    +1     |    +2     |    +3     |
++-----------+-----------+-----------+-----------+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Do you see the problem with this keyboard? There are two versions of
+button &lt;code&gt;+1&lt;/code&gt;, &lt;code&gt;+2&lt;/code&gt; and &lt;code&gt;+3&lt;/code&gt;, which means that you will not be able to
+figure out which exact button the user pressed, because in both &lt;code&gt;+1&lt;/code&gt; cases
+you would just be getting… &lt;code&gt;+1&lt;/code&gt;.&lt;/p&gt;
+
+&lt;h2 id=&quot;unicode-zero-width-rescuers&quot;&gt;Unicode Zero-Width Rescuers&lt;/h2&gt;
+
+&lt;p&gt;It turns out that Telegram keyboard buttons actually support Unicode
+strings as texts, and most clients seem to display them correctly. So…
+can we ab&lt;strong&gt;*COUGH*&lt;/strong&gt;use this? Sure!&lt;/p&gt;
+
+&lt;p&gt;Unicode has a few characters that you can &lt;em&gt;put there&lt;/em&gt; but that will not
+appear in the text. Some of them are:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;code&gt;U+200B&lt;/code&gt;, a.k.a. &lt;code&gt;ZERO WIDTH SPACE&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;code&gt;U+200C&lt;/code&gt;, a.k.a. &lt;code&gt;ZERO WIDTH NON-JOINER&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;code&gt;U+200D&lt;/code&gt;, a.k.a. &lt;code&gt;ZERO WIDTH JOINER&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;The &lt;code&gt;ZERO WIDTH&lt;/code&gt; property is what interests us here: printing a zero-width
+character basically means printing… nothing! So, the following string:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-perl&quot; data-lang=&quot;perl&quot;&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;Hello&amp;quot;&lt;/span&gt;
+&lt;span class=&quot;s&quot;&gt;&amp;quot;Hello\x{200B}&amp;quot;&lt;/span&gt;
+&lt;span class=&quot;s&quot;&gt;&amp;quot;\x{200D}He\x{200C}llo\x{200B}\x{200C}&amp;quot;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;will render exactly the same in the client, but will result in very
+different strings sent from the client to the bot when pressed. Exactly
+the mechanism we were after!&lt;/p&gt;
+
+&lt;h2 id=&quot;possible-formal-uses&quot;&gt;Possible &lt;em&gt;Formal&lt;/em&gt; Uses&lt;/h2&gt;
+
+&lt;p&gt;The suggestion, at this point, is to figure out an encoding scheme for
+attaching a custom (and unique) value to each button, that will allow us
+to understand what button was pressed even though multiple buttons expose
+the same visible text.&lt;/p&gt;
+
+&lt;p&gt;If you have only a few of them, you can for example keep a &lt;em&gt;counter&lt;/em&gt; that
+increases at each new button, and append that number of zero-width
+characters, like this:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-perl&quot; data-lang=&quot;perl&quot;&gt;&lt;span class=&quot;n&quot;&gt;state&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$count&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# ...&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$button&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;text&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;.=&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;\x{200B}&amp;quot;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;++&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$count&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Upon reception of anything from the client, we can just extract the number
+of these characters and we have our code back:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-perl&quot; data-lang=&quot;perl&quot;&gt;&lt;span class=&quot;k&quot;&gt;my&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$empties&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$text&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=~&lt;/span&gt; &lt;span class=&quot;sr&quot;&gt;m{(\x{200B}&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;z&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;mxs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;my&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$button_id&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;length&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$empties&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Another alternative is to turn the numeric code into a binary sequence and
+encode it using two caracters, one for the &lt;code&gt;1&lt;/code&gt; and another one for the
+&lt;code&gt;0&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-perl&quot; data-lang=&quot;perl&quot;&gt;&lt;span class=&quot;n&quot;&gt;state&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$count&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# ...&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;my&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$binary&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;unpack&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;B32&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;pack&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;N&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;++&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$count&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$button&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;text&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;.=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;join&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;nb&quot;&gt;map&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$_&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;?&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;\x{200C}&amp;quot;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;\x{200D}&amp;quot;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+    &lt;span class=&quot;nb&quot;&gt;split&lt;/span&gt; &lt;span class=&quot;sr&quot;&gt;//&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$binary&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;You get the idea. Once you successfully attach an integer value to the
+button, you can keep a translation table on the bot side to associate some
+“intended value” for the button, e.g.:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-perl&quot; data-lang=&quot;perl&quot;&gt;&lt;span class=&quot;k&quot;&gt;my&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;%value_for&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;
+    &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;/command-one&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;/command-one with-arg&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&amp;gt;&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;/stop&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;# ...&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;perl-anyone&quot;&gt;Perl Anyone?&lt;/h2&gt;
+
+&lt;p&gt;The tecnique above has been used to create the new class
+&lt;a href=&quot;https://metacpan.org/pod/Bot::ChatBots::Telegram::Keyboard&quot;&gt;Bot::ChatBots::Telegram::Keyboard&lt;/a&gt;, if you are interested you are more
+than welcome to try and use it!&lt;/p&gt;
+
+&lt;p&gt;The binary encoding explained in the previous section has been slightly
+changed and extended to cope with:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;introducing a &lt;em&gt;keyboard identifier&lt;/em&gt;, so that you can manage multiple
+keyboards and be able to figure out which keyboard was used in
+association to a received command;&lt;/li&gt;
+  &lt;li&gt;optimizing the space removing leading &lt;code&gt;0&lt;/code&gt; characters.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;The introduction of the keyboard identifier and the space optimization
+rely on the usage of all three characters introduced before:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;code&gt;U+200B&lt;/code&gt; represents the &lt;code&gt;1&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;code&gt;U+200C&lt;/code&gt; represents the &lt;code&gt;0&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;code&gt;U+200D&lt;/code&gt; is used for marking the boundaries of the codes&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;wrap-up&quot;&gt;Wrap-up&lt;/h2&gt;
+
+&lt;p&gt;Short article this time, but hopefully useful!&lt;/p&gt;
+
+&lt;p&gt;We saw that Telegram custom keyboards can be annoying in their overlapping
+of the text printed on the button and the value that is sent back to the
+bot when the button is pressed. We also saw that it is possible to work
+around this limitation thanks to a few Unicode characters that have &lt;em&gt;zero
+width&lt;/em&gt;, so they don’t appear when printed but are anyway still there and
+are also sent by the client when the button is pressed. By means of some
+not-so-clever encoding we can then associated a unique identifier to each
+button in a keyboard.&lt;/p&gt;
+
+&lt;p&gt;Leave comments below if you have questions, until next time have fun!&lt;/p&gt;
+
+
+    &lt;p&gt;&lt;a href=&quot;/telegram-keyboard-button-encoding/&quot;&gt;Telegram Keyboard Button Encoding&lt;/a&gt; was originally published by Flavio Poletti at &lt;a href=&quot;&quot;&gt;PolettiX!&lt;/a&gt; on March 01, 2017.&lt;/p&gt;
+  </content>
+</entry>
 
 
   
@@ -6885,84 +7057,6 @@ Perl development more on programmers’ ease at the possible expense of a
 more complicated compiler, but it’s just me.&lt;/p&gt;
 
     &lt;p&gt;&lt;a href=&quot;/perl-5-parsing/&quot;&gt;Why parsing should be simple?&lt;/a&gt; was originally published by Flavio Poletti at &lt;a href=&quot;&quot;&gt;PolettiX!&lt;/a&gt; on December 15, 2009.&lt;/p&gt;
-  </content>
-</entry>
-
-
-  
-
-<entry>
-  <title type="html"><![CDATA[IO::Zlib and saved space]]></title>
-  <link rel="alternate" type="text/html" href="/io-zlib/" />
-  <id>/io-zlib</id>
-  <published>2009-12-05T00:00:00+01:00</published>
-  <updated>2009-12-05T00:00:00+01:00</updated>
-  <author>
-    <name>Flavio Poletti</name>
-    <uri></uri>
-    <email>flavio@polettix.it</email>
-  </author>
-  <content type="html">
-    &lt;p&gt;A few days ago a colleague asked me about using Perl for analysing some
-ASA firewall logs in order to spot how many public addresses are needed
-for NATting users towards the Internet. The basic regular expression to
-capture the bits of information that he needs is quite straightforward,
-but what was interesting is that the files he has to work on are
-gzipped, and he had already extracted a sample one to work on. I
-remembered that there is &lt;a href=&quot;https://metacpan.org/pod/IO::Zlib&quot;&gt;IO::Zlib&lt;/a&gt;
-and this is what I did:&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-perl&quot; data-lang=&quot;perl&quot;&gt;&lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;my&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$file&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;@ARGV&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-   &lt;span class=&quot;nb&quot;&gt;eval&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-      &lt;span class=&quot;k&quot;&gt;my&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$fh&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;_open&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$file&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-      &lt;span class=&quot;k&quot;&gt;while&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;sr&quot;&gt;&amp;lt;$fh&amp;gt;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-         &lt;span class=&quot;k&quot;&gt;my&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$inside&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$outside&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;sr&quot;&gt;/Built\ dynamic\ translation\ from\ inside:(.*?)\ to\ outside:(.*?)/mxs&lt;/span&gt;
-            &lt;span class=&quot;ow&quot;&gt;or&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;next&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-         &lt;span class=&quot;c1&quot;&gt;# use $inside and $outside&lt;/span&gt;
-      &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-      &lt;span class=&quot;nb&quot;&gt;close&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$fh&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-   &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;or&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;warn&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;exception for &amp;#39;$file&amp;#39;: $EVAL_ERROR&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-
-&lt;span class=&quot;k&quot;&gt;sub &lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;_open&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-   &lt;span class=&quot;k&quot;&gt;my&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$file&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;@_&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-   &lt;span class=&quot;k&quot;&gt;my&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$fh&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-   &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$file&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=~&lt;/span&gt;&lt;span class=&quot;sr&quot;&gt; /\.gz \z/mxs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-      &lt;span class=&quot;nv&quot;&gt;$fh&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;IO::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Zlib&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;new&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
-      &lt;span class=&quot;nv&quot;&gt;$fh&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;open&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$file&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;rb&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-         &lt;span class=&quot;ow&quot;&gt;or&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;die&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;IO::Zlib complained: $OS_ERROR&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-   &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-   &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-      &lt;span class=&quot;nb&quot;&gt;open&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$fh&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;&amp;lt;&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$file&lt;/span&gt;
-         &lt;span class=&quot;ow&quot;&gt;or&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;die&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;open(): $OS_ERROR&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-   &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-   &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$fh&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;It worked pretty well so nothing to complain. Just before blogging about it, I
-paid a due visit to the documentation, and I discovered that I was more or less
-lucky: there are limitations in using the module, which basically boil down to
-&lt;code&gt;$fh&lt;/code&gt; not being what you expect from a full fledged filehandle. But,
-at least, it should work out of the box if all you need is to read the file
-one line at a time.&lt;/p&gt;
-
-&lt;p&gt;The module isn’t in the core distribution, but it’s a common
-prerequisite so chances are that you already have it in your distro.
-It’s a bit weird that it is known by &lt;a href=&quot;https://metacpan.org/pod/corelist&quot;&gt;corelist&lt;/a&gt;
-to have been included in 5.9.3:&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;IO::Zlib was first released with perl 5.009003&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;even though there is no trace of it in 5.10. Go figure. Anyway, it
-should be a bit more common to find than the alternative
-&lt;a href=&quot;https://metacpan.org/pod/PerlIO::gzip&quot;&gt;PerlIO::gzip&lt;/a&gt;, which would make
-the &lt;code&gt;sub _open&lt;/code&gt; unneeded when substituted with this:&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-perl&quot; data-lang=&quot;perl&quot;&gt;&lt;span class=&quot;nb&quot;&gt;open&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;my&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$fh&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;&amp;lt;:autopop&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$file&lt;/span&gt; &lt;span class=&quot;ow&quot;&gt;or&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;die&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;...&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;I wonder how much Perl IO layers are used out there.&lt;/p&gt;
-
-    &lt;p&gt;&lt;a href=&quot;/io-zlib/&quot;&gt;IO::Zlib and saved space&lt;/a&gt; was originally published by Flavio Poletti at &lt;a href=&quot;&quot;&gt;PolettiX!&lt;/a&gt; on December 05, 2009.&lt;/p&gt;
   </content>
 </entry>
 

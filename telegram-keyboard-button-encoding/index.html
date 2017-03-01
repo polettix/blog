@@ -1,0 +1,401 @@
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if (IE 7)&!(IEMobile)]><html class="no-js lt-ie9 lt-ie8" lang="en"><![endif]-->
+<!--[if (IE 8)&!(IEMobile)]><html class="no-js lt-ie9" lang="en"><![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"><!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<title>Telegram Keyboard Button Encoding &#8211; PolettiX!</title>
+<meta name="description" content="Telegram custom keyboards are a handy feature to provide a cleaner
+interface to your users. But unlike HTML, these buttons are doomed at
+sending their text instead of a configurable value. Or are they?
+
+">
+<meta name="keywords" content="">
+
+
+
+<!-- Twitter Cards -->
+<meta name="twitter:title" content="Telegram Keyboard Button Encoding">
+<meta name="twitter:description" content="Telegram custom keyboards are a handy feature to provide a cleaner
+interface to your users. But unlike HTML, these buttons are doomed at
+sending their text instead of a configurable value. Or are they?
+
+">
+<meta name="twitter:site" content="@polettix">
+<meta name="twitter:creator" content="@polettix">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="/images/kakadu-on-yellow-river.jpg">
+
+<!-- Open Graph -->
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Telegram Keyboard Button Encoding">
+<meta property="og:description" content="Telegram custom keyboards are a handy feature to provide a cleaner
+interface to your users. But unlike HTML, these buttons are doomed at
+sending their text instead of a configurable value. Or are they?
+
+">
+<meta property="og:url" content="/telegram-keyboard-button-encoding/">
+<meta property="og:site_name" content="PolettiX!">
+
+
+
+
+
+<link rel="canonical" href="/telegram-keyboard-button-encoding/">
+<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="PolettiX! Feed">
+
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+
+<meta http-equiv="cleartype" content="on">
+
+<!-- HTML5 Shiv and Media Query Support -->
+<!--[if lt IE 9]>
+	<script src="/assets/js/vendor/html5shiv.min.js"></script>
+	<script src="/assets/js/vendor/respond.min.js"></script>
+<![endif]-->
+
+<!-- Modernizr -->
+<script src="/assets/js/vendor/modernizr-2.7.1.custom.min.js"></script>
+
+<link href='//fonts.googleapis.com/css?family=PT+Sans+Narrow:400,700%7CPT+Serif:400,700,400italic' rel='stylesheet' type='text/css'>
+
+<!-- Icons -->
+<!-- 16x16 -->
+<link rel="shortcut icon" href="/favicon.ico?whatever">
+<!-- 32x32 -->
+<link rel="shortcut icon" href="/favicon.png?whatever">
+<!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
+<link rel="apple-touch-icon-precomposed" href="/images/apple-touch-icon-precomposed.png">
+<!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="/images/apple-touch-icon-72x72-precomposed.png">
+<!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="/images/apple-touch-icon-114x114-precomposed.png">
+<!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/images/apple-touch-icon-144x144-precomposed.png">
+
+</head>
+
+<body class="post">
+
+<!--[if lt IE 9]><div class="browser-upgrade alert alert-info">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</div><![endif]-->
+
+<div class="navigation-wrapper">
+	<div class="site-name">
+		<a href="/">PolettiX!</a>
+	</div><!-- /.site-name -->
+	<div class="top-navigation">
+		<nav role="navigation" id="site-nav" class="nav">
+		    <ul>
+		        
+				    
+				        
+				    
+				    <li><a href="/about/" >About</a></li>
+				
+				    
+				        
+				    
+				    <li><a href="/posts/" >Posts</a></li>
+				
+		    </ul>
+		</nav>
+	</div><!-- /.top-navigation -->
+</div><!-- /.navigation-wrapper -->
+
+
+  <div class="image-wrap">
+  <img src=
+    
+      "/images/kakadu-on-yellow-river.jpg"
+    
+  alt="Telegram Keyboard Button Encoding feature image">
+  
+    <span class="image-credit"><a href="https://en.wikipedia.org/wiki/Kakadu_National_Park">Yellow Water al Kakadu National Park, Australia</a></span>
+  
+  </div><!-- /.image-wrap -->
+
+
+<div id="main" role="main">
+  <div class="article-author-side">
+    
+
+
+<div itemscope itemtype="http://schema.org/Person">
+
+
+	<img src="/images/flavio-self-color.png" class="bio-photo" alt="Flavio Poletti bio photo">
+
+
+  <h3 itemprop="name">Flavio Poletti</h3>
+  <p>Irreducible Perler.</p>
+  <a href="mailto:flavio@polettix.it" class="author-social" target="_blank"><i class="fa fa-fw fa-envelope-square"></i>Email</a>
+  <a href="http://comics.polettix.it/" class="author-social" target="_blank"><i class="fa fa-fw fa-pencil"></i> Comics</a>
+  <a href="http://twitter.com/polettix" class="author-social" target="_blank"><i class="fa fa-fw fa-twitter-square"></i> Twitter</a>
+  
+  
+  <a href="http://linkedin.com/in/flaviopoletti" class="author-social" target="_blank"><i class="fa fa-fw fa-linkedin-square"></i> LinkedIn</a>
+  
+  
+  <a href="https://metacpan.org/author/polettix" class="author-social" target="_blank"><i class="fa fa-fw fa-th-large"></i> MetaCPAN</a>
+  <a href="http://github.com/polettix" class="author-social" target="_blank"><i class="fa fa-fw fa-github"></i> Github</a>
+  <a href="http://stackoverflow.com/users/3865403/polettix" class="author-social" target="_blank"><i class="fa fa-fw fa-stack-overflow"></i> Stackoverflow</a>
+  
+  
+  <a href="http://www.pinterest.com/polettix" class="author-social" target="_blank"><i class="fa fa-fw fa-pinterest"></i> Pinterest</a>
+  
+  
+  
+  
+  
+  
+</div>
+
+  </div>
+  <article class="post">
+    <div class="headline-wrap">
+      
+        <h1><a href="/telegram-keyboard-button-encoding/" rel="bookmark" title="Telegram Keyboard Button Encoding">Telegram Keyboard Button Encoding</a></h1>
+      
+    </div><!--/ .headline-wrap -->
+    <div class="article-wrap">
+      <p>Telegram <a href="https://core.telegram.org/bots#keyboards">custom keyboards</a> are a handy feature to provide a cleaner
+interface to your users. But unlike HTML, these buttons are doomed at
+sending their <em>text</em> instead of a configurable <em>value</em>. Or are they?</p>
+
+<h2 id="whats-the-problem-exactly">What’s The Problem, Exactly?</h2>
+
+<p>The buttons in a keyboard for Telegram have only one mandatory field
+<em>text</em> that has the following description (as of March 1st, 2017 at
+least):</p>
+
+<blockquote>
+  <p>Text of the button. If none of the optional fields are used, it will be
+sent to the bot as a message when the button is pressed.</p>
+</blockquote>
+
+<p>The <em>optional fields</em>, if you’re curious, are available only to send
+either a location or a phone number, not some generic, programmer-defined
+value.</p>
+
+<p>So, the bottom line is that, in the general case, a button is stuck to
+sending whatever text it also displays. As anticipated in the introductory
+teaser, this is unlike HTML buttons, where you can set independently the
+text that is shown on the button and the value that is associated to the
+button itself (which, in most cases, is also sent to the server).</p>
+
+<h2 id="why-is-that-a-problem-exactly">Why Is That A Problem, Exactly?</h2>
+
+<p>Suppose you want to implement a keyboard in which you want to track two
+different variables, Happyness and Relax. You want to provide a button for
+showing their current value, and some buttons to increse those values. It
+might be something like this:</p>
+
+<div class="highlight"><pre><code class="language-text" data-lang="text">+-----------+-----------+-----------+-----------+
+| Happyness |    +1     |    +2     |    +3     |
++-----------+-----------+-----------+-----------+
+|   Relax   |    +1     |    +2     |    +3     |
++-----------+-----------+-----------+-----------+</code></pre></div>
+
+<p>Do you see the problem with this keyboard? There are two versions of
+button <code>+1</code>, <code>+2</code> and <code>+3</code>, which means that you will not be able to
+figure out which exact button the user pressed, because in both <code>+1</code> cases
+you would just be getting… <code>+1</code>.</p>
+
+<h2 id="unicode-zero-width-rescuers">Unicode Zero-Width Rescuers</h2>
+
+<p>It turns out that Telegram keyboard buttons actually support Unicode
+strings as texts, and most clients seem to display them correctly. So…
+can we ab<strong>*COUGH*</strong>use this? Sure!</p>
+
+<p>Unicode has a few characters that you can <em>put there</em> but that will not
+appear in the text. Some of them are:</p>
+
+<ul>
+  <li><code>U+200B</code>, a.k.a. <code>ZERO WIDTH SPACE</code></li>
+  <li><code>U+200C</code>, a.k.a. <code>ZERO WIDTH NON-JOINER</code></li>
+  <li><code>U+200D</code>, a.k.a. <code>ZERO WIDTH JOINER</code></li>
+</ul>
+
+<p>The <code>ZERO WIDTH</code> property is what interests us here: printing a zero-width
+character basically means printing… nothing! So, the following string:</p>
+
+<div class="highlight"><pre><code class="language-perl" data-lang="perl"><span class="s">&quot;Hello&quot;</span>
+<span class="s">&quot;Hello\x{200B}&quot;</span>
+<span class="s">&quot;\x{200D}He\x{200C}llo\x{200B}\x{200C}&quot;</span></code></pre></div>
+
+<p>will render exactly the same in the client, but will result in very
+different strings sent from the client to the bot when pressed. Exactly
+the mechanism we were after!</p>
+
+<h2 id="possible-formal-uses">Possible <em>Formal</em> Uses</h2>
+
+<p>The suggestion, at this point, is to figure out an encoding scheme for
+attaching a custom (and unique) value to each button, that will allow us
+to understand what button was pressed even though multiple buttons expose
+the same visible text.</p>
+
+<p>If you have only a few of them, you can for example keep a <em>counter</em> that
+increases at each new button, and append that number of zero-width
+characters, like this:</p>
+
+<div class="highlight"><pre><code class="language-perl" data-lang="perl"><span class="n">state</span> <span class="nv">$count</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<span class="c1"># ...</span>
+<span class="nv">$button</span><span class="p">{</span><span class="n">text</span><span class="p">}</span> <span class="o">.=</span> <span class="s">&quot;\x{200B}&quot;</span> <span class="n">x</span> <span class="o">++</span><span class="nv">$count</span><span class="p">;</span></code></pre></div>
+
+<p>Upon reception of anything from the client, we can just extract the number
+of these characters and we have our code back:</p>
+
+<div class="highlight"><pre><code class="language-perl" data-lang="perl"><span class="k">my</span> <span class="p">(</span><span class="nv">$empties</span><span class="p">)</span> <span class="o">=</span> <span class="nv">$text</span> <span class="o">=~</span> <span class="sr">m{(\x{200B}</span><span class="o">+</span><span class="p">)</span><span class="o">\</span><span class="n">z</span><span class="p">}</span><span class="n">mxs</span><span class="p">;</span>
+<span class="k">my</span> <span class="nv">$button_id</span> <span class="o">=</span> <span class="nb">length</span> <span class="nv">$empties</span><span class="p">;</span></code></pre></div>
+
+<p>Another alternative is to turn the numeric code into a binary sequence and
+encode it using two caracters, one for the <code>1</code> and another one for the
+<code>0</code>:</p>
+
+<div class="highlight"><pre><code class="language-perl" data-lang="perl"><span class="n">state</span> <span class="nv">$count</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+<span class="c1"># ...</span>
+<span class="k">my</span> <span class="nv">$binary</span> <span class="o">=</span> <span class="nb">unpack</span> <span class="s">&#39;B32&#39;</span><span class="p">,</span> <span class="nb">pack</span> <span class="s">&#39;N&#39;</span><span class="p">,</span> <span class="o">++</span><span class="nv">$count</span><span class="p">;</span>
+<span class="nv">$button</span><span class="p">{</span><span class="n">text</span><span class="p">}</span> <span class="o">.=</span> <span class="nb">join</span> <span class="s">&#39;&#39;</span><span class="p">,</span>
+    <span class="nb">map</span> <span class="p">{</span> <span class="nv">$_</span> <span class="p">?</span> <span class="s">&quot;\x{200C}&quot;</span> <span class="p">:</span> <span class="s">&quot;\x{200D}&quot;</span> <span class="p">}</span>
+    <span class="nb">split</span> <span class="sr">//</span><span class="p">,</span> <span class="nv">$binary</span><span class="p">;</span></code></pre></div>
+
+<p>You get the idea. Once you successfully attach an integer value to the
+button, you can keep a translation table on the bot side to associate some
+“intended value” for the button, e.g.:</p>
+
+<div class="highlight"><pre><code class="language-perl" data-lang="perl"><span class="k">my</span> <span class="nv">%value_for</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="mi">1</span> <span class="o">=&gt;</span> <span class="s">&#39;/command-one&#39;</span><span class="p">,</span>
+    <span class="mi">2</span> <span class="o">=&gt;</span> <span class="s">&#39;/command-one with-arg&#39;</span><span class="p">,</span>
+    <span class="mi">3</span> <span class="o">=&gt;</span> <span class="s">&#39;/stop&#39;</span><span class="p">,</span>
+    <span class="c1"># ...</span>
+<span class="p">);</span></code></pre></div>
+
+<h2 id="perl-anyone">Perl Anyone?</h2>
+
+<p>The tecnique above has been used to create the new class
+<a href="https://metacpan.org/pod/Bot::ChatBots::Telegram::Keyboard">Bot::ChatBots::Telegram::Keyboard</a>, if you are interested you are more
+than welcome to try and use it!</p>
+
+<p>The binary encoding explained in the previous section has been slightly
+changed and extended to cope with:</p>
+
+<ul>
+  <li>introducing a <em>keyboard identifier</em>, so that you can manage multiple
+keyboards and be able to figure out which keyboard was used in
+association to a received command;</li>
+  <li>optimizing the space removing leading <code>0</code> characters.</li>
+</ul>
+
+<p>The introduction of the keyboard identifier and the space optimization
+rely on the usage of all three characters introduced before:</p>
+
+<ul>
+  <li><code>U+200B</code> represents the <code>1</code></li>
+  <li><code>U+200C</code> represents the <code>0</code></li>
+  <li><code>U+200D</code> is used for marking the boundaries of the codes</li>
+</ul>
+
+<h2 id="wrap-up">Wrap-up</h2>
+
+<p>Short article this time, but hopefully useful!</p>
+
+<p>We saw that Telegram custom keyboards can be annoying in their overlapping
+of the text printed on the button and the value that is sent back to the
+bot when the button is pressed. We also saw that it is possible to work
+around this limitation thanks to a few Unicode characters that have <em>zero
+width</em>, so they don’t appear when printed but are anyway still there and
+are also sent by the client when the button is pressed. By means of some
+not-so-clever encoding we can then associated a unique identifier to each
+button in a keyboard.</p>
+
+<p>Leave comments below if you have questions, until next time have fun!</p>
+
+
+      <hr />
+      <footer role="contentinfo">
+        <div class="social-share">
+  <h4>Share on</h4>
+  <ul>
+    <li>
+      <a href="https://twitter.com/intent/tweet?text=/telegram-keyboard-button-encoding/" class="twitter" title="Share on Twitter"><i class="fa fa-twitter"></i><span> Twitter</span></a>
+    </li>
+    <li>
+      <a href="https://www.facebook.com/sharer/sharer.php?u=/telegram-keyboard-button-encoding/" class="facebook" title="Share on Facebook"><i class="fa fa-facebook"></i><span> Facebook</span></a>
+    </li>
+    <li>
+      <a href="https://plus.google.com/share?url=/telegram-keyboard-button-encoding/" class="google-plus" title="Share on Google Plus"><i class="fa fa-google-plus"></i><span> Google+</span></a>
+    </li>
+  </ul>
+</div><!-- /.social-share -->
+        <p class="byline"><strong>Telegram Keyboard Button Encoding</strong> was published on <time datetime="2017-03-01T00:00:00+01:00">March 01, 2017</time>.</p>
+      </footer>
+    </div><!-- /.article-wrap -->
+  
+    <section id="disqus_thread"></section><!-- /#disqus_thread -->
+  
+  </article>
+</div><!-- /#main -->
+
+<div class="footer-wrap">
+  <div class="related-articles">
+  <h4>You might also enjoy <small class="pull-right">(<a href="/posts/">View all posts</a>)</small></h4>
+    <ul>
+    
+      <li><a href="/markdown-to-html-in-windows-explorer/" title="Markdown to HTML in Windows Explorer">Markdown to HTML in Windows Explorer</a></li>
+    
+      <li><a href="/webservice-fake-but-still-usable/" title="WebService::Fake - but still usable!">WebService::Fake - but still usable!</a></li>
+    
+      <li><a href="/dokku-your-tiny-paas/" title="Dokku - Your Tiny PaaS">Dokku - Your Tiny PaaS</a></li>
+    
+    </ul>
+    <hr />
+  </div><!-- /.related-articles -->
+  <footer>
+    
+
+<span>&copy; 2017 Flavio Poletti. Powered by <a href="http://jekyllrb.com" rel="nofollow">Jekyll</a> using the <a href="http://mademistakes.com/minimal-mistakes/" rel="nofollow">Minimal Mistakes</a> theme.</span>
+
+  </footer>
+</div><!-- /.footer-wrap -->
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script src="/assets/js/scripts.min.js"></script>
+
+
+  
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'polettix'; // required: replace example with your forum shortname
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = '//' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+
+</body>
+</html>
