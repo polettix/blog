@@ -4,7 +4,7 @@
 <generator uri="https://github.com/jekyll/jekyll">Jekyll</generator>
 <link rel="self" type="application/atom+xml" href="/feed.xml" />
 <link rel="alternate" type="text/html" href="" />
-<updated>2017-03-03T08:06:53+01:00</updated>
+<updated>2017-03-03T08:09:05+01:00</updated>
 <id>/</id>
 <author>
   <name>Flavio Poletti</name>
@@ -146,7 +146,8 @@ button, you can keep a translation table on the bot side to associate some
   &lt;li&gt;associate a &lt;em&gt;unique integer&lt;/em&gt; code to this pair&lt;/li&gt;
   &lt;li&gt;generate the &lt;em&gt;encoded text&lt;/em&gt; from &lt;em&gt;text&lt;/em&gt; and &lt;em&gt;unique integer&lt;/em&gt;, using one
 of the techniques shown above&lt;/li&gt;
-  &lt;li&gt;set the &lt;code&gt;text&lt;/code&gt; in the keyboard button to the &lt;em&gt;encoded text&lt;/em&gt;&lt;/li&gt;
+  &lt;li&gt;set the &lt;code&gt;text&lt;/code&gt; in the keyboard button to the &lt;em&gt;encoded text&lt;/em&gt; - it will
+render just like &lt;em&gt;text&lt;/em&gt; in the client&lt;/li&gt;
   &lt;li&gt;when the button is pressed in the client, you will receive the
 &lt;em&gt;encoded text&lt;/em&gt; back&lt;/li&gt;
   &lt;li&gt;get the &lt;em&gt;unique integer&lt;/em&gt; back from the &lt;em&gt;encoded text&lt;/em&gt;&lt;/li&gt;
