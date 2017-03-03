@@ -10,8 +10,8 @@ comments: true
 ---
 
 Telegram [custom keyboards][] are a handy feature to provide a cleaner
-interface to your users. But unlike HTML, these buttons are doomed at
-sending their *text* instead of a configurable *value*. Or are they?
+interface to your users. But unlike HTML, these buttons are doomed to
+send their *text* instead of a configurable *value*. Or are they?
 
 ## What's The Problem, Exactly?
 
@@ -66,7 +66,7 @@ appear in the text. Some of them are:
 - `U+200D`, a.k.a. `ZERO WIDTH JOINER`
 
 The `ZERO WIDTH` property is what interests us here: printing a zero-width
-character basically means printing... nothing! So, the following string:
+character basically means printing... nothing! So, the following strings:
 
 {% highlight perl %}
 "Hello"
@@ -129,6 +129,22 @@ my %value_for = (
 );
 {% endhighlight %}
 
+Hence, you can follow this workflow:
+
+- decide the *text* and the *value* for the button
+- associate a *unique integer* code to this pair
+- generate the *encoded text* from *text* and *unique integer*, using one
+  of the techniques shown above
+- set the `text` in the keyboard button to the *encoded text*
+- when the button is pressed in the client, you will receive the
+  *encoded text* back
+- get the *unique integer* back from the *encoded text*
+- use the *unique integer* to find the associated *text*/*value* pair
+- use the *value* from the pair
+
+and it will be like you put *text* in the button... but actually received
+*value*.
+
 ## Perl Anyone?
 
 The tecnique above has been used to create the new class
@@ -142,6 +158,12 @@ changed and extended to cope with:
   keyboards and be able to figure out which keyboard was used in
   association to a received command;
 - optimizing the space removing leading `0` characters.
+
+For each button, you can define both the `text` that you want to be shown,
+and the `_value` that you want to get back. The field name starts with an
+underscore to cope for possible future extensions of the Telegram API
+where they might introduce a *real* `value` field... making this blog post
+so obsolete!
 
 The introduction of the keyboard identifier and the space optimization
 rely on the usage of all three characters introduced before:
@@ -161,7 +183,7 @@ around this limitation thanks to a few Unicode characters that have *zero
 width*, so they don't appear when printed but are anyway still there and
 are also sent by the client when the button is pressed. By means of some
 not-so-clever encoding we can then associated a unique identifier to each
-button in a keyboard.
+button in a keyboard, and ultimately a value of our choice.
 
 Leave comments below if you have questions, until next time have fun!
 
