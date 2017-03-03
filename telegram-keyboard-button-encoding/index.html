@@ -7,8 +7,8 @@
 <meta charset="utf-8">
 <title>Telegram Keyboard Button Encoding &#8211; PolettiX!</title>
 <meta name="description" content="Telegram custom keyboards are a handy feature to provide a cleaner
-interface to your users. But unlike HTML, these buttons are doomed at
-sending their text instead of a configurable value. Or are they?
+interface to your users. But unlike HTML, these buttons are doomed to
+send their text instead of a configurable value. Or are they?
 
 ">
 <meta name="keywords" content="">
@@ -18,8 +18,8 @@ sending their text instead of a configurable value. Or are they?
 <!-- Twitter Cards -->
 <meta name="twitter:title" content="Telegram Keyboard Button Encoding">
 <meta name="twitter:description" content="Telegram custom keyboards are a handy feature to provide a cleaner
-interface to your users. But unlike HTML, these buttons are doomed at
-sending their text instead of a configurable value. Or are they?
+interface to your users. But unlike HTML, these buttons are doomed to
+send their text instead of a configurable value. Or are they?
 
 ">
 <meta name="twitter:site" content="@polettix">
@@ -33,8 +33,8 @@ sending their text instead of a configurable value. Or are they?
 <meta property="og:type" content="article">
 <meta property="og:title" content="Telegram Keyboard Button Encoding">
 <meta property="og:description" content="Telegram custom keyboards are a handy feature to provide a cleaner
-interface to your users. But unlike HTML, these buttons are doomed at
-sending their text instead of a configurable value. Or are they?
+interface to your users. But unlike HTML, these buttons are doomed to
+send their text instead of a configurable value. Or are they?
 
 ">
 <meta property="og:url" content="/telegram-keyboard-button-encoding/">
@@ -168,8 +168,8 @@ sending their text instead of a configurable value. Or are they?
     </div><!--/ .headline-wrap -->
     <div class="article-wrap">
       <p>Telegram <a href="https://core.telegram.org/bots#keyboards">custom keyboards</a> are a handy feature to provide a cleaner
-interface to your users. But unlike HTML, these buttons are doomed at
-sending their <em>text</em> instead of a configurable <em>value</em>. Or are they?</p>
+interface to your users. But unlike HTML, these buttons are doomed to
+send their <em>text</em> instead of a configurable <em>value</em>. Or are they?</p>
 
 <h2 id="whats-the-problem-exactly">What’s The Problem, Exactly?</h2>
 
@@ -226,7 +226,7 @@ appear in the text. Some of them are:</p>
 </ul>
 
 <p>The <code>ZERO WIDTH</code> property is what interests us here: printing a zero-width
-character basically means printing… nothing! So, the following string:</p>
+character basically means printing… nothing! So, the following strings:</p>
 
 <div class="highlight"><pre><code class="language-perl" data-lang="perl"><span class="s">&quot;Hello&quot;</span>
 <span class="s">&quot;Hello\x{200B}&quot;</span>
@@ -279,6 +279,24 @@ button, you can keep a translation table on the bot side to associate some
     <span class="c1"># ...</span>
 <span class="p">);</span></code></pre></div>
 
+<p>Hence, you can follow this workflow:</p>
+
+<ul>
+  <li>decide the <em>text</em> and the <em>value</em> for the button</li>
+  <li>associate a <em>unique integer</em> code to this pair</li>
+  <li>generate the <em>encoded text</em> from <em>text</em> and <em>unique integer</em>, using one
+of the techniques shown above</li>
+  <li>set the <code>text</code> in the keyboard button to the <em>encoded text</em></li>
+  <li>when the button is pressed in the client, you will receive the
+<em>encoded text</em> back</li>
+  <li>get the <em>unique integer</em> back from the <em>encoded text</em></li>
+  <li>use the <em>unique integer</em> to find the associated <em>text</em>/<em>value</em> pair</li>
+  <li>use the <em>value</em> from the pair</li>
+</ul>
+
+<p>and it will be like you put <em>text</em> in the button… but actually received
+<em>value</em>.</p>
+
 <h2 id="perl-anyone">Perl Anyone?</h2>
 
 <p>The tecnique above has been used to create the new class
@@ -294,6 +312,12 @@ keyboards and be able to figure out which keyboard was used in
 association to a received command;</li>
   <li>optimizing the space removing leading <code>0</code> characters.</li>
 </ul>
+
+<p>For each button, you can define both the <code>text</code> that you want to be shown,
+and the <code>_value</code> that you want to get back. The field name starts with an
+underscore to cope for possible future extensions of the Telegram API
+where they might introduce a <em>real</em> <code>value</code> field… making this blog post
+so obsolete!</p>
 
 <p>The introduction of the keyboard identifier and the space optimization
 rely on the usage of all three characters introduced before:</p>
@@ -315,7 +339,7 @@ around this limitation thanks to a few Unicode characters that have <em>zero
 width</em>, so they don’t appear when printed but are anyway still there and
 are also sent by the client when the button is pressed. By means of some
 not-so-clever encoding we can then associated a unique identifier to each
-button in a keyboard.</p>
+button in a keyboard, and ultimately a value of our choice.</p>
 
 <p>Leave comments below if you have questions, until next time have fun!</p>
 
