@@ -135,7 +135,8 @@ Hence, you can follow this workflow:
 - associate a *unique integer* code to this pair
 - generate the *encoded text* from *text* and *unique integer*, using one
   of the techniques shown above
-- set the `text` in the keyboard button to the *encoded text*
+- set the `text` in the keyboard button to the *encoded text* - it will
+  render just like *text* in the client
 - when the button is pressed in the client, you will receive the
   *encoded text* back
 - get the *unique integer* back from the *encoded text*
