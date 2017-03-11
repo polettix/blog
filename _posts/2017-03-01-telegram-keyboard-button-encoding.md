@@ -34,10 +34,10 @@ button itself (which, in most cases, is also sent to the server).
 
 ## Why Is That A Problem, Exactly?
 
-Suppose you want to implement a keyboard in which you want to track two
-different variables, Happyness and Relax. You want to provide a button for
-showing their current value, and some buttons to increse those values. It
-might be something like this:
+Suppose you want to implement a keyboard to track two different variables,
+Happyness and Relax. You want a button for showing their current value,
+and some buttons to increase those values. It might be something like
+this:
 
 {% highlight text %}
 +-----------+-----------+-----------+-----------+
@@ -47,10 +47,10 @@ might be something like this:
 +-----------+-----------+-----------+-----------+
 {% endhighlight %}
 
-Do you see the problem with this keyboard? There are two versions of
-button `+1`, `+2` and `+3`, which means that you will not be able to
-figure out which exact button the user pressed, because in both `+1` cases
-you would just be getting... `+1`.
+Do you see the problem? There are two versions of button `+1`, `+2` and
+`+3`, which means that you will not be able to figure out which exact
+button the user pressed, because in both `+1` cases you would just be
+getting... `+1`.
 
 ## Unicode Zero-Width Rescuers
 
@@ -148,7 +148,7 @@ and it will be like you put *text* in the button... but actually received
 
 ## Perl Anyone?
 
-The tecnique above has been used to create the new class
+The technique above has been used to create the new class
 [Bot::ChatBots::Telegram::Keyboard][], if you are interested you are more
 than welcome to try and use it!
 
