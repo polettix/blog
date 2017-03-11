@@ -4,7 +4,7 @@
 <generator uri="https://github.com/jekyll/jekyll">Jekyll</generator>
 <link rel="self" type="application/atom+xml" href="/feed.xml" />
 <link rel="alternate" type="text/html" href="" />
-<updated>2017-03-03T08:09:05+01:00</updated>
+<updated>2017-03-11T18:38:15+01:00</updated>
 <id>/</id>
 <author>
   <name>Flavio Poletti</name>
@@ -54,10 +54,10 @@ button itself (which, in most cases, is also sent to the server).&lt;/p&gt;
 
 &lt;h2 id=&quot;why-is-that-a-problem-exactly&quot;&gt;Why Is That A Problem, Exactly?&lt;/h2&gt;
 
-&lt;p&gt;Suppose you want to implement a keyboard in which you want to track two
-different variables, Happyness and Relax. You want to provide a button for
-showing their current value, and some buttons to increse those values. It
-might be something like this:&lt;/p&gt;
+&lt;p&gt;Suppose you want to implement a keyboard to track two different variables,
+Happyness and Relax. You want a button for showing their current value,
+and some buttons to increase those values. It might be something like
+this:&lt;/p&gt;
 
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;+-----------+-----------+-----------+-----------+
 | Happyness |    +1     |    +2     |    +3     |
@@ -65,10 +65,10 @@ might be something like this:&lt;/p&gt;
 |   Relax   |    +1     |    +2     |    +3     |
 +-----------+-----------+-----------+-----------+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-&lt;p&gt;Do you see the problem with this keyboard? There are two versions of
-button &lt;code&gt;+1&lt;/code&gt;, &lt;code&gt;+2&lt;/code&gt; and &lt;code&gt;+3&lt;/code&gt;, which means that you will not be able to
-figure out which exact button the user pressed, because in both &lt;code&gt;+1&lt;/code&gt; cases
-you would just be getting… &lt;code&gt;+1&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Do you see the problem? There are two versions of button &lt;code&gt;+1&lt;/code&gt;, &lt;code&gt;+2&lt;/code&gt; and
+&lt;code&gt;+3&lt;/code&gt;, which means that you will not be able to figure out which exact
+button the user pressed, because in both &lt;code&gt;+1&lt;/code&gt; cases you would just be
+getting… &lt;code&gt;+1&lt;/code&gt;.&lt;/p&gt;
 
 &lt;h2 id=&quot;unicode-zero-width-rescuers&quot;&gt;Unicode Zero-Width Rescuers&lt;/h2&gt;
 
@@ -160,7 +160,7 @@ render just like &lt;em&gt;text&lt;/em&gt; in the client&lt;/li&gt;
 
 &lt;h2 id=&quot;perl-anyone&quot;&gt;Perl Anyone?&lt;/h2&gt;
 
-&lt;p&gt;The tecnique above has been used to create the new class
+&lt;p&gt;The technique above has been used to create the new class
 &lt;a href=&quot;https://metacpan.org/pod/Bot::ChatBots::Telegram::Keyboard&quot;&gt;Bot::ChatBots::Telegram::Keyboard&lt;/a&gt;, if you are interested you are more
 than welcome to try and use it!&lt;/p&gt;
 
