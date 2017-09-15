@@ -42,7 +42,7 @@ something *handy* as opposed to simply *doable*.
 
 ## Frustration!
 
-For relevancy of the project, here's were the hubris really gets put to
+For relevancy of the project, here's where the hubris really gets put to
 test. Well, some humility never hurt anyone.
 
 When I first saw a reference in [issue 245 of Perl Weekly][perlweekly] I
