@@ -211,10 +211,10 @@ In the following sub-sections, we'll see:
 
 ### Starting point
 
-Our starting point is a project that tracked with [git][]. In this
+Our starting point is a project that is tracked with [git][]. In this
 example, we will assume that we want to work on a simple `Hello World!`
-application (what else) built with [Mojolicious][], and we will see
-a couple of directions for evolving to a more complex application. You can
+application (what else) built with [Mojolicious][], and we will see a
+couple of directions for evolving to a more complex application. You can
 find the whole example in [this repository][sample-mojo] in GitHub if you
 want to skip its construction.
 
@@ -1156,6 +1156,7 @@ Have fun!
 - `2016-10-16` added a [Table of Contents](#table-of-contents) for better
   navigation of the document.
 - `2016-12-23` added note on Debian 8 in [Vultr][].
+- `2017-09-16` fixed a few missing links.
 
 
 [PaaS]: https://en.wikipedia.org/wiki/Platform_as_a_service
@@ -1170,6 +1171,8 @@ Have fun!
 [Mojolicious]: https://metacpan.org/pod/Mojolicious
 [sample-mojo]: https://github.com/polettix/sample-mojo
 [git]: https://git-scm.com/
+[cpanm]: https://github.com/miyagawa/cpanminus
+[carton]: https://github.com/perl-carton/carton
 [public suffix]: https://publicsuffix.org/
 [ClouDNS]: https://www.cloudns.net/
 [cloudns-domains-pricing]: https://www.cloudns.net/domain-pricing-list/
@@ -1178,6 +1181,7 @@ Have fun!
 [khbpp]: https://github.com/kazeburo/heroku-buildpack-perl-procfile
 [kazeburo]: https://github.com/kazeburo
 [custom buildpacks]: https://github.com/dokku/dokku/blob/master/docs/deployment/methods/buildpacks.md
+[nginx]: https://nginx.org/
 [Minion]: https://metacpan.org/pod/Minion
 [minion-description]: https://metacpan.org/pod/Minion#DESCRIPTION
 [Docker]: http://docker.io/
@@ -1192,3 +1196,5 @@ Have fun!
 [pg-commit]: https://github.com/kraih/mojo-pg/commit/4414d784b7e22a4b4eca7657e91a6eec25ce923c
 [Mojo::Pg]: https://metacpan.org/pod/Mojo::Pg
 [Vultr]: https://www.vultr.com/
+[CPAN]: https://www.metacpan.org/
+[Starman]: https://github.com/miyagawa/Starman
