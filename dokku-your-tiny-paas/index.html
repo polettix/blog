@@ -408,10 +408,10 @@ your code to come. I’m a Perl enthusiast, so my example will be in Perl.</p>
 
 <h3 id="starting-point">Starting point</h3>
 
-<p>Our starting point is a project that tracked with <a href="https://git-scm.com/">git</a>. In this
+<p>Our starting point is a project that is tracked with <a href="https://git-scm.com/">git</a>. In this
 example, we will assume that we want to work on a simple <code>Hello World!</code>
-application (what else) built with <a href="https://metacpan.org/pod/Mojolicious">Mojolicious</a>, and we will see
-a couple of directions for evolving to a more complex application. You can
+application (what else) built with <a href="https://metacpan.org/pod/Mojolicious">Mojolicious</a>, and we will see a
+couple of directions for evolving to a more complex application. You can
 find the whole example in <a href="https://github.com/polettix/sample-mojo">this repository</a> in GitHub if you
 want to skip its construction.</p>
 
@@ -428,7 +428,7 @@ want to skip its construction.</p>
 
 <p>You are probably already using something to track the automation of
 installing the dependencies, we will use a <code>cpanfile</code> because it’s used by
-both [cpanm][] and [carton][] (the former being quite important for our
+both <a href="https://github.com/miyagawa/cpanminus">cpanm</a> and <a href="https://github.com/perl-carton/carton">carton</a> (the former being quite important for our
 later automation, as we will see). It’s quite straightforward in this
 case:</p>
 
@@ -498,9 +498,9 @@ persons did this in slightly different ways.</p>
 
 <p>The philosophy under <a href="https://github.com/polettix/heroku-buildpack-perl-procfile">heroku-buildpack-perl-procfile</a> is to make no
 assumption on your application, apart that it’s written in <a href="http://www.perl.org/ [CPAN]: http://metacpan.org">Perl</a> and will
-need modules from either [CPAN][] or from some project-local directory.</p>
+need modules from either <a href="https://www.metacpan.org/">CPAN</a> or from some project-local directory.</p>
 
-<p>If you mostly stick with web projects and you want to run them via [Starman][],
+<p>If you mostly stick with web projects and you want to run them via <a href="https://github.com/miyagawa/Starman">Starman</a>,
 you will probably want to look into some other package. I wanted to keep
 control, so evolved the awesome <a href="https://github.com/kazeburo/heroku-buildpack-perl-procfile">original
 heroku-buildpack-perl-procfile</a> by <a href="https://github.com/kazeburo">kazeburo</a> to suit my needs.</p>
@@ -530,7 +530,7 @@ or look for the rules). <a href="http://dokku.viewdocs.io/dokku/">Dokku</a> assi
 <ul>
   <li>one instance of a <code>web</code> service is always started initially (unless
 explicitly configured differently or no <code>web</code> is defined)</li>
-  <li><code>web</code> instances are accessible from the outside, there’s an [nginx][] reverse
+  <li><code>web</code> instances are accessible from the outside, there’s an <a href="https://nginx.org/">nginx</a> reverse
 proxy that is set-up automatically.</li>
 </ul>
 
@@ -1282,6 +1282,7 @@ it’s possible to also whip up a few <a href="https://gitlab.com/polettix/dokku
   <li><code>2016-10-16</code> added a <a href="#table-of-contents">Table of Contents</a> for better
 navigation of the document.</li>
   <li><code>2016-12-23</code> added note on Debian 8 in <a href="https://www.vultr.com/">Vultr</a>.</li>
+  <li><code>2017-09-16</code> fixed a few missing links.</li>
 </ul>
 
 
