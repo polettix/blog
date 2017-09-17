@@ -525,7 +525,7 @@ a <code>database</code> part, some <code>worker</code>s and so on.</p>
 
 <p>You can name components with almost any reasonable name (e.g. use alphanumerics
 or look for the rules). <a href="http://dokku.viewdocs.io/dokku/">Dokku</a> assign no particular semantic to the names,
-<em>except</em> to <code>web</code> which has (at least) to attached strings:</p>
+<em>except</em> to <code>web</code> which has (at least) two attached strings:</p>
 
 <ul>
   <li>one instance of a <code>web</code> service is always started initially (unless
@@ -574,7 +574,7 @@ http://sample-mojo.example.com</code></pre></div>
 
 <p>So, it’s easy to send the request:</p>
 
-<div class="highlight"><pre><code class="language-text" data-lang="text">$ curl http://sample-mojo.foobar.example.com
+<div class="highlight"><pre><code class="language-text" data-lang="text">$ curl http://sample-mojo.example.com
 Hello, World!</code></pre></div>
 
 <p>Seems to work!</p>
@@ -594,7 +594,8 @@ $ git commit app.pl -m &#39;Add killer feature&#39;
 $ git push heroku master
 Counting objects: 6, done.
 # ... several lines of automated deployment...
-=====&gt; Application deployed: http://sample-mojo.example.com</code></pre></div>
+=====&gt; Application deployed:
+http://sample-mojo.example.com</code></pre></div>
 
 <h2 id="moar-moar-moar">Moar! Moar! Moar!</h2>
 
@@ -1282,7 +1283,7 @@ it’s possible to also whip up a few <a href="https://gitlab.com/polettix/dokku
   <li><code>2016-10-16</code> added a <a href="#table-of-contents">Table of Contents</a> for better
 navigation of the document.</li>
   <li><code>2016-12-23</code> added note on Debian 8 in <a href="https://www.vultr.com/">Vultr</a>.</li>
-  <li><code>2017-09-16</code> fixed a few missing links.</li>
+  <li><code>2017-09-16</code> fixed a few missing links and typos.</li>
 </ul>
 
 
