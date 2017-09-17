@@ -340,7 +340,7 @@ a `database` part, some `worker`s and so on.
 
 You can name components with almost any reasonable name (e.g. use alphanumerics
 or look for the rules). [Dokku][] assign no particular semantic to the names,
-*except* to `web` which has (at least) to attached strings:
+*except* to `web` which has (at least) two attached strings:
 
 - one instance of a `web` service is always started initially (unless
   explicitly configured differently or no `web` is defined)
@@ -395,7 +395,7 @@ http://sample-mojo.example.com {% endhighlight %}
 So, it's easy to send the request:
 
 {% highlight text %}
-$ curl http://sample-mojo.foobar.example.com
+$ curl http://sample-mojo.example.com
 Hello, World!
 {% endhighlight %}
 
@@ -417,7 +417,8 @@ $ git commit app.pl -m 'Add killer feature'
 $ git push heroku master
 Counting objects: 6, done.
 # ... several lines of automated deployment...
-=====> Application deployed: http://sample-mojo.example.com
+=====> Application deployed:
+http://sample-mojo.example.com
 {% endhighlight %}
 
 ## Moar! Moar! Moar!
@@ -1156,7 +1157,7 @@ Have fun!
 - `2016-10-16` added a [Table of Contents](#table-of-contents) for better
   navigation of the document.
 - `2016-12-23` added note on Debian 8 in [Vultr][].
-- `2017-09-16` fixed a few missing links.
+- `2017-09-16` fixed a few missing links and typos.
 
 
 [PaaS]: https://en.wikipedia.org/wiki/Platform_as_a_service
