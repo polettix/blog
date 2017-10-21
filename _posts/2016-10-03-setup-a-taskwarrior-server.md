@@ -308,7 +308,7 @@ where the key will be different (each user will get its own unique key).
 In the following, we will assume that environment variables
 `ORGANIZATION`, `USER_NAME` and `USER_KEY` contain... what you think
 that they should contain. In our example, they contain respectively
-the strings `name-of-your-org`, `Name O. User' and
+the strings `name-of-your-org`, `Name O. User` and
 `cf31f287-ee9e-43a8-843e-e8bbd5de4294`.
 
 ### Alternative 1: DIY
