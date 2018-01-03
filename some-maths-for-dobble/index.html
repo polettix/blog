@@ -1,0 +1,941 @@
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if (IE 7)&!(IEMobile)]><html class="no-js lt-ie9 lt-ie8" lang="en"><![endif]-->
+<!--[if (IE 8)&!(IEMobile)]><html class="no-js lt-ie9" lang="en"><![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"><!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<title>Some Maths for Dobble &#8211; PolettiX!</title>
+<meta name="description" content="Dobble (also known as Spot-It) is an amazing game that’s both
+fun and mathematically interesting. This is my take on… remembering it
+some time in the future.
+
+">
+<meta name="keywords" content="">
+
+
+
+<!-- Twitter Cards -->
+<meta name="twitter:title" content="Some Maths for Dobble">
+<meta name="twitter:description" content="Dobble (also known as Spot-It) is an amazing game that’s both
+fun and mathematically interesting. This is my take on… remembering it
+some time in the future.
+
+">
+<meta name="twitter:site" content="@polettix">
+<meta name="twitter:creator" content="@polettix">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="/images/yellow-river.jpg">
+
+<!-- Open Graph -->
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Some Maths for Dobble">
+<meta property="og:description" content="Dobble (also known as Spot-It) is an amazing game that’s both
+fun and mathematically interesting. This is my take on… remembering it
+some time in the future.
+
+">
+<meta property="og:url" content="/some-maths-for-dobble/">
+<meta property="og:site_name" content="PolettiX!">
+
+
+
+
+
+<link rel="canonical" href="/some-maths-for-dobble/">
+<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="PolettiX! Feed">
+
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+
+<meta http-equiv="cleartype" content="on">
+
+<!-- HTML5 Shiv and Media Query Support -->
+<!--[if lt IE 9]>
+	<script src="/assets/js/vendor/html5shiv.min.js"></script>
+	<script src="/assets/js/vendor/respond.min.js"></script>
+<![endif]-->
+
+<!-- Modernizr -->
+<script src="/assets/js/vendor/modernizr-2.7.1.custom.min.js"></script>
+
+<link href='//fonts.googleapis.com/css?family=PT+Sans+Narrow:400,700%7CPT+Serif:400,700,400italic' rel='stylesheet' type='text/css'>
+
+<!-- Icons -->
+<!-- 16x16 -->
+<link rel="shortcut icon" href="/favicon.ico?whatever">
+<!-- 32x32 -->
+<link rel="shortcut icon" href="/favicon.png?whatever">
+<!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
+<link rel="apple-touch-icon-precomposed" href="/images/apple-touch-icon-precomposed.png">
+<!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="/images/apple-touch-icon-72x72-precomposed.png">
+<!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="/images/apple-touch-icon-114x114-precomposed.png">
+<!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/images/apple-touch-icon-144x144-precomposed.png">
+
+</head>
+
+<body class="post">
+
+<!--[if lt IE 9]><div class="browser-upgrade alert alert-info">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</div><![endif]-->
+
+<div class="navigation-wrapper">
+	<div class="site-name">
+		<a href="/">PolettiX!</a>
+	</div><!-- /.site-name -->
+	<div class="top-navigation">
+		<nav role="navigation" id="site-nav" class="nav">
+		    <ul>
+		        
+				    
+				        
+				    
+				    <li><a href="/about/" >About</a></li>
+				
+				    
+				        
+				    
+				    <li><a href="/posts/" >Posts</a></li>
+				
+		    </ul>
+		</nav>
+	</div><!-- /.top-navigation -->
+</div><!-- /.navigation-wrapper -->
+
+
+  <div class="image-wrap">
+  <img src=
+    
+      "/images/yellow-river.jpg"
+    
+  alt="Some Maths for Dobble feature image">
+  
+    <span class="image-credit"><a href="https://en.wikipedia.org/wiki/Kakadu_National_Park">Yellow Water al Kakadu National Park, Australia</a></span>
+  
+  </div><!-- /.image-wrap -->
+
+
+<div id="main" role="main">
+  <div class="article-author-side">
+    
+
+
+<div itemscope itemtype="http://schema.org/Person">
+
+
+	<img src="/images/flavio-self-color.png" class="bio-photo" alt="Flavio Poletti bio photo">
+
+
+  <h3 itemprop="name">Flavio Poletti</h3>
+  <p>Irreducible Perler.</p>
+  <a href="mailto:flavio@polettix.it" class="author-social" target="_blank"><i class="fa fa-fw fa-envelope-square"></i>Email</a>
+  <a href="http://comics.polettix.it/" class="author-social" target="_blank"><i class="fa fa-fw fa-pencil"></i> Comics</a>
+  <a href="http://twitter.com/polettix" class="author-social" target="_blank"><i class="fa fa-fw fa-twitter-square"></i> Twitter</a>
+  
+  
+  <a href="http://linkedin.com/in/flaviopoletti" class="author-social" target="_blank"><i class="fa fa-fw fa-linkedin-square"></i> LinkedIn</a>
+  
+  
+  <a href="https://metacpan.org/author/polettix" class="author-social" target="_blank"><i class="fa fa-fw fa-th-large"></i> MetaCPAN</a>
+  <a href="http://github.com/polettix" class="author-social" target="_blank"><i class="fa fa-fw fa-github"></i> Github</a>
+  <a href="http://stackoverflow.com/users/3865403/polettix" class="author-social" target="_blank"><i class="fa fa-fw fa-stack-overflow"></i> Stackoverflow</a>
+  
+  
+  <a href="http://www.pinterest.com/polettix" class="author-social" target="_blank"><i class="fa fa-fw fa-pinterest"></i> Pinterest</a>
+  
+  
+  
+  
+  
+  
+</div>
+
+  </div>
+  <article class="post">
+    <div class="headline-wrap">
+      
+        <h1><a href="/some-maths-for-dobble/" rel="bookmark" title="Some Maths for Dobble">Some Maths for Dobble</a></h1>
+      
+    </div><!--/ .headline-wrap -->
+    <div class="article-wrap">
+      <p><a href="https://boardgamegeek.com/boardgame/63268/spot-it">Dobble</a> (also known as <em>Spot-It</em>) is an amazing game that’s both
+fun and mathematically interesting. This is my take on… remembering it
+some time in the future.</p>
+
+<h2 id="table-of-contents">Table of Contents</h2>
+
+<ul id="markdown-toc">
+  <li><a href="#table-of-contents" id="markdown-toc-table-of-contents">Table of Contents</a></li>
+  <li><a href="#whats-the-game-about" id="markdown-toc-whats-the-game-about">What’s the Game About?</a></li>
+  <li><a href="#how-to-design-it" id="markdown-toc-how-to-design-it">How to Design It?</a></li>
+  <li><a href="#mathematical-pointers" id="markdown-toc-mathematical-pointers">Mathematical Pointers</a></li>
+  <li><a href="#another-point-of-view-projective-planes" id="markdown-toc-another-point-of-view-projective-planes">Another Point of View: Projective Planes</a></li>
+  <li><a href="#lets-start-simple" id="markdown-toc-lets-start-simple">Let’s Start Simple</a></li>
+  <li><a href="#building-projective-planes" id="markdown-toc-building-projective-planes">Building Projective Planes</a>    <ul>
+      <li><a href="#points-in-homogeneous-coordinates" id="markdown-toc-points-in-homogeneous-coordinates">Points in Homogeneous Coordinates</a></li>
+      <li><a href="#lines-in-homogeneous-coordinates" id="markdown-toc-lines-in-homogeneous-coordinates">Lines in Homogeneous Coordinates</a></li>
+      <li><a href="#putting-things-together" id="markdown-toc-putting-things-together">Putting things together</a></li>
+    </ul>
+  </li>
+  <li><a href="#finite-fields-of-order-psupnsup" id="markdown-toc-finite-fields-of-order-psupnsup">Finite Fields of Order p<sup>n</sup></a>    <ul>
+      <li><a href="#simple-case-n--1" id="markdown-toc-simple-case-n--1">Simple case: <code>n = 1</code></a></li>
+      <li><a href="#field-extension-case-n--1" id="markdown-toc-field-extension-case-n--1">Field extension case: <code>n &gt; 1</code></a></li>
+      <li><a href="#irreducible-polynomials" id="markdown-toc-irreducible-polynomials">Irreducible Polynomials</a></li>
+    </ul>
+  </li>
+  <li><a href="#summing-up" id="markdown-toc-summing-up">Summing Up</a></li>
+  <li><a href="#credits" id="markdown-toc-credits">Credits</a></li>
+</ul>
+
+<h2 id="whats-the-game-about">What’s the Game About?</h2>
+
+<p>Dobble provides a set of 55 cards, each with exactly 8 pictures on it. The
+cards are round, so that there is no “preferred” way of orienting them;
+additionally, pictures are printed in random(ish?) orientation and size,
+again to avoid providing a preferred orientation for the cards.</p>
+
+<p>The one true fact you know about the deck is: whatever pair of cards you
+take, there is always <em>exactly</em> one picture that is present in both. No
+more, no less (even though you might have a hard time in finding the
+matching picture!).</p>
+
+<p>Based on this property, there are some suggestions of rules for several
+<em>mini-games</em>, all revolving around the ability to quickly spot the
+matching picture between two cards.</p>
+
+<h2 id="how-to-design-it">How to Design It?</h2>
+
+<p>If each card had 54 pictures on it, it would probably be a trivial task to
+design the full stack of cards: just take all possible pairs of cards and
+decide a new picture for the pair. This would involve a non-trivial amount
+of pictures, because all possible pairs are the following:</p>
+
+<pre><code>54 pairs with card A = #1 and card B = #2..#55
+53 pairs with card A = #2 and card B = #3..#55
+...
+ 1  pair with card A = #54 and card B = #55
+</code></pre>
+
+<p>for a total number of <code>(54 + 1) * 54 / 2 = 1485</code> pairs/pictures.</p>
+
+<p>Luckily for the players, each card only has exactly 8 pictures on it (try
+to imagine to find the right matching picture out of 54 pictures on each
+card!) but this makes things much more difficult for the designer, because
+pictures have to be properly reused across cards in order to guarantee the
+<em>one true fact</em> about the card deck. Here is where maths come to rescue!</p>
+
+<h2 id="mathematical-pointers">Mathematical Pointers</h2>
+
+<p>The Dobble deck design can be framed within a much wider set of problems
+named [block design][block-design]. Well, actually a <a href="https://en.wikipedia.org/wiki/Block_design#Generalization:_t-designs">t-design</a>. Well,
+actually a <a href="https://en.wikipedia.org/wiki/Steiner_system">Steiner system</a> with parameters <em>S(2, 8, 57)</em>,
+meaning:</p>
+
+<ul>
+  <li>there are 57 different pictures, from which</li>
+  <li>we form cards (<em>blocks</em>) of 8 pictures each, with the constraint that</li>
+  <li>any two pictures are contained in exactly one card (<em>block</em>).</li>
+</ul>
+
+<p>Wait… what? The last constraint is not the <em>one true fact</em> we discussed
+earlier. As a matter of fact it is, because if the last constraint didn’t
+hold, then you would have two or more cards sharing more than one picture,
+which goes against the <em>one true fact</em>.</p>
+
+<p>Are we any closer to doing the design? Well, from my point of view yes and
+no. We have a lot of stuff that we can read, of course, but nothing really
+practical.</p>
+
+<h2 id="another-point-of-view-projective-planes">Another Point of View: Projective Planes</h2>
+
+<p>Let’s attack the problem from a different perspective and think about
+<a href="http://mathworld.wolfram.com/ProjectivePlane.html">finite projective planes</a> (PP in the following). They are
+mathematical objects associated to an integer <em>order</em> value <code>n</code>, comprised
+of primitives called <em>point</em>s and <em>line</em>s (collections of points):</p>
+
+<ul>
+  <li>any two <em>point</em>s belong to exactly one <em>line</em></li>
+  <li>any two <em>line</em>s intersect at exactly one <em>point</em>, meaning that have
+exactly one <em>point</em> in common</li>
+  <li>there are exactly <code>n + 1</code> <em>line</em>s intersecting at any <em>point</em></li>
+  <li>there are exactly <code>n + 1</code> <em>point</em>s belonging to any <em>line</em></li>
+</ul>
+
+<p>You might spot that there is a duality in the properties above: try to
+swap <em>line</em> for <em>point</em> and <em>belongs to</em> with <em>intersect at</em> and you
+basically have the same properties again!</p>
+
+<p>Another property of a PP of order <code>n</code> is that it contains exactly:</p>
+
+<pre><code>n^2 + n + 1
+</code></pre>
+
+<p><em>point</em>s and the same amount of <em>line</em>s (thanks to the duality above).</p>
+
+<p>Of course Steiner systems and Projective Planes are old friends, because
+a PP of order <code>n</code> is “just” a Steiner system <em>S(2, n+1, n^2 + n + 1)</em>,
+thus implying for Dobble that:</p>
+
+<pre><code>n = 7
+n + 1 = 8
+n^2 + n + 1 = 57
+</code></pre>
+
+<p>going back to what we said earlier: Dobble is a Steiner system <em>S(2, 8,
+57)</em>. It’s also interesting to note that Dobble is actually missing two
+possible cards.</p>
+
+<p>Why involve PPs anyway? Well… for me it’s a bit easier to understand and
+explain, that’s it.</p>
+
+<h2 id="lets-start-simple">Let’s Start Simple</h2>
+
+<p>There is one “bare bones” Projective Plane called the <a href="https://en.wikipedia.org/wiki/Fano_plane">Fano Plane</a>,
+that is of order <code>n = 2</code>. It’s like a stripped down version of Dobble,
+with “just” <code>7 = 4 + 2 + 1</code> pictures and (at most) 7 cards. A graphical
+representation of the Fano Plane is in the following picture:</p>
+
+<p><img src="/images/some-maths-for-dobble/fano-plane.png" alt="Fano Plane" /></p>
+
+<p>With a leap of imagination, each “bullet” is a <em>point</em>/<em>picture</em>, each
+segment and the circle is a <em>line</em>/<em>card</em> and there we are:</p>
+
+<p><img src="/images/some-maths-for-dobble/fano-images.png" alt="Fano Plane with Pictures" /></p>
+
+<p><img src="/images/some-maths-for-dobble/fano-cards.png" alt="Fano Plane with Pictures" /></p>
+
+<p>So, indeed projective planes can be useful for the design task we want to
+address! We <em>just</em> have to expand things a bit…</p>
+
+<h2 id="building-projective-planes">Building Projective Planes</h2>
+
+<p>The current knowledge about projective planes is more or less the
+following:</p>
+
+<ul>
+  <li>orders <code>n = p^k</code>, where <code>p</code> is a prime number and <code>k</code> is any positive
+integer are always possible;</li>
+  <li>anything else is conjectured to be impossible.</li>
+</ul>
+
+<p>We will restrict to what we know and call “allowed” only orders that are
+a positive power of a prime number, like in the first bullet.</p>
+
+<p>The Dobble’s case is <code>n = 7^1</code> so it’s definitely possible, yielding 57
+pictures and 57 cards (of which only 55 are included in the game’s deck,
+as anticipated).</p>
+
+<p>The logical steps for building a design of any allowed order are the
+following:</p>
+
+<ul>
+  <li>build a convenient representation of all <em>point</em>s</li>
+  <li>collect points in <em>line</em>s, leveraging the representation above</li>
+</ul>
+
+<p>It turns out that there is indeed a convenient representation for <em>point</em>s
+that will eventually make it very easy to build <em>line</em>s… so let’s look
+at it.</p>
+
+<h3 id="points-in-homogeneous-coordinates">Points in Homogeneous Coordinates</h3>
+
+<p>Points in a plane are usually represented with two <em>Cartesian</em>
+coordinates: <code>x</code> and <code>y</code>. This representation goes under the general name
+of <em>affine plane</em>. In this plane, it is impossible to represent the point
+where two or more parallel lines intersect (the “point at infinite”).
+Additionally, it is also impossible to represent the line formed by all
+such intersections for different directions, i.e. the “line at
+infinite”.</p>
+
+<p>As we saw, <em>projective planes</em> require that every pair of <em>line</em>s
+intersect exactly at one point. Hence, we need a more powerful
+representation that allows us to easily manipulate these “<em>point</em>s at
+infinite” and the resulting <em>line</em>.</p>
+
+<p>At the expense of one additional coordinate it is indeed possible to
+represent also these additional points and the additional line, in
+a system that is called <a href="https://en.wikipedia.org/wiki/Homogeneous_coordinates">homogeneous coordinates</a> where each <em>point</em>
+is represented by three coordinates <code>(X, Y, Z)</code> ruled as follows:</p>
+
+<ul>
+  <li>any of <code>X</code>, <code>Y</code> and <code>Z</code> MUST be different from <code>0</code>, i.e. the triplet
+<code>(0, 0, 0)</code> is NOT valid</li>
+  <li>any <em>point</em> <code>(x, y)</code> in the Cartesian representation of the affine plane
+is mapped onto *any triplet <code>(Z*x, Z*y, Z)</code> with <code>Z</code> different from <code>0</code>.
+Conversely, any triplet <code>(X, Y, Z)</code> with <code>Z</code> diffent from <code>0</code> maps back
+to <code>(X/Z, Y/Z)</code>;</li>
+  <li>any triplet <code>(X, Y, 0)</code> is a “point at infinite” and represents the
+intersection of all parallel lines of type <code>Y*x - X*y = c</code></li>
+</ul>
+
+<p>The interesting thing is that we are not necessarily restricted to using
+real numbers for coordinates: any field will do, including finite fields.
+Let’s take Z<sub>2</sub> for example, i.e. the field whose two elements
+are the rest classes in the integer division by 2: <code>0</code> and <code>1</code>. It’s easy
+to build up all possible triplets, actually as easy as counting in binary:</p>
+
+<pre><code>0 0 0 &lt;- ruled out, invalid triplet in the homogeneous representation
+0 0 1 &lt;- "origin", maps to (0, 0) in the affine plane
+0 1 0 &lt;- point at infinite
+0 1 1 &lt;- "regular", maps to (0, 1) in the affine plane
+1 0 0 &lt;- point at infinite
+1 0 1 &lt;- "regular", maps to (1, 0) in the affine plane
+1 1 0 &lt;- point at infinite
+1 1 1 &lt;- "regular", maps to (1, 1) in the affine plane
+</code></pre>
+
+<p>There is a total of <code>n^3 - 1</code> possible points, i.e. 7 in our case. Does
+this ring a bell? Sure it does, it’s the same number of points in the Fano
+plane!</p>
+
+<p>Things can get trickier with finite fields of higher orders though, as we
+can see in the following example in Z<sub>3</sub>. We have to remember
+that homogeneous coordinates with different components might map back to
+the same point in the affine plane, so we have to only consider the
+classes of <em>different</em> coordinates and avoid duplicates that can be
+obtained by scaling already considered ones:</p>
+
+<pre><code>0 0 0 &lt;- ruled out, invalid homogeneous triplet
+0 0 1
+0 0 2 &lt;- ruled out, (0 0 1) * 2 
+0 1 0
+0 1 1
+0 1 2
+0 2 0 &lt;- ruled out, (0 1 0) * 2
+0 2 1 &lt;- ruled out, (0 1 2) * 2
+0 2 2 &lt;- ruled out, (0 1 1) * 2
+1 0 0
+1 0 1
+1 0 2
+1 1 0
+1 1 1
+1 1 2
+1 2 0
+1 2 1
+1 2 2
+2 0 0 &lt;- ruled out, (1 0 0) * 2
+2 0 1 &lt;- ruled out, (1 0 2) * 2
+2 0 2 &lt;- ruled out, (1 0 1) * 2
+2 1 0 &lt;- ruled out, (1 2 0) * 2
+2 1 1 &lt;- ruled out, (1 2 2) * 2
+2 1 2 &lt;- ruled out, (1 2 1) * 2
+2 2 0 &lt;- ruled out, (1 1 0) * 2
+2 2 1 &lt;- ruled out, (1 1 2) * 2
+2 2 2 &lt;- ruled out, (1 1 1) * 2
+</code></pre>
+
+<p>Out of the initial <code>3^3 = 27</code> candidates, only 13 survived, so it’s
+actually a bit more difficult than to simply count and remove the first
+triplet. Note that this is exactly the number of points we were expecting,
+because of the formula we saw before: <code>3^2 + 3 + 1 = 13</code>. The distinct
+points are the following in homogeneous coordinates:</p>
+
+<pre><code> 0. 0 0 1
+ 1. 0 1 0
+ 2. 0 1 1
+ 3. 0 1 2
+ 4. 1 0 0
+ 5. 1 0 1
+ 6. 1 0 2
+ 7. 1 1 0
+ 8. 1 1 1
+ 9. 1 1 2
+10. 1 2 0
+11. 1 2 1
+12. 1 2 2
+</code></pre>
+
+<p>It turns out that there is a simple algoritm for generating all “distinct”
+homogeneous triplets: just start counting and jump all elements whose
+leftmost non-zero element is different from 1.</p>
+
+<h3 id="lines-in-homogeneous-coordinates">Lines in Homogeneous Coordinates</h3>
+
+<p>The same reasoning done for <em>point</em>s can be repeated for <em>line</em>s. The
+generic line in the affine plane can be expressed with the following
+equation:</p>
+
+<pre><code>a * x + b * y + c = 0
+</code></pre>
+
+<p>This equation can be easily multiplied by any non-zero constant, so
+assuming that <code>Z</code> is different from <code>0</code> and remembering the relations of
+<code>x</code> with <code>X</code> and <code>y</code> with <code>Y</code>:</p>
+
+<pre><code>a * X + b * Y + c * Z = 0
+</code></pre>
+
+<p>Hence, a line can be expressed by three values <code>a</code>, <code>b</code> and <code>c</code>, with the
+usual rule that any of the three MUST be different from zero. As a matter
+of fact, it’s yet another place where we see <em>duality</em> at work, because
+the equation might see the roles of a <em>line</em>’s parameter swapped with the
+<em>point</em>’s parameters without change in its meaning.</p>
+
+<p>It’s interesting how the equation for a <em>line</em> shows how to find <em>point</em>s
+belonging to the line: it suffices to find all triples <code>(X, Y, Z)</code> that
+are “orthogonal” to the <em>line</em>’s triple <code>(a, b, c)</code>. Then, by duality, we
+can also immediately find all lines through a point… because it’s the
+same equation!</p>
+
+<p>Let’s see what happens with the example based on Z<sub>2</sub>:</p>
+
+<pre><code> Line   Homog.   Points in Line (homogen.     Point
+ Id     repr.    representation)              Ids
+ 0   -&gt; 0 0 1 -&gt; (1 0 0), (0 1 0), (1 1 0) -&gt; 3, 1, 5
+ 1   -&gt; 0 1 0 -&gt; (1 0 0), (0 0 1), (1 0 1) -&gt; 3, 0, 4
+ 2   -&gt; 0 1 1 -&gt; (1 0 0), (0 1 1), (1 1 1) -&gt; 3, 2, 6
+ 3   -&gt; 1 0 0 -&gt; (0 0 1), (0 1 0), (0 1 1) -&gt; 0, 1, 2
+ 4   -&gt; 1 0 1 -&gt; (0 1 0), (1 0 1), (1 1 1) -&gt; 1, 4, 6
+ 5   -&gt; 1 1 0 -&gt; (0 0 1), (1 1 0), (1 1 1) -&gt; 0, 5, 6
+ 6   -&gt; 1 1 1 -&gt; (1 1 0), (1 0 1), (0 1 1) -&gt; 5, 4, 2
+</code></pre>
+
+<p>We can do the same for Z<sub>3</sub> of course:</p>
+
+<pre><code>Line                                                  Point Ids
+Id
+ 0  -&gt; 0 0 1 -&gt; (1 0 0), (0 1 0), (1 1 0), (1 2 0) -&gt; 4, 1, 7, 10
+ 1  -&gt; 0 1 0 -&gt; (0 0 1), (1 0 0), (1 0 1), (1 0 2) -&gt; 0, 4, 5, 6
+ 2  -&gt; 0 1 1 -&gt; (1 0 0), (0 1 2), (1 1 2), (1 2 1) -&gt; 4, 3, 9, 11
+ 3  -&gt; 0 1 2 -&gt; (1 0 0), (0 1 1), (1 1 1), (1 2 2) -&gt; 4, 2, 8, 12
+ 4  -&gt; 1 0 0 -&gt; (0 0 1), (0 1 0), (0 1 1), (0 1 2) -&gt; 0, 1, 2, 3
+ 5  -&gt; 1 0 1 -&gt; (0 1 0), (1 0 2), (1 1 2), (1 2 2) -&gt; 1, 6, 9, 12
+ 6  -&gt; 1 0 2 -&gt; (0 1 0), (1 0 1), (1 1 1), (1 2 1) -&gt; 1, 5, 8, 11
+ 7  -&gt; 1 1 0 -&gt; (0 0 1), (1 2 0), (1 2 1), (1 2 2) -&gt; 0, 10, 11, 12
+ 8  -&gt; 1 1 1 -&gt; (0 1 2), (1 0 2), (1 2 0), (1 1 1) -&gt; 3, 6, 10, 8
+ 9  -&gt; 1 1 2 -&gt; (0 1 1), (1 0 1), (1 1 2), (1 2 0) -&gt; 2, 5, 9, 10
+10  -&gt; 1 2 0 -&gt; (1 1 0), (1 1 1), (1 1 2), (0 0 1) -&gt; 7, 8, 9, 0
+11  -&gt; 1 2 1 -&gt; (0 1 1), (1 0 2), (1 1 0), (1 2 1) -&gt; 2, 6, 7, 11
+12  -&gt; 1 2 2 -&gt; (0 1 2), (1 0 1), (1 1 0), (1 2 2) -&gt; 3, 5, 7, 12
+</code></pre>
+
+<h3 id="putting-things-together">Putting things together</h3>
+
+<p>So, now we have a complete algorithm for finding out projective planes of
+any “allowed” order:</p>
+
+<ul>
+  <li>build a field of that order. This field always exists:
+    <ul>
+      <li>if the order is a prime number <code>p</code>, then the field is simply
+Z<sub>p</sub>, i.e. the field of rest classes modulo <code>p</code>;</li>
+      <li>otherwise, it can be build as a <a href="https://en.wikipedia.org/wiki/Galois_extension">Galois Extension</a>. More on
+this later, stay tuned!</li>
+    </ul>
+  </li>
+  <li>
+    <p>find all <em>distinct</em> triplets of homogeneous coordinates. This can be
+done with the trick of “first non-zero element must be 1” saw before</p>
+  </li>
+  <li>
+    <p>for each triplet, find all triplets that are “orthogonal” to it. For
+example, if the starting triplet is <code>(X, Y, Z)</code>, find all triplets
+<code>(a, b, c)</code> that satisfy the following equation:</p>
+
+    <pre><code>a * X + b * Y + c * Z = 0
+</code></pre>
+  </li>
+  <li>associate an identifier to each triplet, and output the identifier of
+each one together with the identifiers of the triplets orthogonal to
+that one.</li>
+</ul>
+
+<p>As an example in Perl, we will use <a href="https://metacpan.org/pod/Math::GF">Math::GF</a> for building the
+field and get all elements inside:</p>
+
+<pre><code>use Math::GF;
+my $order = shift // 2;
+my @elements = Math::GF-&gt;new($order)-&gt;all;
+</code></pre>
+
+<p>We can then proceed to build all distinct triplets representing points,
+using “the trick” and avoiding the all-zeros triplet:</p>
+
+<pre><code>my $zero = $elements[0];
+my $one  = $elements[1];
+my @points;
+for my $i ($zero, $one) {
+   for my $j ($i == $zero ? ($zero, $one) : @elements) {
+      for my $k ((($i == $zero) &amp;&amp; ($j == $zero)) ? $one : @elements) {
+         push @points, [$i, $j, $k];
+      }
+   }
+}
+</code></pre>
+
+<p>Confused? Take a closer look and you will see that this is exactly the
+coding of our “trick”:</p>
+
+<ul>
+  <li>the left-most coordinate can only be zero or one, otherwise we would
+violate the trick</li>
+  <li>the mid coordinate can only be zero or one if the previous coordinate is
+zero, otherwise, again, we would violate the trick. On the other hand,
+if the previous coordinate is not zero then it will be a one, so it’s OK
+to consider all elements in the field</li>
+  <li>the right-most coordinate MUST be one if the previous ones are both
+zero, because the triple <code>(0, 0, 0)</code> is not valid in homogeneous
+coordinates. Otherwise, any element in the field will do.</li>
+</ul>
+
+<p>This formulation also allows us to calculate how many points we will
+generate. Assuming that there are <code>n</code> elements in the field:</p>
+
+<ul>
+  <li><code>1</code> for <code>(0, 0, 1)</code></li>
+  <li><code>n</code> for <code>(0, 1, k)</code> (<code>k</code> from <code>0</code> to <code>n - 1</code>)</li>
+  <li><code>n^2</code> for <code>(1, j, k)</code> (both <code>j</code> and <code>k</code> from 0 to <code>n - 1</code>)</li>
+</ul>
+
+<p>which is, again, the formula we saw earlier:</p>
+
+<pre><code>n^2 + n + 1
+</code></pre>
+
+<p>Now we are ready to build lines by finding orthogonal triplets. We
+leverage on the same triplets as we found in <code>@points</code> because of duality:</p>
+
+<pre><code>my @lines = map { [] } 1 .. scalar(@points);
+for my $li (0 .. $#points) {
+   my $L = $points[$li];
+   for my $pi ($li .. $#points) {
+      last if scalar(@{$lines[$li]}) == $order + 1;
+      my $sum = $zero;
+      $sum = $sum + $L-&gt;[$_] * $points[$pi][$_] for 0 .. 2;
+      next if $sum != $zero;
+      push @{$lines[$li]}, $pi;
+      push @{$lines[$pi]}, $li if $pi != $li;
+   }
+}
+</code></pre>
+
+<p>Now <code>@lines</code> is an array of arrays, each containing identifiers of the
+points belonging to the line. We can easily print them:</p>
+
+<pre><code>sub print_aoa {
+   my $aoa = shift;
+   printf {*STDOUT} "%3d. (%s)\n", $_, join ', ', @{$aoa-&gt;[$_]}
+     for 0 .. $#$aoa;
+}
+print_aoa(\@lines);
+</code></pre>
+
+<p>The full script can be found <a href="https://github.com/polettix/Math-GF/blob/master/eg/pg2">here</a>. Sample run with order 2:</p>
+
+<pre><code>0. (1, 3, 5)
+1. (0, 3, 4)
+2. (2, 3, 6)
+3. (0, 1, 2)
+4. (1, 4, 6)
+5. (0, 5, 6)
+6. (2, 4, 5)
+</code></pre>
+
+<h2 id="finite-fields-of-order-psupnsup">Finite Fields of Order p<sup>n</sup></h2>
+
+<p>One last bit that was left out from the previous section is building
+a finite field of a specific order. It turns out that such fields only
+exist for orders p<sup>n</sup>, with <code>p</code> prime and <code>n</code> positive integer
+(e.g. see <a href="https://en.wikipedia.org/wiki/Finite_field#Existence_and_uniqueness">here</a>).</p>
+
+<h3 id="simple-case-n--1">Simple case: <code>n = 1</code></h3>
+
+<p>In case <code>n = 1</code>, the field can be simply Z<sub>p</sub>, i.e. the field of
+all rest classes modulo <code>p</code>, under the “usual” sum and multiplication of
+such rest classes:</p>
+
+<ul>
+  <li>sum: take the sum, then calculate the rest modulo <code>p</code></li>
+  <li>multiplicaiton: take the product, then calculate the rest modulo <code>p</code></li>
+</ul>
+
+<p>With <code>p</code> prime, the set of rest classes and the operations above will give
+you a field. For Dobble this would be sufficient because its order
+- 7 - is indeed a prime number.</p>
+
+<h3 id="field-extension-case-n--1">Field extension case: <code>n &gt; 1</code></h3>
+
+<p>What if we want a slightly more difficult variant, e.g. of order 4 (which
+is 2<sup>3</sup>, so it’s “allowed”)? Rest classes will not help us in
+this case because the set of rest classes and the operations above do not
+form a field (e.g. in Z<sub>4</sub> classes 2<sub>4</sub> multiplied by
+itself yields 0<sub>4</sub>, so it is a <em>divisor of zero</em> which is not
+allowed in a field).</p>
+
+<p>What we can build in this case is a so-called <em>field extension</em>. The idea
+is to leverage the field resulting from Z<sub>p</sub> to build an
+extension over it that accounts for its power <code>n</code>. The intuition to do
+this is both mindbending and ingenuous.</p>
+
+<p>What is a field? It is a set of elements with two operations defined over
+those elements, an <em>addition</em> and a <em>multiplication</em>, that have some
+constraints:</p>
+
+<ul>
+  <li>the set and the <em>addition</em> form a commutative group</li>
+  <li>the set without a <em>zero</em> element and the <em>multiplication</em> form
+a commutative group</li>
+  <li>other properties related to distribution, existence of inverse, etc.
+etc.</li>
+</ul>
+
+<p>With a field, we can build <em>vector spaces</em>, which is a set of elements
+(<em>vectors</em>) with an operation of <em>addition</em> defined that makes the set
+a commutative group, plus other stuff involving the field.</p>
+
+<p>The main intuition about field extension is: <em>what if we start from
+a vector space to build a new field</em>? If you think about it, you’re more
+than halfway, because you already have a set and an <em>addition</em> operation,
+so you only need the right <em>multiplication</em> operation and you’re done!</p>
+
+<p>We will gloss over the theoretical details (which can be found in a lot of
+places around, e.g. <a href="http://math.ucdenver.edu/~wcherowi/courses/m6406/finflds.pdf">here</a> or in the excellent courses by <a href="https://www.youtube.com/user/alisonandmatt">Mattew
+Salomone</a>) and avoid spoilering too much about a story involving
+polynomials, multiplications and divisions by <em>irreducible</em> polynomials,
+to go directly to what we need to do to build a finite field of order
+p<sup>n</sup>:</p>
+
+<ul>
+  <li>start from field Z<sub>p</sub></li>
+  <li>generate all polynomials of degree up to <code>n - 1</code> over that field, assign
+an identifier to each of them</li>
+  <li>generate the additive table for the extension field
+like this:</li>
+</ul>
+
+<div class="highlight"><pre><code class="language-text" data-lang="text">idA -&gt; polyA
+idB -&gt; polyB
+
+             +---- sum of polynomials
+             v
+       polyA + polyB = polyC
+       
+idC &lt;- polyC
+
+=&gt; idA &quot;+&quot; idB = idC</code></pre></div>
+
+<ul>
+  <li>
+    <p>generate the multiplicative table. This a bit trickier because the
+degree of the resulting polynomial might go well beyond the allowed
+value. This is where the <em>irreducible</em> polynomial gets into play,
+together with finding the rest in the division by it:</p>
+
+    <ul>
+      <li>
+        <p>find an <a href="https://en.wikipedia.org/wiki/Irreducible_polynomial">irreducible polynomial</a> of degree <code>n</code> over that
+field (more on this later)</p>
+      </li>
+      <li>
+        <p>generate the multiplicative table like this:</p>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<div class="highlight"><pre><code class="language-text" data-lang="text">idA -&gt; polyA
+idB -&gt; polyB
+
+             +---- multiplication of polynomials
+             v
+       polyA * polyB = product
+
+               +---- rest operation modulo...
+               v
+       product % irreducible = polyC
+       
+idC &lt;- polyC
+
+=&gt; idA &quot;*&quot; idB = idC</code></pre></div>
+
+<p>As an example, let’s generate <code>GF(4)</code>, i.e. the extension of degree 2 of
+Z<sub>2</sub>:</p>
+
+<ul>
+  <li>field: Z<sub>2</sub>, elements are <code>0</code> and <code>1</code></li>
+  <li>all polynomials of degree up to <code>2 - 1 = 1</code>:</li>
+</ul>
+
+<div class="highlight"><pre><code class="language-text" data-lang="text">Id   Polynomial
+0    0
+1    1
+2    x
+3    1 + x</code></pre></div>
+
+<ul>
+  <li>additive table (symmetric):</li>
+</ul>
+
+<div class="highlight"><pre><code class="language-text" data-lang="text">Ids           Polynomials             Id
+(0 &quot;+&quot; 0) --&gt; (0 + 0) = 0         --&gt; 0
+(0 &quot;+&quot; 1) --&gt; (0 + 1) = 1         --&gt; 1
+(0 &quot;+&quot; 2) --&gt; (0 + x) = x         --&gt; 2
+(0 &quot;+&quot; 3) --&gt; (0 + 1 + x) = 1 + x --&gt; 3
+
+(1 &quot;+&quot; 1) --&gt; (1 + 1) = 0         --&gt; 0
+(1 &quot;+&quot; 2) --&gt; (1 + x) = 1 + x     --&gt; 3
+(1 &quot;+&quot; 3) --&gt; (1 + 1 + x) = x     --&gt; 2
+
+(2 &quot;+&quot; 2) --&gt; (x + x) = 0         --&gt; 0
+(2 &quot;+&quot; 3) --&gt; (x + 1 + x) = 1     --&gt; 1
+
+(3 &quot;+&quot; 3) --&gt; (1 + x + 1 + x) = 0 --&gt; 0</code></pre></div>
+
+<ul>
+  <li>irreducible polynomials of degree 2:
+    <ul>
+      <li><code>x^2</code>     is not irreducible because it can be divided by <code>x</code></li>
+      <li><code>x^2 + 1</code> is not irreducible because it can be divided by <code>x + 1</code></li>
+      <li><code>x^2 + x</code> is not irreducible because it can be divided by <code>x</code></li>
+      <li><strong><code>x^2 + x + 1</code> is irreducible, OK!</strong></li>
+    </ul>
+  </li>
+  <li>multiplicative table (symmetric):</li>
+</ul>
+
+<div class="highlight"><pre><code class="language-text" data-lang="text">Ids           Polynomials                                 Id
+(0 &quot;*&quot; 0) --&gt; (0 * 0) % (x^2 + x + 1) = 0             --&gt; 0
+(0 &quot;*&quot; 1) --&gt; (0 * 1) % (x^2 + x + 1) = 0             --&gt; 0
+(0 &quot;*&quot; 2) --&gt; (0 * x) % (x^2 + x + 1) = 0             --&gt; 0
+(0 &quot;*&quot; 3) --&gt; (0 * (1 + x)) % (x^2 + x + 1) = 0       --&gt; 0
+
+(1 &quot;*&quot; 1) --&gt; (1 * 1) % (x^2 + x + 1) = 1             --&gt; 1
+(1 &quot;*&quot; 2) --&gt; (1 * x) % (x^2 + x + 1) = x             --&gt; 2
+(1 &quot;*&quot; 3) --&gt; (1 * (1 + x)) % (x^2 + x + 1) = 1 + x   --&gt; 3
+
+(2 &quot;*&quot; 2) --&gt; (x * x) % (x^2 + x + 1) = 1 + x         --&gt; 3
+(2 &quot;*&quot; 3) --&gt; (x * (1 + x)) % (x^2 + x + 1) = 1       --&gt; 1
+
+(3 &quot;*&quot; 3) --&gt; ((1 + x) * (1 + x)) % (x^2 + x + 1) = x --&gt; 2</code></pre></div>
+
+<p>Summarizing, our finite field of 4 elements is the following:</p>
+
+<div class="highlight"><pre><code class="language-text" data-lang="text">elements (identifiers): {0, 1, 2, 3}
+
+ &quot;+&quot;| 0 1 2 3     &quot;*&quot;| 0 1 2 3
+ ---+--------     ---+--------
+  0 | 0 1 2 3      0 | 0 0 0 0
+  1 | 1 0 3 2      1 | 0 1 2 3
+  2 | 2 3 0 1      2 | 0 2 3 1
+  3 | 3 2 1 0      3 | 0 3 1 2</code></pre></div>
+
+<h3 id="irreducible-polynomials">Irreducible Polynomials</h3>
+
+<p>The last thing we might want is some way to find irreducible polynomials
+of a given degree. To do this, we can iterate over polynomials of that
+degree and check whether they are irreducible or not, e.g. by means of
+<a href="https://en.wikipedia.org/wiki/Factorization_of_polynomials_over_finite_fields#Rabin's_test_of_irreducibility">Rabin’s irreducibility test</a>. You can see some example code
+<a href="https://github.com/polettix/Math-GF/blob/master/lib/Math/GF.pm#L141">here</a>.</p>
+
+<p>More simply, you can look at some lists available in Internet (e.g.
+<a href="http://people.math.carleton.ca/~daniel/hff/">here</a>)!</p>
+
+<h2 id="summing-up">Summing Up</h2>
+
+<p>It’s easy to start from a seemengly innocent game like <a href="https://boardgamegeek.com/boardgame/63268/spot-it">Dobble</a>
+and get dragged in some serious maths! The journey was funny although not
+really linear, which is why I collected these notes and took the time
+(quite a few) for writing a <a href="https://metacpan.org/pod/Math::GF">Perl module for building finite
+fields</a>!</p>
+
+<p>There is a lot to read around, where you will find exact definitions,
+demonstration and much better language than you found here. If anything,
+I can suggest looking at the excellent lessons by <a href="https://www.youtube.com/user/alisonandmatt">Matthew
+Salomone</a> on YouTube.</p>
+
+<p>Have fun!</p>
+
+<h2 id="credits">Credits</h2>
+
+<p>The icons used in the example on the Fano plane are from
+<a href="https://iconmonstr.com/">iconmonstr</a>.</p>
+
+
+      <hr />
+      <footer role="contentinfo">
+        <div class="social-share">
+  <h4>Share on</h4>
+  <ul>
+    <li>
+      <a href="https://twitter.com/intent/tweet?text=/some-maths-for-dobble/" class="twitter" title="Share on Twitter"><i class="fa fa-twitter"></i><span> Twitter</span></a>
+    </li>
+    <li>
+      <a href="https://www.facebook.com/sharer/sharer.php?u=/some-maths-for-dobble/" class="facebook" title="Share on Facebook"><i class="fa fa-facebook"></i><span> Facebook</span></a>
+    </li>
+    <li>
+      <a href="https://plus.google.com/share?url=/some-maths-for-dobble/" class="google-plus" title="Share on Google Plus"><i class="fa fa-google-plus"></i><span> Google+</span></a>
+    </li>
+  </ul>
+</div><!-- /.social-share -->
+        <p class="byline"><strong>Some Maths for Dobble</strong> was published on <time datetime="2018-01-03T00:00:00+01:00">January 03, 2018</time>.</p>
+      </footer>
+    </div><!-- /.article-wrap -->
+  
+    <section id="disqus_thread"></section><!-- /#disqus_thread -->
+  
+  </article>
+</div><!-- /#main -->
+
+<div class="footer-wrap">
+  <div class="related-articles">
+  <h4>You might also enjoy <small class="pull-right">(<a href="/posts/">View all posts</a>)</small></h4>
+    <ul>
+    
+      <li><a href="/telegram-keyboard-button-encoding/" title="Telegram Keyboard Button Encoding">Telegram Keyboard Button Encoding</a></li>
+    
+      <li><a href="/markdown-to-html-in-windows-explorer/" title="Markdown to HTML in Windows Explorer">Markdown to HTML in Windows Explorer</a></li>
+    
+      <li><a href="/webservice-fake-but-still-usable/" title="WebService::Fake - but still usable!">WebService::Fake - but still usable!</a></li>
+    
+    </ul>
+    <hr />
+  </div><!-- /.related-articles -->
+  <footer>
+    
+
+<span>&copy; 2018 Flavio Poletti. Powered by <a href="http://jekyllrb.com" rel="nofollow">Jekyll</a> using the <a href="http://mademistakes.com/minimal-mistakes/" rel="nofollow">Minimal Mistakes</a> theme.</span>
+
+  </footer>
+</div><!-- /.footer-wrap -->
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script src="/assets/js/scripts.min.js"></script>
+
+
+  
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'polettix'; // required: replace example with your forum shortname
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = '//' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+
+</body>
+</html>
