@@ -4,7 +4,7 @@
 <generator uri="https://github.com/jekyll/jekyll">Jekyll</generator>
 <link rel="self" type="application/atom+xml" href="/feed.xml" />
 <link rel="alternate" type="text/html" href="" />
-<updated>2018-01-08T11:26:59+01:00</updated>
+<updated>2018-01-08T11:41:54+01:00</updated>
 <id>/</id>
 <author>
   <name>Flavio Poletti</name>
@@ -54,6 +54,7 @@ some time in the future.&lt;/p&gt;
   &lt;/li&gt;
   &lt;li&gt;&lt;a href=&quot;#summing-up&quot; id=&quot;markdown-toc-summing-up&quot;&gt;Summing Up&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;&lt;a href=&quot;#credits&quot; id=&quot;markdown-toc-credits&quot;&gt;Credits&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#updates&quot; id=&quot;markdown-toc-updates&quot;&gt;Updates&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;h2 id=&quot;whats-the-game-about&quot;&gt;What’s the Game About?&lt;/h2&gt;
@@ -79,11 +80,10 @@ design the full stack of cards: just take all possible pairs of cards and
 decide a new picture for the pair. This would involve a non-trivial amount
 of pictures, because all possible pairs are the following:&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;54 pairs with card A = #1 and card B = #2..#55
-53 pairs with card A = #2 and card B = #3..#55
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;54 pairs with card A =  #1 and card B = #2..#55
+53 pairs with card A =  #2 and card B = #3..#55
 ...
- 1  pair with card A = #54 and card B = #55
-&lt;/code&gt;&lt;/pre&gt;
+ 1  pair with card A = #54 and card B = #55&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;for a total number of &lt;code&gt;(54 + 1) * 54 / 2 = 1485&lt;/code&gt; pairs/pictures.&lt;/p&gt;
 
@@ -136,8 +136,7 @@ basically have the same properties again!&lt;/p&gt;
 
 &lt;p&gt;Another property of a PP of order &lt;code&gt;n&lt;/code&gt; is that it contains exactly:&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;n^2 + n + 1
-&lt;/code&gt;&lt;/pre&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;n^2 + n + 1&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;&lt;em&gt;point&lt;/em&gt;s and the same amount of &lt;em&gt;line&lt;/em&gt;s (thanks to the duality above).&lt;/p&gt;
 
@@ -145,10 +144,9 @@ basically have the same properties again!&lt;/p&gt;
 a PP of order &lt;code&gt;n&lt;/code&gt; is “just” a Steiner system &lt;em&gt;S(2, n+1, n^2 + n + 1)&lt;/em&gt;,
 thus implying for Dobble that:&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;n = 7
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;n = 7
 n + 1 = 8
-n^2 + n + 1 = 57
-&lt;/code&gt;&lt;/pre&gt;
+n^2 + n + 1 = 57&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;going back to what we said earlier: Dobble is a Steiner system &lt;em&gt;S(2, 8,
 57)&lt;/em&gt;. It’s also interesting to note that Dobble is actually missing two
@@ -243,15 +241,14 @@ Let’s take Z&lt;sub&gt;2&lt;/sub&gt; for example, i.e. the field whose two ele
 are the rest classes in the integer division by 2: &lt;code&gt;0&lt;/code&gt; and &lt;code&gt;1&lt;/code&gt;. It’s easy
 to build up all possible triplets, actually as easy as counting in binary:&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;0 0 0 &amp;lt;- ruled out, invalid triplet in the homogeneous representation
-0 0 1 &amp;lt;- &quot;origin&quot;, maps to (0, 0) in the affine plane
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;0 0 0 &amp;lt;- ruled out, invalid triplet in the homogeneous representation
+0 0 1 &amp;lt;- &amp;quot;origin&amp;quot;, maps to (0, 0) in the affine plane
 0 1 0 &amp;lt;- point at infinite
-0 1 1 &amp;lt;- &quot;regular&quot;, maps to (0, 1) in the affine plane
+0 1 1 &amp;lt;- &amp;quot;regular&amp;quot;, maps to (0, 1) in the affine plane
 1 0 0 &amp;lt;- point at infinite
-1 0 1 &amp;lt;- &quot;regular&quot;, maps to (1, 0) in the affine plane
+1 0 1 &amp;lt;- &amp;quot;regular&amp;quot;, maps to (1, 0) in the affine plane
 1 1 0 &amp;lt;- point at infinite
-1 1 1 &amp;lt;- &quot;regular&quot;, maps to (1, 1) in the affine plane
-&lt;/code&gt;&lt;/pre&gt;
+1 1 1 &amp;lt;- &amp;quot;regular&amp;quot;, maps to (1, 1) in the affine plane&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;There is a total of &lt;code&gt;n^3 - 1&lt;/code&gt; possible points, i.e. 7 in our case. Does
 this ring a bell? Sure it does, it’s the same number of points in the Fano
@@ -264,7 +261,7 @@ the same point in the affine plane, so we have to only consider the
 classes of &lt;em&gt;different&lt;/em&gt; coordinates and avoid duplicates that can be
 obtained by scaling already considered ones:&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;0 0 0 &amp;lt;- ruled out, invalid homogeneous triplet
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;0 0 0 &amp;lt;- ruled out, invalid homogeneous triplet
 0 0 1
 0 0 2 &amp;lt;- ruled out, (0 0 1) * 2 
 0 1 0
@@ -290,8 +287,7 @@ obtained by scaling already considered ones:&lt;/p&gt;
 2 1 2 &amp;lt;- ruled out, (1 2 1) * 2
 2 2 0 &amp;lt;- ruled out, (1 1 0) * 2
 2 2 1 &amp;lt;- ruled out, (1 1 2) * 2
-2 2 2 &amp;lt;- ruled out, (1 1 1) * 2
-&lt;/code&gt;&lt;/pre&gt;
+2 2 2 &amp;lt;- ruled out, (1 1 1) * 2&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;Out of the initial &lt;code&gt;3^3 = 27&lt;/code&gt; candidates, only 13 survived, so it’s
 actually a bit more difficult than to simply count and remove the first
@@ -299,20 +295,19 @@ triplet. Note that this is exactly the number of points we were expecting,
 because of the formula we saw before: &lt;code&gt;3^2 + 3 + 1 = 13&lt;/code&gt;. The distinct
 points are the following in homogeneous coordinates:&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt; 0. 0 0 1
- 1. 0 1 0
- 2. 0 1 1
- 3. 0 1 2
- 4. 1 0 0
- 5. 1 0 1
- 6. 1 0 2
- 7. 1 1 0
- 8. 1 1 1
- 9. 1 1 2
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;0.  0 0 1
+1.  0 1 0
+2.  0 1 1
+3.  0 1 2
+4.  1 0 0
+5.  1 0 1
+6.  1 0 2
+7.  1 1 0
+8.  1 1 1
+9.  1 1 2
 10. 1 2 0
 11. 1 2 1
-12. 1 2 2
-&lt;/code&gt;&lt;/pre&gt;
+12. 1 2 2&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;It turns out that there is a simple algoritm for generating all “distinct”
 homogeneous triplets: just start counting and jump all elements whose
@@ -324,15 +319,13 @@ leftmost non-zero element is different from 1.&lt;/p&gt;
 generic line in the affine plane can be expressed with the following
 equation:&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;a * x + b * y + c = 0
-&lt;/code&gt;&lt;/pre&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;a * x + b * y + c = 0&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;This equation can be easily multiplied by any non-zero constant, so
 assuming that &lt;code&gt;Z&lt;/code&gt; is different from &lt;code&gt;0&lt;/code&gt; and remembering the relations of
 &lt;code&gt;x&lt;/code&gt; with &lt;code&gt;X&lt;/code&gt; and &lt;code&gt;y&lt;/code&gt; with &lt;code&gt;Y&lt;/code&gt;:&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;a * X + b * Y + c * Z = 0
-&lt;/code&gt;&lt;/pre&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;a * X + b * Y + c * Z = 0&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;Hence, a line can be expressed by three values &lt;code&gt;a&lt;/code&gt;, &lt;code&gt;b&lt;/code&gt; and &lt;code&gt;c&lt;/code&gt;, with the
 usual rule that any of the three MUST be different from zero. As a matter
@@ -348,20 +341,19 @@ same equation!&lt;/p&gt;
 
 &lt;p&gt;Let’s see what happens with the example based on Z&lt;sub&gt;2&lt;/sub&gt;:&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt; Line   Homog.   Points in Line (homogen.     Point
- Id     repr.    representation)              Ids
- 0   -&amp;gt; 0 0 1 -&amp;gt; (1 0 0), (0 1 0), (1 1 0) -&amp;gt; 3, 1, 5
- 1   -&amp;gt; 0 1 0 -&amp;gt; (1 0 0), (0 0 1), (1 0 1) -&amp;gt; 3, 0, 4
- 2   -&amp;gt; 0 1 1 -&amp;gt; (1 0 0), (0 1 1), (1 1 1) -&amp;gt; 3, 2, 6
- 3   -&amp;gt; 1 0 0 -&amp;gt; (0 0 1), (0 1 0), (0 1 1) -&amp;gt; 0, 1, 2
- 4   -&amp;gt; 1 0 1 -&amp;gt; (0 1 0), (1 0 1), (1 1 1) -&amp;gt; 1, 4, 6
- 5   -&amp;gt; 1 1 0 -&amp;gt; (0 0 1), (1 1 0), (1 1 1) -&amp;gt; 0, 5, 6
- 6   -&amp;gt; 1 1 1 -&amp;gt; (1 1 0), (1 0 1), (0 1 1) -&amp;gt; 5, 4, 2
-&lt;/code&gt;&lt;/pre&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;Line   Homog.   Points in Line (homogen.     Point
+Id     repr.    representation)              Ids
+0   -&amp;gt; 0 0 1 -&amp;gt; (1 0 0), (0 1 0), (1 1 0) -&amp;gt; 3, 1, 5
+1   -&amp;gt; 0 1 0 -&amp;gt; (1 0 0), (0 0 1), (1 0 1) -&amp;gt; 3, 0, 4
+2   -&amp;gt; 0 1 1 -&amp;gt; (1 0 0), (0 1 1), (1 1 1) -&amp;gt; 3, 2, 6
+3   -&amp;gt; 1 0 0 -&amp;gt; (0 0 1), (0 1 0), (0 1 1) -&amp;gt; 0, 1, 2
+4   -&amp;gt; 1 0 1 -&amp;gt; (0 1 0), (1 0 1), (1 1 1) -&amp;gt; 1, 4, 6
+5   -&amp;gt; 1 1 0 -&amp;gt; (0 0 1), (1 1 0), (1 1 1) -&amp;gt; 0, 5, 6
+6   -&amp;gt; 1 1 1 -&amp;gt; (1 1 0), (1 0 1), (0 1 1) -&amp;gt; 5, 4, 2&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;We can do the same for Z&lt;sub&gt;3&lt;/sub&gt; of course:&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;Line                                                  Point Ids
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;Line                                                  Point Ids
 Id
  0  -&amp;gt; 0 0 1 -&amp;gt; (1 0 0), (0 1 0), (1 1 0), (1 2 0) -&amp;gt; 4, 1, 7, 10
  1  -&amp;gt; 0 1 0 -&amp;gt; (0 0 1), (1 0 0), (1 0 1), (1 0 2) -&amp;gt; 0, 4, 5, 6
@@ -375,8 +367,7 @@ Id
  9  -&amp;gt; 1 1 2 -&amp;gt; (0 1 1), (1 0 1), (1 1 2), (1 2 0) -&amp;gt; 2, 5, 9, 10
 10  -&amp;gt; 1 2 0 -&amp;gt; (1 1 0), (1 1 1), (1 1 2), (0 0 1) -&amp;gt; 7, 8, 9, 0
 11  -&amp;gt; 1 2 1 -&amp;gt; (0 1 1), (1 0 2), (1 1 0), (1 2 1) -&amp;gt; 2, 6, 7, 11
-12  -&amp;gt; 1 2 2 -&amp;gt; (0 1 2), (1 0 1), (1 1 0), (1 2 2) -&amp;gt; 3, 5, 7, 12
-&lt;/code&gt;&lt;/pre&gt;
+12  -&amp;gt; 1 2 2 -&amp;gt; (0 1 2), (1 0 1), (1 1 0), (1 2 2) -&amp;gt; 3, 5, 7, 12&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;h3 id=&quot;putting-things-together&quot;&gt;Putting things together&lt;/h3&gt;
 
@@ -396,14 +387,14 @@ this later, stay tuned!&lt;/li&gt;
     &lt;p&gt;find all &lt;em&gt;distinct&lt;/em&gt; triplets of homogeneous coordinates. This can be
 done with the trick of “first non-zero element must be 1” saw before&lt;/p&gt;
   &lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;for each triplet, find all triplets that are “orthogonal” to it. For
+  &lt;li&gt;for each triplet, find all triplets that are “orthogonal” to it. For
 example, if the starting triplet is &lt;code&gt;(X, Y, Z)&lt;/code&gt;, find all triplets
-&lt;code&gt;(a, b, c)&lt;/code&gt; that satisfy the following equation:&lt;/p&gt;
+&lt;code&gt;(a, b, c)&lt;/code&gt; that satisfy the following equation:&lt;/li&gt;
+&lt;/ul&gt;
 
-    &lt;pre&gt;&lt;code&gt;a * X + b * Y + c * Z = 0
-&lt;/code&gt;&lt;/pre&gt;
-  &lt;/li&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;a * X + b * Y + c * Z = 0&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;ul&gt;
   &lt;li&gt;associate an identifier to each triplet, and output the identifier of
 each one together with the identifiers of the triplets orthogonal to
 that one.&lt;/li&gt;
@@ -412,25 +403,23 @@ that one.&lt;/li&gt;
 &lt;p&gt;As an example in Perl, we will use &lt;a href=&quot;https://metacpan.org/pod/Math::GF&quot;&gt;Math::GF&lt;/a&gt; for building the
 field and get all elements inside:&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;use Math::GF;
-my $order = shift // 2;
-my @elements = Math::GF-&amp;gt;new($order)-&amp;gt;all;
-&lt;/code&gt;&lt;/pre&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-perl&quot; data-lang=&quot;perl&quot;&gt;&lt;span class=&quot;k&quot;&gt;use&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;Math::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;GF&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;my&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$order&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;shift&lt;/span&gt; &lt;span class=&quot;sr&quot;&gt;//&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;my&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;@elements&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;Math::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;GF&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;new&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$order&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;all&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;We can then proceed to build all distinct triplets representing points,
 using “the trick” and avoiding the all-zeros triplet:&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;my $zero = $elements[0];
-my $one  = $elements[1];
-my @points;
-for my $i ($zero, $one) {
-   for my $j ($i == $zero ? ($zero, $one) : @elements) {
-      for my $k ((($i == $zero) &amp;amp;&amp;amp; ($j == $zero)) ? $one : @elements) {
-         push @points, [$i, $j, $k];
-      }
-   }
-}
-&lt;/code&gt;&lt;/pre&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-perl&quot; data-lang=&quot;perl&quot;&gt;&lt;span class=&quot;k&quot;&gt;my&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$zero&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$elements&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;my&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$one&lt;/span&gt;  &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$elements&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;my&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;@points&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;my&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$i&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$zero&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$one&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+   &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;my&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$j&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$zero&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;?&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$zero&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$one&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;@elements&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+      &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;my&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$k&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(((&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$zero&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$j&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$zero&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;?&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$one&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;@elements&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+         &lt;span class=&quot;nb&quot;&gt;push&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;@points&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$i&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$j&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$k&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;
+      &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+   &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;Confused? Take a closer look and you will see that this is exactly the
 coding of our “trick”:&lt;/p&gt;
@@ -456,49 +445,43 @@ generate. Assuming that there are &lt;code&gt;n&lt;/code&gt; elements in the fie
   &lt;li&gt;&lt;code&gt;n^2&lt;/code&gt; for &lt;code&gt;(1, j, k)&lt;/code&gt; (both &lt;code&gt;j&lt;/code&gt; and &lt;code&gt;k&lt;/code&gt; from 0 to &lt;code&gt;n - 1&lt;/code&gt;)&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;which is, again, the formula we saw earlier:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;n^2 + n + 1
-&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;which is, again, the formula we saw earlier: &lt;code&gt;n^2 + n + 1&lt;/code&gt;.&lt;/p&gt;
 
 &lt;p&gt;Now we are ready to build lines by finding orthogonal triplets. We
 leverage on the same triplets as we found in &lt;code&gt;@points&lt;/code&gt; because of duality:&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;my @lines = map { [] } 1 .. scalar(@points);
-for my $li (0 .. $#points) {
-   my $L = $points[$li];
-   for my $pi ($li .. $#points) {
-      last if scalar(@{$lines[$li]}) == $order + 1;
-      my $sum = $zero;
-      $sum = $sum + $L-&amp;gt;[$_] * $points[$pi][$_] for 0 .. 2;
-      next if $sum != $zero;
-      push @{$lines[$li]}, $pi;
-      push @{$lines[$pi]}, $li if $pi != $li;
-   }
-}
-&lt;/code&gt;&lt;/pre&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-perl&quot; data-lang=&quot;perl&quot;&gt;&lt;span class=&quot;k&quot;&gt;my&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;@lines&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;map&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[]&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;..&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;scalar&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;@points&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;my&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$li&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;..&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$#points&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+   &lt;span class=&quot;k&quot;&gt;my&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$L&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$points&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$li&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;
+   &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;my&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$pi&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$li&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;..&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$#points&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+      &lt;span class=&quot;k&quot;&gt;last&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;scalar&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;@&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$lines&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$li&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]})&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$order&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+      &lt;span class=&quot;k&quot;&gt;my&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$sum&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$zero&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+      &lt;span class=&quot;nv&quot;&gt;$sum&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$sum&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$L&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$_&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$points&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$pi&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;][&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$_&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;..&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+      &lt;span class=&quot;k&quot;&gt;next&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$sum&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!=&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$zero&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+      &lt;span class=&quot;nb&quot;&gt;push&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;@&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$lines&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$li&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]},&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$pi&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+      &lt;span class=&quot;nb&quot;&gt;push&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;@&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$lines&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$pi&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]},&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$li&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$pi&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;!=&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$li&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+   &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;Now &lt;code&gt;@lines&lt;/code&gt; is an array of arrays, each containing identifiers of the
 points belonging to the line. We can easily print them:&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;sub print_aoa {
-   my $aoa = shift;
-   printf {*STDOUT} &quot;%3d. (%s)\n&quot;, $_, join &#39;, &#39;, @{$aoa-&amp;gt;[$_]}
-     for 0 .. $#$aoa;
-}
-print_aoa(\@lines);
-&lt;/code&gt;&lt;/pre&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-perl&quot; data-lang=&quot;perl&quot;&gt;&lt;span class=&quot;k&quot;&gt;sub &lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;print_aoa&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+   &lt;span class=&quot;k&quot;&gt;my&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$aoa&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;shift&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+   &lt;span class=&quot;nb&quot;&gt;printf&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;bp&quot;&gt;STDOUT&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;%3d. (%s)\n&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$_&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;join&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;, &amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;@&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$aoa&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$_&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]}&lt;/span&gt;
+     &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;..&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$#$aoa&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;print_aoa&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;@lines&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;The full script can be found &lt;a href=&quot;https://github.com/polettix/Math-GF/blob/master/eg/pg2&quot;&gt;here&lt;/a&gt;. Sample run with order 2:&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;0. (1, 3, 5)
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;0. (1, 3, 5)
 1. (0, 3, 4)
 2. (2, 3, 6)
 3. (0, 1, 2)
 4. (1, 4, 6)
 5. (0, 5, 6)
-6. (2, 4, 5)
-&lt;/code&gt;&lt;/pre&gt;
+6. (2, 4, 5)&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;h2 id=&quot;finite-fields-of-order-psupnsup&quot;&gt;Finite Fields of Order p&lt;sup&gt;n&lt;/sup&gt;&lt;/h2&gt;
 
@@ -696,7 +679,7 @@ degree and check whether they are irreducible or not, e.g. by means of
 &lt;a href=&quot;https://en.wikipedia.org/wiki/Factorization_of_polynomials_over_finite_fields#Rabin&#39;s_test_of_irreducibility&quot;&gt;Rabin’s irreducibility test&lt;/a&gt;. You can see some example code
 &lt;a href=&quot;https://github.com/polettix/Math-GF/blob/master/lib/Math/GF.pm#L141&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
 
-&lt;p&gt;More simply, you can look at some lists available in Internet (e.g.
+&lt;p&gt;Simpler than this, you can look at some lists available in Internet (e.g.
 &lt;a href=&quot;http://people.math.carleton.ca/~daniel/hff/&quot;&gt;here&lt;/a&gt;)!&lt;/p&gt;
 
 &lt;h2 id=&quot;summing-up&quot;&gt;Summing Up&lt;/h2&gt;
@@ -718,6 +701,12 @@ Salomone&lt;/a&gt; on YouTube.&lt;/p&gt;
 
 &lt;p&gt;The icons used in the example on the Fano plane are from
 &lt;a href=&quot;https://iconmonstr.com/&quot;&gt;iconmonstr&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h2 id=&quot;updates&quot;&gt;Updates&lt;/h2&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;code&gt;2018-01-08&lt;/code&gt; Cosmetics&lt;/li&gt;
+&lt;/ul&gt;
 
 
     &lt;p&gt;&lt;a href=&quot;/some-maths-for-dobble/&quot;&gt;Some Maths for Dobble&lt;/a&gt; was originally published by Flavio Poletti at &lt;a href=&quot;&quot;&gt;PolettiX!&lt;/a&gt; on January 03, 2018.&lt;/p&gt;

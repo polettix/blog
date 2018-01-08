@@ -194,6 +194,7 @@ some time in the future.</p>
   </li>
   <li><a href="#summing-up" id="markdown-toc-summing-up">Summing Up</a></li>
   <li><a href="#credits" id="markdown-toc-credits">Credits</a></li>
+  <li><a href="#updates" id="markdown-toc-updates">Updates</a></li>
 </ul>
 
 <h2 id="whats-the-game-about">What’s the Game About?</h2>
@@ -219,11 +220,10 @@ design the full stack of cards: just take all possible pairs of cards and
 decide a new picture for the pair. This would involve a non-trivial amount
 of pictures, because all possible pairs are the following:</p>
 
-<pre><code>54 pairs with card A = #1 and card B = #2..#55
-53 pairs with card A = #2 and card B = #3..#55
+<div class="highlight"><pre><code class="language-text" data-lang="text">54 pairs with card A =  #1 and card B = #2..#55
+53 pairs with card A =  #2 and card B = #3..#55
 ...
- 1  pair with card A = #54 and card B = #55
-</code></pre>
+ 1  pair with card A = #54 and card B = #55</code></pre></div>
 
 <p>for a total number of <code>(54 + 1) * 54 / 2 = 1485</code> pairs/pictures.</p>
 
@@ -276,8 +276,7 @@ basically have the same properties again!</p>
 
 <p>Another property of a PP of order <code>n</code> is that it contains exactly:</p>
 
-<pre><code>n^2 + n + 1
-</code></pre>
+<div class="highlight"><pre><code class="language-text" data-lang="text">n^2 + n + 1</code></pre></div>
 
 <p><em>point</em>s and the same amount of <em>line</em>s (thanks to the duality above).</p>
 
@@ -285,10 +284,9 @@ basically have the same properties again!</p>
 a PP of order <code>n</code> is “just” a Steiner system <em>S(2, n+1, n^2 + n + 1)</em>,
 thus implying for Dobble that:</p>
 
-<pre><code>n = 7
+<div class="highlight"><pre><code class="language-text" data-lang="text">n = 7
 n + 1 = 8
-n^2 + n + 1 = 57
-</code></pre>
+n^2 + n + 1 = 57</code></pre></div>
 
 <p>going back to what we said earlier: Dobble is a Steiner system <em>S(2, 8,
 57)</em>. It’s also interesting to note that Dobble is actually missing two
@@ -383,15 +381,14 @@ Let’s take Z<sub>2</sub> for example, i.e. the field whose two elements
 are the rest classes in the integer division by 2: <code>0</code> and <code>1</code>. It’s easy
 to build up all possible triplets, actually as easy as counting in binary:</p>
 
-<pre><code>0 0 0 &lt;- ruled out, invalid triplet in the homogeneous representation
-0 0 1 &lt;- "origin", maps to (0, 0) in the affine plane
+<div class="highlight"><pre><code class="language-text" data-lang="text">0 0 0 &lt;- ruled out, invalid triplet in the homogeneous representation
+0 0 1 &lt;- &quot;origin&quot;, maps to (0, 0) in the affine plane
 0 1 0 &lt;- point at infinite
-0 1 1 &lt;- "regular", maps to (0, 1) in the affine plane
+0 1 1 &lt;- &quot;regular&quot;, maps to (0, 1) in the affine plane
 1 0 0 &lt;- point at infinite
-1 0 1 &lt;- "regular", maps to (1, 0) in the affine plane
+1 0 1 &lt;- &quot;regular&quot;, maps to (1, 0) in the affine plane
 1 1 0 &lt;- point at infinite
-1 1 1 &lt;- "regular", maps to (1, 1) in the affine plane
-</code></pre>
+1 1 1 &lt;- &quot;regular&quot;, maps to (1, 1) in the affine plane</code></pre></div>
 
 <p>There is a total of <code>n^3 - 1</code> possible points, i.e. 7 in our case. Does
 this ring a bell? Sure it does, it’s the same number of points in the Fano
@@ -404,7 +401,7 @@ the same point in the affine plane, so we have to only consider the
 classes of <em>different</em> coordinates and avoid duplicates that can be
 obtained by scaling already considered ones:</p>
 
-<pre><code>0 0 0 &lt;- ruled out, invalid homogeneous triplet
+<div class="highlight"><pre><code class="language-text" data-lang="text">0 0 0 &lt;- ruled out, invalid homogeneous triplet
 0 0 1
 0 0 2 &lt;- ruled out, (0 0 1) * 2 
 0 1 0
@@ -430,8 +427,7 @@ obtained by scaling already considered ones:</p>
 2 1 2 &lt;- ruled out, (1 2 1) * 2
 2 2 0 &lt;- ruled out, (1 1 0) * 2
 2 2 1 &lt;- ruled out, (1 1 2) * 2
-2 2 2 &lt;- ruled out, (1 1 1) * 2
-</code></pre>
+2 2 2 &lt;- ruled out, (1 1 1) * 2</code></pre></div>
 
 <p>Out of the initial <code>3^3 = 27</code> candidates, only 13 survived, so it’s
 actually a bit more difficult than to simply count and remove the first
@@ -439,20 +435,19 @@ triplet. Note that this is exactly the number of points we were expecting,
 because of the formula we saw before: <code>3^2 + 3 + 1 = 13</code>. The distinct
 points are the following in homogeneous coordinates:</p>
 
-<pre><code> 0. 0 0 1
- 1. 0 1 0
- 2. 0 1 1
- 3. 0 1 2
- 4. 1 0 0
- 5. 1 0 1
- 6. 1 0 2
- 7. 1 1 0
- 8. 1 1 1
- 9. 1 1 2
+<div class="highlight"><pre><code class="language-text" data-lang="text">0.  0 0 1
+1.  0 1 0
+2.  0 1 1
+3.  0 1 2
+4.  1 0 0
+5.  1 0 1
+6.  1 0 2
+7.  1 1 0
+8.  1 1 1
+9.  1 1 2
 10. 1 2 0
 11. 1 2 1
-12. 1 2 2
-</code></pre>
+12. 1 2 2</code></pre></div>
 
 <p>It turns out that there is a simple algoritm for generating all “distinct”
 homogeneous triplets: just start counting and jump all elements whose
@@ -464,15 +459,13 @@ leftmost non-zero element is different from 1.</p>
 generic line in the affine plane can be expressed with the following
 equation:</p>
 
-<pre><code>a * x + b * y + c = 0
-</code></pre>
+<div class="highlight"><pre><code class="language-text" data-lang="text">a * x + b * y + c = 0</code></pre></div>
 
 <p>This equation can be easily multiplied by any non-zero constant, so
 assuming that <code>Z</code> is different from <code>0</code> and remembering the relations of
 <code>x</code> with <code>X</code> and <code>y</code> with <code>Y</code>:</p>
 
-<pre><code>a * X + b * Y + c * Z = 0
-</code></pre>
+<div class="highlight"><pre><code class="language-text" data-lang="text">a * X + b * Y + c * Z = 0</code></pre></div>
 
 <p>Hence, a line can be expressed by three values <code>a</code>, <code>b</code> and <code>c</code>, with the
 usual rule that any of the three MUST be different from zero. As a matter
@@ -488,20 +481,19 @@ same equation!</p>
 
 <p>Let’s see what happens with the example based on Z<sub>2</sub>:</p>
 
-<pre><code> Line   Homog.   Points in Line (homogen.     Point
- Id     repr.    representation)              Ids
- 0   -&gt; 0 0 1 -&gt; (1 0 0), (0 1 0), (1 1 0) -&gt; 3, 1, 5
- 1   -&gt; 0 1 0 -&gt; (1 0 0), (0 0 1), (1 0 1) -&gt; 3, 0, 4
- 2   -&gt; 0 1 1 -&gt; (1 0 0), (0 1 1), (1 1 1) -&gt; 3, 2, 6
- 3   -&gt; 1 0 0 -&gt; (0 0 1), (0 1 0), (0 1 1) -&gt; 0, 1, 2
- 4   -&gt; 1 0 1 -&gt; (0 1 0), (1 0 1), (1 1 1) -&gt; 1, 4, 6
- 5   -&gt; 1 1 0 -&gt; (0 0 1), (1 1 0), (1 1 1) -&gt; 0, 5, 6
- 6   -&gt; 1 1 1 -&gt; (1 1 0), (1 0 1), (0 1 1) -&gt; 5, 4, 2
-</code></pre>
+<div class="highlight"><pre><code class="language-text" data-lang="text">Line   Homog.   Points in Line (homogen.     Point
+Id     repr.    representation)              Ids
+0   -&gt; 0 0 1 -&gt; (1 0 0), (0 1 0), (1 1 0) -&gt; 3, 1, 5
+1   -&gt; 0 1 0 -&gt; (1 0 0), (0 0 1), (1 0 1) -&gt; 3, 0, 4
+2   -&gt; 0 1 1 -&gt; (1 0 0), (0 1 1), (1 1 1) -&gt; 3, 2, 6
+3   -&gt; 1 0 0 -&gt; (0 0 1), (0 1 0), (0 1 1) -&gt; 0, 1, 2
+4   -&gt; 1 0 1 -&gt; (0 1 0), (1 0 1), (1 1 1) -&gt; 1, 4, 6
+5   -&gt; 1 1 0 -&gt; (0 0 1), (1 1 0), (1 1 1) -&gt; 0, 5, 6
+6   -&gt; 1 1 1 -&gt; (1 1 0), (1 0 1), (0 1 1) -&gt; 5, 4, 2</code></pre></div>
 
 <p>We can do the same for Z<sub>3</sub> of course:</p>
 
-<pre><code>Line                                                  Point Ids
+<div class="highlight"><pre><code class="language-text" data-lang="text">Line                                                  Point Ids
 Id
  0  -&gt; 0 0 1 -&gt; (1 0 0), (0 1 0), (1 1 0), (1 2 0) -&gt; 4, 1, 7, 10
  1  -&gt; 0 1 0 -&gt; (0 0 1), (1 0 0), (1 0 1), (1 0 2) -&gt; 0, 4, 5, 6
@@ -515,8 +507,7 @@ Id
  9  -&gt; 1 1 2 -&gt; (0 1 1), (1 0 1), (1 1 2), (1 2 0) -&gt; 2, 5, 9, 10
 10  -&gt; 1 2 0 -&gt; (1 1 0), (1 1 1), (1 1 2), (0 0 1) -&gt; 7, 8, 9, 0
 11  -&gt; 1 2 1 -&gt; (0 1 1), (1 0 2), (1 1 0), (1 2 1) -&gt; 2, 6, 7, 11
-12  -&gt; 1 2 2 -&gt; (0 1 2), (1 0 1), (1 1 0), (1 2 2) -&gt; 3, 5, 7, 12
-</code></pre>
+12  -&gt; 1 2 2 -&gt; (0 1 2), (1 0 1), (1 1 0), (1 2 2) -&gt; 3, 5, 7, 12</code></pre></div>
 
 <h3 id="putting-things-together">Putting things together</h3>
 
@@ -536,14 +527,14 @@ this later, stay tuned!</li>
     <p>find all <em>distinct</em> triplets of homogeneous coordinates. This can be
 done with the trick of “first non-zero element must be 1” saw before</p>
   </li>
-  <li>
-    <p>for each triplet, find all triplets that are “orthogonal” to it. For
+  <li>for each triplet, find all triplets that are “orthogonal” to it. For
 example, if the starting triplet is <code>(X, Y, Z)</code>, find all triplets
-<code>(a, b, c)</code> that satisfy the following equation:</p>
+<code>(a, b, c)</code> that satisfy the following equation:</li>
+</ul>
 
-    <pre><code>a * X + b * Y + c * Z = 0
-</code></pre>
-  </li>
+<div class="highlight"><pre><code class="language-text" data-lang="text">a * X + b * Y + c * Z = 0</code></pre></div>
+
+<ul>
   <li>associate an identifier to each triplet, and output the identifier of
 each one together with the identifiers of the triplets orthogonal to
 that one.</li>
@@ -552,25 +543,23 @@ that one.</li>
 <p>As an example in Perl, we will use <a href="https://metacpan.org/pod/Math::GF">Math::GF</a> for building the
 field and get all elements inside:</p>
 
-<pre><code>use Math::GF;
-my $order = shift // 2;
-my @elements = Math::GF-&gt;new($order)-&gt;all;
-</code></pre>
+<div class="highlight"><pre><code class="language-perl" data-lang="perl"><span class="k">use</span> <span class="nn">Math::</span><span class="n">GF</span><span class="p">;</span>
+<span class="k">my</span> <span class="nv">$order</span> <span class="o">=</span> <span class="nb">shift</span> <span class="sr">//</span> <span class="mi">2</span><span class="p">;</span>
+<span class="k">my</span> <span class="nv">@elements</span> <span class="o">=</span> <span class="nn">Math::</span><span class="n">GF</span><span class="o">-&gt;</span><span class="k">new</span><span class="p">(</span><span class="nv">$order</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">all</span><span class="p">;</span></code></pre></div>
 
 <p>We can then proceed to build all distinct triplets representing points,
 using “the trick” and avoiding the all-zeros triplet:</p>
 
-<pre><code>my $zero = $elements[0];
-my $one  = $elements[1];
-my @points;
-for my $i ($zero, $one) {
-   for my $j ($i == $zero ? ($zero, $one) : @elements) {
-      for my $k ((($i == $zero) &amp;&amp; ($j == $zero)) ? $one : @elements) {
-         push @points, [$i, $j, $k];
-      }
-   }
-}
-</code></pre>
+<div class="highlight"><pre><code class="language-perl" data-lang="perl"><span class="k">my</span> <span class="nv">$zero</span> <span class="o">=</span> <span class="nv">$elements</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+<span class="k">my</span> <span class="nv">$one</span>  <span class="o">=</span> <span class="nv">$elements</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
+<span class="k">my</span> <span class="nv">@points</span><span class="p">;</span>
+<span class="k">for</span> <span class="k">my</span> <span class="nv">$i</span> <span class="p">(</span><span class="nv">$zero</span><span class="p">,</span> <span class="nv">$one</span><span class="p">)</span> <span class="p">{</span>
+   <span class="k">for</span> <span class="k">my</span> <span class="nv">$j</span> <span class="p">(</span><span class="nv">$i</span> <span class="o">==</span> <span class="nv">$zero</span> <span class="p">?</span> <span class="p">(</span><span class="nv">$zero</span><span class="p">,</span> <span class="nv">$one</span><span class="p">)</span> <span class="p">:</span> <span class="nv">@elements</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">for</span> <span class="k">my</span> <span class="nv">$k</span> <span class="p">(((</span><span class="nv">$i</span> <span class="o">==</span> <span class="nv">$zero</span><span class="p">)</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="nv">$j</span> <span class="o">==</span> <span class="nv">$zero</span><span class="p">))</span> <span class="p">?</span> <span class="nv">$one</span> <span class="p">:</span> <span class="nv">@elements</span><span class="p">)</span> <span class="p">{</span>
+         <span class="nb">push</span> <span class="nv">@points</span><span class="p">,</span> <span class="p">[</span><span class="nv">$i</span><span class="p">,</span> <span class="nv">$j</span><span class="p">,</span> <span class="nv">$k</span><span class="p">];</span>
+      <span class="p">}</span>
+   <span class="p">}</span>
+<span class="p">}</span></code></pre></div>
 
 <p>Confused? Take a closer look and you will see that this is exactly the
 coding of our “trick”:</p>
@@ -596,49 +585,43 @@ generate. Assuming that there are <code>n</code> elements in the field:</p>
   <li><code>n^2</code> for <code>(1, j, k)</code> (both <code>j</code> and <code>k</code> from 0 to <code>n - 1</code>)</li>
 </ul>
 
-<p>which is, again, the formula we saw earlier:</p>
-
-<pre><code>n^2 + n + 1
-</code></pre>
+<p>which is, again, the formula we saw earlier: <code>n^2 + n + 1</code>.</p>
 
 <p>Now we are ready to build lines by finding orthogonal triplets. We
 leverage on the same triplets as we found in <code>@points</code> because of duality:</p>
 
-<pre><code>my @lines = map { [] } 1 .. scalar(@points);
-for my $li (0 .. $#points) {
-   my $L = $points[$li];
-   for my $pi ($li .. $#points) {
-      last if scalar(@{$lines[$li]}) == $order + 1;
-      my $sum = $zero;
-      $sum = $sum + $L-&gt;[$_] * $points[$pi][$_] for 0 .. 2;
-      next if $sum != $zero;
-      push @{$lines[$li]}, $pi;
-      push @{$lines[$pi]}, $li if $pi != $li;
-   }
-}
-</code></pre>
+<div class="highlight"><pre><code class="language-perl" data-lang="perl"><span class="k">my</span> <span class="nv">@lines</span> <span class="o">=</span> <span class="nb">map</span> <span class="p">{</span> <span class="o">[]</span> <span class="p">}</span> <span class="mi">1</span> <span class="o">..</span> <span class="nb">scalar</span><span class="p">(</span><span class="nv">@points</span><span class="p">);</span>
+<span class="k">for</span> <span class="k">my</span> <span class="nv">$li</span> <span class="p">(</span><span class="mi">0</span> <span class="o">..</span> <span class="nv">$#points</span><span class="p">)</span> <span class="p">{</span>
+   <span class="k">my</span> <span class="nv">$L</span> <span class="o">=</span> <span class="nv">$points</span><span class="p">[</span><span class="nv">$li</span><span class="p">];</span>
+   <span class="k">for</span> <span class="k">my</span> <span class="nv">$pi</span> <span class="p">(</span><span class="nv">$li</span> <span class="o">..</span> <span class="nv">$#points</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">last</span> <span class="k">if</span> <span class="nb">scalar</span><span class="p">(</span><span class="nv">@</span><span class="p">{</span><span class="nv">$lines</span><span class="p">[</span><span class="nv">$li</span><span class="p">]})</span> <span class="o">==</span> <span class="nv">$order</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
+      <span class="k">my</span> <span class="nv">$sum</span> <span class="o">=</span> <span class="nv">$zero</span><span class="p">;</span>
+      <span class="nv">$sum</span> <span class="o">=</span> <span class="nv">$sum</span> <span class="o">+</span> <span class="nv">$L</span><span class="o">-&gt;</span><span class="p">[</span><span class="nv">$_</span><span class="p">]</span> <span class="o">*</span> <span class="nv">$points</span><span class="p">[</span><span class="nv">$pi</span><span class="p">][</span><span class="nv">$_</span><span class="p">]</span> <span class="k">for</span> <span class="mi">0</span> <span class="o">..</span> <span class="mi">2</span><span class="p">;</span>
+      <span class="k">next</span> <span class="k">if</span> <span class="nv">$sum</span> <span class="o">!=</span> <span class="nv">$zero</span><span class="p">;</span>
+      <span class="nb">push</span> <span class="nv">@</span><span class="p">{</span><span class="nv">$lines</span><span class="p">[</span><span class="nv">$li</span><span class="p">]},</span> <span class="nv">$pi</span><span class="p">;</span>
+      <span class="nb">push</span> <span class="nv">@</span><span class="p">{</span><span class="nv">$lines</span><span class="p">[</span><span class="nv">$pi</span><span class="p">]},</span> <span class="nv">$li</span> <span class="k">if</span> <span class="nv">$pi</span> <span class="o">!=</span> <span class="nv">$li</span><span class="p">;</span>
+   <span class="p">}</span>
+<span class="p">}</span></code></pre></div>
 
 <p>Now <code>@lines</code> is an array of arrays, each containing identifiers of the
 points belonging to the line. We can easily print them:</p>
 
-<pre><code>sub print_aoa {
-   my $aoa = shift;
-   printf {*STDOUT} "%3d. (%s)\n", $_, join ', ', @{$aoa-&gt;[$_]}
-     for 0 .. $#$aoa;
-}
-print_aoa(\@lines);
-</code></pre>
+<div class="highlight"><pre><code class="language-perl" data-lang="perl"><span class="k">sub </span><span class="nf">print_aoa</span> <span class="p">{</span>
+   <span class="k">my</span> <span class="nv">$aoa</span> <span class="o">=</span> <span class="nb">shift</span><span class="p">;</span>
+   <span class="nb">printf</span> <span class="p">{</span><span class="o">*</span><span class="bp">STDOUT</span><span class="p">}</span> <span class="s">&quot;%3d. (%s)\n&quot;</span><span class="p">,</span> <span class="nv">$_</span><span class="p">,</span> <span class="nb">join</span> <span class="s">&#39;, &#39;</span><span class="p">,</span> <span class="nv">@</span><span class="p">{</span><span class="nv">$aoa</span><span class="o">-&gt;</span><span class="p">[</span><span class="nv">$_</span><span class="p">]}</span>
+     <span class="k">for</span> <span class="mi">0</span> <span class="o">..</span> <span class="nv">$#$aoa</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="n">print_aoa</span><span class="p">(</span><span class="o">\</span><span class="nv">@lines</span><span class="p">);</span></code></pre></div>
 
 <p>The full script can be found <a href="https://github.com/polettix/Math-GF/blob/master/eg/pg2">here</a>. Sample run with order 2:</p>
 
-<pre><code>0. (1, 3, 5)
+<div class="highlight"><pre><code class="language-text" data-lang="text">0. (1, 3, 5)
 1. (0, 3, 4)
 2. (2, 3, 6)
 3. (0, 1, 2)
 4. (1, 4, 6)
 5. (0, 5, 6)
-6. (2, 4, 5)
-</code></pre>
+6. (2, 4, 5)</code></pre></div>
 
 <h2 id="finite-fields-of-order-psupnsup">Finite Fields of Order p<sup>n</sup></h2>
 
@@ -836,7 +819,7 @@ degree and check whether they are irreducible or not, e.g. by means of
 <a href="https://en.wikipedia.org/wiki/Factorization_of_polynomials_over_finite_fields#Rabin's_test_of_irreducibility">Rabin’s irreducibility test</a>. You can see some example code
 <a href="https://github.com/polettix/Math-GF/blob/master/lib/Math/GF.pm#L141">here</a>.</p>
 
-<p>More simply, you can look at some lists available in Internet (e.g.
+<p>Simpler than this, you can look at some lists available in Internet (e.g.
 <a href="http://people.math.carleton.ca/~daniel/hff/">here</a>)!</p>
 
 <h2 id="summing-up">Summing Up</h2>
@@ -858,6 +841,12 @@ Salomone</a> on YouTube.</p>
 
 <p>The icons used in the example on the Fano plane are from
 <a href="https://iconmonstr.com/">iconmonstr</a>.</p>
+
+<h2 id="updates">Updates</h2>
+
+<ul>
+  <li><code>2018-01-08</code> Cosmetics</li>
+</ul>
 
 
       <hr />
