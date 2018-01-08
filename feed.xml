@@ -4,7 +4,7 @@
 <generator uri="https://github.com/jekyll/jekyll">Jekyll</generator>
 <link rel="self" type="application/atom+xml" href="/feed.xml" />
 <link rel="alternate" type="text/html" href="" />
-<updated>2018-01-08T12:02:16+01:00</updated>
+<updated>2018-01-08T12:11:41+01:00</updated>
 <id>/</id>
 <author>
   <name>Flavio Poletti</name>
@@ -633,7 +633,8 @@ Z&lt;sub&gt;2&lt;/sub&gt;:&lt;/p&gt;
 3    1 + x&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;ul&gt;
-  &lt;li&gt;additive table (symmetric):&lt;/li&gt;
+  &lt;li&gt;additive table (symmetric, also remember that operations are done modulo
+2, so &lt;code&gt;1 + 1 = 0&lt;/code&gt;):&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;Ids           Polynomials             Id
