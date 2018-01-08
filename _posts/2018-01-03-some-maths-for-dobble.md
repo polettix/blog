@@ -637,7 +637,7 @@ The icons used in the example on the Fano plane are from
 [iconmonstr][iconmonstr].
 
 [dobble]: https://boardgamegeek.com/boardgame/63268/spot-it
-[b  my @lines = map {lock-design]: https://en.wikipedia.org/wiki/Block_design
+[block-design]: https://en.wikipedia.org/wiki/Block_design
 [t-design]: https://en.wikipedia.org/wiki/Block_design#Generalization:_t-designs
 [steiner-system]: https://en.wikipedia.org/wiki/Steiner_system
 [pp]: http://mathworld.wolfram.com/ProjectivePlane.html
