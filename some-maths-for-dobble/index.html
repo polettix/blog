@@ -368,8 +368,8 @@ is represented by three coordinates <code>(X, Y, Z)</code> ruled as follows:</p>
   <li>any of <code>X</code>, <code>Y</code> and <code>Z</code> MUST be different from <code>0</code>, i.e. the triplet
 <code>(0, 0, 0)</code> is NOT valid</li>
   <li>any <em>point</em> <code>(x, y)</code> in the Cartesian representation of the affine plane
-is mapped onto *any triplet <code>(Z*x, Z*y, Z)</code> with <code>Z</code> different from <code>0</code>.
-Conversely, any triplet <code>(X, Y, Z)</code> with <code>Z</code> diffent from <code>0</code> maps back
+is mapped onto <em>any triplet</em> <code>(Z*x, Z*y, Z)</code> with <code>Z</code> different from <code>0</code>.
+Conversely, <em>any triplet</em> <code>(X, Y, Z)</code> with <code>Z</code> diffent from <code>0</code> maps back
 to <code>(X/Z, Y/Z)</code>;</li>
   <li>any triplet <code>(X, Y, 0)</code> is a “point at infinite” and represents the
 intersection of all parallel lines of type <code>Y*x - X*y = c</code></li>
@@ -377,9 +377,11 @@ intersection of all parallel lines of type <code>Y*x - X*y = c</code></li>
 
 <p>The interesting thing is that we are not necessarily restricted to using
 real numbers for coordinates: any field will do, including finite fields.
-Let’s take Z<sub>2</sub> for example, i.e. the field whose two elements
-are the rest classes in the integer division by 2: <code>0</code> and <code>1</code>. It’s easy
-to build up all possible triplets, actually as easy as counting in binary:</p>
+(Why fields, anyway? We need the division operation by non-zero to be
+valid, so fieds are a very useful choice). Let’s take Z<sub>2</sub> for
+example, i.e. the field whose two elements are the rest classes in the
+integer division by 2: <code>0</code> and <code>1</code>. It’s easy to build up all possible
+triplets, actually as easy as counting in binary:</p>
 
 <div class="highlight"><pre><code class="language-text" data-lang="text">0 0 0 &lt;- ruled out, invalid triplet in the homogeneous representation
 0 0 1 &lt;- &quot;origin&quot;, maps to (0, 0) in the affine plane
@@ -623,6 +625,22 @@ points belonging to the line. We can easily print them:</p>
 5. (0, 5, 6)
 6. (2, 4, 5)</code></pre></div>
 
+<p>How to use it for a deck of cards in the game? Simple:</p>
+
+<ul>
+  <li>take your <code>n^2 + n + 1</code> (7 in the example) blank cards and line them up
+in front of view. The left-most will be at index 0, then 1, 2, and so
+on</li>
+  <li>take your <code>n^2 + n + 1</code> (7 in the example) pictures and do the same,
+again each will get an integer identifier</li>
+  <li>read the output of the script in either of the following ways:
+    <ul>
+      <li><em>Fill card <code>0</code> with images <code>1</code>, <code>3</code> and <code>5</code></em>, or</li>
+      <li><em>Draw image <code>0</code> onto cards <code>1</code>, <code>3</code> and <code>5</code></em></li>
+    </ul>
+  </li>
+</ul>
+
 <h2 id="finite-fields-of-order-psupnsup">Finite Fields of Order p<sup>n</sup></h2>
 
 <p>One last bit that was left out from the previous section is building
@@ -845,7 +863,7 @@ Salomone</a> on YouTube.</p>
 <h2 id="updates">Updates</h2>
 
 <ul>
-  <li><code>2018-01-08</code> Cosmetics</li>
+  <li><code>2018-01-08</code> Cosmetics, better detail how to use output from script</li>
 </ul>
 
 
