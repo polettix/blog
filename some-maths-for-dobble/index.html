@@ -835,8 +835,9 @@ Z<sub>2</sub>:</p>
 <p>The last thing we might want is some way to find irreducible polynomials
 of a given degree. To do this, we can iterate over polynomials of that
 degree and check whether they are irreducible or not, e.g. by means of
-<a href="https://en.wikipedia.org/wiki/Factorization_of_polynomials_over_finite_fields#Rabin's_test_of_irreducibility">Rabin’s irreducibility test</a>. You can see some example code
-<a href="https://github.com/polettix/Math-GF/blob/master/lib/Math/GF.pm#L141">here</a>.</p>
+<a href="https://en.wikipedia.org/wiki/Factorization_of_polynomials_over_finite_fields#Rabin's_test_of_irreducibility">Rabin’s irreducibility test</a>. You can see some example code in
+Perl <a href="https://github.com/polettix/Math-GF/blob/master/lib/Math/GF.pm#L141">here</a> - this is actually what <a href="https://metacpan.org/pod/Math::GF">Math::GF</a>
+uses internally to generate Galois Fields of non-prime order.</p>
 
 <p>Simpler than this, you can look at some lists available in Internet (e.g.
 <a href="http://people.math.carleton.ca/~daniel/hff/">here</a>)!</p>
