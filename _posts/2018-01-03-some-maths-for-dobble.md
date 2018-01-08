@@ -591,7 +591,8 @@ Id   Polynomial
 3    1 + x
 {% endhighlight %}
 
-- additive table (symmetric):
+- additive table (symmetric, also remember that operations are done modulo
+  2, so `1 + 1 = 0`):
 
 {% highlight text %}
 Ids           Polynomials             Id
