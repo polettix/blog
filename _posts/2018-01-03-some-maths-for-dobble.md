@@ -654,8 +654,9 @@ elements (identifiers): {0, 1, 2, 3}
 The last thing we might want is some way to find irreducible polynomials
 of a given degree. To do this, we can iterate over polynomials of that
 degree and check whether they are irreducible or not, e.g. by means of
-[Rabin's irreducibility test][rabin-irr]. You can see some example code
-[here][math-gf-irredux].
+[Rabin's irreducibility test][rabin-irr]. You can see some example code in
+Perl [here][math-gf-irredux] - this is actually what [Math::GF][math-gf]
+uses internally to generate Galois Fields of non-prime order.
 
 Simpler than this, you can look at some lists available in Internet (e.g.
 [here][hff])!
