@@ -186,17 +186,19 @@ is represented by three coordinates `(X, Y, Z)` ruled as follows:
 - any of `X`, `Y` and `Z` MUST be different from `0`, i.e. the triplet
   `(0, 0, 0)` is NOT valid
 - any *point* `(x, y)` in the Cartesian representation of the affine plane
-  is mapped onto *any triplet `(Z*x, Z*y, Z)` with `Z` different from `0`.
-  Conversely, any triplet `(X, Y, Z)` with `Z` diffent from `0` maps back
+  is mapped onto *any triplet* `(Z*x, Z*y, Z)` with `Z` different from `0`.
+  Conversely, *any triplet* `(X, Y, Z)` with `Z` diffent from `0` maps back
   to `(X/Z, Y/Z)`;
 - any triplet `(X, Y, 0)` is a "point at infinite" and represents the
   intersection of all parallel lines of type `Y*x - X*y = c`
 
 The interesting thing is that we are not necessarily restricted to using
 real numbers for coordinates: any field will do, including finite fields.
-Let's take Z<sub>2</sub> for example, i.e. the field whose two elements
-are the rest classes in the integer division by 2: `0` and `1`. It's easy
-to build up all possible triplets, actually as easy as counting in binary:
+(Why fields, anyway? We need the division operation by non-zero to be
+valid, so fieds are a very useful choice). Let's take Z<sub>2</sub> for
+example, i.e. the field whose two elements are the rest classes in the
+integer division by 2: `0` and `1`. It's easy to build up all possible
+triplets, actually as easy as counting in binary:
 
 {% highlight text %}
 0 0 0 <- ruled out, invalid triplet in the homogeneous representation
@@ -456,6 +458,18 @@ The full script can be found [here][pg2-script]. Sample run with order 2:
 6. (2, 4, 5)
 {% endhighlight %}
 
+How to use it for a deck of cards in the game? Simple:
+
+- take your `n^2 + n + 1` (7 in the example) blank cards and line them up
+  in front of view. The left-most will be at index 0, then 1, 2, and so
+  on
+- take your `n^2 + n + 1` (7 in the example) pictures and do the same,
+  again each will get an integer identifier
+- read the output of the script in either of the following ways:
+    - *Fill card `0` with images `1`, `3` and `5`*, or
+    - *Draw image `0` onto cards `1`, `3` and `5`*
+
+
 ##  Finite Fields of Order p<sup>n</sup>
 
 One last bit that was left out from the previous section is building
@@ -667,7 +681,7 @@ The icons used in the example on the Fano plane are from
 
 ## Updates
 
-- `2018-01-08` Cosmetics
+- `2018-01-08` Cosmetics, better detail how to use output from script
 
 [dobble]: https://boardgamegeek.com/boardgame/63268/spot-it
 [block-design]: https://en.wikipedia.org/wiki/Block_design
