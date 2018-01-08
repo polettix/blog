@@ -41,10 +41,12 @@ design the full stack of cards: just take all possible pairs of cards and
 decide a new picture for the pair. This would involve a non-trivial amount
 of pictures, because all possible pairs are the following:
 
-    54 pairs with card A = #1 and card B = #2..#55
-    53 pairs with card A = #2 and card B = #3..#55
-    ...
-     1  pair with card A = #54 and card B = #55
+{% highlight text %}
+54 pairs with card A =  #1 and card B = #2..#55
+53 pairs with card A =  #2 and card B = #3..#55
+...
+ 1  pair with card A = #54 and card B = #55
+{% endhighlight %}
 
 for a total number of `(54 + 1) * 54 / 2 = 1485` pairs/pictures.
 
@@ -93,7 +95,9 @@ basically have the same properties again!
 
 Another property of a PP of order `n` is that it contains exactly:
 
-    n^2 + n + 1
+{% highlight text %}
+n^2 + n + 1
+{% endhighlight %}
     
 *point*s and the same amount of *line*s (thanks to the duality above).
 
@@ -101,9 +105,11 @@ Of course Steiner systems and Projective Planes are old friends, because
 a PP of order `n` is "just" a Steiner system *S(2, n+1, n^2 + n + 1)*,
 thus implying for Dobble that:
 
-    n = 7
-    n + 1 = 8
-    n^2 + n + 1 = 57
+{% highlight text %}
+n = 7
+n + 1 = 8
+n^2 + n + 1 = 57
+{% endhighlight %}
 
 going back to what we said earlier: Dobble is a Steiner system *S(2, 8,
 57)*. It's also interesting to note that Dobble is actually missing two
@@ -192,14 +198,16 @@ Let's take Z<sub>2</sub> for example, i.e. the field whose two elements
 are the rest classes in the integer division by 2: `0` and `1`. It's easy
 to build up all possible triplets, actually as easy as counting in binary:
 
-    0 0 0 <- ruled out, invalid triplet in the homogeneous representation
-    0 0 1 <- "origin", maps to (0, 0) in the affine plane
-    0 1 0 <- point at infinite
-    0 1 1 <- "regular", maps to (0, 1) in the affine plane
-    1 0 0 <- point at infinite
-    1 0 1 <- "regular", maps to (1, 0) in the affine plane
-    1 1 0 <- point at infinite
-    1 1 1 <- "regular", maps to (1, 1) in the affine plane
+{% highlight text %}
+0 0 0 <- ruled out, invalid triplet in the homogeneous representation
+0 0 1 <- "origin", maps to (0, 0) in the affine plane
+0 1 0 <- point at infinite
+0 1 1 <- "regular", maps to (0, 1) in the affine plane
+1 0 0 <- point at infinite
+1 0 1 <- "regular", maps to (1, 0) in the affine plane
+1 1 0 <- point at infinite
+1 1 1 <- "regular", maps to (1, 1) in the affine plane
+{% endhighlight %}
 
 There is a total of `n^3 - 1` possible points, i.e. 7 in our case. Does
 this ring a bell? Sure it does, it's the same number of points in the Fano
@@ -212,33 +220,35 @@ the same point in the affine plane, so we have to only consider the
 classes of *different* coordinates and avoid duplicates that can be
 obtained by scaling already considered ones:
 
-    0 0 0 <- ruled out, invalid homogeneous triplet
-    0 0 1
-    0 0 2 <- ruled out, (0 0 1) * 2 
-    0 1 0
-    0 1 1
-    0 1 2
-    0 2 0 <- ruled out, (0 1 0) * 2
-    0 2 1 <- ruled out, (0 1 2) * 2
-    0 2 2 <- ruled out, (0 1 1) * 2
-    1 0 0
-    1 0 1
-    1 0 2
-    1 1 0
-    1 1 1
-    1 1 2
-    1 2 0
-    1 2 1
-    1 2 2
-    2 0 0 <- ruled out, (1 0 0) * 2
-    2 0 1 <- ruled out, (1 0 2) * 2
-    2 0 2 <- ruled out, (1 0 1) * 2
-    2 1 0 <- ruled out, (1 2 0) * 2
-    2 1 1 <- ruled out, (1 2 2) * 2
-    2 1 2 <- ruled out, (1 2 1) * 2
-    2 2 0 <- ruled out, (1 1 0) * 2
-    2 2 1 <- ruled out, (1 1 2) * 2
-    2 2 2 <- ruled out, (1 1 1) * 2
+{% highlight text %}
+0 0 0 <- ruled out, invalid homogeneous triplet
+0 0 1
+0 0 2 <- ruled out, (0 0 1) * 2 
+0 1 0
+0 1 1
+0 1 2
+0 2 0 <- ruled out, (0 1 0) * 2
+0 2 1 <- ruled out, (0 1 2) * 2
+0 2 2 <- ruled out, (0 1 1) * 2
+1 0 0
+1 0 1
+1 0 2
+1 1 0
+1 1 1
+1 1 2
+1 2 0
+1 2 1
+1 2 2
+2 0 0 <- ruled out, (1 0 0) * 2
+2 0 1 <- ruled out, (1 0 2) * 2
+2 0 2 <- ruled out, (1 0 1) * 2
+2 1 0 <- ruled out, (1 2 0) * 2
+2 1 1 <- ruled out, (1 2 2) * 2
+2 1 2 <- ruled out, (1 2 1) * 2
+2 2 0 <- ruled out, (1 1 0) * 2
+2 2 1 <- ruled out, (1 1 2) * 2
+2 2 2 <- ruled out, (1 1 1) * 2
+{% endhighlight %}
 
 Out of the initial `3^3 = 27` candidates, only 13 survived, so it's
 actually a bit more difficult than to simply count and remove the first
@@ -246,19 +256,21 @@ triplet. Note that this is exactly the number of points we were expecting,
 because of the formula we saw before: `3^2 + 3 + 1 = 13`. The distinct
 points are the following in homogeneous coordinates:
 
-     0. 0 0 1
-     1. 0 1 0
-     2. 0 1 1
-     3. 0 1 2
-     4. 1 0 0
-     5. 1 0 1
-     6. 1 0 2
-     7. 1 1 0
-     8. 1 1 1
-     9. 1 1 2
-    10. 1 2 0
-    11. 1 2 1
-    12. 1 2 2
+{% highlight text %}
+0.  0 0 1
+1.  0 1 0
+2.  0 1 1
+3.  0 1 2
+4.  1 0 0
+5.  1 0 1
+6.  1 0 2
+7.  1 1 0
+8.  1 1 1
+9.  1 1 2
+10. 1 2 0
+11. 1 2 1
+12. 1 2 2
+{% endhighlight %}
 
 It turns out that there is a simple algoritm for generating all "distinct"
 homogeneous triplets: just start counting and jump all elements whose
@@ -270,13 +282,17 @@ The same reasoning done for *point*s can be repeated for *line*s. The
 generic line in the affine plane can be expressed with the following
 equation:
 
+{% highlight text %}
     a * x + b * y + c = 0
+{% endhighlight %}
 
 This equation can be easily multiplied by any non-zero constant, so
 assuming that `Z` is different from `0` and remembering the relations of
 `x` with `X` and `y` with `Y`:
 
+{% highlight text %}
     a * X + b * Y + c * Z = 0
+{% endhighlight %}
 
 Hence, a line can be expressed by three values `a`, `b` and `c`, with the
 usual rule that any of the three MUST be different from zero. As a matter
@@ -292,33 +308,37 @@ same equation!
 
 Let's see what happens with the example based on Z<sub>2</sub>:
 
-     Line   Homog.   Points in Line (homogen.     Point
-     Id     repr.    representation)              Ids
-     0   -> 0 0 1 -> (1 0 0), (0 1 0), (1 1 0) -> 3, 1, 5
-     1   -> 0 1 0 -> (1 0 0), (0 0 1), (1 0 1) -> 3, 0, 4
-     2   -> 0 1 1 -> (1 0 0), (0 1 1), (1 1 1) -> 3, 2, 6
-     3   -> 1 0 0 -> (0 0 1), (0 1 0), (0 1 1) -> 0, 1, 2
-     4   -> 1 0 1 -> (0 1 0), (1 0 1), (1 1 1) -> 1, 4, 6
-     5   -> 1 1 0 -> (0 0 1), (1 1 0), (1 1 1) -> 0, 5, 6
-     6   -> 1 1 1 -> (1 1 0), (1 0 1), (0 1 1) -> 5, 4, 2
+{% highlight text %}
+Line   Homog.   Points in Line (homogen.     Point
+Id     repr.    representation)              Ids
+0   -> 0 0 1 -> (1 0 0), (0 1 0), (1 1 0) -> 3, 1, 5
+1   -> 0 1 0 -> (1 0 0), (0 0 1), (1 0 1) -> 3, 0, 4
+2   -> 0 1 1 -> (1 0 0), (0 1 1), (1 1 1) -> 3, 2, 6
+3   -> 1 0 0 -> (0 0 1), (0 1 0), (0 1 1) -> 0, 1, 2
+4   -> 1 0 1 -> (0 1 0), (1 0 1), (1 1 1) -> 1, 4, 6
+5   -> 1 1 0 -> (0 0 1), (1 1 0), (1 1 1) -> 0, 5, 6
+6   -> 1 1 1 -> (1 1 0), (1 0 1), (0 1 1) -> 5, 4, 2
+{% endhighlight %}
 
 We can do the same for Z<sub>3</sub> of course:
 
-    Line                                                  Point Ids
-    Id
-     0  -> 0 0 1 -> (1 0 0), (0 1 0), (1 1 0), (1 2 0) -> 4, 1, 7, 10
-     1  -> 0 1 0 -> (0 0 1), (1 0 0), (1 0 1), (1 0 2) -> 0, 4, 5, 6
-     2  -> 0 1 1 -> (1 0 0), (0 1 2), (1 1 2), (1 2 1) -> 4, 3, 9, 11
-     3  -> 0 1 2 -> (1 0 0), (0 1 1), (1 1 1), (1 2 2) -> 4, 2, 8, 12
-     4  -> 1 0 0 -> (0 0 1), (0 1 0), (0 1 1), (0 1 2) -> 0, 1, 2, 3
-     5  -> 1 0 1 -> (0 1 0), (1 0 2), (1 1 2), (1 2 2) -> 1, 6, 9, 12
-     6  -> 1 0 2 -> (0 1 0), (1 0 1), (1 1 1), (1 2 1) -> 1, 5, 8, 11
-     7  -> 1 1 0 -> (0 0 1), (1 2 0), (1 2 1), (1 2 2) -> 0, 10, 11, 12
-     8  -> 1 1 1 -> (0 1 2), (1 0 2), (1 2 0), (1 1 1) -> 3, 6, 10, 8
-     9  -> 1 1 2 -> (0 1 1), (1 0 1), (1 1 2), (1 2 0) -> 2, 5, 9, 10
-    10  -> 1 2 0 -> (1 1 0), (1 1 1), (1 1 2), (0 0 1) -> 7, 8, 9, 0
-    11  -> 1 2 1 -> (0 1 1), (1 0 2), (1 1 0), (1 2 1) -> 2, 6, 7, 11
-    12  -> 1 2 2 -> (0 1 2), (1 0 1), (1 1 0), (1 2 2) -> 3, 5, 7, 12
+{% highlight text %}
+Line                                                  Point Ids
+Id
+ 0  -> 0 0 1 -> (1 0 0), (0 1 0), (1 1 0), (1 2 0) -> 4, 1, 7, 10
+ 1  -> 0 1 0 -> (0 0 1), (1 0 0), (1 0 1), (1 0 2) -> 0, 4, 5, 6
+ 2  -> 0 1 1 -> (1 0 0), (0 1 2), (1 1 2), (1 2 1) -> 4, 3, 9, 11
+ 3  -> 0 1 2 -> (1 0 0), (0 1 1), (1 1 1), (1 2 2) -> 4, 2, 8, 12
+ 4  -> 1 0 0 -> (0 0 1), (0 1 0), (0 1 1), (0 1 2) -> 0, 1, 2, 3
+ 5  -> 1 0 1 -> (0 1 0), (1 0 2), (1 1 2), (1 2 2) -> 1, 6, 9, 12
+ 6  -> 1 0 2 -> (0 1 0), (1 0 1), (1 1 1), (1 2 1) -> 1, 5, 8, 11
+ 7  -> 1 1 0 -> (0 0 1), (1 2 0), (1 2 1), (1 2 2) -> 0, 10, 11, 12
+ 8  -> 1 1 1 -> (0 1 2), (1 0 2), (1 2 0), (1 1 1) -> 3, 6, 10, 8
+ 9  -> 1 1 2 -> (0 1 1), (1 0 1), (1 1 2), (1 2 0) -> 2, 5, 9, 10
+10  -> 1 2 0 -> (1 1 0), (1 1 1), (1 1 2), (0 0 1) -> 7, 8, 9, 0
+11  -> 1 2 1 -> (0 1 1), (1 0 2), (1 1 0), (1 2 1) -> 2, 6, 7, 11
+12  -> 1 2 2 -> (0 1 2), (1 0 1), (1 1 0), (1 2 2) -> 3, 5, 7, 12
+{% endhighlight %}
 
 
 ### Putting things together
@@ -339,7 +359,9 @@ any "allowed" order:
   example, if the starting triplet is `(X, Y, Z)`, find all triplets
   `(a, b, c)` that satisfy the following equation:
 
-      a * X + b * Y + c * Z = 0
+{% highlight text %}
+a * X + b * Y + c * Z = 0
+{% endhighlight %}
 
 - associate an identifier to each triplet, and output the identifier of
   each one together with the identifiers of the triplets orthogonal to
@@ -348,23 +370,27 @@ any "allowed" order:
 As an example in Perl, we will use [Math::GF][math-gf] for building the
 field and get all elements inside:
 
-    use Math::GF;
-    my $order = shift // 2;
-    my @elements = Math::GF->new($order)->all;
+{% highlight perl %}
+use Math::GF;
+my $order = shift // 2;
+my @elements = Math::GF->new($order)->all;
+{% endhighlight %}
 
 We can then proceed to build all distinct triplets representing points,
 using "the trick" and avoiding the all-zeros triplet:
 
-    my $zero = $elements[0];
-    my $one  = $elements[1];
-    my @points;
-    for my $i ($zero, $one) {
-       for my $j ($i == $zero ? ($zero, $one) : @elements) {
-          for my $k ((($i == $zero) && ($j == $zero)) ? $one : @elements) {
-             push @points, [$i, $j, $k];
-          }
-       }
-    }
+{% highlight perl %}
+my $zero = $elements[0];
+my $one  = $elements[1];
+my @points;
+for my $i ($zero, $one) {
+   for my $j ($i == $zero ? ($zero, $one) : @elements) {
+      for my $k ((($i == $zero) && ($j == $zero)) ? $one : @elements) {
+         push @points, [$i, $j, $k];
+      }
+   }
+}
+{% endhighlight %}
 
 Confused? Take a closer look and you will see that this is exactly the
 coding of our "trick":
@@ -386,46 +412,49 @@ generate. Assuming that there are `n` elements in the field:
 - `n` for `(0, 1, k)` (`k` from `0` to `n - 1`)
 - `n^2` for `(1, j, k)` (both `j` and `k` from 0 to `n - 1`)
 
-which is, again, the formula we saw earlier:
-
-    n^2 + n + 1
+which is, again, the formula we saw earlier: `n^2 + n + 1`.
 
 Now we are ready to build lines by finding orthogonal triplets. We
 leverage on the same triplets as we found in `@points` because of duality:
 
-    my @lines = map { [] } 1 .. scalar(@points);
-    for my $li (0 .. $#points) {
-       my $L = $points[$li];
-       for my $pi ($li .. $#points) {
-          last if scalar(@{$lines[$li]}) == $order + 1;
-          my $sum = $zero;
-          $sum = $sum + $L->[$_] * $points[$pi][$_] for 0 .. 2;
-          next if $sum != $zero;
-          push @{$lines[$li]}, $pi;
-          push @{$lines[$pi]}, $li if $pi != $li;
-       }
-    }
+{% highlight perl %}
+my @lines = map { [] } 1 .. scalar(@points);
+for my $li (0 .. $#points) {
+   my $L = $points[$li];
+   for my $pi ($li .. $#points) {
+      last if scalar(@{$lines[$li]}) == $order + 1;
+      my $sum = $zero;
+      $sum = $sum + $L->[$_] * $points[$pi][$_] for 0 .. 2;
+      next if $sum != $zero;
+      push @{$lines[$li]}, $pi;
+      push @{$lines[$pi]}, $li if $pi != $li;
+   }
+}
+{% endhighlight %}
 
 Now `@lines` is an array of arrays, each containing identifiers of the
 points belonging to the line. We can easily print them:
 
-    sub print_aoa {
-       my $aoa = shift;
-       printf {*STDOUT} "%3d. (%s)\n", $_, join ', ', @{$aoa->[$_]}
-         for 0 .. $#$aoa;
-    }
-    print_aoa(\@lines);
+{% highlight perl %}
+sub print_aoa {
+   my $aoa = shift;
+   printf {*STDOUT} "%3d. (%s)\n", $_, join ', ', @{$aoa->[$_]}
+     for 0 .. $#$aoa;
+}
+print_aoa(\@lines);
+{% endhighlight %}
 
 The full script can be found [here][pg2-script]. Sample run with order 2:
 
-    0. (1, 3, 5)
-    1. (0, 3, 4)
-    2. (2, 3, 6)
-    3. (0, 1, 2)
-    4. (1, 4, 6)
-    5. (0, 5, 6)
-    6. (2, 4, 5)
-
+{% highlight text %}
+0. (1, 3, 5)
+1. (0, 3, 4)
+2. (2, 3, 6)
+3. (0, 1, 2)
+4. (1, 4, 6)
+5. (0, 5, 6)
+6. (2, 4, 5)
+{% endhighlight %}
 
 ##  Finite Fields of Order p<sup>n</sup>
 
@@ -613,7 +642,7 @@ degree and check whether they are irreducible or not, e.g. by means of
 [Rabin's irreducibility test][rabin-irr]. You can see some example code
 [here][math-gf-irredux].
 
-More simply, you can look at some lists available in Internet (e.g.
+Simpler than this, you can look at some lists available in Internet (e.g.
 [here][hff])!
 
 ## Summing Up
@@ -635,6 +664,10 @@ Have fun!
 
 The icons used in the example on the Fano plane are from
 [iconmonstr][iconmonstr].
+
+## Updates
+
+- `2018-01-08` Cosmetics
 
 [dobble]: https://boardgamegeek.com/boardgame/63268/spot-it
 [block-design]: https://en.wikipedia.org/wiki/Block_design
