@@ -1,0 +1,451 @@
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if (IE 7)&!(IEMobile)]><html class="no-js lt-ie9 lt-ie8" lang="en"><![endif]-->
+<!--[if (IE 8)&!(IEMobile)]><html class="no-js lt-ie9" lang="en"><![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"><!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<title>A Simple Telegram Bot &#8211; PolettiX!</title>
+<meta name="description" content="Telegram is a messagging platform/App much like WhatsApp and
+companions. One nifty feature is that it allows integrating bots,
+contarily to WhatsApp… let’s see an example in Perl.
+
+">
+<meta name="keywords" content="">
+
+
+
+<!-- Twitter Cards -->
+<meta name="twitter:title" content="A Simple Telegram Bot">
+<meta name="twitter:description" content="Telegram is a messagging platform/App much like WhatsApp and
+companions. One nifty feature is that it allows integrating bots,
+contarily to WhatsApp… let’s see an example in Perl.
+
+">
+<meta name="twitter:site" content="@polettix">
+<meta name="twitter:creator" content="@polettix">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="/images/kakadu-uccello.jpg">
+
+<!-- Open Graph -->
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:title" content="A Simple Telegram Bot">
+<meta property="og:description" content="Telegram is a messagging platform/App much like WhatsApp and
+companions. One nifty feature is that it allows integrating bots,
+contarily to WhatsApp… let’s see an example in Perl.
+
+">
+<meta property="og:url" content="/a-simple-telegram-bot/">
+<meta property="og:site_name" content="PolettiX!">
+
+
+
+
+
+<link rel="canonical" href="/a-simple-telegram-bot/">
+<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="PolettiX! Feed">
+
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+
+<meta http-equiv="cleartype" content="on">
+
+<!-- HTML5 Shiv and Media Query Support -->
+<!--[if lt IE 9]>
+	<script src="/assets/js/vendor/html5shiv.min.js"></script>
+	<script src="/assets/js/vendor/respond.min.js"></script>
+<![endif]-->
+
+<!-- Modernizr -->
+<script src="/assets/js/vendor/modernizr-2.7.1.custom.min.js"></script>
+
+<link href='//fonts.googleapis.com/css?family=PT+Sans+Narrow:400,700%7CPT+Serif:400,700,400italic' rel='stylesheet' type='text/css'>
+
+<!-- Icons -->
+<!-- 16x16 -->
+<link rel="shortcut icon" href="/favicon.ico?whatever">
+<!-- 32x32 -->
+<link rel="shortcut icon" href="/favicon.png?whatever">
+<!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
+<link rel="apple-touch-icon-precomposed" href="/images/apple-touch-icon-precomposed.png">
+<!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="/images/apple-touch-icon-72x72-precomposed.png">
+<!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="/images/apple-touch-icon-114x114-precomposed.png">
+<!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/images/apple-touch-icon-144x144-precomposed.png">
+
+</head>
+
+<body class="post">
+
+<!--[if lt IE 9]><div class="browser-upgrade alert alert-info">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</div><![endif]-->
+
+<div class="navigation-wrapper">
+	<div class="site-name">
+		<a href="/">PolettiX!</a>
+	</div><!-- /.site-name -->
+	<div class="top-navigation">
+		<nav role="navigation" id="site-nav" class="nav">
+		    <ul>
+		        
+				    
+				        
+				    
+				    <li><a href="/about/" >About</a></li>
+				
+				    
+				        
+				    
+				    <li><a href="/posts/" >Posts</a></li>
+				
+		    </ul>
+		</nav>
+	</div><!-- /.top-navigation -->
+</div><!-- /.navigation-wrapper -->
+
+
+  <div class="image-wrap">
+  <img src=
+    
+      "/images/kakadu-uccello.jpg"
+    
+  alt="A Simple Telegram Bot feature image">
+  
+    <span class="image-credit"><a href="https://en.wikipedia.org/wiki/Kakadu_National_Park">Yellow Water al Kakadu National Park, Australia</a></span>
+  
+  </div><!-- /.image-wrap -->
+
+
+<div id="main" role="main">
+  <div class="article-author-side">
+    
+
+
+<div itemscope itemtype="http://schema.org/Person">
+
+
+	<img src="/images/flavio-self-color.png" class="bio-photo" alt="Flavio Poletti bio photo">
+
+
+  <h3 itemprop="name">Flavio Poletti</h3>
+  <p>Irreducible Perler.</p>
+  <a href="mailto:flavio@polettix.it" class="author-social" target="_blank"><i class="fa fa-fw fa-envelope-square"></i>Email</a>
+  <a href="http://comics.polettix.it/" class="author-social" target="_blank"><i class="fa fa-fw fa-pencil"></i> Comics</a>
+  <a href="http://twitter.com/polettix" class="author-social" target="_blank"><i class="fa fa-fw fa-twitter-square"></i> Twitter</a>
+  
+  
+  <a href="http://linkedin.com/in/flaviopoletti" class="author-social" target="_blank"><i class="fa fa-fw fa-linkedin-square"></i> LinkedIn</a>
+  
+  
+  <a href="https://metacpan.org/author/polettix" class="author-social" target="_blank"><i class="fa fa-fw fa-th-large"></i> MetaCPAN</a>
+  <a href="http://github.com/polettix" class="author-social" target="_blank"><i class="fa fa-fw fa-github"></i> Github</a>
+  <a href="http://stackoverflow.com/users/3865403/polettix" class="author-social" target="_blank"><i class="fa fa-fw fa-stack-overflow"></i> Stackoverflow</a>
+  
+  
+  <a href="http://www.pinterest.com/polettix" class="author-social" target="_blank"><i class="fa fa-fw fa-pinterest"></i> Pinterest</a>
+  
+  
+  
+  
+  
+  
+</div>
+
+  </div>
+  <article class="post">
+    <div class="headline-wrap">
+      
+        <h1><a href="/a-simple-telegram-bot/" rel="bookmark" title="A Simple Telegram Bot">A Simple Telegram Bot</a></h1>
+      
+    </div><!--/ .headline-wrap -->
+    <div class="article-wrap">
+      <p><a href="https://www.telegram.org/">Telegram</a> is a messagging platform/App much like <a href="https://www.whatsapp.com/">WhatsApp</a> and
+companions. One nifty feature is that it allows integrating <em>bots</em>,
+contarily to <a href="https://www.whatsapp.com/">WhatsApp</a>… let’s see an example in Perl.</p>
+
+<h2 id="telegram-bot-howto">Telegram Bot HowTo</h2>
+
+<p>There are a few steps to get your bot up to speed, <a href="https://core.telegram.org/bots">full instructions
+here</a>. The gist is:</p>
+
+<ul>
+  <li>register yourself in Telegram
+    <ul>
+      <li>this allows you to register your bot</li>
+    </ul>
+  </li>
+  <li>open a chat with <a href="https://telegram.me/botfather">BotFather</a> and follow instructions
+    <ul>
+      <li>you will need to provide a name for your bot, we’ll call it
+<em>prova_bot</em> in the following;</li>
+      <li>at the end of the process you are provided with a <em>token</em>, that is
+a string like <code>nnnnnnnnn:ssssssssssssssssssssssss-ssssssssss</code> where
+<code>n</code> are digits and <code>s</code> are alphanumeric characters</li>
+    </ul>
+  </li>
+  <li>code your bot</li>
+  <li>connect to <a href="https://www.telegram.org/">Telegram</a> authenticating with the <em>token</em> obtained in
+a previous step</li>
+</ul>
+
+<p>In the following, we will assume that you set your <em>token</em> in the
+environment variable <code>TOKEN</code>, e.g. in a <code>bash</code> shell:</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span><span class="nb">export </span><span class="nv">TOKEN</span><span class="o">=</span><span class="s1">&#39;nnnnnnnnn:ssssssssssssssssssssssss-ssssssssss&#39;</span></code></pre></div>
+
+<h2 id="a-very-simple-telegram-bot">A <em>Very</em> Simple Telegram Bot</h2>
+
+<p>For building our bot we will rely upon <a href="https://metacpan.org/pod/Bot::ChatBots::Telegram">Bot::ChatBots::Telegram</a> from
+<a href="https://www.metacpan.org/">CPAN</a>. We’ll just take the <a href="https://github.com/polettix/Bot-ChatBots-Telegram/blob/master/eg/longpoll">example</a>:</p>
+
+<div class="highlight"><pre><code class="language-perl" data-lang="perl"><span class="c1">#!/usr/bin/env perl</span>
+<span class="k">use</span> <span class="n">strict</span><span class="p">;</span>
+<span class="k">use</span> <span class="n">warnings</span><span class="p">;</span>
+<span class="k">use</span> <span class="nn">Bot::ChatBots::Telegram::</span><span class="n">LongPoll</span><span class="p">;</span>
+
+<span class="k">my</span> <span class="nv">$token</span> <span class="o">=</span> <span class="nb">shift</span> <span class="o">||</span> <span class="nv">$ENV</span><span class="p">{</span><span class="n">TOKEN</span><span class="p">};</span>
+
+<span class="k">my</span> <span class="nv">$lp</span> <span class="o">=</span> <span class="nn">Bot::ChatBots::Telegram::</span><span class="n">LongPoll</span><span class="o">-&gt;</span><span class="k">new</span><span class="p">(</span>
+   <span class="n">token</span>     <span class="o">=&gt;</span> <span class="nv">$token</span><span class="p">,</span>
+   <span class="n">processor</span> <span class="o">=&gt;</span> <span class="o">\&amp;</span><span class="n">processor</span><span class="p">,</span>
+   <span class="n">start</span>     <span class="o">=&gt;</span> <span class="mi">1</span><span class="p">,</span>
+<span class="p">);</span>
+
+<span class="k">sub </span><span class="nf">processor</span> <span class="p">{</span> <span class="c1"># tube-compliant</span>
+   <span class="k">my</span> <span class="nv">$record</span> <span class="o">=</span> <span class="nb">shift</span><span class="p">;</span>
+   <span class="k">my</span> <span class="nv">$text</span> <span class="o">=</span> <span class="nv">$record</span><span class="o">-&gt;</span><span class="p">{</span><span class="n">payload</span><span class="p">}{</span><span class="n">text</span><span class="p">};</span>
+   <span class="k">print</span> <span class="s">&quot;$text\n&quot;</span><span class="p">;</span>
+   <span class="nv">$record</span><span class="o">-&gt;</span><span class="p">{</span><span class="n">send_response</span><span class="p">}</span> <span class="o">=</span> <span class="s">&quot;you said: &#39;$text&#39;&quot;</span><span class="p">;</span>
+   <span class="k">return</span> <span class="nv">$record</span><span class="p">;</span> <span class="c1"># follow on..</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Save this as <code>longpoll</code>. Now you can just start the bot (make sure to have
+<a href="https://metacpan.org/pod/Bot::ChatBots::Telegram">Bot::ChatBots::Telegram</a> installed and reachable!):</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>perl longpoll <span class="s2">&quot;$TOKEN&quot;</span></code></pre></div>
+
+<p>If you <code>export</code>ed the environment variable <code>TOKEN</code> you don’t need to pass
+it on the command line of course.</p>
+
+<p>At this point you’re ready to connect to your bot! Assuming, again, that
+your bot’s name is <em>prova_bot</em>, you can look for it in <a href="https://www.telegram.org/">Telegram</a> (its
+address would be
+<a href="https://telegram.me/prova_bot">https://telegram.me/prova_bot</a> if you use
+the web application in a browser). Start chatting with it and it will echo
+everything back! Very useful!</p>
+
+<p>What is happening:</p>
+
+<ul>
+  <li>your application is running a loop and constantly querying <a href="https://core.telegram.org/bots/api">Telegram’s
+API</a> to seek new incoming messages. This method is called
+<em>polling</em> and this is why we named our file <code>longpoll</code>;</li>
+  <li>as soon as any message is received, <code>Bot::ChatBots::Telegram::LongPoll</code>
+puts it in a data structure and calls your <code>processor</code> sub defined in
+the file. This is the sense of the line <code>processor =&gt; \&amp;processor</code>;</li>
+  <li>you process the incoming message as you like in your own callback
+function. It is supposed to return the record itself or something else,
+see <a href="https://metacpan.org/pod/Data::Tubes">Data::Tubes</a> for more details. If you “just” want to send
+a simple textual response, just populate the <code>send_response</code> key as in
+the example file above, but of course you might want to explore sending
+photos, videos, documents, etc. etc.</li>
+</ul>
+
+<p>A few considerations:</p>
+
+<ul>
+  <li><strong>PRO</strong>: <em>extremely</em> simple to setup</li>
+  <li><strong>PRO</strong>: allows testing your own logic very quickly, just stop and
+restart the process</li>
+  <li><strong>PRO</strong>: works well from anywhere with access to the <a href="https://core.telegram.org/bots/api">Telegram
+API</a> endpoint as a client (hence also behind proxies)</li>
+  <li><strong>CON</strong>: the polling mechanism is suboptimal</li>
+</ul>
+
+<h2 id="growing-up-web-hooks">Growing Up: Web Hooks</h2>
+
+<p>The <a href="https://core.telegram.org/bots/api">Telegram API</a> also allows using a different mechanism for
+connecting a bot, called <em>webhook</em>. In this alternative you can provide
+a <em>callback URL</em> served by your bot: whenever one or more messages are
+available for it, <a href="https://www.telegram.org/">Telegram</a> will take care to send them along to that
+endpoint. No more polling, yay!</p>
+
+<p>Here is an <a href="https://github.com/polettix/Bot-ChatBots-Telegram/blob/master/eg/webhook">example</a> that we will put in a file <code>webhook</code>:</p>
+
+<div class="highlight"><pre><code class="language-perl" data-lang="perl"><span class="c1">#!/usr/bin/env perl</span>
+<span class="k">use</span> <span class="n">strict</span><span class="p">;</span>
+<span class="k">use</span> <span class="n">warnings</span><span class="p">;</span>
+<span class="k">use</span> <span class="nn">Log::</span><span class="n">Any</span> <span class="sx">qw&lt; $log &gt;</span><span class="p">;</span>
+<span class="k">use</span> <span class="nn">Log::Any::</span><span class="n">Adapter</span><span class="p">;</span>
+<span class="k">use</span> <span class="nn">Mojolicious::</span><span class="n">Lite</span><span class="p">;</span>
+<span class="nn">Log::Any::</span><span class="n">Adapter</span><span class="o">-&gt;</span><span class="n">set</span><span class="p">(</span><span class="s">&#39;Stderr&#39;</span><span class="p">);</span>
+
+<span class="k">my</span> <span class="nv">$token</span>   <span class="o">=</span> <span class="nv">$ENV</span><span class="p">{</span><span class="n">TOKEN</span><span class="p">};</span>
+<span class="k">my</span> <span class="nv">$bot_url</span> <span class="o">=</span> <span class="nv">$ENV</span><span class="p">{</span><span class="n">BOT_URL</span><span class="p">}</span> <span class="o">||</span> <span class="s">&#39;https://example.com/mybot&#39;</span><span class="p">;</span>
+
+<span class="n">plugin</span> <span class="s">&#39;Bot::ChatBots::Telegram&#39;</span> <span class="o">=&gt;</span> <span class="n">instances</span> <span class="o">=&gt;</span> <span class="p">[</span>
+   <span class="p">[</span>
+      <span class="s">&#39;WebHook&#39;</span><span class="p">,</span>
+      <span class="n">processor</span>  <span class="o">=&gt;</span> <span class="o">\&amp;</span><span class="n">processor</span><span class="p">,</span>
+      <span class="n">register</span>   <span class="o">=&gt;</span> <span class="mi">1</span><span class="p">,</span>
+      <span class="n">token</span>      <span class="o">=&gt;</span> <span class="nv">$token</span><span class="p">,</span>
+      <span class="n">unregister</span> <span class="o">=&gt;</span> <span class="mi">0</span><span class="p">,</span>
+      <span class="n">url</span>        <span class="o">=&gt;</span> <span class="nv">$bot_url</span><span class="p">,</span>
+   <span class="p">],</span>
+<span class="p">];</span>
+
+<span class="n">app</span><span class="o">-&gt;</span><span class="n">start</span><span class="p">;</span>
+
+<span class="k">sub </span><span class="nf">processor</span> <span class="p">{</span> <span class="c1"># tube-compliant</span>
+   <span class="k">my</span> <span class="nv">$record</span> <span class="o">=</span> <span class="nb">shift</span><span class="p">;</span>
+   <span class="k">my</span> <span class="nv">$text</span> <span class="o">=</span> <span class="nv">$record</span><span class="o">-&gt;</span><span class="p">{</span><span class="n">payload</span><span class="p">}{</span><span class="n">text</span><span class="p">};</span>
+   <span class="k">print</span> <span class="s">&quot;$text\n&quot;</span><span class="p">;</span>
+   <span class="nv">$record</span><span class="o">-&gt;</span><span class="p">{</span><span class="n">send_response</span><span class="p">}</span> <span class="o">=</span> <span class="s">&quot;you said: &#39;$text&#39;&quot;</span><span class="p">;</span>
+   <span class="k">return</span> <span class="nv">$record</span><span class="p">;</span> <span class="c1"># follow on..</span>
+<span class="p">}</span></code></pre></div>
+
+<p>The <code>processor</code> function is exactly the same as before, which is good: as
+soon as you are ready to step up your bot as a <em>web hook</em>, you don’t need
+to change your logic, just switch gears in the interface towards
+<a href="https://www.telegram.org/">Telegram</a>.</p>
+
+<p>The script is started like this:</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span><span class="c"># set TOKEN</span>
+<span class="nv">$ </span><span class="c"># set BOT_URL</span>
+<span class="nv">$ </span>perl webhook daemon</code></pre></div>
+
+<p>We are relying upon <a href="https://metacpan.org/pod/Mojolicious">Mojolicious</a> here, that will start a server to
+implement the bot endpoint; see the documentation for all options upon
+starting the program.</p>
+
+<p>We are supposed to provide the exact location of this endpoint in the
+Internet, in a place reachable by the <a href="https://core.telegram.org/bots/api">Telegram API</a>, which is why
+we have to set the variable <code>BOT_URL</code>.</p>
+
+<p>One requirement when using <em>web hooks</em> is that the URL <em>MUST</em> be secure, i.e.
+the scheme must be <code>HTTPS</code>. This means that you will have to setup certificates
+and the proper encryption layer, which is in any case quite easy to do with
+<a href="https://metacpan.org/pod/Mojolicious">Mojolicious</a>. You will probably have to read a bit more if you plan on
+running the application behind a reverse proxy.</p>
+
+<p>Summarizing:</p>
+
+<ul>
+  <li><strong>PRO</strong>: <em>production</em> level, allows you to start multiple instances and
+distribute the load instead of relying on polling</li>
+  <li><strong>CON</strong>: quite more difficult to set up:
+    <ul>
+      <li>requires setting up TLS, which means either generating certificates
+or getting valid ones (e.g. see <a href="https://letsencrypt.org/">Let’s Encrypt</a> for
+this)</li>
+      <li>requires a place that is <em>visible</em> from <a href="https://www.telegram.org/">Telegram</a>’s servers, i.e.
+exposed on the Internet (with all security implications…)</li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="security-caveat">Security Caveat</h2>
+
+<p>You have to do your homework and assess the security of <a href="https://www.telegram.org/">Telegram</a> for
+your case. I read around that they basically baked their own security
+layer which is normally suboptimal. Additionally, it’s not possible to use
+bots in private encrypted chats.</p>
+
+<h2 id="release-your-bots">Release Your Bots!</h2>
+
+<p>I hope you were intrigued by the simplicity to build a bot for Telegram.
+We did just a little more than <code>Hello, World!</code> of course, but the logic of
+your bot is… yours! You know that you can do without much of the
+scaffolding, because it’s already there for you.</p>
+
+<p>Have fun!</p>
+
+
+      <hr />
+      <footer role="contentinfo">
+        <div class="social-share">
+  <h4>Share on</h4>
+  <ul>
+    <li>
+      <a href="https://twitter.com/intent/tweet?text=/a-simple-telegram-bot/" class="twitter" title="Share on Twitter"><i class="fa fa-twitter"></i><span> Twitter</span></a>
+    </li>
+    <li>
+      <a href="https://www.facebook.com/sharer/sharer.php?u=/a-simple-telegram-bot/" class="facebook" title="Share on Facebook"><i class="fa fa-facebook"></i><span> Facebook</span></a>
+    </li>
+    <li>
+      <a href="https://plus.google.com/share?url=/a-simple-telegram-bot/" class="google-plus" title="Share on Google Plus"><i class="fa fa-google-plus"></i><span> Google+</span></a>
+    </li>
+  </ul>
+</div><!-- /.social-share -->
+        <p class="byline"><strong>A Simple Telegram Bot</strong> was published on <time datetime="2018-01-14T00:00:00+01:00">January 14, 2018</time>.</p>
+      </footer>
+    </div><!-- /.article-wrap -->
+  
+    <section id="disqus_thread"></section><!-- /#disqus_thread -->
+  
+  </article>
+</div><!-- /#main -->
+
+<div class="footer-wrap">
+  <div class="related-articles">
+  <h4>You might also enjoy <small class="pull-right">(<a href="/posts/">View all posts</a>)</small></h4>
+    <ul>
+    
+      <li><a href="/some-maths-for-dobble/" title="Some Maths for Dobble">Some Maths for Dobble</a></li>
+    
+      <li><a href="/telegram-keyboard-button-encoding/" title="Telegram Keyboard Button Encoding">Telegram Keyboard Button Encoding</a></li>
+    
+      <li><a href="/markdown-to-html-in-windows-explorer/" title="Markdown to HTML in Windows Explorer">Markdown to HTML in Windows Explorer</a></li>
+    
+    </ul>
+    <hr />
+  </div><!-- /.related-articles -->
+  <footer>
+    
+
+<span>&copy; 2018 Flavio Poletti. Powered by <a href="http://jekyllrb.com" rel="nofollow">Jekyll</a> using the <a href="http://mademistakes.com/minimal-mistakes/" rel="nofollow">Minimal Mistakes</a> theme.</span>
+
+  </footer>
+</div><!-- /.footer-wrap -->
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script src="/assets/js/scripts.min.js"></script>
+
+
+  
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'polettix'; // required: replace example with your forum shortname
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = '//' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+
+</body>
+</html>
