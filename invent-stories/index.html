@@ -5,10 +5,11 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en"><!--<![endif]-->
 <head>
 <meta charset="utf-8">
-<title>RTFM, you geek! &#8211; PolettiX!</title>
-<meta name="description" content="After the previous post, I shipped the script and the related libraries
-to the recipient and slept as a baby. Just to discover that they didn’t
-figure out how to use it properly!
+<title>Invent Stories &#8211; PolettiX!</title>
+<meta name="description" content="I was always fascinated by systems for creating stories, like Rory’s
+Story Cubes and its emulators, the Inventafavole
+(or its second take). Why not make something just for
+fun?
 
 ">
 <meta name="keywords" content="">
@@ -16,35 +17,37 @@ figure out how to use it properly!
 
 
 <!-- Twitter Cards -->
-<meta name="twitter:title" content="RTFM, you geek!">
-<meta name="twitter:description" content="After the previous post, I shipped the script and the related libraries
-to the recipient and slept as a baby. Just to discover that they didn’t
-figure out how to use it properly!
+<meta name="twitter:title" content="Invent Stories">
+<meta name="twitter:description" content="I was always fascinated by systems for creating stories, like Rory’s
+Story Cubes and its emulators, the Inventafavole
+(or its second take). Why not make something just for
+fun?
 
 ">
 <meta name="twitter:site" content="@polettix">
 <meta name="twitter:creator" content="@polettix">
 
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="/images/tramonto.jpg">
+<meta name="twitter:image" content="/images/yellow-river.jpg">
 
 <!-- Open Graph -->
 <meta property="og:locale" content="en_US">
 <meta property="og:type" content="article">
-<meta property="og:title" content="RTFM, you geek!">
-<meta property="og:description" content="After the previous post, I shipped the script and the related libraries
-to the recipient and slept as a baby. Just to discover that they didn’t
-figure out how to use it properly!
+<meta property="og:title" content="Invent Stories">
+<meta property="og:description" content="I was always fascinated by systems for creating stories, like Rory’s
+Story Cubes and its emulators, the Inventafavole
+(or its second take). Why not make something just for
+fun?
 
 ">
-<meta property="og:url" content="/mobundle/">
+<meta property="og:url" content="/invent-stories/">
 <meta property="og:site_name" content="PolettiX!">
 
 
 
 
 
-<link rel="canonical" href="/mobundle/">
+<link rel="canonical" href="/invent-stories/">
 <link href="/feed.xml" type="application/atom+xml" rel="alternate" title="PolettiX! Feed">
 
 <!-- http://t.co/dKP3o1e -->
@@ -117,11 +120,11 @@ figure out how to use it properly!
   <div class="image-wrap">
   <img src=
     
-      "/images/tramonto.jpg"
+      "/images/yellow-river.jpg"
     
-  alt="RTFM, you geek! feature image">
+  alt="Invent Stories feature image">
   
-    <span class="image-credit"><a href="https://en.wikipedia.org/wiki/Australia">Tramonto in Australia</a></span>
+    <span class="image-credit"><a href="https://en.wikipedia.org/wiki/Kakadu_National_Park">Yellow Water al Kakadu National Park, Australia</a></span>
   
   </div><!-- /.image-wrap -->
 
@@ -165,42 +168,29 @@ figure out how to use it properly!
   <article class="post">
     <div class="headline-wrap">
       
-        <h1><a href="/mobundle/" rel="bookmark" title="RTFM, you geek!">RTFM, you geek!</a></h1>
+        <h1><a href="/invent-stories/" rel="bookmark" title="Invent Stories">Invent Stories</a></h1>
       
     </div><!--/ .headline-wrap -->
     <div class="article-wrap">
-      <p>After the previous post, I shipped the script and the related libraries
-to the recipient and slept as a baby. Just to discover that they didn’t
-figure out how to use it properly!</p>
+      <p>I was always fascinated by <em>systems for creating stories</em>, like <a href="https://www.storycubes.com/">Rory’s
+Story Cubes</a> and its emulators, the <a href="http://www.ilbarbagiannieditore.it/prodotto/linventafavole/">Inventafavole</a>
+(or <a href="http://www.ilbarbagiannieditore.it/prodotto/linventafavole-ii-2/">its second take</a>). Why not make something just for
+fun?</p>
 
-<p>The main issue is that geeks and technical people generally don’t read
-the documentation. I admit, most of the times I don’t do this as well.
-In this case, my good colleague saw a Perl script, made the
-too-simple-to-seem-true association between Perl and the Web and
-installed Apache! Well, as a matter of fact <em>it is</em> a web
-application, but I strived to make it self-contained and you end up with
-Apache?!?</p>
+<h2 id="tldr">TL;DR</h2>
 
-<p>Luck was that I was there some thirty minutes after to correct the
-problem and let Perl shine: “hey bro, it’s a single program with an
-embedded web server!”. That was the lucky part, anyway: the environment
-we’re working into is <em>particularly</em> hostile, to the point that
-two machines in the very same network can’t ping one another!
-Fortunately when I did use the program to make some tests the network
-connectivity was not that bad and we managed to do them.</p>
+<p>Head to <a href="https://ordeal.introm.it/">ordeal</a> and have fun!</p>
 
-<p>Another thing that annoyed me a bit was that the script was not
-<em>fully</em> self-contained. Yes, I have to ship a hole tar.gz file…
-so I thought that it would be great to distribute a single script
-without anything more. One option is PAR, of course, but I always
-regretted to use it because you basically have to compile for a target
-architecture (at least in my understanding). In case of Pure-Perl stuff
-this does not make me happy.</p>
+<h2 id="some-background">Some Background</h2>
 
-<p>Some time ago I had a similar problem that I solved with a script to
-bundle Pure-Perl modules inside a script. I put it in
-<a href="http://repo.or.cz/w/mobundle.git">repository</a> in
-<a href="http://repo.or.cz/">repo.org.cz</a>, for anyone to have a good laugh.</p>
+<p>More here in some time, come back!</p>
+
+<h2 id="code">Code</h2>
+
+<p>The code for the site is still not available, mainly for lazyness. You can
+use the shuffling stuff though, it’s available at <a href="https://github.com/polettix/Ordeal-Model">Ordeal::Model’s GitHub
+repository</a>.</p>
+
 
       <hr />
       <footer role="contentinfo">
@@ -208,19 +198,21 @@ bundle Pure-Perl modules inside a script. I put it in
   <h4>Share on</h4>
   <ul>
     <li>
-      <a href="https://twitter.com/intent/tweet?text=/mobundle/" class="twitter" title="Share on Twitter"><i class="fa fa-twitter"></i><span> Twitter</span></a>
+      <a href="https://twitter.com/intent/tweet?text=/invent-stories/" class="twitter" title="Share on Twitter"><i class="fa fa-twitter"></i><span> Twitter</span></a>
     </li>
     <li>
-      <a href="https://www.facebook.com/sharer/sharer.php?u=/mobundle/" class="facebook" title="Share on Facebook"><i class="fa fa-facebook"></i><span> Facebook</span></a>
+      <a href="https://www.facebook.com/sharer/sharer.php?u=/invent-stories/" class="facebook" title="Share on Facebook"><i class="fa fa-facebook"></i><span> Facebook</span></a>
     </li>
     <li>
-      <a href="https://plus.google.com/share?url=/mobundle/" class="google-plus" title="Share on Google Plus"><i class="fa fa-google-plus"></i><span> Google+</span></a>
+      <a href="https://plus.google.com/share?url=/invent-stories/" class="google-plus" title="Share on Google Plus"><i class="fa fa-google-plus"></i><span> Google+</span></a>
     </li>
   </ul>
 </div><!-- /.social-share -->
-        <p class="byline"><strong>RTFM, you geek!</strong> was published on <time datetime="2009-11-24T00:00:00+01:00">November 24, 2009</time>.</p>
+        <p class="byline"><strong>Invent Stories</strong> was published on <time datetime="2018-04-14T00:00:00+02:00">April 14, 2018</time>.</p>
       </footer>
     </div><!-- /.article-wrap -->
+  
+    <section id="disqus_thread"></section><!-- /#disqus_thread -->
   
   </article>
 </div><!-- /#main -->
@@ -230,11 +222,11 @@ bundle Pure-Perl modules inside a script. I put it in
   <h4>You might also enjoy <small class="pull-right">(<a href="/posts/">View all posts</a>)</small></h4>
     <ul>
     
-      <li><a href="/invent-stories/" title="Invent Stories">Invent Stories</a></li>
-    
       <li><a href="/a-simple-telegram-bot/" title="A Simple Telegram Bot">A Simple Telegram Bot</a></li>
     
       <li><a href="/some-maths-for-dobble/" title="Some Maths for Dobble">Some Maths for Dobble</a></li>
+    
+      <li><a href="/telegram-keyboard-button-encoding/" title="Telegram Keyboard Button Encoding">Telegram Keyboard Button Encoding</a></li>
     
     </ul>
     <hr />
@@ -250,6 +242,30 @@ bundle Pure-Perl modules inside a script. I put it in
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 <script>window.jQuery || document.write('<script src="/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
 <script src="/assets/js/scripts.min.js"></script>
+
+
+  
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'polettix'; // required: replace example with your forum shortname
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = '//' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
 
 
 

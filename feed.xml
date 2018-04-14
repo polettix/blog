@@ -4,13 +4,52 @@
 <generator uri="https://github.com/jekyll/jekyll">Jekyll</generator>
 <link rel="self" type="application/atom+xml" href="/feed.xml" />
 <link rel="alternate" type="text/html" href="" />
-<updated>2018-01-14T00:34:58+01:00</updated>
+<updated>2018-04-14T12:06:55+02:00</updated>
 <id>/</id>
 <author>
   <name>Flavio Poletti</name>
   <uri>/</uri>
   <email>flavio@polettix.it</email>
 </author>
+
+
+  
+
+<entry>
+  <title type="html"><![CDATA[Invent Stories]]></title>
+  <link rel="alternate" type="text/html" href="/invent-stories/" />
+  <id>/invent-stories</id>
+  <published>2018-04-14T00:00:00+02:00</published>
+  <updated>2018-04-14T00:00:00+02:00</updated>
+  <author>
+    <name>Flavio Poletti</name>
+    <uri></uri>
+    <email>flavio@polettix.it</email>
+  </author>
+  <content type="html">
+    &lt;p&gt;I was always fascinated by &lt;em&gt;systems for creating stories&lt;/em&gt;, like &lt;a href=&quot;https://www.storycubes.com/&quot;&gt;Rory’s
+Story Cubes&lt;/a&gt; and its emulators, the &lt;a href=&quot;http://www.ilbarbagiannieditore.it/prodotto/linventafavole/&quot;&gt;Inventafavole&lt;/a&gt;
+(or &lt;a href=&quot;http://www.ilbarbagiannieditore.it/prodotto/linventafavole-ii-2/&quot;&gt;its second take&lt;/a&gt;). Why not make something just for
+fun?&lt;/p&gt;
+
+&lt;h2 id=&quot;tldr&quot;&gt;TL;DR&lt;/h2&gt;
+
+&lt;p&gt;Head to &lt;a href=&quot;https://ordeal.introm.it/&quot;&gt;ordeal&lt;/a&gt; and have fun!&lt;/p&gt;
+
+&lt;h2 id=&quot;some-background&quot;&gt;Some Background&lt;/h2&gt;
+
+&lt;p&gt;More here in some time, come back!&lt;/p&gt;
+
+&lt;h2 id=&quot;code&quot;&gt;Code&lt;/h2&gt;
+
+&lt;p&gt;The code for the site is still not available, mainly for lazyness. You can
+use the shuffling stuff though, it’s available at &lt;a href=&quot;https://github.com/polettix/Ordeal-Model&quot;&gt;Ordeal::Model’s GitHub
+repository&lt;/a&gt;.&lt;/p&gt;
+
+
+    &lt;p&gt;&lt;a href=&quot;/invent-stories/&quot;&gt;Invent Stories&lt;/a&gt; was originally published by Flavio Poletti at &lt;a href=&quot;&quot;&gt;PolettiX!&lt;/a&gt; on April 14, 2018.&lt;/p&gt;
+  </content>
+</entry>
 
 
   
@@ -6835,112 +6874,6 @@ use lib $FindBin::Bin;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 laptop, so I didn’t need anything of this…&lt;/p&gt;
 
     &lt;p&gt;&lt;a href=&quot;/local-lib-for-distributions/&quot;&gt;local::lib for distributions&lt;/a&gt; was originally published by Flavio Poletti at &lt;a href=&quot;&quot;&gt;PolettiX!&lt;/a&gt; on July 30, 2010.&lt;/p&gt;
-  </content>
-</entry>
-
-
-  
-
-<entry>
-  <title type="html"><![CDATA[Carp::Always would have helped]]></title>
-  <link rel="alternate" type="text/html" href="/carp-always/" />
-  <id>/carp-always</id>
-  <published>2010-05-09T00:00:00+02:00</published>
-  <updated>2010-05-09T00:00:00+02:00</updated>
-  <author>
-    <name>Flavio Poletti</name>
-    <uri></uri>
-    <email>flavio@polettix.it</email>
-  </author>
-  <content type="html">
-    &lt;p&gt;Yesterday I wrote an &lt;a href=&quot;dist-zilla&quot;&gt;article&lt;/a&gt; about &lt;a href=&quot;https://metacpan.org/pod/Dist::Zilla&quot;&gt;Dist::Zilla&lt;/a&gt; and,
-at a certain point, I had issues with a missing &lt;code&gt;Changes&lt;/code&gt; file,
-that triggered an error whose source was not evident:&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;~/dzilla/Sample-Module$ dzil release
-[DZ] beginning to build Sample-Module
-[BumpVersionFromGit] Bumping version from 0.1.3 to 0.1.4
-[DZ] guessing dist&amp;#39;s main_module is lib/Sample/Module.pm
-[DZ] extracting distribution abstract from lib/Sample/Module.pm
-[DZ] writing Sample-Module in Sample-Module-0.1.4
-[DZ] writing archive to Sample-Module-0.1.4.tar.gz
-[@Filter/Check] branch master is in a clean state
-[@Filter/TestRelease] ...
-...
-[@Filter/TestRelease] all&amp;#39;s well; removing .build/OIeyjyhBZd
-[FakeRelease] Fake release happening (nothing was really done)
-can&amp;#39;t open Changes for reading: No such file or directory\
- at /opt/perl-5.8.8/lib/site_perl/5.8.8/Dist/Zilla/File/OnDisk.pm line 31.&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;To find out the offending plugin I decided to hack
-&lt;code&gt;Dist::Zilla::File::OnDisk&lt;/code&gt;, turning a &lt;code&gt;die()&lt;/code&gt; into a &lt;code&gt;Carp::confess()&lt;/code&gt;
-to see what was going wrong:&lt;/p&gt;
-
-&lt;pre&gt;
-&lt;em style=&quot;color:red&quot;&gt;--- src.OnDisk.pm&lt;/em&gt;
-&lt;em style=&quot;color:green&quot;&gt;+++ dst.OnDisk.pm&lt;/em&gt;
-@@ -28,7 +28,8 @@
- sub _read_file {
-   my ($self) = @_;
- 
-   my $fname = $self-&amp;gt;_original_name;
-&lt;em style=&quot;color:red&quot;&gt;-  open my $fh, &#39;&amp;lt;&#39;, $fname or die &quot;can&#39;t open $fname for reading: $!&quot;;&lt;/em&gt;
-&lt;em style=&quot;color:green&quot;&gt;+  use Carp;
-+  open my $fh, &#39;&amp;lt;&#39;, $fname or Carp::confess &quot;can&#39;t open $fname for reading: $!&quot;;&lt;/em&gt;
-   my $content = do { local $/; &amp;lt;$fh&amp;gt; };
- }
-
-&lt;/pre&gt;
-
-&lt;p&gt;Had I read the &lt;em&gt;title&lt;/em&gt; of &lt;a href=&quot;http://d.hatena.ne.jp/tokuhirom/&quot;&gt;Tokuhiro Matsuno&lt;/a&gt;’s post
-&lt;a href=&quot;http://d.hatena.ne.jp/tokuhirom/20100508/1273279912&quot;&gt;Carp::Always::Color&lt;/a&gt;
-(well, I can’t read Japanese, so I can’t go beyond an
-English title!), I would have avoided all the editing mess to just
-use &lt;a href=&quot;http://search.cpan.org/~ferreira/&quot;&gt;Adriano Ferreira&lt;/a&gt;’s
-&lt;a href=&quot;https://metacpan.org/pod/Carp::Always&quot;&gt;Carp::Always&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;So, instead of editing the file, I should have find out where
-&lt;code&gt;dzil&lt;/code&gt; is installed in my system:&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;~/dzilla/Sample-Module$ which dzil
-/opt/perl/bin/dzil&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;This way, the &lt;code&gt;perl&lt;/code&gt; executable can be called directly to add &lt;a href=&quot;https://metacpan.org/pod/Carp::Always&quot;&gt;Carp::Always&lt;/a&gt;
-in the command line:&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;~/dzilla/Sample-Module$ perl -MCarp::Always /opt/perl/bin/dzil release
-[DZ] beginning to build Sample-Module
-[BumpVersionFromGit] Bumping version from 0.1.3 to 0.1.4
-[DZ] guessing dist&amp;#39;s main_module is lib/Sample/Module.pm
-[DZ] extracting distribution abstract from lib/Sample/Module.pm
-[DZ] writing Sample-Module in Sample-Module-0.1.4
-[DZ] writing archive to Sample-Module-0.1.4.tar.gz
-[@Filter/Check] branch master is in a clean state
-[@Filter/TestRelease] ...
-...
-[@Filter/TestRelease] all&amp;#39;s well; removing .build/dE1qIIQWEG
-[FakeRelease] Fake release happening (nothing was really done)
-can&amp;#39;t open Changes for reading: No such file or directory\
- at /opt/perl-5.8.8/lib/site_perl/5.8.8/Dist/Zilla/File/OnDisk.pm line 31
-   Dist::Zilla::File::OnDisk::_read_file(...
-   Dist::Zilla::File::OnDisk::__ANON__(...
-   Class::MOP::Attribute::default(...
-   Dist::Zilla::File::OnDisk::content(...
-   &amp;lt;em style=&amp;quot;color:red&amp;quot;&amp;gt;Dist::Zilla::Plugin::Git::Commit&amp;lt;/em&amp;gt;::_get_changes(...
-   Dist::Zilla::Plugin::Git::Commit::__ANON__(...
-   String::Formatter::method_replace(...
-   String::Formatter::format(...
-   String::Formatter::__ANON__(...
-   Dist::Zilla::Plugin::Git::Commit::get_commit_message(...
-   Dist::Zilla::Plugin::Git::Commit::after_release(...
-   Dist::Zilla::release(...
-   Dist::Zilla::App::Command::release::execute(...
-   App::Cmd::execute_command(...
-   App::Cmd::run(...&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;&lt;em&gt;Voilà&lt;/em&gt;, a perfect stack trace with the info I was after!&lt;/p&gt;
-
-    &lt;p&gt;&lt;a href=&quot;/carp-always/&quot;&gt;Carp::Always would have helped&lt;/a&gt; was originally published by Flavio Poletti at &lt;a href=&quot;&quot;&gt;PolettiX!&lt;/a&gt; on May 09, 2010.&lt;/p&gt;
   </content>
 </entry>
 
