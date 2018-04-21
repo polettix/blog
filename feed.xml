@@ -4,7 +4,7 @@
 <generator uri="https://github.com/jekyll/jekyll">Jekyll</generator>
 <link rel="self" type="application/atom+xml" href="/feed.xml" />
 <link rel="alternate" type="text/html" href="" />
-<updated>2018-04-14T12:06:55+02:00</updated>
+<updated>2018-04-21T17:12:48+02:00</updated>
 <id>/</id>
 <author>
   <name>Flavio Poletti</name>
@@ -28,23 +28,24 @@
   </author>
   <content type="html">
     &lt;p&gt;I was always fascinated by &lt;em&gt;systems for creating stories&lt;/em&gt;, like &lt;a href=&quot;https://www.storycubes.com/&quot;&gt;Rory’s
-Story Cubes&lt;/a&gt; and its emulators, the &lt;a href=&quot;http://www.ilbarbagiannieditore.it/prodotto/linventafavole/&quot;&gt;Inventafavole&lt;/a&gt;
-(or &lt;a href=&quot;http://www.ilbarbagiannieditore.it/prodotto/linventafavole-ii-2/&quot;&gt;its second take&lt;/a&gt;). Why not make something just for
+Story Cubes&lt;/a&gt; and its emulators, or card alternatives like &lt;a href=&quot;http://www.blueorangegames.com/index.php/games/telltale&quot;&gt;Tell
+Tale&lt;/a&gt; and the &lt;a href=&quot;http://www.ilbarbagiannieditore.it/prodotto/linventafavole/&quot;&gt;Inventafavole&lt;/a&gt; (or &lt;a href=&quot;http://www.ilbarbagiannieditore.it/prodotto/linventafavole-ii-2/&quot;&gt;its second
+take&lt;/a&gt;) among the many. Why not make something just for
 fun?&lt;/p&gt;
 
 &lt;h2 id=&quot;tldr&quot;&gt;TL;DR&lt;/h2&gt;
 
-&lt;p&gt;Head to &lt;a href=&quot;https://ordeal.introm.it/&quot;&gt;ordeal&lt;/a&gt; and have fun!&lt;/p&gt;
+&lt;p&gt;Enter &lt;a href=&quot;https://ordeal.introm.it/&quot;&gt;ordeal&lt;/a&gt; and have fun!&lt;/p&gt;
 
-&lt;h2 id=&quot;some-background&quot;&gt;Some Background&lt;/h2&gt;
-
-&lt;p&gt;More here in some time, come back!&lt;/p&gt;
+&lt;p&gt;If you are curious about the syntax, you can read more about it &lt;a href=&quot;https://github.com/polettix/Ordeal-Model/blob/master/lib/Ordeal/Model/Tutorial.pod#express-yourself&quot;&gt;in the
+tutorial page for Ordeal::Model&lt;/a&gt;.&lt;/p&gt;
 
 &lt;h2 id=&quot;code&quot;&gt;Code&lt;/h2&gt;
 
-&lt;p&gt;The code for the site is still not available, mainly for lazyness. You can
-use the shuffling stuff though, it’s available at &lt;a href=&quot;https://github.com/polettix/Ordeal-Model&quot;&gt;Ordeal::Model’s GitHub
-repository&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;The &lt;a href=&quot;https://github.com/polettix/ordeal-webapp&quot;&gt;code for the site&lt;/a&gt; on GitHub. You can use the shuffling
+stuff though, it’s available at &lt;a href=&quot;https://github.com/polettix/Ordeal-Model&quot;&gt;Ordeal::Model’s GitHub
+repository&lt;/a&gt;. The module isn’t released in CPAN yet,
+mainly due to its liquid interface as of now.&lt;/p&gt;
 
 
     &lt;p&gt;&lt;a href=&quot;/invent-stories/&quot;&gt;Invent Stories&lt;/a&gt; was originally published by Flavio Poletti at &lt;a href=&quot;&quot;&gt;PolettiX!&lt;/a&gt; on April 14, 2018.&lt;/p&gt;
