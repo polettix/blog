@@ -46,6 +46,7 @@ For building our bot we will rely upon [Bot::ChatBots::Telegram][] from
 #!/usr/bin/env perl
 use strict;
 use warnings;
+use Log::Any::Adapter qw< Stderr >;
 use Bot::ChatBots::Telegram::LongPoll;
 
 my $token = shift || $ENV{TOKEN};
@@ -205,6 +206,11 @@ your bot is... yours! You know that you can do without much of the
 scaffolding, because it's already there for you.
 
 Have fun!
+
+## Updates
+
+The [longpoll][longpoll-example] example has been updated to initialize
+`Log::Any`, so the verbatim copy above has been updated accordingly.
 
 
 [Telegram]: https://www.telegram.org/
