@@ -211,6 +211,7 @@ environment variable <code>TOKEN</code>, e.g. in a <code>bash</code> shell:</p>
 <div class="highlight"><pre><code class="language-perl" data-lang="perl"><span class="c1">#!/usr/bin/env perl</span>
 <span class="k">use</span> <span class="n">strict</span><span class="p">;</span>
 <span class="k">use</span> <span class="n">warnings</span><span class="p">;</span>
+<span class="k">use</span> <span class="nn">Log::Any::</span><span class="n">Adapter</span> <span class="sx">qw&lt; Stderr &gt;</span><span class="p">;</span>
 <span class="k">use</span> <span class="nn">Bot::ChatBots::Telegram::</span><span class="n">LongPoll</span><span class="p">;</span>
 
 <span class="k">my</span> <span class="nv">$token</span> <span class="o">=</span> <span class="nb">shift</span> <span class="o">||</span> <span class="nv">$ENV</span><span class="p">{</span><span class="n">TOKEN</span><span class="p">};</span>
@@ -370,6 +371,11 @@ your bot is… yours! You know that you can do without much of the
 scaffolding, because it’s already there for you.</p>
 
 <p>Have fun!</p>
+
+<h2 id="updates">Updates</h2>
+
+<p>The <a href="https://github.com/polettix/Bot-ChatBots-Telegram/blob/master/eg/longpoll">longpoll</a> example has been updated to initialize
+<code>Log::Any</code>, so the verbatim copy above has been updated accordingly.</p>
 
 
       <hr />
