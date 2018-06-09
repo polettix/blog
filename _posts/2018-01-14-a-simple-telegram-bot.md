@@ -209,8 +209,10 @@ Have fun!
 
 ## Updates
 
-The [longpoll][longpoll-example] example has been updated to initialize
-`Log::Any`, so the verbatim copy above has been updated accordingly.
+Updates since the initial publishing of this post:
+
+- The [longpoll][longpoll-example] example has been updated to initialize
+  `Log::Any`, so the verbatim copy above has been updated accordingly.
 
 
 [Telegram]: https://www.telegram.org/
