@@ -1,0 +1,90 @@
+---
+name: dibs-example-sample-mojo
+
+actions:
+   default: [build, bundle]
+
+   create-user:
+      pack:
+         run: |
+            #!/bin/sh
+              set -e
+              exec >&2
+              adduser -D -h /app ada
+
+   build-base:
+      - from: 'alpine:3.6'
+      - name: build
+        pack:
+           run: |
+              #!/bin/sh
+              set -e
+              exec >&2
+              apk --no-cache add build-base wget perl perl-dev
+              wget -O /bin/cpanm --no-check-certificate https://cpanmin.us/
+              chmod +x /bin/cpanm
+      - name: save base image for build
+        tags: sample-mojo-alien01-buildbase:latest
+
+   bundle-base:
+      - from: 'alpine:3.6'
+      - name: build
+        pack:
+           run: |
+              #!/bin/sh
+              set -e
+              exec >&2
+              apk --no-cache add perl
+      - name: save base image for bundle
+        tags: sample-mojo-alien01-bundlebase:latest
+
+   build:
+      - from: sample-mojo-alien01-buildbase:latest
+      - name: build
+        user: ada
+        pack:
+           run: |
+              #!/bin/sh
+              set -e
+              exec >&2
+              cd /app
+              cp -R /tmp/src/* .
+              if [ -d '/tmp/cache/app/local' ] ; then
+                 cp -R /tmp/cache/app/local /app
+              fi
+              cpanm -l local --notest --installdeps .
+              cp -R /app /tmp/cache
+
+   bundle:
+      - from: sample-mojo-alien01-bundlebase:latest
+      - name: install
+        pack:
+           run: |
+              #!/bin/sh
+              set -e
+              exec >&2
+              cp -a /tmp/cache/app /
+              cat >/procfilerun <<'END'
+              #!/bin/sh
+              set -e
+              PROCFILE_TYPE="${1:-"web"}"
+              export PERL5LIB='/app/local/lib/perl5'
+              cd /app
+              while read -r type command ; do
+                 [ -n "$type" ] || continue
+                 [ "x${type%${type#?}}" != 'x#' ] || continue
+                 [ "x$type" = "x$PROCFILE_TYPE:" ] || continue
+                 exec /bin/sh -c "exec $command"
+                 printf >&2 'could not execute command "%s"\n' "$command"
+                 exit 1
+              done <Procfile
+              printf >&2 'invalid process type %s, not in Procfile\n' "$PROCFILE_TYPE"
+              exit 1
+              END
+              chmod +x /procfilerun
+        commit:
+           entrypoint: [/procfilerun]
+           cmd: [web]
+           user: ada
+      - name: save bundled image
+        tags: sample-mojo-alien01:latest
