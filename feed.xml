@@ -4,13 +4,741 @@
 <generator uri="https://github.com/jekyll/jekyll">Jekyll</generator>
 <link rel="self" type="application/atom+xml" href="/feed.xml" />
 <link rel="alternate" type="text/html" href="" />
-<updated>2018-06-09T10:37:08+02:00</updated>
+<updated>2019-02-26T09:30:56+01:00</updated>
 <id>/</id>
 <author>
   <name>Flavio Poletti</name>
   <uri>/</uri>
   <email>flavio@polettix.it</email>
 </author>
+
+
+  
+
+<entry>
+  <title type="html"><![CDATA[Hi from dibs!]]></title>
+  <link rel="alternate" type="text/html" href="/hi-from-dibs/" />
+  <id>/hi-from-dibs</id>
+  <published>2019-02-26T00:00:00+01:00</published>
+  <updated>2019-02-26T00:00:00+01:00</updated>
+  <author>
+    <name>Flavio Poletti</name>
+    <uri></uri>
+    <email>flavio@polettix.it</email>
+  </author>
+  <content type="html">
+    &lt;p&gt;So… here’s &lt;a href=&quot;https://github.com/polettix/dibs&quot;&gt;dibs&lt;/a&gt;, which stands for Docker Image Build System. Put it
+very, very bluntly… it is what I use instead of &lt;code&gt;docker build&lt;/code&gt; lately.
+It already comes with documentation and many frills, but we will start
+very slow and explore features in a series of posts. Buckle up!&lt;/p&gt;
+
+&lt;h2 id=&quot;table-of-contents&quot;&gt;Table of Contents&lt;/h2&gt;
+
+&lt;ul id=&quot;markdown-toc&quot;&gt;
+  &lt;li&gt;&lt;a href=&quot;#table-of-contents&quot; id=&quot;markdown-toc-table-of-contents&quot;&gt;Table of Contents&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#quick-why-dibs&quot; id=&quot;markdown-toc-quick-why-dibs&quot;&gt;Quick “why dibs”&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#example&quot; id=&quot;markdown-toc-example&quot;&gt;Example?&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#installing-dibs&quot; id=&quot;markdown-toc-installing-dibs&quot;&gt;Installing dibs&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#getting-the-target-software&quot; id=&quot;markdown-toc-getting-the-target-software&quot;&gt;Getting The Target Software&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#the-configuration-file&quot; id=&quot;markdown-toc-the-configuration-file&quot;&gt;The Configuration File&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#generate-the-image&quot; id=&quot;markdown-toc-generate-the-image&quot;&gt;Generate The Image&lt;/a&gt;    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#actions&quot; id=&quot;markdown-toc-actions&quot;&gt;Actions&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#what-happened&quot; id=&quot;markdown-toc-what-happened&quot;&gt;What Happened?&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#make-build-more-efficient&quot; id=&quot;markdown-toc-make-build-more-efficient&quot;&gt;Make &lt;code&gt;build&lt;/code&gt; More Efficient&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#make-build-even-more-efficient&quot; id=&quot;markdown-toc-make-build-even-more-efficient&quot;&gt;Make &lt;code&gt;build&lt;/code&gt; even more efficient&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#enhancing-bundle&quot; id=&quot;markdown-toc-enhancing-bundle&quot;&gt;Enhancing &lt;code&gt;bundle&lt;/code&gt;&lt;/a&gt;    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#bundle-as-global-base&quot; id=&quot;markdown-toc-bundle-as-global-base&quot;&gt;Bundle As Global Base&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#common-pre-base-image&quot; id=&quot;markdown-toc-common-pre-base-image&quot;&gt;Common Pre-Base Image&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#factoring-a-common-user-creation-stroke&quot; id=&quot;markdown-toc-factoring-a-common-user-creation-stroke&quot;&gt;Factoring a Common User Creation Stroke&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#where-are-we-now&quot; id=&quot;markdown-toc-where-are-we-now&quot;&gt;Where Are We Now?&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;quick-why-dibs&quot;&gt;Quick “why dibs”&lt;/h2&gt;
+
+&lt;p&gt;Why did I start working on &lt;a href=&quot;https://github.com/polettix/dibs&quot;&gt;dibs&lt;/a&gt;? Part is due to my ignorance: I
+honestly didn’t know about &lt;a href=&quot;https://docs.docker.com/develop/develop-images/multistage-build/&quot;&gt;multistage&lt;/a&gt; Dockerfiles, and I quickly got
+bored of managing it myself.&lt;/p&gt;
+
+&lt;p&gt;This is not the whole story though. Another aspect of the Dockerfile
+system that is a bit too… &lt;em&gt;raw&lt;/em&gt; in my opinion is how to execute things.
+As far as I know, you either use the &lt;code&gt;RUN&lt;/code&gt; directive providing a usually
+growing list of commands all stitched together with &lt;code&gt;&amp;amp;&amp;amp;&lt;/code&gt;s, or you put
+those commands in a script, &lt;code&gt;COPY&lt;/code&gt; it into the container, then &lt;code&gt;RUN&lt;/code&gt; it.
+I’d say this is basically what’s needed, but not the best from the
+usability point of view.&lt;/p&gt;
+
+&lt;p&gt;Last, I also grew a bit tired of the caching mechanism provided by Docker
+when building images via Dockerfile. Don’t get me wrong, it’s really neat;
+my only concern is that sometimes it led to situations that required some
+debugging before figuring out what was going wrong, especially when
+building images from a remote repository dynamically cloned via &lt;code&gt;git&lt;/code&gt;. I
+felt that having direct and explicit control over the caching mechanism
+would help in a lot of my use cases.&lt;/p&gt;
+
+&lt;h2 id=&quot;example&quot;&gt;Example?&lt;/h2&gt;
+
+&lt;p&gt;In this series of posts I’ll be showing examples of growing complexity. In
+this starting one there will be actually nothing (I guess) that cannot be
+done more or less directly with a Dockerfile, but it’s helpful to set the
+stage.&lt;/p&gt;
+
+&lt;p&gt;The main goal is to generate a Docker image for &lt;a href=&quot;https://gitlab.com/polettix/sample-mojo&quot;&gt;sample-mojo&lt;/a&gt;. This
+project is somehow &lt;em&gt;purely&lt;/em&gt; focused on providing a simple web endpoint,
+without wasting too much time on how it will be deployed, apart providing
+an &lt;a href=&quot;https://www.heroku.com/&quot;&gt;Heroku&lt;/a&gt;-compatible &lt;code&gt;Procfile&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;web: perl ./app.pl daemon --listen &amp;quot;http://*:$PORT&amp;quot;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;and declaring the Perl’s dependencies in a &lt;code&gt;cpanfile&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;requires &amp;#39;Mojolicious&amp;#39;, &amp;#39;7.08&amp;#39;;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;So, we will have to do the heavy lifting:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;install the modules based on the &lt;code&gt;cpanfile&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;provide a wrapper that uses &lt;code&gt;Procfile&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;This is not all though, we also want:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;avoid bloating the target image, i.e. we don’t want any build tools
+inside it&lt;/li&gt;
+  &lt;li&gt;compile and run under an unprivileged user &lt;code&gt;ada&lt;/code&gt;, to avoid &lt;code&gt;root&lt;/code&gt; as
+much as possible`&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Hence, the sequence of operations will be like this:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;build the modules in a container were we install all needed building
+tools&lt;/li&gt;
+  &lt;li&gt;copy the final &lt;em&gt;complete&lt;/em&gt; application in a temporary cache&lt;/li&gt;
+  &lt;li&gt;create another container with only the tools needed at runtime, namely
+Perl&lt;/li&gt;
+  &lt;li&gt;copy the application artifacts from the temporary cache into their final
+position in this container&lt;/li&gt;
+  &lt;li&gt;put a wrapper script to interpret and execute the &lt;code&gt;Procfile&lt;/code&gt; in the
+container&lt;/li&gt;
+  &lt;li&gt;set the proper &lt;code&gt;ENTRYPOINT&lt;/code&gt;, &lt;code&gt;CMD&lt;/code&gt; and &lt;code&gt;USER&lt;/code&gt; on the container&lt;/li&gt;
+  &lt;li&gt;save the container as image.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;installing-dibs&quot;&gt;Installing dibs&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://github.com/polettix/dibs&quot;&gt;dibs&lt;/a&gt; needs Docker to do anything interesting, so chances are that you
+already have Docker. In this case, installing &lt;a href=&quot;https://github.com/polettix/dibs&quot;&gt;dibs&lt;/a&gt; is as simple as
+creating the following &lt;code&gt;dibs&lt;/code&gt; script somewhere in the &lt;code&gt;PATH&lt;/code&gt;, like this:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;cat &amp;gt;dibs &lt;span class=&quot;s&quot;&gt;&amp;lt;&amp;lt;&amp;#39;END&amp;#39;&lt;/span&gt;
+&lt;span class=&quot;s&quot;&gt;#!/bin/sh&lt;/span&gt;
+&lt;span class=&quot;s&quot;&gt;docker run --rm \&lt;/span&gt;
+&lt;span class=&quot;s&quot;&gt;    -v /var/run/docker.sock:/var/run/docker.sock \&lt;/span&gt;
+&lt;span class=&quot;s&quot;&gt;    -v &amp;quot;$PWD:/mnt&amp;quot; -w /mnt -e &amp;quot;DIBS_HOST_REMAP_DIR=/mnt:$PWD&amp;quot; \&lt;/span&gt;
+&lt;span class=&quot;s&quot;&gt;    -- polettix/dibs:0.5 &amp;quot;$@&amp;quot;&lt;/span&gt;
+&lt;span class=&quot;s&quot;&gt;END&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;chmod +x dibs&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;getting-the-target-software&quot;&gt;Getting The Target Software&lt;/h2&gt;
+
+&lt;p&gt;In this example, we will work in the so-called &lt;em&gt;alien mode&lt;/em&gt;, i.e. a mode
+where the software to be packaged is not &lt;em&gt;aware&lt;/em&gt; of &lt;a href=&quot;https://github.com/polettix/dibs&quot;&gt;dibs&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;First of all, we will create a directory that will be the base of our
+operations. We will call it &lt;code&gt;alien01&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;~&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;mkdir alien01
+~&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;cd &lt;/span&gt;alien01&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Next, we will get the software, which &lt;a href=&quot;https://github.com/polettix/dibs&quot;&gt;dibs&lt;/a&gt; expects to find in the
+&lt;code&gt;src&lt;/code&gt; sub-directory:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;alien01&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;git clone https://gitlab.com/polettix/sample-mojo.git src&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;the-configuration-file&quot;&gt;The Configuration File&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://github.com/polettix/dibs&quot;&gt;dibs&lt;/a&gt; works based on a configuration file. In our case, the
+configuration is the following YAML file:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-yaml&quot; data-lang=&quot;yaml&quot;&gt;&lt;span class=&quot;nn&quot;&gt;---&lt;/span&gt;
+&lt;span class=&quot;l-Scalar-Plain&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;dibs-example-sample-mojo&lt;/span&gt;
+
+&lt;span class=&quot;l-Scalar-Plain&quot;&gt;actions&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+   &lt;span class=&quot;l-Scalar-Plain&quot;&gt;default&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p-Indicator&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;build&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;bundle&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;]&lt;/span&gt;
+
+   &lt;span class=&quot;l-Scalar-Plain&quot;&gt;build&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+      &lt;span class=&quot;p-Indicator&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;from&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;alpine:3.6&amp;#39;&lt;/span&gt;
+      &lt;span class=&quot;p-Indicator&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;build&lt;/span&gt;
+        &lt;span class=&quot;l-Scalar-Plain&quot;&gt;pack&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+           &lt;span class=&quot;l-Scalar-Plain&quot;&gt;run&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p-Indicator&quot;&gt;|&lt;/span&gt;
+              &lt;span class=&quot;no&quot;&gt;#!/bin/sh&lt;/span&gt;
+              &lt;span class=&quot;no&quot;&gt;set -e&lt;/span&gt;
+              &lt;span class=&quot;no&quot;&gt;exec &amp;gt;&amp;amp;2&lt;/span&gt;
+              &lt;span class=&quot;no&quot;&gt;apk --no-cache add build-base wget perl perl-dev&lt;/span&gt;
+              &lt;span class=&quot;no&quot;&gt;adduser -D -h /app ada&lt;/span&gt;
+              &lt;span class=&quot;no&quot;&gt;wget -O /bin/cpanm --no-check-certificate https://cpanmin.us/&lt;/span&gt;
+              &lt;span class=&quot;no&quot;&gt;chmod +x /bin/cpanm&lt;/span&gt;
+              &lt;span class=&quot;no&quot;&gt;cat &amp;gt;/tmp/as-ada.sh &amp;lt;&amp;lt;&amp;#39;END&amp;#39;&lt;/span&gt;
+              &lt;span class=&quot;no&quot;&gt;cd /app&lt;/span&gt;
+              &lt;span class=&quot;no&quot;&gt;cp -R /tmp/src/* .&lt;/span&gt;
+              &lt;span class=&quot;no&quot;&gt;cpanm -l local --notest --installdeps .&lt;/span&gt;
+              &lt;span class=&quot;no&quot;&gt;END&lt;/span&gt;
+              &lt;span class=&quot;no&quot;&gt;chmod +x /tmp/as-ada.sh&lt;/span&gt;
+              &lt;span class=&quot;no&quot;&gt;su - ada /tmp/as-ada.sh&lt;/span&gt;
+              &lt;span class=&quot;no&quot;&gt;cp -a /app /tmp/cache&lt;/span&gt;
+
+   &lt;span class=&quot;l-Scalar-Plain&quot;&gt;bundle&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+      &lt;span class=&quot;p-Indicator&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;from&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;alpine:3.6&amp;#39;&lt;/span&gt;
+      &lt;span class=&quot;p-Indicator&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;install&lt;/span&gt;
+        &lt;span class=&quot;l-Scalar-Plain&quot;&gt;pack&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+           &lt;span class=&quot;l-Scalar-Plain&quot;&gt;run&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p-Indicator&quot;&gt;|&lt;/span&gt;
+              &lt;span class=&quot;no&quot;&gt;#!/bin/sh&lt;/span&gt;
+              &lt;span class=&quot;no&quot;&gt;set -e&lt;/span&gt;
+              &lt;span class=&quot;no&quot;&gt;exec &amp;gt;&amp;amp;2&lt;/span&gt;
+              &lt;span class=&quot;no&quot;&gt;apk --no-cache add perl&lt;/span&gt;
+              &lt;span class=&quot;no&quot;&gt;adduser -D -h /app ada&lt;/span&gt;
+              &lt;span class=&quot;no&quot;&gt;cp -a /tmp/cache/app /&lt;/span&gt;
+              &lt;span class=&quot;no&quot;&gt;cat &amp;gt;/procfilerun &amp;lt;&amp;lt;&amp;#39;END&amp;#39;&lt;/span&gt;
+              &lt;span class=&quot;no&quot;&gt;#!/bin/sh&lt;/span&gt;
+              &lt;span class=&quot;no&quot;&gt;set -e&lt;/span&gt;
+              &lt;span class=&quot;no&quot;&gt;PROCFILE_TYPE=&amp;quot;${1:-&amp;quot;web&amp;quot;}&amp;quot;&lt;/span&gt;
+              &lt;span class=&quot;no&quot;&gt;export PERL5LIB=&amp;#39;/app/local/lib/perl5&amp;#39;&lt;/span&gt;
+              &lt;span class=&quot;no&quot;&gt;cd /app&lt;/span&gt;
+              &lt;span class=&quot;no&quot;&gt;while read -r type command ; do&lt;/span&gt;
+                 &lt;span class=&quot;no&quot;&gt;[ -n &amp;quot;$type&amp;quot; ] || continue&lt;/span&gt;
+                 &lt;span class=&quot;no&quot;&gt;[ &amp;quot;x${type%${type#?}}&amp;quot; != &amp;#39;x#&amp;#39; ] || continue&lt;/span&gt;
+                 &lt;span class=&quot;no&quot;&gt;[ &amp;quot;x$type&amp;quot; = &amp;quot;x$PROCFILE_TYPE:&amp;quot; ] || continue&lt;/span&gt;
+                 &lt;span class=&quot;no&quot;&gt;exec /bin/sh -c &amp;quot;exec $command&amp;quot;&lt;/span&gt;
+                 &lt;span class=&quot;no&quot;&gt;printf &amp;gt;&amp;amp;2 &amp;#39;could not execute command &amp;quot;%s&amp;quot;\n&amp;#39; &amp;quot;$command&amp;quot;&lt;/span&gt;
+                 &lt;span class=&quot;no&quot;&gt;exit 1&lt;/span&gt;
+              &lt;span class=&quot;no&quot;&gt;done &amp;lt;Procfile&lt;/span&gt;
+              &lt;span class=&quot;no&quot;&gt;printf &amp;gt;&amp;amp;2 &amp;#39;invalid process type %s, not in Procfile\n&amp;#39; &amp;quot;$PROCFILE_TYPE&amp;quot;&lt;/span&gt;
+              &lt;span class=&quot;no&quot;&gt;exit 1&lt;/span&gt;
+              &lt;span class=&quot;no&quot;&gt;END&lt;/span&gt;
+              &lt;span class=&quot;no&quot;&gt;chmod +x /procfilerun&lt;/span&gt;
+        &lt;span class=&quot;l-Scalar-Plain&quot;&gt;commit&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+           &lt;span class=&quot;l-Scalar-Plain&quot;&gt;entrypoint&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p-Indicator&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;/procfilerun&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;]&lt;/span&gt;
+           &lt;span class=&quot;l-Scalar-Plain&quot;&gt;cmd&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p-Indicator&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;web&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;]&lt;/span&gt;
+           &lt;span class=&quot;l-Scalar-Plain&quot;&gt;user&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;ada&lt;/span&gt;
+      &lt;span class=&quot;p-Indicator&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;save bundled image&lt;/span&gt;
+        &lt;span class=&quot;l-Scalar-Plain&quot;&gt;tags&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;sample-mojo-alien01:latest&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;This file can also be &lt;a href=&quot;/assets/files/dibs-intro/10-alien/dibs.yml&quot;&gt;downloaded here&lt;/a&gt; has to be saved
+as &lt;code&gt;dibs.yml&lt;/code&gt; in the project directory &lt;code&gt;alien01&lt;/code&gt;.&lt;/p&gt;
+
+&lt;h2 id=&quot;generate-the-image&quot;&gt;Generate The Image&lt;/h2&gt;
+
+&lt;p&gt;Up to now, the layout of our &lt;code&gt;alien01&lt;/code&gt; directory should be the following:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;alien01&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;ls -l
+total 8
+-rw-r--r-- &lt;span class=&quot;m&quot;&gt;1&lt;/span&gt; poletti poletti &lt;span class=&quot;m&quot;&gt;2073&lt;/span&gt; Feb &lt;span class=&quot;m&quot;&gt;24&lt;/span&gt; 18:18 dibs.yml
+drwxr-xr-x &lt;span class=&quot;m&quot;&gt;3&lt;/span&gt; poletti poletti &lt;span class=&quot;m&quot;&gt;4096&lt;/span&gt; Feb &lt;span class=&quot;m&quot;&gt;24&lt;/span&gt; 17:18 src
+alien01&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;ls -l src
+total 16
+-rwxr-xr-x &lt;span class=&quot;m&quot;&gt;1&lt;/span&gt; poletti poletti &lt;span class=&quot;m&quot;&gt;234&lt;/span&gt; Feb &lt;span class=&quot;m&quot;&gt;24&lt;/span&gt; 17:18 app.pl
+-rw-r--r-- &lt;span class=&quot;m&quot;&gt;1&lt;/span&gt; poletti poletti  &lt;span class=&quot;m&quot;&gt;32&lt;/span&gt; Feb &lt;span class=&quot;m&quot;&gt;24&lt;/span&gt; 17:18 cpanfile
+-rw-r--r-- &lt;span class=&quot;m&quot;&gt;1&lt;/span&gt; poletti poletti  &lt;span class=&quot;m&quot;&gt;52&lt;/span&gt; Feb &lt;span class=&quot;m&quot;&gt;24&lt;/span&gt; 17:18 Procfile
+-rw-r--r-- &lt;span class=&quot;m&quot;&gt;1&lt;/span&gt; poletti poletti &lt;span class=&quot;m&quot;&gt;326&lt;/span&gt; Feb &lt;span class=&quot;m&quot;&gt;24&lt;/span&gt; 17:18 README.md&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;If not… look again at the previous sections! Otherwise, let’s start
+&lt;a href=&quot;https://github.com/polettix/dibs&quot;&gt;dibs&lt;/a&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;alien01&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;dibs --alien
+       base configuration from: /mnt/dibs.yml
+&lt;span class=&quot;o&quot;&gt;=====&lt;/span&gt;&amp;gt; sketch &lt;span class=&quot;nv&quot;&gt;default&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;=====&lt;/span&gt;&amp;gt; sketch build
+-----&amp;gt; prepare &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;from: alpine:3.6&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+       remove tag dibs-example-sample-mojo:20190224-192933-1 &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; exists
+       tag alpine:3.6 to dibs-example-sample-mojo:20190224-192933-1
+       tagging alpine:3.6 as dibs-example-sample-mojo:20190224-192933-1
+-----&amp;gt; stroke build
+       fetch http://dl-cdn.alpinelinux.org/alpine/v3.6/main/x86_64/APKINDEX.tar.gz
+       fetch http://dl-cdn.alpinelinux.org/alpine/v3.6/community/x86_64/APKINDEX.tar.gz
+       &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1/23&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; Installing binutils-libs &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;2.30-r1&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+       &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;...&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;
+       &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;23/23&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; Installing wget &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1.20.1-r0&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+       Executing busybox-1.26.2-r11.trigger
+       OK: &lt;span class=&quot;m&quot;&gt;200&lt;/span&gt; MiB in &lt;span class=&quot;m&quot;&gt;36&lt;/span&gt; packages
+       --2019-02-24 19:29:39--  https://cpanmin.us/
+       Resolving cpanmin.us... 151.101.130.217, 151.101.66.217, 151.101.2.217, ...
+       Connecting to cpanmin.us&lt;span class=&quot;p&quot;&gt;|&lt;/span&gt;151.101.130.217&lt;span class=&quot;p&quot;&gt;|&lt;/span&gt;:443... connected.
+       &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;...&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;
+       --&amp;gt; Working on .
+       Configuring /app ... &lt;span class=&quot;nv&quot;&gt;OK&lt;/span&gt;
+       &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt;&amp;gt; Found dependencies: Mojolicious
+       --&amp;gt; Working on Mojolicious
+       Fetching http://www.cpan.org/authors/id/S/SR/SRI/Mojolicious-8.12.tar.gz ... OK
+       Configuring Mojolicious-8.12 ... OK
+       Building Mojolicious-8.12 ... OK
+       Successfully installed Mojolicious-8.12
+       &amp;lt;&lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; Installed dependencies &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; .. Finishing.
+       &lt;span class=&quot;m&quot;&gt;1&lt;/span&gt; distribution installed
+       committing working container to dibs-example-sample-mojo:20190224-192933-1
+       sha256:f4cbc0ec9fa94937ab15ff1c4481edcf9bd5248bc5c687d3801dbadb44cacee7
+       removing working container
+       &lt;span class=&quot;nv&quot;&gt;2dd042ebc612a352328316b624edeffaf008cce7cd495b01bb860ef6a62867a6&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;=====&lt;/span&gt;&amp;gt; sketch bundle
+-----&amp;gt; prepare &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;from: alpine:3.6&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+       remove tag dibs-example-sample-mojo:20190224-192933-1 &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; exists
+       tag alpine:3.6 to dibs-example-sample-mojo:20190224-192933-1
+       tagging alpine:3.6 as dibs-example-sample-mojo:20190224-192933-1
+-----&amp;gt; stroke install
+       fetch http://dl-cdn.alpinelinux.org/alpine/v3.6/main/x86_64/APKINDEX.tar.gz
+       fetch http://dl-cdn.alpinelinux.org/alpine/v3.6/community/x86_64/APKINDEX.tar.gz
+       &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1/2&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; Installing libbz2 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1.0.6-r5&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+       &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;2/2&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; Installing perl &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;5.24.4-r2&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+       Executing busybox-1.26.2-r11.trigger
+       OK: &lt;span class=&quot;m&quot;&gt;40&lt;/span&gt; MiB in &lt;span class=&quot;m&quot;&gt;15&lt;/span&gt; packages
+       committing working container to dibs-example-sample-mojo:20190224-192933-1
+       sha256:fb1aa5f8843953381d7e8608e4bbf956f06ce38d6f39c2fd4604d3244813e871
+       removing working container
+       e41fcfc70ab2b0d60c9a51624ccd51e0eff877cd397e0f35f6cbaa8504690009
++++++&amp;gt; frame save bundled image
+       tagging dibs-example-sample-mojo:20190224-192933-1 as sample-mojo-alien01:latest
+       removing tag dibs-example-sample-mojo:20190224-192933-1
+       Untagged: dibs-example-sample-mojo:20190224-192933-1
+sample-mojo-alien01:latest&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;A bit too much to digest? Let’s take a look!&lt;/p&gt;
+
+&lt;h3 id=&quot;actions&quot;&gt;Actions&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://github.com/polettix/dibs&quot;&gt;dibs&lt;/a&gt; executes actions, which can be of differen types. You can specify
+the type explicitly, but it’s normally not needed as it’s clear what an
+action is about.&lt;/p&gt;
+
+&lt;p&gt;At the top level, it always executes a &lt;em&gt;sketch&lt;/em&gt;, that is a sequence of
+other actions (including other sketches). In our case, we didn’t specify
+any explicit action to be run on the command line, so the &lt;code&gt;default&lt;/code&gt; sketch
+has been selected:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-yaml&quot; data-lang=&quot;yaml&quot;&gt;&lt;span class=&quot;l-Scalar-Plain&quot;&gt;actions&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+   &lt;span class=&quot;l-Scalar-Plain&quot;&gt;default&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p-Indicator&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;build&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;bundle&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;]&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;i.e. the actions &lt;code&gt;build&lt;/code&gt; and &lt;code&gt;bundle&lt;/code&gt; (which are other sketches
+themselves, being lists) have to be executed. This accounts for the
+“external” structure of the output:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;alien01&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;dibs --alien
+       base configuration from: /mnt/dibs.yml
+&lt;span class=&quot;o&quot;&gt;=====&lt;/span&gt;&amp;gt; sketch &lt;span class=&quot;nv&quot;&gt;default&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;=====&lt;/span&gt;&amp;gt; sketch build
+       &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;...&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;=====&lt;/span&gt;&amp;gt; sketch bundle
+       &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;...&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;The two sketches &lt;code&gt;build&lt;/code&gt; and &lt;code&gt;bundle&lt;/code&gt; have a similar structure: they
+contain a list of actions (they’re sketches, after all!) that will result
+in something done:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-yaml&quot; data-lang=&quot;yaml&quot;&gt;&lt;span class=&quot;l-Scalar-Plain&quot;&gt;actions&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;# ...&lt;/span&gt;
+
+   &lt;span class=&quot;l-Scalar-Plain&quot;&gt;build&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+      &lt;span class=&quot;p-Indicator&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;from&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;alpine:3.6&amp;#39;&lt;/span&gt;
+      &lt;span class=&quot;p-Indicator&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;build&lt;/span&gt;
+        &lt;span class=&quot;l-Scalar-Plain&quot;&gt;pack&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+           &lt;span class=&quot;l-Scalar-Plain&quot;&gt;run&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p-Indicator&quot;&gt;|&lt;/span&gt;
+              &lt;span class=&quot;no&quot;&gt;#!/bin/sh&lt;/span&gt;
+              &lt;span class=&quot;no&quot;&gt;# ...&lt;/span&gt;
+
+   &lt;span class=&quot;l-Scalar-Plain&quot;&gt;bundle&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+      &lt;span class=&quot;p-Indicator&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;from&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;alpine:3.6&amp;#39;&lt;/span&gt;
+      &lt;span class=&quot;p-Indicator&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;install&lt;/span&gt;
+        &lt;span class=&quot;l-Scalar-Plain&quot;&gt;pack&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+           &lt;span class=&quot;l-Scalar-Plain&quot;&gt;run&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p-Indicator&quot;&gt;|&lt;/span&gt;
+              &lt;span class=&quot;no&quot;&gt;#!/bin/sh&lt;/span&gt;
+              &lt;span class=&quot;no&quot;&gt;# ...&lt;/span&gt;
+        &lt;span class=&quot;l-Scalar-Plain&quot;&gt;commit&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+           &lt;span class=&quot;l-Scalar-Plain&quot;&gt;entrypoint&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p-Indicator&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;/procfilerun&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;]&lt;/span&gt;
+           &lt;span class=&quot;l-Scalar-Plain&quot;&gt;cmd&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p-Indicator&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;web&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;]&lt;/span&gt;
+           &lt;span class=&quot;l-Scalar-Plain&quot;&gt;user&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;ada&lt;/span&gt;
+      &lt;span class=&quot;p-Indicator&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;save bundled image&lt;/span&gt;
+        &lt;span class=&quot;l-Scalar-Plain&quot;&gt;tags&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;sample-mojo-alien01:latest&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Actions that contain a &lt;code&gt;from&lt;/code&gt; should sound familiar to anyone used to
+Dockerfiles: its goal is exactly the same, i.e. define the starting point
+of a &lt;em&gt;sequence of container layers&lt;/em&gt;. This action has type &lt;em&gt;preparation&lt;/em&gt;.&lt;/p&gt;
+
+&lt;p&gt;After it, both have an action of type &lt;em&gt;stroke&lt;/em&gt;, i.e. something that is
+executed &lt;em&gt;inside&lt;/em&gt; the container. This action is characterized by having
+a &lt;code&gt;pack&lt;/code&gt; field inside, which in our case specifies an “immediate program”
+that will be executed in the container. There are many other ways of
+providing what has to be executed in the container, as we will see in the
+future.&lt;/p&gt;
+
+&lt;p&gt;Last, the &lt;code&gt;bundle&lt;/code&gt; sketch also contains a closing action setting the tag
+name for the image. This action is of type &lt;em&gt;frame&lt;/em&gt;. Notice that &lt;code&gt;build&lt;/code&gt;
+does not have a corresponding one: we’re simply not interested in the
+byproduct of that chain of action, or better we are not interested in
+saving the resulting container as an image.&lt;/p&gt;
+
+&lt;p&gt;These action types should ring a bell about the metaphor that &lt;a href=&quot;https://github.com/polettix/dibs&quot;&gt;dibs&lt;/a&gt;
+adopts: as our goal is to generate an &lt;em&gt;image&lt;/em&gt;, we assemble one or more
+&lt;em&gt;sketches&lt;/em&gt;, in each of which we first &lt;em&gt;prepare&lt;/em&gt;, then draw some &lt;em&gt;strokes&lt;/em&gt;,
+then &lt;em&gt;frame&lt;/em&gt; the result if we are happy with it.&lt;/p&gt;
+
+&lt;h2 id=&quot;what-happened&quot;&gt;What Happened?&lt;/h2&gt;
+
+&lt;p&gt;TL;DR each of the sketches &lt;code&gt;build&lt;/code&gt; and &lt;code&gt;bundle&lt;/code&gt; started from the same
+image &lt;code&gt;alpine:3.6&lt;/code&gt; and executed a sequence of commands inside a container.
+The program for &lt;code&gt;build&lt;/code&gt; eventually saved the application with the compiled
+modules in a cache staging area; the &lt;code&gt;bundle&lt;/code&gt; sketch eventually resulted
+in saving a container image that contains only the strict necessary for
+running the program, without building tools.&lt;/p&gt;
+
+&lt;p&gt;If you look carefully at all operations, you will see that we indeed stick
+to all requirements: the final image is not bloated with unnecessary
+tools, compilation is done under user &lt;code&gt;ada&lt;/code&gt;, as well as packing and
+execution, the &lt;code&gt;ENTRYPOINT&lt;/code&gt; and &lt;code&gt;CMD&lt;/code&gt; are set right, …&lt;/p&gt;
+
+&lt;p&gt;As it is now, though, there’s little advantage over using a Dockerfile to
+give to &lt;code&gt;docker build&lt;/code&gt;:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;it’s easier to provide the sequence of commands to be executed, because
+you pass the text of a proper shell script instead of a single, long
+escaped line to be fed to &lt;code&gt;/bin/sh -c&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;the process is much heavier though, each run of the whole sequence
+starts from scratch and does not reuse anything already done.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;make-build-more-efficient&quot;&gt;Make &lt;code&gt;build&lt;/code&gt; More Efficient&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://github.com/polettix/dibs&quot;&gt;dibs&lt;/a&gt; allows you to have direct control over caching, so there’s some
+more work to do but it allows us to always keep control of things.&lt;/p&gt;
+
+&lt;p&gt;The build process can be divided into a few phases:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;creation of user &lt;code&gt;ada&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;installation of build tools&lt;/li&gt;
+  &lt;li&gt;installation of pre-requisites specific to the program (which amounts to
+nothing in our case)&lt;/li&gt;
+  &lt;li&gt;compilation of modules&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Our strategy will be to divide the &lt;code&gt;build&lt;/code&gt; sketch into phases, and save
+the places that we find interesting for reuse.&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-yaml&quot; data-lang=&quot;yaml&quot;&gt;&lt;span class=&quot;l-Scalar-Plain&quot;&gt;actions&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;# ...&lt;/span&gt;
+
+    &lt;span class=&quot;l-Scalar-Plain&quot;&gt;build-base&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;# new sketch for preparing a cached base image&lt;/span&gt;
+      &lt;span class=&quot;p-Indicator&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;from&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;alpine 3.6&lt;/span&gt;
+      &lt;span class=&quot;p-Indicator&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;base image preparation&lt;/span&gt;
+        &lt;span class=&quot;l-Scalar-Plain&quot;&gt;pack&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+           &lt;span class=&quot;l-Scalar-Plain&quot;&gt;run&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p-Indicator&quot;&gt;|&lt;/span&gt;
+              &lt;span class=&quot;no&quot;&gt;#!/bin/sh&lt;/span&gt;
+              &lt;span class=&quot;no&quot;&gt;set -e&lt;/span&gt;
+              &lt;span class=&quot;no&quot;&gt;exec &amp;gt;&amp;amp;2&lt;/span&gt;
+              &lt;span class=&quot;no&quot;&gt;apk --no-cache add build-base wget perl perl-dev&lt;/span&gt;
+              &lt;span class=&quot;no&quot;&gt;adduser -D -h /app ada&lt;/span&gt;
+              &lt;span class=&quot;no&quot;&gt;wget -O /bin/cpanm --no-check-certificate https://cpanmin.us/&lt;/span&gt;
+              &lt;span class=&quot;no&quot;&gt;chmod +x /bin/cpanm&lt;/span&gt;
+              &lt;span class=&quot;no&quot;&gt;#&lt;/span&gt;
+              &lt;span class=&quot;no&quot;&gt;# WE STOP HERE, no compilation at this stage!&lt;/span&gt;
+              &lt;span class=&quot;no&quot;&gt;#&lt;/span&gt;
+      &lt;span class=&quot;p-Indicator&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;save base image for build&lt;/span&gt;
+        &lt;span class=&quot;l-Scalar-Plain&quot;&gt;tags&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;sample-mojo-alien01-buildbase:latest&lt;/span&gt;
+
+    &lt;span class=&quot;l-Scalar-Plain&quot;&gt;build&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+      &lt;span class=&quot;p-Indicator&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;from&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;sample-mojo-alien01-buildbase:latest&lt;/span&gt;
+      &lt;span class=&quot;p-Indicator&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;build user&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;ada pack&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;run&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p-Indicator&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;#!/bin/sh set -e exec &amp;gt;&amp;amp;2 cd&lt;/span&gt;
+        &lt;span class=&quot;l-Scalar-Plain&quot;&gt;user&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;ada&lt;/span&gt;
+        &lt;span class=&quot;l-Scalar-Plain&quot;&gt;pack&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+           &lt;span class=&quot;l-Scalar-Plain&quot;&gt;run&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p-Indicator&quot;&gt;|&lt;/span&gt;
+              &lt;span class=&quot;no&quot;&gt;#!/bin/sh&lt;/span&gt;
+              &lt;span class=&quot;no&quot;&gt;set -e&lt;/span&gt;
+              &lt;span class=&quot;no&quot;&gt;exec &amp;gt;&amp;amp;2&lt;/span&gt;
+              &lt;span class=&quot;no&quot;&gt;cd /app&lt;/span&gt;
+              &lt;span class=&quot;no&quot;&gt;cp -R /tmp/src/* .&lt;/span&gt;
+              &lt;span class=&quot;no&quot;&gt;cpanm -l local --notest --installdeps .&lt;/span&gt;
+              &lt;span class=&quot;no&quot;&gt;cp -R /app /tmp/cache&lt;/span&gt;
+
+    &lt;span class=&quot;c1&quot;&gt;# ...&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;It’s easy to see what we’re doing here: the old &lt;code&gt;build&lt;/code&gt; has been split
+into two parts:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;code&gt;build-base&lt;/code&gt;, which does most of the heavylifting preparing everything
+for the later compilation phase, but without doing it.&lt;/li&gt;
+  &lt;li&gt;&lt;code&gt;build&lt;/code&gt; now only strictly executes the compilation of modules and saves
+stuff in the cache. Note that we don’t have to use the &lt;code&gt;su - ada&lt;/code&gt; trick
+to execute the build part as user &lt;code&gt;ada&lt;/code&gt;, because &lt;code&gt;dibs&lt;/code&gt; can execute that
+part as &lt;code&gt;user: ada&lt;/code&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Now, the typical invocation pattern would be as follows:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;c&quot;&gt;# build the base image, once at the beginning&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;dibs --alien build-base
+&lt;span class=&quot;c&quot;&gt;# ...&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;#&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# now, execution of the build phase is much faster&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;dibs --alien
+&lt;span class=&quot;c&quot;&gt;# ...&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# get updates from remote repository into src, then regenerate image&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;cd &lt;/span&gt;src
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;git pull
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; ..
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;dibs --alien&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;make-build-even-more-efficient&quot;&gt;Make &lt;code&gt;build&lt;/code&gt; even more efficient&lt;/h2&gt;
+
+&lt;p&gt;As it turns out, our program is not installing modules like crazy, so we
+can use a bit of caching for it too. We already leveraged &lt;code&gt;/tmp/cache&lt;/code&gt; as
+a mechanism to let different actions &lt;em&gt;communicate&lt;/em&gt; with each other (e.g.
+to pass the compiled application from &lt;code&gt;build&lt;/code&gt; to &lt;code&gt;bundle&lt;/code&gt;), but nothing
+prevents us from using it also across different &lt;code&gt;build&lt;/code&gt;s:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-yaml&quot; data-lang=&quot;yaml&quot;&gt;&lt;span class=&quot;l-Scalar-Plain&quot;&gt;actions&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+   &lt;span class=&quot;c1&quot;&gt;# ...&lt;/span&gt;
+
+   &lt;span class=&quot;l-Scalar-Plain&quot;&gt;build&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+      &lt;span class=&quot;p-Indicator&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;from&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;sample-mojo-alien01-buildbase:latest&lt;/span&gt;
+      &lt;span class=&quot;p-Indicator&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;build&lt;/span&gt;
+        &lt;span class=&quot;l-Scalar-Plain&quot;&gt;user&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;ada&lt;/span&gt;
+        &lt;span class=&quot;l-Scalar-Plain&quot;&gt;pack&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+           &lt;span class=&quot;l-Scalar-Plain&quot;&gt;run&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p-Indicator&quot;&gt;|&lt;/span&gt;
+              &lt;span class=&quot;no&quot;&gt;#!/bin/sh&lt;/span&gt;
+              &lt;span class=&quot;no&quot;&gt;set -e&lt;/span&gt;
+              &lt;span class=&quot;no&quot;&gt;exec &amp;gt;&amp;amp;2&lt;/span&gt;
+              &lt;span class=&quot;no&quot;&gt;cd /app&lt;/span&gt;
+              &lt;span class=&quot;no&quot;&gt;cp -R /tmp/src/* .&lt;/span&gt;
+
+              &lt;span class=&quot;no&quot;&gt;# REUSE past compilations if available&lt;/span&gt;
+              &lt;span class=&quot;no&quot;&gt;if [ -d &amp;#39;/tmp/cache/app/local&amp;#39; ] ; then&lt;/span&gt;
+                 &lt;span class=&quot;no&quot;&gt;cp -R /tmp/cache/app/local /app&lt;/span&gt;
+              &lt;span class=&quot;no&quot;&gt;fi&lt;/span&gt;
+
+              &lt;span class=&quot;no&quot;&gt;cpanm -l local --notest --installdeps .&lt;/span&gt;
+              &lt;span class=&quot;no&quot;&gt;cp -R /app /tmp/cache&lt;/span&gt;
+
+   &lt;span class=&quot;c1&quot;&gt;# ...&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;In this way, we’re going also to reuse compilations by &lt;code&gt;cpanm&lt;/code&gt; every time
+the &lt;code&gt;/tmp/as-ada.sh&lt;/code&gt; script is executed during the build phase, saving
+more time.&lt;/p&gt;
+
+&lt;h2 id=&quot;enhancing-bundle&quot;&gt;Enhancing &lt;code&gt;bundle&lt;/code&gt;&lt;/h2&gt;
+
+&lt;p&gt;The &lt;code&gt;bundle&lt;/code&gt; sketch can use some enhancements too, because it re-creates
+the whole thing from scratch over and over, whereas use creation and
+runtime installation might be factored out and cached, much like what
+happened with &lt;code&gt;build&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;At this point, it’s also meaningful to think that the user creation
+process might be factored out between &lt;code&gt;build&lt;/code&gt; and &lt;code&gt;bundle&lt;/code&gt;, as they have
+the same goal. To do this, there are a few strategies:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;build a base image for the runtime, then use it as the base for the
+build base image&lt;/li&gt;
+  &lt;li&gt;build a pre-base image with user creation only, then use that as base
+image for the bundle base image and the build base image&lt;/li&gt;
+  &lt;li&gt;factor the user creation process out and reuse it in different sketches.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;We will look into the three alternatives in the following sub-sections,
+but in all cases we end up with a new
+&lt;code&gt;sample-mojo-alien01-bundlebase:latest&lt;/code&gt; image that we will use as starting
+point for bundling, like this:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-yaml&quot; data-lang=&quot;yaml&quot;&gt;&lt;span class=&quot;l-Scalar-Plain&quot;&gt;actions&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;# ...&lt;/span&gt;
+
+    &lt;span class=&quot;l-Scalar-Plain&quot;&gt;bundle-base&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+      &lt;span class=&quot;p-Indicator&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;from&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;alpine 3.6&lt;/span&gt;
+      &lt;span class=&quot;c1&quot;&gt;# ...&lt;/span&gt;
+      &lt;span class=&quot;p-Indicator&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;save base image for bundle&lt;/span&gt;
+        &lt;span class=&quot;l-Scalar-Plain&quot;&gt;tags&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;sample-mojo-alien01-bundlebase:latest&lt;/span&gt;
+
+    &lt;span class=&quot;l-Scalar-Plain&quot;&gt;bundle&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+      &lt;span class=&quot;p-Indicator&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;from&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;sample-mojo-alien01-bundlebase:latest&lt;/span&gt;
+      &lt;span class=&quot;c1&quot;&gt;# ...&lt;/span&gt;
+
+    &lt;span class=&quot;c1&quot;&gt;# ...&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Let’s take a closer look at the three alternatives now.&lt;/p&gt;
+
+&lt;h3 id=&quot;bundle-as-global-base&quot;&gt;Bundle As Global Base&lt;/h3&gt;
+
+&lt;p&gt;If we look into the bundle image carefully, we see that its pre-requisites
+are also in the build image, so why not use it as a starting point? This
+is our first alternative approach:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-yaml&quot; data-lang=&quot;yaml&quot;&gt;&lt;span class=&quot;l-Scalar-Plain&quot;&gt;actions&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;# ...&lt;/span&gt;
+
+    &lt;span class=&quot;l-Scalar-Plain&quot;&gt;bundle-base&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;# new sketch for preparing a cached base image&lt;/span&gt;
+      &lt;span class=&quot;p-Indicator&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;from&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;alpine 3.6&lt;/span&gt;
+      &lt;span class=&quot;p-Indicator&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;bundle base image preparation&lt;/span&gt;
+        &lt;span class=&quot;l-Scalar-Plain&quot;&gt;pack&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+           &lt;span class=&quot;l-Scalar-Plain&quot;&gt;run&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p-Indicator&quot;&gt;|&lt;/span&gt;
+              &lt;span class=&quot;no&quot;&gt;#!/bin/sh&lt;/span&gt;
+              &lt;span class=&quot;no&quot;&gt;set -e&lt;/span&gt;
+              &lt;span class=&quot;no&quot;&gt;exec &amp;gt;&amp;amp;2&lt;/span&gt;
+              &lt;span class=&quot;no&quot;&gt;apk --no-cache add perl&lt;/span&gt;
+              &lt;span class=&quot;no&quot;&gt;adduser -D -h /app ada&lt;/span&gt;
+      &lt;span class=&quot;p-Indicator&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;save base image for bundle&lt;/span&gt;
+        &lt;span class=&quot;l-Scalar-Plain&quot;&gt;tags&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;sample-mojo-alien01-bundlebase:latest&lt;/span&gt;
+    
+    &lt;span class=&quot;l-Scalar-Plain&quot;&gt;build-base&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+      &lt;span class=&quot;p-Indicator&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;from&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;sample-mojo-alien01-bundlebase:latest&lt;/span&gt;
+      &lt;span class=&quot;p-Indicator&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;build base image preparation&lt;/span&gt;
+        &lt;span class=&quot;l-Scalar-Plain&quot;&gt;pack&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+           &lt;span class=&quot;l-Scalar-Plain&quot;&gt;run&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p-Indicator&quot;&gt;|&lt;/span&gt;
+              &lt;span class=&quot;no&quot;&gt;#!/bin/sh&lt;/span&gt;
+              &lt;span class=&quot;no&quot;&gt;set -e&lt;/span&gt;
+              &lt;span class=&quot;no&quot;&gt;exec &amp;gt;&amp;amp;2&lt;/span&gt;
+              &lt;span class=&quot;no&quot;&gt;apk --no-cache add build-base wget perl-dev&lt;/span&gt;
+              &lt;span class=&quot;no&quot;&gt;wget -O /bin/cpanm --no-check-certificate https://cpanmin.us/&lt;/span&gt;
+              &lt;span class=&quot;no&quot;&gt;chmod +x /bin/cpanm&lt;/span&gt;
+      &lt;span class=&quot;p-Indicator&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;save base image for build&lt;/span&gt;
+        &lt;span class=&quot;l-Scalar-Plain&quot;&gt;tags&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;sample-mojo-alien01-buildbase:latest&lt;/span&gt;
+
+    &lt;span class=&quot;c1&quot;&gt;# ...&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;The advantage of this approach is that is quite simple; the drawback is
+that the bundle image might evolve in a direction that includes tools that
+are not needed for building. This might be a problem or not depending on
+circumstances; anyway, the build image is usually more bloated anyway, so
+it should not be an issue in the average case.&lt;/p&gt;
+
+&lt;h3 id=&quot;common-pre-base-image&quot;&gt;Common Pre-Base Image&lt;/h3&gt;
+
+&lt;p&gt;A more “normalized” way of doing things would be to factor common
+operations like user creation in a single, simpler base image, then use it
+as a &lt;em&gt;pre-base&lt;/em&gt; for generating two separated build image and a bundle
+image, which can then evolve independently:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-yaml&quot; data-lang=&quot;yaml&quot;&gt;&lt;span class=&quot;l-Scalar-Plain&quot;&gt;actions&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;# ...&lt;/span&gt;
+
+    &lt;span class=&quot;l-Scalar-Plain&quot;&gt;base&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;# new sketch for preparing a cached base image&lt;/span&gt;
+      &lt;span class=&quot;p-Indicator&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;from&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;alpine 3.6&lt;/span&gt;
+      &lt;span class=&quot;p-Indicator&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;base image preparation&lt;/span&gt;
+        &lt;span class=&quot;l-Scalar-Plain&quot;&gt;pack&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+           &lt;span class=&quot;l-Scalar-Plain&quot;&gt;run&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p-Indicator&quot;&gt;|&lt;/span&gt;
+              &lt;span class=&quot;no&quot;&gt;#!/bin/sh&lt;/span&gt;
+              &lt;span class=&quot;no&quot;&gt;set -e&lt;/span&gt;
+              &lt;span class=&quot;no&quot;&gt;exec &amp;gt;&amp;amp;2&lt;/span&gt;
+              &lt;span class=&quot;no&quot;&gt;adduser -D -h /app ada&lt;/span&gt;
+      &lt;span class=&quot;p-Indicator&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;save base image&lt;/span&gt;
+        &lt;span class=&quot;l-Scalar-Plain&quot;&gt;tags&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;sample-mojo-alien01-base:latest&lt;/span&gt;
+
+    &lt;span class=&quot;l-Scalar-Plain&quot;&gt;bundle-base&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;# new sketch for preparing a cached base image&lt;/span&gt;
+      &lt;span class=&quot;p-Indicator&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;from&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;sample-mojo-alien01-base:latest&lt;/span&gt;
+      &lt;span class=&quot;p-Indicator&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;bundle base image preparation&lt;/span&gt;
+        &lt;span class=&quot;l-Scalar-Plain&quot;&gt;pack&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+           &lt;span class=&quot;l-Scalar-Plain&quot;&gt;run&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p-Indicator&quot;&gt;|&lt;/span&gt;
+              &lt;span class=&quot;no&quot;&gt;#!/bin/sh&lt;/span&gt;
+              &lt;span class=&quot;no&quot;&gt;set -e&lt;/span&gt;
+              &lt;span class=&quot;no&quot;&gt;exec &amp;gt;&amp;amp;2&lt;/span&gt;
+              &lt;span class=&quot;no&quot;&gt;apk --no-cache add perl&lt;/span&gt;
+      &lt;span class=&quot;p-Indicator&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;save base image for bundle&lt;/span&gt;
+        &lt;span class=&quot;l-Scalar-Plain&quot;&gt;tags&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;sample-mojo-alien01-bundlebase:latest&lt;/span&gt;
+
+    &lt;span class=&quot;l-Scalar-Plain&quot;&gt;build-base&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+      &lt;span class=&quot;p-Indicator&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;from&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;sample-mojo-alien01-base:latest&lt;/span&gt;
+      &lt;span class=&quot;p-Indicator&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;build base image preparation&lt;/span&gt;
+        &lt;span class=&quot;l-Scalar-Plain&quot;&gt;pack&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+           &lt;span class=&quot;l-Scalar-Plain&quot;&gt;run&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p-Indicator&quot;&gt;|&lt;/span&gt;
+              &lt;span class=&quot;no&quot;&gt;#!/bin/sh&lt;/span&gt;
+              &lt;span class=&quot;no&quot;&gt;set -e&lt;/span&gt;
+              &lt;span class=&quot;no&quot;&gt;exec &amp;gt;&amp;amp;2&lt;/span&gt;
+              &lt;span class=&quot;no&quot;&gt;apk --no-cache add build-base wget perl-dev perl&lt;/span&gt;
+              &lt;span class=&quot;no&quot;&gt;wget -O /bin/cpanm --no-check-certificate https://cpanmin.us/&lt;/span&gt;
+              &lt;span class=&quot;no&quot;&gt;chmod +x /bin/cpanm&lt;/span&gt;
+      &lt;span class=&quot;p-Indicator&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;save base image for build&lt;/span&gt;
+        &lt;span class=&quot;l-Scalar-Plain&quot;&gt;tags&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;sample-mojo-alien01-buildbase:latest&lt;/span&gt;
+
+    &lt;span class=&quot;c1&quot;&gt;# ...&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;The advantage of this approach is that the base image can then easily be
+put into a separate process, e.g. managed by another team.&lt;/p&gt;
+
+&lt;h3 id=&quot;factoring-a-common-user-creation-stroke&quot;&gt;Factoring a Common User Creation Stroke&lt;/h3&gt;
+
+&lt;p&gt;In this case, the user creation process is a stroke by itself, defined
+once and reused by the base images:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-yaml&quot; data-lang=&quot;yaml&quot;&gt;&lt;span class=&quot;l-Scalar-Plain&quot;&gt;actions&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+   &lt;span class=&quot;c1&quot;&gt;# ...&lt;/span&gt;
+
+    &lt;span class=&quot;l-Scalar-Plain&quot;&gt;create-user&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+        &lt;span class=&quot;l-Scalar-Plain&quot;&gt;pack&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+           &lt;span class=&quot;l-Scalar-Plain&quot;&gt;run&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p-Indicator&quot;&gt;|&lt;/span&gt;
+              &lt;span class=&quot;no&quot;&gt;#!/bin/sh&lt;/span&gt;
+              &lt;span class=&quot;no&quot;&gt;set -e&lt;/span&gt;
+              &lt;span class=&quot;no&quot;&gt;exec &amp;gt;&amp;amp;2&lt;/span&gt;
+              &lt;span class=&quot;no&quot;&gt;adduser -D -h /app ada&lt;/span&gt;
+
+    &lt;span class=&quot;l-Scalar-Plain&quot;&gt;build-base&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+      &lt;span class=&quot;p-Indicator&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;from&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;alpine 3.6&lt;/span&gt;
+      &lt;span class=&quot;p-Indicator&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;create-user&lt;/span&gt;
+      &lt;span class=&quot;p-Indicator&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;base image preparation&lt;/span&gt;
+        &lt;span class=&quot;l-Scalar-Plain&quot;&gt;pack&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+           &lt;span class=&quot;c1&quot;&gt;# NOTE: no user creation in the script below&lt;/span&gt;
+           &lt;span class=&quot;l-Scalar-Plain&quot;&gt;run&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p-Indicator&quot;&gt;|&lt;/span&gt;
+              &lt;span class=&quot;no&quot;&gt;#!/bin/sh&lt;/span&gt;
+              &lt;span class=&quot;no&quot;&gt;set -e&lt;/span&gt;
+              &lt;span class=&quot;no&quot;&gt;exec &amp;gt;&amp;amp;2&lt;/span&gt;
+              &lt;span class=&quot;no&quot;&gt;apk --no-cache add build-base wget perl perl-dev&lt;/span&gt;
+              &lt;span class=&quot;no&quot;&gt;wget -O /bin/cpanm --no-check-certificate https://cpanmin.us/&lt;/span&gt;
+              &lt;span class=&quot;no&quot;&gt;chmod +x /bin/cpanm&lt;/span&gt;
+      &lt;span class=&quot;p-Indicator&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;save base image for build&lt;/span&gt;
+        &lt;span class=&quot;l-Scalar-Plain&quot;&gt;tags&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;sample-mojo-alien01-buildbase:latest&lt;/span&gt;
+
+    &lt;span class=&quot;l-Scalar-Plain&quot;&gt;bundle-base&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+      &lt;span class=&quot;p-Indicator&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;from&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;alpine 3.6&lt;/span&gt;
+      &lt;span class=&quot;p-Indicator&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;create-user&lt;/span&gt;
+      &lt;span class=&quot;p-Indicator&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;base image preparation&lt;/span&gt;
+        &lt;span class=&quot;l-Scalar-Plain&quot;&gt;pack&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+           &lt;span class=&quot;c1&quot;&gt;# NOTE: no user creation in the script below&lt;/span&gt;
+           &lt;span class=&quot;l-Scalar-Plain&quot;&gt;run&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p-Indicator&quot;&gt;|&lt;/span&gt;
+              &lt;span class=&quot;no&quot;&gt;#!/bin/sh&lt;/span&gt;
+              &lt;span class=&quot;no&quot;&gt;set -e&lt;/span&gt;
+              &lt;span class=&quot;no&quot;&gt;exec &amp;gt;&amp;amp;2&lt;/span&gt;
+              &lt;span class=&quot;no&quot;&gt;apk --no-cache add perl&lt;/span&gt;
+      &lt;span class=&quot;p-Indicator&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;save base image for bundle&lt;/span&gt;
+        &lt;span class=&quot;l-Scalar-Plain&quot;&gt;tags&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;sample-mojo-alien01-bundlebase:latest&lt;/span&gt;
+
+   &lt;span class=&quot;c1&quot;&gt;# ...&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;The advantage of this approach is that it’s more visually clear what’s
+going on in the preparation of each base image, because there’s less
+referencing around to other base images.&lt;/p&gt;
+
+&lt;h2 id=&quot;where-are-we-now&quot;&gt;Where Are We Now?&lt;/h2&gt;
+
+&lt;p&gt;At this point, I guess, we’re somewhere very near to what a &lt;a href=&quot;https://docs.docker.com/develop/develop-images/multistage-build/&quot;&gt;multistage
+Dockerfile&lt;/a&gt; can do: we have a chain for building, another one
+for packaging a lean final image with our application, and there’s some
+caching to help us speed up things.&lt;/p&gt;
+
+&lt;p&gt;Now for the second reason why I wanted a tool like &lt;a href=&quot;https://github.com/polettix/dibs&quot;&gt;dibs&lt;/a&gt;: ease of
+reuse. I already find &lt;a href=&quot;https://github.com/polettix/dibs&quot;&gt;dibs&lt;/a&gt;’s way of expressing actions inside
+a container better than the lower-level &lt;code&gt;RUN&lt;/code&gt; provided by a Dockerfile,
+but this is just the tip of the iceberg… as we will discover in our next
+post!&lt;/p&gt;
+
+&lt;p&gt;The complete configuration file for this stage can be found
+&lt;a href=&quot;/assets/files/dibs-intro/10-alien/final/dibs.yml&quot;&gt;here&lt;/a&gt;, considering the third alternative in the previous
+section.&lt;/p&gt;
+
+
+    &lt;p&gt;&lt;a href=&quot;/hi-from-dibs/&quot;&gt;Hi from dibs!&lt;/a&gt; was originally published by Flavio Poletti at &lt;a href=&quot;&quot;&gt;PolettiX!&lt;/a&gt; on February 26, 2019.&lt;/p&gt;
+  </content>
+</entry>
 
 
   
@@ -6811,80 +7539,6 @@ whistle… start from &lt;a href=&quot;http://oss.oetiker.ch/rrdtool/doc/rrdgrap
 
 
     &lt;p&gt;&lt;a href=&quot;/rrdtool/&quot;&gt;RRDtool - Sparse Notes&lt;/a&gt; was originally published by Flavio Poletti at &lt;a href=&quot;&quot;&gt;PolettiX!&lt;/a&gt; on November 02, 2013.&lt;/p&gt;
-  </content>
-</entry>
-
-
-  
-
-<entry>
-  <title type="html"><![CDATA[local::lib for distributions]]></title>
-  <link rel="alternate" type="text/html" href="/local-lib-for-distributions/" />
-  <id>/local-lib-for-distributions</id>
-  <published>2010-07-30T00:00:00+02:00</published>
-  <updated>2010-07-30T00:00:00+02:00</updated>
-  <author>
-    <name>Flavio Poletti</name>
-    <uri></uri>
-    <email>flavio@polettix.it</email>
-  </author>
-  <content type="html">
-    &lt;p&gt;&lt;a href=&quot;https://metacpan.org/pod/local::lib&quot;&gt;local::lib&lt;/a&gt; is a love-it-or-hate-it module, with the additional feature
-that you don’t get the hate-it part.&lt;/p&gt;
-
-&lt;p&gt;Recently, I had to develop a script to do a couple of HTTP redirections.
-I headed towards CPAN, quickly found that &lt;a href=&quot;https://metacpan.org/pod/HTTP::Server::Simple&quot;&gt;HTTP::Server::Simple&lt;/a&gt; (and in
-particular &lt;a href=&quot;https://metacpan.org/pod/HTTP::Server::Simple::CGI&quot;&gt;HTTP::Server::Simple::CGI&lt;/a&gt;) and in some twenty minutes I had a
-working prototype. Forget that I changed my mind a couple of times
-before having what I eventually used for my test…&lt;/p&gt;
-
-&lt;p&gt;Now, I knew I had to go into an environment that could possibly prevent
-me from using my machine to perform the test. As a matter of fact, I
-didn’t know whether I could use the program anywhere, let alone know
-what kind of Perl environment I would have found. Nightmare!&lt;/p&gt;
-
-&lt;p&gt;Luckily enough, it turned out that I only needed modules that do not
-require compilation. I love Pure Perl modules! So now I had the problem
-to bundle all the needed non-core modules in a way that was convenient
-to deliver. This is where &lt;a href=&quot;https://metacpan.org/pod/local::lib&quot;&gt;local::lib&lt;/a&gt; really saved the day,
-and in particular its &lt;code&gt;--self-contained&lt;/code&gt; option. Well - yes -
-I’ve seen options that were commented way better… but at least the
-only reference in the synopsis made me curious enough to discover that
-it was hitting the nail right in the head.&lt;/p&gt;
-
-&lt;p&gt;On my machine I have my own compiled Perl version to tinker with, so I
-installed &lt;a href=&quot;https://metacpan.org/pod/local::lib&quot;&gt;local::lib&lt;/a&gt; without the need to bootstrap anything. At this
-point, all I had to do was something along these lines:&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;shell$ perl -MCPAN -Mlocal::lib=--self-contained,my_lib -e &amp;#39;CPAN::install($_) for @ARGV&amp;#39; HTTP::Server::Simple URI Log::Log4perl&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;Yes… I’m quite fond of &lt;code&gt;Log::Log4perl&lt;/code&gt;, but that’s another story.&lt;/p&gt;
-
-&lt;p&gt;The installation above went smooth and installed all the modules, and
-their needed &lt;em&gt;non-core&lt;/em&gt; dependencies, under the directory tree starting
-from &lt;code&gt;my_lib&lt;/code&gt;. I checked that there were actually no compiled components
-- dependencies could play some trick - and I verified that I had been
-lucky. Yay!&lt;/p&gt;
-
-&lt;p&gt;The directory structure you end up with is more or less the following:&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;my_lib/bin
-my_lib/lib/perl5/...
-my_lib/man&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;I didn’t need either the bin or the man subdirectory, so I just moved
-the contents &lt;code&gt;my_lib/lib/perl5&lt;/code&gt; into a &lt;code&gt;lib&lt;/code&gt; subdirectory, removed what
-remained of &lt;code&gt;my_lib&lt;/code&gt; and… that’s it! Well, wait a minute, I had to
-make a slight change to the code as well:&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;#...
-use FindBin;
-use lib $FindBin::Bin;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;OK, now &lt;em&gt;that’s it&lt;/em&gt;! The funny part? I was actually able to use my
-laptop, so I didn’t need anything of this…&lt;/p&gt;
-
-    &lt;p&gt;&lt;a href=&quot;/local-lib-for-distributions/&quot;&gt;local::lib for distributions&lt;/a&gt; was originally published by Flavio Poletti at &lt;a href=&quot;&quot;&gt;PolettiX!&lt;/a&gt; on July 30, 2010.&lt;/p&gt;
   </content>
 </entry>
 

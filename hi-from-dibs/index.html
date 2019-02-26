@@ -1,0 +1,962 @@
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if (IE 7)&!(IEMobile)]><html class="no-js lt-ie9 lt-ie8" lang="en"><![endif]-->
+<!--[if (IE 8)&!(IEMobile)]><html class="no-js lt-ie9" lang="en"><![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"><!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<title>Hi from dibs! &#8211; PolettiX!</title>
+<meta name="description" content="So… here’s dibs, which stands for Docker Image Build System. Put it
+very, very bluntly… it is what I use instead of docker build lately.
+It already comes with documentation and many frills, but we will start
+very slow and explore features in a series of posts. Buckle up!
+
+">
+<meta name="keywords" content="">
+
+
+
+<!-- Twitter Cards -->
+<meta name="twitter:title" content="Hi from dibs!">
+<meta name="twitter:description" content="So… here’s dibs, which stands for Docker Image Build System. Put it
+very, very bluntly… it is what I use instead of docker build lately.
+It already comes with documentation and many frills, but we will start
+very slow and explore features in a series of posts. Buckle up!
+
+">
+<meta name="twitter:site" content="@polettix">
+<meta name="twitter:creator" content="@polettix">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="/images/yellow-river.jpg">
+
+<!-- Open Graph -->
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hi from dibs!">
+<meta property="og:description" content="So… here’s dibs, which stands for Docker Image Build System. Put it
+very, very bluntly… it is what I use instead of docker build lately.
+It already comes with documentation and many frills, but we will start
+very slow and explore features in a series of posts. Buckle up!
+
+">
+<meta property="og:url" content="/hi-from-dibs/">
+<meta property="og:site_name" content="PolettiX!">
+
+
+
+
+
+<link rel="canonical" href="/hi-from-dibs/">
+<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="PolettiX! Feed">
+
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+
+<meta http-equiv="cleartype" content="on">
+
+<!-- HTML5 Shiv and Media Query Support -->
+<!--[if lt IE 9]>
+	<script src="/assets/js/vendor/html5shiv.min.js"></script>
+	<script src="/assets/js/vendor/respond.min.js"></script>
+<![endif]-->
+
+<!-- Modernizr -->
+<script src="/assets/js/vendor/modernizr-2.7.1.custom.min.js"></script>
+
+<link href='//fonts.googleapis.com/css?family=PT+Sans+Narrow:400,700%7CPT+Serif:400,700,400italic' rel='stylesheet' type='text/css'>
+
+<!-- Icons -->
+<!-- 16x16 -->
+<link rel="shortcut icon" href="/favicon.ico?whatever">
+<!-- 32x32 -->
+<link rel="shortcut icon" href="/favicon.png?whatever">
+<!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
+<link rel="apple-touch-icon-precomposed" href="/images/apple-touch-icon-precomposed.png">
+<!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="/images/apple-touch-icon-72x72-precomposed.png">
+<!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="/images/apple-touch-icon-114x114-precomposed.png">
+<!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/images/apple-touch-icon-144x144-precomposed.png">
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+</head>
+
+<body class="post">
+
+<!--[if lt IE 9]><div class="browser-upgrade alert alert-info">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</div><![endif]-->
+
+<div class="navigation-wrapper">
+	<div class="site-name">
+		<a href="/">PolettiX!</a>
+	</div><!-- /.site-name -->
+	<div class="top-navigation">
+		<nav role="navigation" id="site-nav" class="nav">
+		    <ul>
+		        
+				    
+				        
+				    
+				    <li><a href="/about/" >About</a></li>
+				
+				    
+				        
+				    
+				    <li><a href="/posts/" >Posts</a></li>
+				
+		    </ul>
+		</nav>
+	</div><!-- /.top-navigation -->
+</div><!-- /.navigation-wrapper -->
+
+
+  <div class="image-wrap">
+  <img src=
+    
+      "/images/yellow-river.jpg"
+    
+  alt="Hi from dibs! feature image">
+  
+    <span class="image-credit"><a href="https://en.wikipedia.org/wiki/Kakadu_National_Park">Yellow Water al Kakadu National Park, Australia</a></span>
+  
+  </div><!-- /.image-wrap -->
+
+
+<div id="main" role="main">
+  <div class="article-author-side">
+    
+
+
+<div itemscope itemtype="http://schema.org/Person">
+
+
+	<img src="/images/flavio-self-color.png" class="bio-photo" alt="Flavio Poletti bio photo">
+
+
+  <h3 itemprop="name">Flavio Poletti</h3>
+  <p>Irreducible Perler.</p>
+  <a href="mailto:flavio@polettix.it" class="author-social" target="_blank"><i class="fa fa-fw fa-envelope-square"></i>Email</a>
+  <a href="http://comics.polettix.it/" class="author-social" target="_blank"><i class="fa fa-fw fa-pencil"></i> Comics</a>
+  <a href="http://twitter.com/polettix" class="author-social" target="_blank"><i class="fa fa-fw fa-twitter-square"></i> Twitter</a>
+  
+  
+  <a href="http://linkedin.com/in/flaviopoletti" class="author-social" target="_blank"><i class="fa fa-fw fa-linkedin-square"></i> LinkedIn</a>
+  
+  
+  <a href="https://metacpan.org/author/polettix" class="author-social" target="_blank"><i class="fa fa-fw fa-th-large"></i> MetaCPAN</a>
+  <a href="http://github.com/polettix" class="author-social" target="_blank"><i class="fa fa-fw fa-github"></i> Github</a>
+  <a href="http://stackoverflow.com/users/3865403/polettix" class="author-social" target="_blank"><i class="fa fa-fw fa-stack-overflow"></i> Stackoverflow</a>
+  
+  
+  <a href="http://www.pinterest.com/polettix" class="author-social" target="_blank"><i class="fa fa-fw fa-pinterest"></i> Pinterest</a>
+  
+  
+  
+  
+  
+  
+</div>
+
+  </div>
+  <article class="post">
+    <div class="headline-wrap">
+      
+        <h1><a href="/hi-from-dibs/" rel="bookmark" title="Hi from dibs!">Hi from dibs!</a></h1>
+      
+    </div><!--/ .headline-wrap -->
+    <div class="article-wrap">
+      <p>So… here’s <a href="https://github.com/polettix/dibs">dibs</a>, which stands for Docker Image Build System. Put it
+very, very bluntly… it is what I use instead of <code>docker build</code> lately.
+It already comes with documentation and many frills, but we will start
+very slow and explore features in a series of posts. Buckle up!</p>
+
+<h2 id="table-of-contents">Table of Contents</h2>
+
+<ul id="markdown-toc">
+  <li><a href="#table-of-contents" id="markdown-toc-table-of-contents">Table of Contents</a></li>
+  <li><a href="#quick-why-dibs" id="markdown-toc-quick-why-dibs">Quick “why dibs”</a></li>
+  <li><a href="#example" id="markdown-toc-example">Example?</a></li>
+  <li><a href="#installing-dibs" id="markdown-toc-installing-dibs">Installing dibs</a></li>
+  <li><a href="#getting-the-target-software" id="markdown-toc-getting-the-target-software">Getting The Target Software</a></li>
+  <li><a href="#the-configuration-file" id="markdown-toc-the-configuration-file">The Configuration File</a></li>
+  <li><a href="#generate-the-image" id="markdown-toc-generate-the-image">Generate The Image</a>    <ul>
+      <li><a href="#actions" id="markdown-toc-actions">Actions</a></li>
+    </ul>
+  </li>
+  <li><a href="#what-happened" id="markdown-toc-what-happened">What Happened?</a></li>
+  <li><a href="#make-build-more-efficient" id="markdown-toc-make-build-more-efficient">Make <code>build</code> More Efficient</a></li>
+  <li><a href="#make-build-even-more-efficient" id="markdown-toc-make-build-even-more-efficient">Make <code>build</code> even more efficient</a></li>
+  <li><a href="#enhancing-bundle" id="markdown-toc-enhancing-bundle">Enhancing <code>bundle</code></a>    <ul>
+      <li><a href="#bundle-as-global-base" id="markdown-toc-bundle-as-global-base">Bundle As Global Base</a></li>
+      <li><a href="#common-pre-base-image" id="markdown-toc-common-pre-base-image">Common Pre-Base Image</a></li>
+      <li><a href="#factoring-a-common-user-creation-stroke" id="markdown-toc-factoring-a-common-user-creation-stroke">Factoring a Common User Creation Stroke</a></li>
+    </ul>
+  </li>
+  <li><a href="#where-are-we-now" id="markdown-toc-where-are-we-now">Where Are We Now?</a></li>
+</ul>
+
+<h2 id="quick-why-dibs">Quick “why dibs”</h2>
+
+<p>Why did I start working on <a href="https://github.com/polettix/dibs">dibs</a>? Part is due to my ignorance: I
+honestly didn’t know about <a href="https://docs.docker.com/develop/develop-images/multistage-build/">multistage</a> Dockerfiles, and I quickly got
+bored of managing it myself.</p>
+
+<p>This is not the whole story though. Another aspect of the Dockerfile
+system that is a bit too… <em>raw</em> in my opinion is how to execute things.
+As far as I know, you either use the <code>RUN</code> directive providing a usually
+growing list of commands all stitched together with <code>&amp;&amp;</code>s, or you put
+those commands in a script, <code>COPY</code> it into the container, then <code>RUN</code> it.
+I’d say this is basically what’s needed, but not the best from the
+usability point of view.</p>
+
+<p>Last, I also grew a bit tired of the caching mechanism provided by Docker
+when building images via Dockerfile. Don’t get me wrong, it’s really neat;
+my only concern is that sometimes it led to situations that required some
+debugging before figuring out what was going wrong, especially when
+building images from a remote repository dynamically cloned via <code>git</code>. I
+felt that having direct and explicit control over the caching mechanism
+would help in a lot of my use cases.</p>
+
+<h2 id="example">Example?</h2>
+
+<p>In this series of posts I’ll be showing examples of growing complexity. In
+this starting one there will be actually nothing (I guess) that cannot be
+done more or less directly with a Dockerfile, but it’s helpful to set the
+stage.</p>
+
+<p>The main goal is to generate a Docker image for <a href="https://gitlab.com/polettix/sample-mojo">sample-mojo</a>. This
+project is somehow <em>purely</em> focused on providing a simple web endpoint,
+without wasting too much time on how it will be deployed, apart providing
+an <a href="https://www.heroku.com/">Heroku</a>-compatible <code>Procfile</code>:</p>
+
+<div class="highlight"><pre><code class="language-text" data-lang="text">web: perl ./app.pl daemon --listen &quot;http://*:$PORT&quot;</code></pre></div>
+
+<p>and declaring the Perl’s dependencies in a <code>cpanfile</code>:</p>
+
+<div class="highlight"><pre><code class="language-text" data-lang="text">requires &#39;Mojolicious&#39;, &#39;7.08&#39;;</code></pre></div>
+
+<p>So, we will have to do the heavy lifting:</p>
+
+<ul>
+  <li>install the modules based on the <code>cpanfile</code></li>
+  <li>provide a wrapper that uses <code>Procfile</code></li>
+</ul>
+
+<p>This is not all though, we also want:</p>
+
+<ul>
+  <li>avoid bloating the target image, i.e. we don’t want any build tools
+inside it</li>
+  <li>compile and run under an unprivileged user <code>ada</code>, to avoid <code>root</code> as
+much as possible`</li>
+</ul>
+
+<p>Hence, the sequence of operations will be like this:</p>
+
+<ul>
+  <li>build the modules in a container were we install all needed building
+tools</li>
+  <li>copy the final <em>complete</em> application in a temporary cache</li>
+  <li>create another container with only the tools needed at runtime, namely
+Perl</li>
+  <li>copy the application artifacts from the temporary cache into their final
+position in this container</li>
+  <li>put a wrapper script to interpret and execute the <code>Procfile</code> in the
+container</li>
+  <li>set the proper <code>ENTRYPOINT</code>, <code>CMD</code> and <code>USER</code> on the container</li>
+  <li>save the container as image.</li>
+</ul>
+
+<h2 id="installing-dibs">Installing dibs</h2>
+
+<p><a href="https://github.com/polettix/dibs">dibs</a> needs Docker to do anything interesting, so chances are that you
+already have Docker. In this case, installing <a href="https://github.com/polettix/dibs">dibs</a> is as simple as
+creating the following <code>dibs</code> script somewhere in the <code>PATH</code>, like this:</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>cat &gt;dibs <span class="s">&lt;&lt;&#39;END&#39;</span>
+<span class="s">#!/bin/sh</span>
+<span class="s">docker run --rm \</span>
+<span class="s">    -v /var/run/docker.sock:/var/run/docker.sock \</span>
+<span class="s">    -v &quot;$PWD:/mnt&quot; -w /mnt -e &quot;DIBS_HOST_REMAP_DIR=/mnt:$PWD&quot; \</span>
+<span class="s">    -- polettix/dibs:0.5 &quot;$@&quot;</span>
+<span class="s">END</span>
+<span class="nv">$ </span>chmod +x dibs</code></pre></div>
+
+<h2 id="getting-the-target-software">Getting The Target Software</h2>
+
+<p>In this example, we will work in the so-called <em>alien mode</em>, i.e. a mode
+where the software to be packaged is not <em>aware</em> of <a href="https://github.com/polettix/dibs">dibs</a>.</p>
+
+<p>First of all, we will create a directory that will be the base of our
+operations. We will call it <code>alien01</code>:</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">~<span class="nv">$ </span>mkdir alien01
+~<span class="nv">$ </span><span class="nb">cd </span>alien01</code></pre></div>
+
+<p>Next, we will get the software, which <a href="https://github.com/polettix/dibs">dibs</a> expects to find in the
+<code>src</code> sub-directory:</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">alien01<span class="nv">$ </span>git clone https://gitlab.com/polettix/sample-mojo.git src</code></pre></div>
+
+<h2 id="the-configuration-file">The Configuration File</h2>
+
+<p><a href="https://github.com/polettix/dibs">dibs</a> works based on a configuration file. In our case, the
+configuration is the following YAML file:</p>
+
+<div class="highlight"><pre><code class="language-yaml" data-lang="yaml"><span class="nn">---</span>
+<span class="l-Scalar-Plain">name</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">dibs-example-sample-mojo</span>
+
+<span class="l-Scalar-Plain">actions</span><span class="p-Indicator">:</span>
+   <span class="l-Scalar-Plain">default</span><span class="p-Indicator">:</span> <span class="p-Indicator">[</span><span class="nv">build</span><span class="p-Indicator">,</span> <span class="nv">bundle</span><span class="p-Indicator">]</span>
+
+   <span class="l-Scalar-Plain">build</span><span class="p-Indicator">:</span>
+      <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">from</span><span class="p-Indicator">:</span> <span class="s">&#39;alpine:3.6&#39;</span>
+      <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">name</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">build</span>
+        <span class="l-Scalar-Plain">pack</span><span class="p-Indicator">:</span>
+           <span class="l-Scalar-Plain">run</span><span class="p-Indicator">:</span> <span class="p-Indicator">|</span>
+              <span class="no">#!/bin/sh</span>
+              <span class="no">set -e</span>
+              <span class="no">exec &gt;&amp;2</span>
+              <span class="no">apk --no-cache add build-base wget perl perl-dev</span>
+              <span class="no">adduser -D -h /app ada</span>
+              <span class="no">wget -O /bin/cpanm --no-check-certificate https://cpanmin.us/</span>
+              <span class="no">chmod +x /bin/cpanm</span>
+              <span class="no">cat &gt;/tmp/as-ada.sh &lt;&lt;&#39;END&#39;</span>
+              <span class="no">cd /app</span>
+              <span class="no">cp -R /tmp/src/* .</span>
+              <span class="no">cpanm -l local --notest --installdeps .</span>
+              <span class="no">END</span>
+              <span class="no">chmod +x /tmp/as-ada.sh</span>
+              <span class="no">su - ada /tmp/as-ada.sh</span>
+              <span class="no">cp -a /app /tmp/cache</span>
+
+   <span class="l-Scalar-Plain">bundle</span><span class="p-Indicator">:</span>
+      <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">from</span><span class="p-Indicator">:</span> <span class="s">&#39;alpine:3.6&#39;</span>
+      <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">name</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">install</span>
+        <span class="l-Scalar-Plain">pack</span><span class="p-Indicator">:</span>
+           <span class="l-Scalar-Plain">run</span><span class="p-Indicator">:</span> <span class="p-Indicator">|</span>
+              <span class="no">#!/bin/sh</span>
+              <span class="no">set -e</span>
+              <span class="no">exec &gt;&amp;2</span>
+              <span class="no">apk --no-cache add perl</span>
+              <span class="no">adduser -D -h /app ada</span>
+              <span class="no">cp -a /tmp/cache/app /</span>
+              <span class="no">cat &gt;/procfilerun &lt;&lt;&#39;END&#39;</span>
+              <span class="no">#!/bin/sh</span>
+              <span class="no">set -e</span>
+              <span class="no">PROCFILE_TYPE=&quot;${1:-&quot;web&quot;}&quot;</span>
+              <span class="no">export PERL5LIB=&#39;/app/local/lib/perl5&#39;</span>
+              <span class="no">cd /app</span>
+              <span class="no">while read -r type command ; do</span>
+                 <span class="no">[ -n &quot;$type&quot; ] || continue</span>
+                 <span class="no">[ &quot;x${type%${type#?}}&quot; != &#39;x#&#39; ] || continue</span>
+                 <span class="no">[ &quot;x$type&quot; = &quot;x$PROCFILE_TYPE:&quot; ] || continue</span>
+                 <span class="no">exec /bin/sh -c &quot;exec $command&quot;</span>
+                 <span class="no">printf &gt;&amp;2 &#39;could not execute command &quot;%s&quot;\n&#39; &quot;$command&quot;</span>
+                 <span class="no">exit 1</span>
+              <span class="no">done &lt;Procfile</span>
+              <span class="no">printf &gt;&amp;2 &#39;invalid process type %s, not in Procfile\n&#39; &quot;$PROCFILE_TYPE&quot;</span>
+              <span class="no">exit 1</span>
+              <span class="no">END</span>
+              <span class="no">chmod +x /procfilerun</span>
+        <span class="l-Scalar-Plain">commit</span><span class="p-Indicator">:</span>
+           <span class="l-Scalar-Plain">entrypoint</span><span class="p-Indicator">:</span> <span class="p-Indicator">[</span><span class="nv">/procfilerun</span><span class="p-Indicator">]</span>
+           <span class="l-Scalar-Plain">cmd</span><span class="p-Indicator">:</span> <span class="p-Indicator">[</span><span class="nv">web</span><span class="p-Indicator">]</span>
+           <span class="l-Scalar-Plain">user</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">ada</span>
+      <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">name</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">save bundled image</span>
+        <span class="l-Scalar-Plain">tags</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">sample-mojo-alien01:latest</span></code></pre></div>
+
+<p>This file can also be <a href="/assets/files/dibs-intro/10-alien/dibs.yml">downloaded here</a> has to be saved
+as <code>dibs.yml</code> in the project directory <code>alien01</code>.</p>
+
+<h2 id="generate-the-image">Generate The Image</h2>
+
+<p>Up to now, the layout of our <code>alien01</code> directory should be the following:</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">alien01<span class="nv">$ </span>ls -l
+total 8
+-rw-r--r-- <span class="m">1</span> poletti poletti <span class="m">2073</span> Feb <span class="m">24</span> 18:18 dibs.yml
+drwxr-xr-x <span class="m">3</span> poletti poletti <span class="m">4096</span> Feb <span class="m">24</span> 17:18 src
+alien01<span class="nv">$ </span>ls -l src
+total 16
+-rwxr-xr-x <span class="m">1</span> poletti poletti <span class="m">234</span> Feb <span class="m">24</span> 17:18 app.pl
+-rw-r--r-- <span class="m">1</span> poletti poletti  <span class="m">32</span> Feb <span class="m">24</span> 17:18 cpanfile
+-rw-r--r-- <span class="m">1</span> poletti poletti  <span class="m">52</span> Feb <span class="m">24</span> 17:18 Procfile
+-rw-r--r-- <span class="m">1</span> poletti poletti <span class="m">326</span> Feb <span class="m">24</span> 17:18 README.md</code></pre></div>
+
+<p>If not… look again at the previous sections! Otherwise, let’s start
+<a href="https://github.com/polettix/dibs">dibs</a>:</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">alien01<span class="nv">$ </span>dibs --alien
+       base configuration from: /mnt/dibs.yml
+<span class="o">=====</span>&gt; sketch <span class="nv">default</span>
+<span class="o">=====</span>&gt; sketch build
+-----&gt; prepare <span class="o">(</span>from: alpine:3.6<span class="o">)</span>
+       remove tag dibs-example-sample-mojo:20190224-192933-1 <span class="k">if</span> exists
+       tag alpine:3.6 to dibs-example-sample-mojo:20190224-192933-1
+       tagging alpine:3.6 as dibs-example-sample-mojo:20190224-192933-1
+-----&gt; stroke build
+       fetch http://dl-cdn.alpinelinux.org/alpine/v3.6/main/x86_64/APKINDEX.tar.gz
+       fetch http://dl-cdn.alpinelinux.org/alpine/v3.6/community/x86_64/APKINDEX.tar.gz
+       <span class="o">(</span>1/23<span class="o">)</span> Installing binutils-libs <span class="o">(</span>2.30-r1<span class="o">)</span>
+       <span class="o">[</span>...<span class="o">]</span>
+       <span class="o">(</span>23/23<span class="o">)</span> Installing wget <span class="o">(</span>1.20.1-r0<span class="o">)</span>
+       Executing busybox-1.26.2-r11.trigger
+       OK: <span class="m">200</span> MiB in <span class="m">36</span> packages
+       --2019-02-24 19:29:39--  https://cpanmin.us/
+       Resolving cpanmin.us... 151.101.130.217, 151.101.66.217, 151.101.2.217, ...
+       Connecting to cpanmin.us<span class="p">|</span>151.101.130.217<span class="p">|</span>:443... connected.
+       <span class="o">[</span>...<span class="o">]</span>
+       --&gt; Working on .
+       Configuring /app ... <span class="nv">OK</span>
+       <span class="o">==</span>&gt; Found dependencies: Mojolicious
+       --&gt; Working on Mojolicious
+       Fetching http://www.cpan.org/authors/id/S/SR/SRI/Mojolicious-8.12.tar.gz ... OK
+       Configuring Mojolicious-8.12 ... OK
+       Building Mojolicious-8.12 ... OK
+       Successfully installed Mojolicious-8.12
+       &lt;<span class="o">==</span> Installed dependencies <span class="k">for</span> .. Finishing.
+       <span class="m">1</span> distribution installed
+       committing working container to dibs-example-sample-mojo:20190224-192933-1
+       sha256:f4cbc0ec9fa94937ab15ff1c4481edcf9bd5248bc5c687d3801dbadb44cacee7
+       removing working container
+       <span class="nv">2dd042ebc612a352328316b624edeffaf008cce7cd495b01bb860ef6a62867a6</span>
+<span class="o">=====</span>&gt; sketch bundle
+-----&gt; prepare <span class="o">(</span>from: alpine:3.6<span class="o">)</span>
+       remove tag dibs-example-sample-mojo:20190224-192933-1 <span class="k">if</span> exists
+       tag alpine:3.6 to dibs-example-sample-mojo:20190224-192933-1
+       tagging alpine:3.6 as dibs-example-sample-mojo:20190224-192933-1
+-----&gt; stroke install
+       fetch http://dl-cdn.alpinelinux.org/alpine/v3.6/main/x86_64/APKINDEX.tar.gz
+       fetch http://dl-cdn.alpinelinux.org/alpine/v3.6/community/x86_64/APKINDEX.tar.gz
+       <span class="o">(</span>1/2<span class="o">)</span> Installing libbz2 <span class="o">(</span>1.0.6-r5<span class="o">)</span>
+       <span class="o">(</span>2/2<span class="o">)</span> Installing perl <span class="o">(</span>5.24.4-r2<span class="o">)</span>
+       Executing busybox-1.26.2-r11.trigger
+       OK: <span class="m">40</span> MiB in <span class="m">15</span> packages
+       committing working container to dibs-example-sample-mojo:20190224-192933-1
+       sha256:fb1aa5f8843953381d7e8608e4bbf956f06ce38d6f39c2fd4604d3244813e871
+       removing working container
+       e41fcfc70ab2b0d60c9a51624ccd51e0eff877cd397e0f35f6cbaa8504690009
++++++&gt; frame save bundled image
+       tagging dibs-example-sample-mojo:20190224-192933-1 as sample-mojo-alien01:latest
+       removing tag dibs-example-sample-mojo:20190224-192933-1
+       Untagged: dibs-example-sample-mojo:20190224-192933-1
+sample-mojo-alien01:latest</code></pre></div>
+
+<p>A bit too much to digest? Let’s take a look!</p>
+
+<h3 id="actions">Actions</h3>
+
+<p><a href="https://github.com/polettix/dibs">dibs</a> executes actions, which can be of differen types. You can specify
+the type explicitly, but it’s normally not needed as it’s clear what an
+action is about.</p>
+
+<p>At the top level, it always executes a <em>sketch</em>, that is a sequence of
+other actions (including other sketches). In our case, we didn’t specify
+any explicit action to be run on the command line, so the <code>default</code> sketch
+has been selected:</p>
+
+<div class="highlight"><pre><code class="language-yaml" data-lang="yaml"><span class="l-Scalar-Plain">actions</span><span class="p-Indicator">:</span>
+   <span class="l-Scalar-Plain">default</span><span class="p-Indicator">:</span> <span class="p-Indicator">[</span><span class="nv">build</span><span class="p-Indicator">,</span> <span class="nv">bundle</span><span class="p-Indicator">]</span></code></pre></div>
+
+<p>i.e. the actions <code>build</code> and <code>bundle</code> (which are other sketches
+themselves, being lists) have to be executed. This accounts for the
+“external” structure of the output:</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">alien01<span class="nv">$ </span>dibs --alien
+       base configuration from: /mnt/dibs.yml
+<span class="o">=====</span>&gt; sketch <span class="nv">default</span>
+<span class="o">=====</span>&gt; sketch build
+       <span class="o">[</span>...<span class="o">]</span>
+<span class="o">=====</span>&gt; sketch bundle
+       <span class="o">[</span>...<span class="o">]</span></code></pre></div>
+
+<p>The two sketches <code>build</code> and <code>bundle</code> have a similar structure: they
+contain a list of actions (they’re sketches, after all!) that will result
+in something done:</p>
+
+<div class="highlight"><pre><code class="language-yaml" data-lang="yaml"><span class="l-Scalar-Plain">actions</span><span class="p-Indicator">:</span>
+    <span class="c1"># ...</span>
+
+   <span class="l-Scalar-Plain">build</span><span class="p-Indicator">:</span>
+      <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">from</span><span class="p-Indicator">:</span> <span class="s">&#39;alpine:3.6&#39;</span>
+      <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">name</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">build</span>
+        <span class="l-Scalar-Plain">pack</span><span class="p-Indicator">:</span>
+           <span class="l-Scalar-Plain">run</span><span class="p-Indicator">:</span> <span class="p-Indicator">|</span>
+              <span class="no">#!/bin/sh</span>
+              <span class="no"># ...</span>
+
+   <span class="l-Scalar-Plain">bundle</span><span class="p-Indicator">:</span>
+      <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">from</span><span class="p-Indicator">:</span> <span class="s">&#39;alpine:3.6&#39;</span>
+      <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">name</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">install</span>
+        <span class="l-Scalar-Plain">pack</span><span class="p-Indicator">:</span>
+           <span class="l-Scalar-Plain">run</span><span class="p-Indicator">:</span> <span class="p-Indicator">|</span>
+              <span class="no">#!/bin/sh</span>
+              <span class="no"># ...</span>
+        <span class="l-Scalar-Plain">commit</span><span class="p-Indicator">:</span>
+           <span class="l-Scalar-Plain">entrypoint</span><span class="p-Indicator">:</span> <span class="p-Indicator">[</span><span class="nv">/procfilerun</span><span class="p-Indicator">]</span>
+           <span class="l-Scalar-Plain">cmd</span><span class="p-Indicator">:</span> <span class="p-Indicator">[</span><span class="nv">web</span><span class="p-Indicator">]</span>
+           <span class="l-Scalar-Plain">user</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">ada</span>
+      <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">name</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">save bundled image</span>
+        <span class="l-Scalar-Plain">tags</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">sample-mojo-alien01:latest</span></code></pre></div>
+
+<p>Actions that contain a <code>from</code> should sound familiar to anyone used to
+Dockerfiles: its goal is exactly the same, i.e. define the starting point
+of a <em>sequence of container layers</em>. This action has type <em>preparation</em>.</p>
+
+<p>After it, both have an action of type <em>stroke</em>, i.e. something that is
+executed <em>inside</em> the container. This action is characterized by having
+a <code>pack</code> field inside, which in our case specifies an “immediate program”
+that will be executed in the container. There are many other ways of
+providing what has to be executed in the container, as we will see in the
+future.</p>
+
+<p>Last, the <code>bundle</code> sketch also contains a closing action setting the tag
+name for the image. This action is of type <em>frame</em>. Notice that <code>build</code>
+does not have a corresponding one: we’re simply not interested in the
+byproduct of that chain of action, or better we are not interested in
+saving the resulting container as an image.</p>
+
+<p>These action types should ring a bell about the metaphor that <a href="https://github.com/polettix/dibs">dibs</a>
+adopts: as our goal is to generate an <em>image</em>, we assemble one or more
+<em>sketches</em>, in each of which we first <em>prepare</em>, then draw some <em>strokes</em>,
+then <em>frame</em> the result if we are happy with it.</p>
+
+<h2 id="what-happened">What Happened?</h2>
+
+<p>TL;DR each of the sketches <code>build</code> and <code>bundle</code> started from the same
+image <code>alpine:3.6</code> and executed a sequence of commands inside a container.
+The program for <code>build</code> eventually saved the application with the compiled
+modules in a cache staging area; the <code>bundle</code> sketch eventually resulted
+in saving a container image that contains only the strict necessary for
+running the program, without building tools.</p>
+
+<p>If you look carefully at all operations, you will see that we indeed stick
+to all requirements: the final image is not bloated with unnecessary
+tools, compilation is done under user <code>ada</code>, as well as packing and
+execution, the <code>ENTRYPOINT</code> and <code>CMD</code> are set right, …</p>
+
+<p>As it is now, though, there’s little advantage over using a Dockerfile to
+give to <code>docker build</code>:</p>
+
+<ul>
+  <li>it’s easier to provide the sequence of commands to be executed, because
+you pass the text of a proper shell script instead of a single, long
+escaped line to be fed to <code>/bin/sh -c</code></li>
+  <li>the process is much heavier though, each run of the whole sequence
+starts from scratch and does not reuse anything already done.</li>
+</ul>
+
+<h2 id="make-build-more-efficient">Make <code>build</code> More Efficient</h2>
+
+<p><a href="https://github.com/polettix/dibs">dibs</a> allows you to have direct control over caching, so there’s some
+more work to do but it allows us to always keep control of things.</p>
+
+<p>The build process can be divided into a few phases:</p>
+
+<ul>
+  <li>creation of user <code>ada</code></li>
+  <li>installation of build tools</li>
+  <li>installation of pre-requisites specific to the program (which amounts to
+nothing in our case)</li>
+  <li>compilation of modules</li>
+</ul>
+
+<p>Our strategy will be to divide the <code>build</code> sketch into phases, and save
+the places that we find interesting for reuse.</p>
+
+<div class="highlight"><pre><code class="language-yaml" data-lang="yaml"><span class="l-Scalar-Plain">actions</span><span class="p-Indicator">:</span>
+    <span class="c1"># ...</span>
+
+    <span class="l-Scalar-Plain">build-base</span><span class="p-Indicator">:</span> <span class="c1"># new sketch for preparing a cached base image</span>
+      <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">from</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">alpine 3.6</span>
+      <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">name</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">base image preparation</span>
+        <span class="l-Scalar-Plain">pack</span><span class="p-Indicator">:</span>
+           <span class="l-Scalar-Plain">run</span><span class="p-Indicator">:</span> <span class="p-Indicator">|</span>
+              <span class="no">#!/bin/sh</span>
+              <span class="no">set -e</span>
+              <span class="no">exec &gt;&amp;2</span>
+              <span class="no">apk --no-cache add build-base wget perl perl-dev</span>
+              <span class="no">adduser -D -h /app ada</span>
+              <span class="no">wget -O /bin/cpanm --no-check-certificate https://cpanmin.us/</span>
+              <span class="no">chmod +x /bin/cpanm</span>
+              <span class="no">#</span>
+              <span class="no"># WE STOP HERE, no compilation at this stage!</span>
+              <span class="no">#</span>
+      <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">name</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">save base image for build</span>
+        <span class="l-Scalar-Plain">tags</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">sample-mojo-alien01-buildbase:latest</span>
+
+    <span class="l-Scalar-Plain">build</span><span class="p-Indicator">:</span>
+      <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">from</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">sample-mojo-alien01-buildbase:latest</span>
+      <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">name</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">build user</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">ada pack</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">run</span><span class="p-Indicator">:</span> <span class="p-Indicator">|</span> <span class="c1">#!/bin/sh set -e exec &gt;&amp;2 cd</span>
+        <span class="l-Scalar-Plain">user</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">ada</span>
+        <span class="l-Scalar-Plain">pack</span><span class="p-Indicator">:</span>
+           <span class="l-Scalar-Plain">run</span><span class="p-Indicator">:</span> <span class="p-Indicator">|</span>
+              <span class="no">#!/bin/sh</span>
+              <span class="no">set -e</span>
+              <span class="no">exec &gt;&amp;2</span>
+              <span class="no">cd /app</span>
+              <span class="no">cp -R /tmp/src/* .</span>
+              <span class="no">cpanm -l local --notest --installdeps .</span>
+              <span class="no">cp -R /app /tmp/cache</span>
+
+    <span class="c1"># ...</span></code></pre></div>
+
+<p>It’s easy to see what we’re doing here: the old <code>build</code> has been split
+into two parts:</p>
+
+<ul>
+  <li><code>build-base</code>, which does most of the heavylifting preparing everything
+for the later compilation phase, but without doing it.</li>
+  <li><code>build</code> now only strictly executes the compilation of modules and saves
+stuff in the cache. Note that we don’t have to use the <code>su - ada</code> trick
+to execute the build part as user <code>ada</code>, because <code>dibs</code> can execute that
+part as <code>user: ada</code>.</li>
+</ul>
+
+<p>Now, the typical invocation pattern would be as follows:</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="c"># build the base image, once at the beginning</span>
+<span class="nv">$ </span>dibs --alien build-base
+<span class="c"># ...</span>
+<span class="c">#</span>
+<span class="c"># now, execution of the build phase is much faster</span>
+<span class="nv">$ </span>dibs --alien
+<span class="c"># ...</span>
+<span class="c"># get updates from remote repository into src, then regenerate image</span>
+<span class="nv">$ </span><span class="nb">cd </span>src
+<span class="nv">$ </span>git pull
+<span class="nv">$ </span><span class="nb">cd</span> ..
+<span class="nv">$ </span>dibs --alien</code></pre></div>
+
+<h2 id="make-build-even-more-efficient">Make <code>build</code> even more efficient</h2>
+
+<p>As it turns out, our program is not installing modules like crazy, so we
+can use a bit of caching for it too. We already leveraged <code>/tmp/cache</code> as
+a mechanism to let different actions <em>communicate</em> with each other (e.g.
+to pass the compiled application from <code>build</code> to <code>bundle</code>), but nothing
+prevents us from using it also across different <code>build</code>s:</p>
+
+<div class="highlight"><pre><code class="language-yaml" data-lang="yaml"><span class="l-Scalar-Plain">actions</span><span class="p-Indicator">:</span>
+   <span class="c1"># ...</span>
+
+   <span class="l-Scalar-Plain">build</span><span class="p-Indicator">:</span>
+      <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">from</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">sample-mojo-alien01-buildbase:latest</span>
+      <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">name</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">build</span>
+        <span class="l-Scalar-Plain">user</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">ada</span>
+        <span class="l-Scalar-Plain">pack</span><span class="p-Indicator">:</span>
+           <span class="l-Scalar-Plain">run</span><span class="p-Indicator">:</span> <span class="p-Indicator">|</span>
+              <span class="no">#!/bin/sh</span>
+              <span class="no">set -e</span>
+              <span class="no">exec &gt;&amp;2</span>
+              <span class="no">cd /app</span>
+              <span class="no">cp -R /tmp/src/* .</span>
+
+              <span class="no"># REUSE past compilations if available</span>
+              <span class="no">if [ -d &#39;/tmp/cache/app/local&#39; ] ; then</span>
+                 <span class="no">cp -R /tmp/cache/app/local /app</span>
+              <span class="no">fi</span>
+
+              <span class="no">cpanm -l local --notest --installdeps .</span>
+              <span class="no">cp -R /app /tmp/cache</span>
+
+   <span class="c1"># ...</span></code></pre></div>
+
+<p>In this way, we’re going also to reuse compilations by <code>cpanm</code> every time
+the <code>/tmp/as-ada.sh</code> script is executed during the build phase, saving
+more time.</p>
+
+<h2 id="enhancing-bundle">Enhancing <code>bundle</code></h2>
+
+<p>The <code>bundle</code> sketch can use some enhancements too, because it re-creates
+the whole thing from scratch over and over, whereas use creation and
+runtime installation might be factored out and cached, much like what
+happened with <code>build</code>.</p>
+
+<p>At this point, it’s also meaningful to think that the user creation
+process might be factored out between <code>build</code> and <code>bundle</code>, as they have
+the same goal. To do this, there are a few strategies:</p>
+
+<ul>
+  <li>build a base image for the runtime, then use it as the base for the
+build base image</li>
+  <li>build a pre-base image with user creation only, then use that as base
+image for the bundle base image and the build base image</li>
+  <li>factor the user creation process out and reuse it in different sketches.</li>
+</ul>
+
+<p>We will look into the three alternatives in the following sub-sections,
+but in all cases we end up with a new
+<code>sample-mojo-alien01-bundlebase:latest</code> image that we will use as starting
+point for bundling, like this:</p>
+
+<div class="highlight"><pre><code class="language-yaml" data-lang="yaml"><span class="l-Scalar-Plain">actions</span><span class="p-Indicator">:</span>
+    <span class="c1"># ...</span>
+
+    <span class="l-Scalar-Plain">bundle-base</span><span class="p-Indicator">:</span>
+      <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">from</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">alpine 3.6</span>
+      <span class="c1"># ...</span>
+      <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">name</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">save base image for bundle</span>
+        <span class="l-Scalar-Plain">tags</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">sample-mojo-alien01-bundlebase:latest</span>
+
+    <span class="l-Scalar-Plain">bundle</span><span class="p-Indicator">:</span>
+      <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">from</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">sample-mojo-alien01-bundlebase:latest</span>
+      <span class="c1"># ...</span>
+
+    <span class="c1"># ...</span></code></pre></div>
+
+<p>Let’s take a closer look at the three alternatives now.</p>
+
+<h3 id="bundle-as-global-base">Bundle As Global Base</h3>
+
+<p>If we look into the bundle image carefully, we see that its pre-requisites
+are also in the build image, so why not use it as a starting point? This
+is our first alternative approach:</p>
+
+<div class="highlight"><pre><code class="language-yaml" data-lang="yaml"><span class="l-Scalar-Plain">actions</span><span class="p-Indicator">:</span>
+    <span class="c1"># ...</span>
+
+    <span class="l-Scalar-Plain">bundle-base</span><span class="p-Indicator">:</span> <span class="c1"># new sketch for preparing a cached base image</span>
+      <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">from</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">alpine 3.6</span>
+      <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">name</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">bundle base image preparation</span>
+        <span class="l-Scalar-Plain">pack</span><span class="p-Indicator">:</span>
+           <span class="l-Scalar-Plain">run</span><span class="p-Indicator">:</span> <span class="p-Indicator">|</span>
+              <span class="no">#!/bin/sh</span>
+              <span class="no">set -e</span>
+              <span class="no">exec &gt;&amp;2</span>
+              <span class="no">apk --no-cache add perl</span>
+              <span class="no">adduser -D -h /app ada</span>
+      <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">name</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">save base image for bundle</span>
+        <span class="l-Scalar-Plain">tags</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">sample-mojo-alien01-bundlebase:latest</span>
+    
+    <span class="l-Scalar-Plain">build-base</span><span class="p-Indicator">:</span>
+      <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">from</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">sample-mojo-alien01-bundlebase:latest</span>
+      <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">name</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">build base image preparation</span>
+        <span class="l-Scalar-Plain">pack</span><span class="p-Indicator">:</span>
+           <span class="l-Scalar-Plain">run</span><span class="p-Indicator">:</span> <span class="p-Indicator">|</span>
+              <span class="no">#!/bin/sh</span>
+              <span class="no">set -e</span>
+              <span class="no">exec &gt;&amp;2</span>
+              <span class="no">apk --no-cache add build-base wget perl-dev</span>
+              <span class="no">wget -O /bin/cpanm --no-check-certificate https://cpanmin.us/</span>
+              <span class="no">chmod +x /bin/cpanm</span>
+      <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">name</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">save base image for build</span>
+        <span class="l-Scalar-Plain">tags</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">sample-mojo-alien01-buildbase:latest</span>
+
+    <span class="c1"># ...</span></code></pre></div>
+
+<p>The advantage of this approach is that is quite simple; the drawback is
+that the bundle image might evolve in a direction that includes tools that
+are not needed for building. This might be a problem or not depending on
+circumstances; anyway, the build image is usually more bloated anyway, so
+it should not be an issue in the average case.</p>
+
+<h3 id="common-pre-base-image">Common Pre-Base Image</h3>
+
+<p>A more “normalized” way of doing things would be to factor common
+operations like user creation in a single, simpler base image, then use it
+as a <em>pre-base</em> for generating two separated build image and a bundle
+image, which can then evolve independently:</p>
+
+<div class="highlight"><pre><code class="language-yaml" data-lang="yaml"><span class="l-Scalar-Plain">actions</span><span class="p-Indicator">:</span>
+    <span class="c1"># ...</span>
+
+    <span class="l-Scalar-Plain">base</span><span class="p-Indicator">:</span> <span class="c1"># new sketch for preparing a cached base image</span>
+      <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">from</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">alpine 3.6</span>
+      <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">name</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">base image preparation</span>
+        <span class="l-Scalar-Plain">pack</span><span class="p-Indicator">:</span>
+           <span class="l-Scalar-Plain">run</span><span class="p-Indicator">:</span> <span class="p-Indicator">|</span>
+              <span class="no">#!/bin/sh</span>
+              <span class="no">set -e</span>
+              <span class="no">exec &gt;&amp;2</span>
+              <span class="no">adduser -D -h /app ada</span>
+      <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">name</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">save base image</span>
+        <span class="l-Scalar-Plain">tags</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">sample-mojo-alien01-base:latest</span>
+
+    <span class="l-Scalar-Plain">bundle-base</span><span class="p-Indicator">:</span> <span class="c1"># new sketch for preparing a cached base image</span>
+      <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">from</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">sample-mojo-alien01-base:latest</span>
+      <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">name</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">bundle base image preparation</span>
+        <span class="l-Scalar-Plain">pack</span><span class="p-Indicator">:</span>
+           <span class="l-Scalar-Plain">run</span><span class="p-Indicator">:</span> <span class="p-Indicator">|</span>
+              <span class="no">#!/bin/sh</span>
+              <span class="no">set -e</span>
+              <span class="no">exec &gt;&amp;2</span>
+              <span class="no">apk --no-cache add perl</span>
+      <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">name</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">save base image for bundle</span>
+        <span class="l-Scalar-Plain">tags</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">sample-mojo-alien01-bundlebase:latest</span>
+
+    <span class="l-Scalar-Plain">build-base</span><span class="p-Indicator">:</span>
+      <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">from</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">sample-mojo-alien01-base:latest</span>
+      <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">name</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">build base image preparation</span>
+        <span class="l-Scalar-Plain">pack</span><span class="p-Indicator">:</span>
+           <span class="l-Scalar-Plain">run</span><span class="p-Indicator">:</span> <span class="p-Indicator">|</span>
+              <span class="no">#!/bin/sh</span>
+              <span class="no">set -e</span>
+              <span class="no">exec &gt;&amp;2</span>
+              <span class="no">apk --no-cache add build-base wget perl-dev perl</span>
+              <span class="no">wget -O /bin/cpanm --no-check-certificate https://cpanmin.us/</span>
+              <span class="no">chmod +x /bin/cpanm</span>
+      <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">name</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">save base image for build</span>
+        <span class="l-Scalar-Plain">tags</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">sample-mojo-alien01-buildbase:latest</span>
+
+    <span class="c1"># ...</span></code></pre></div>
+
+<p>The advantage of this approach is that the base image can then easily be
+put into a separate process, e.g. managed by another team.</p>
+
+<h3 id="factoring-a-common-user-creation-stroke">Factoring a Common User Creation Stroke</h3>
+
+<p>In this case, the user creation process is a stroke by itself, defined
+once and reused by the base images:</p>
+
+<div class="highlight"><pre><code class="language-yaml" data-lang="yaml"><span class="l-Scalar-Plain">actions</span><span class="p-Indicator">:</span>
+   <span class="c1"># ...</span>
+
+    <span class="l-Scalar-Plain">create-user</span><span class="p-Indicator">:</span>
+        <span class="l-Scalar-Plain">pack</span><span class="p-Indicator">:</span>
+           <span class="l-Scalar-Plain">run</span><span class="p-Indicator">:</span> <span class="p-Indicator">|</span>
+              <span class="no">#!/bin/sh</span>
+              <span class="no">set -e</span>
+              <span class="no">exec &gt;&amp;2</span>
+              <span class="no">adduser -D -h /app ada</span>
+
+    <span class="l-Scalar-Plain">build-base</span><span class="p-Indicator">:</span>
+      <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">from</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">alpine 3.6</span>
+      <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">create-user</span>
+      <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">name</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">base image preparation</span>
+        <span class="l-Scalar-Plain">pack</span><span class="p-Indicator">:</span>
+           <span class="c1"># NOTE: no user creation in the script below</span>
+           <span class="l-Scalar-Plain">run</span><span class="p-Indicator">:</span> <span class="p-Indicator">|</span>
+              <span class="no">#!/bin/sh</span>
+              <span class="no">set -e</span>
+              <span class="no">exec &gt;&amp;2</span>
+              <span class="no">apk --no-cache add build-base wget perl perl-dev</span>
+              <span class="no">wget -O /bin/cpanm --no-check-certificate https://cpanmin.us/</span>
+              <span class="no">chmod +x /bin/cpanm</span>
+      <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">name</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">save base image for build</span>
+        <span class="l-Scalar-Plain">tags</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">sample-mojo-alien01-buildbase:latest</span>
+
+    <span class="l-Scalar-Plain">bundle-base</span><span class="p-Indicator">:</span>
+      <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">from</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">alpine 3.6</span>
+      <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">create-user</span>
+      <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">name</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">base image preparation</span>
+        <span class="l-Scalar-Plain">pack</span><span class="p-Indicator">:</span>
+           <span class="c1"># NOTE: no user creation in the script below</span>
+           <span class="l-Scalar-Plain">run</span><span class="p-Indicator">:</span> <span class="p-Indicator">|</span>
+              <span class="no">#!/bin/sh</span>
+              <span class="no">set -e</span>
+              <span class="no">exec &gt;&amp;2</span>
+              <span class="no">apk --no-cache add perl</span>
+      <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">name</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">save base image for bundle</span>
+        <span class="l-Scalar-Plain">tags</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">sample-mojo-alien01-bundlebase:latest</span>
+
+   <span class="c1"># ...</span></code></pre></div>
+
+<p>The advantage of this approach is that it’s more visually clear what’s
+going on in the preparation of each base image, because there’s less
+referencing around to other base images.</p>
+
+<h2 id="where-are-we-now">Where Are We Now?</h2>
+
+<p>At this point, I guess, we’re somewhere very near to what a <a href="https://docs.docker.com/develop/develop-images/multistage-build/">multistage
+Dockerfile</a> can do: we have a chain for building, another one
+for packaging a lean final image with our application, and there’s some
+caching to help us speed up things.</p>
+
+<p>Now for the second reason why I wanted a tool like <a href="https://github.com/polettix/dibs">dibs</a>: ease of
+reuse. I already find <a href="https://github.com/polettix/dibs">dibs</a>’s way of expressing actions inside
+a container better than the lower-level <code>RUN</code> provided by a Dockerfile,
+but this is just the tip of the iceberg… as we will discover in our next
+post!</p>
+
+<p>The complete configuration file for this stage can be found
+<a href="/assets/files/dibs-intro/10-alien/final/dibs.yml">here</a>, considering the third alternative in the previous
+section.</p>
+
+
+      <hr />
+      <footer role="contentinfo">
+        <div class="social-share">
+  <h4>Share on</h4>
+  <ul>
+    <li>
+      <a href="https://twitter.com/intent/tweet?text=/hi-from-dibs/" class="twitter" title="Share on Twitter"><i class="fa fa-twitter"></i><span> Twitter</span></a>
+    </li>
+    <li>
+      <a href="https://www.facebook.com/sharer/sharer.php?u=/hi-from-dibs/" class="facebook" title="Share on Facebook"><i class="fa fa-facebook"></i><span> Facebook</span></a>
+    </li>
+    <li>
+      <a href="https://plus.google.com/share?url=/hi-from-dibs/" class="google-plus" title="Share on Google Plus"><i class="fa fa-google-plus"></i><span> Google+</span></a>
+    </li>
+  </ul>
+</div><!-- /.social-share -->
+        <p class="byline"><strong>Hi from dibs!</strong> was published on <time datetime="2019-02-26T00:00:00+01:00">February 26, 2019</time>.</p>
+      </footer>
+    </div><!-- /.article-wrap -->
+  
+    <section id="disqus_thread"></section><!-- /#disqus_thread -->
+  
+  </article>
+</div><!-- /#main -->
+
+<div class="footer-wrap">
+  <div class="related-articles">
+  <h4>You might also enjoy <small class="pull-right">(<a href="/posts/">View all posts</a>)</small></h4>
+    <ul>
+    
+      <li><a href="/invent-stories/" title="Invent Stories">Invent Stories</a></li>
+    
+      <li><a href="/a-simple-telegram-bot/" title="A Simple Telegram Bot">A Simple Telegram Bot</a></li>
+    
+      <li><a href="/some-maths-for-dobble/" title="Some Maths for Dobble">Some Maths for Dobble</a></li>
+    
+    </ul>
+    <hr />
+  </div><!-- /.related-articles -->
+  <footer>
+    
+
+<span>&copy; 2019 Flavio Poletti. Powered by <a href="http://jekyllrb.com" rel="nofollow">Jekyll</a> using the <a href="http://mademistakes.com/minimal-mistakes/" rel="nofollow">Minimal Mistakes</a> theme.</span>
+
+  </footer>
+</div><!-- /.footer-wrap -->
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script src="/assets/js/scripts.min.js"></script>
+
+
+  
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'polettix'; // required: replace example with your forum shortname
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = '//' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+
+</body>
+</html>

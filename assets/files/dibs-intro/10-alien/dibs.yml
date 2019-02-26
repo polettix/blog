@@ -1,0 +1,62 @@
+---
+name: dibs-example-sample-mojo
+
+actions:
+   default: [build, bundle]
+
+   build:
+      - from: 'alpine:3.6'
+      - name: build
+        pack:
+           run: |
+              #!/bin/sh
+              set -e
+              exec >&2
+              apk --no-cache add build-base wget perl perl-dev
+              adduser -D -h /app ada
+              wget -O /bin/cpanm --no-check-certificate https://cpanmin.us/
+              chmod +x /bin/cpanm
+              cat >/tmp/as-ada.sh <<'END'
+              cd /app
+              cp -a /tmp/src/* .
+              cpanm -l local --notest --installdeps .
+              END
+              chmod +x /tmp/as-ada.sh
+              su - ada /tmp/as-ada.sh
+              cp -a /app /tmp/cache
+
+   bundle:
+      - from: 'alpine:3.6'
+      - name: install
+        pack:
+           run: |
+              #!/bin/sh
+              set -e
+              exec >&2
+              apk --no-cache add perl
+              adduser -D -h /app ada
+              cp -a /tmp/cache/app /
+              cat >/procfilerun <<'END'
+              #!/bin/sh
+              set -e
+              PROCFILE_TYPE="${1:-"web"}"
+              export PERL5LIB='/app/local/lib/perl5'
+              cd /app
+              while read -r type command ; do
+                 [ -n "$type" ] || continue
+                 [ "x${type%${type#?}}" != 'x#' ] || continue
+                 [ "x$type" = "x$PROCFILE_TYPE:" ] || continue
+                 exec /bin/sh -c "exec $command"
+                 printf >&2 'could not execute command "%s"\n' "$command"
+                 exit 1
+              done <Procfile
+              printf >&2 'invalid process type %s, not in Procfile\n' "$PROCFILE_TYPE"
+              exit 1
+              END
+              chmod +x /procfilerun
+        commit:
+           entrypoint: [/procfilerun]
+           cmd: [web]
+           user: ada
+      - name: save bundled image
+        tags: sample-mojo-alien01:latest
