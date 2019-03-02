@@ -4,13 +4,199 @@
 <generator uri="https://github.com/jekyll/jekyll">Jekyll</generator>
 <link rel="self" type="application/atom+xml" href="/feed.xml" />
 <link rel="alternate" type="text/html" href="" />
-<updated>2019-03-03T00:53:03+01:00</updated>
+<updated>2019-03-03T00:53:37+01:00</updated>
 <id>/</id>
 <author>
   <name>Flavio Poletti</name>
   <uri>/</uri>
   <email>flavio@polettix.it</email>
 </author>
+
+
+  
+
+<entry>
+  <title type="html"><![CDATA[Dibs - YAML Reuse]]></title>
+  <link rel="alternate" type="text/html" href="/dibs-yaml-reuse/" />
+  <id>/dibs-yaml-reuse</id>
+  <published>2019-03-03T00:00:00+01:00</published>
+  <updated>2019-03-03T00:00:00+01:00</updated>
+  <author>
+    <name>Flavio Poletti</name>
+    <uri></uri>
+    <email>flavio@polettix.it</email>
+  </author>
+  <content type="html">
+    &lt;p&gt;In our &lt;a href=&quot;hi-from-dibs&quot;&gt;first post&lt;/a&gt; about &lt;a href=&quot;https://github.com/polettix/dibs&quot;&gt;dibs&lt;/a&gt; we saw how to use it as
+a different kind of multistage Dockerfile. While I already prefer it this
+way (all the &lt;code&gt;&amp;amp;&amp;amp;&lt;/code&gt;s quickly annoy me), a lot revolves around reuse.&lt;/p&gt;
+
+&lt;p&gt;If you’re a programmer, you probably don’t need to be told why reuse is
+important. If you’re not, you probably don’t care!&lt;/p&gt;
+
+&lt;p&gt;There Is More Than One Way To Reuse It, anyway! In this post we will start
+from YAML, with more to come in future posts.&lt;/p&gt;
+
+&lt;h2 id=&quot;table-of-contents&quot;&gt;Table of Contents&lt;/h2&gt;
+
+&lt;ul id=&quot;markdown-toc&quot;&gt;
+  &lt;li&gt;&lt;a href=&quot;#table-of-contents&quot; id=&quot;markdown-toc-table-of-contents&quot;&gt;Table of Contents&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#the-yaml-way&quot; id=&quot;markdown-toc-the-yaml-way&quot;&gt;The YAML Way&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#constants&quot; id=&quot;markdown-toc-constants&quot;&gt;Constants&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#almost-anything-actually&quot; id=&quot;markdown-toc-almost-anything-actually&quot;&gt;Almost Anything, Actually&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#enough-yamling&quot; id=&quot;markdown-toc-enough-yamling&quot;&gt;Enough YAML’ing&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;the-yaml-way&quot;&gt;The YAML Way&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://github.com/polettix/dibs&quot;&gt;dibs&lt;/a&gt;’s format of election for the configuration file is &lt;a href=&quot;https://yaml.org/&quot;&gt;YAML&lt;/a&gt;. In
+particular, &lt;a href=&quot;https://github.com/polettix/dibs&quot;&gt;dibs&lt;/a&gt; relies upon &lt;a href=&quot;https://metacpan.org/pod/distribution/YAML-LibYAML/lib/YAML/XS.pod&quot;&gt;YAML::XS&lt;/a&gt;, which ultimately supports
+version 1.1 of YAML.&lt;/p&gt;
+
+&lt;p&gt;OK, why YAML then? Simply put, it is readable, sufficiently concise,
+normally easy to use too, and allows describing complex data structures
+that can contain cross-references around (i.e. a directed graph as opposed
+to a simpler tree, like JSON).&lt;/p&gt;
+
+&lt;p&gt;This is the first space for reuse available, and you are encouraged to
+leverage it liberally.&lt;/p&gt;
+
+&lt;h2 id=&quot;constants&quot;&gt;Constants&lt;/h2&gt;
+
+&lt;p&gt;Let’s start from an example coming from the &lt;a href=&quot;hi-from-dibs&quot;&gt;first post&lt;/a&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-yaml&quot; data-lang=&quot;yaml&quot;&gt;&lt;span class=&quot;l-Scalar-Plain&quot;&gt;actions&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;# ...&lt;/span&gt;
+
+    &lt;span class=&quot;l-Scalar-Plain&quot;&gt;bundle-base&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+      &lt;span class=&quot;p-Indicator&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;from&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;alpine 3.6&lt;/span&gt;
+      &lt;span class=&quot;c1&quot;&gt;# ...&lt;/span&gt;
+      &lt;span class=&quot;p-Indicator&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;save base image for bundle&lt;/span&gt;
+        &lt;span class=&quot;l-Scalar-Plain&quot;&gt;tags&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;sample-mojo-alien01-bundlebase:latest&lt;/span&gt;
+
+    &lt;span class=&quot;l-Scalar-Plain&quot;&gt;bundle&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+      &lt;span class=&quot;p-Indicator&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;from&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;sample-mojo-alien01-bundlebase:latest&lt;/span&gt;
+      &lt;span class=&quot;c1&quot;&gt;# ...&lt;/span&gt;
+
+    &lt;span class=&quot;c1&quot;&gt;# ...&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Here, we moved part of the activities from the previous &lt;code&gt;bundle&lt;/code&gt; action on
+to a &lt;code&gt;bundle-base&lt;/code&gt; sketch, whose goal is to produce a base image named
+&lt;code&gt;sample-mojo-alien01-bundlebase:latest&lt;/code&gt;. This base image is then used as
+the starting point in the &lt;em&gt;new&lt;/em&gt; &lt;code&gt;bundle&lt;/code&gt; sketch.&lt;/p&gt;
+
+&lt;p&gt;Fact is, there are a couple of issues with this:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;code&gt;sample-mojo-alien01-bundlebase:latest&lt;/code&gt; is indeed very long to write and
+proportionally (exponentially?) easy to get wrong&lt;/li&gt;
+  &lt;li&gt;the time we need to change this name, it must happen in at least two
+places in the configuration file.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;YAML aliases to the rescue then:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-yaml&quot; data-lang=&quot;yaml&quot;&gt;&lt;span class=&quot;l-Scalar-Plain&quot;&gt;actions&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;# ...&lt;/span&gt;
+
+    &lt;span class=&quot;l-Scalar-Plain&quot;&gt;bundle-base&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+      &lt;span class=&quot;p-Indicator&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;from&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;alpine 3.6&lt;/span&gt;
+      &lt;span class=&quot;c1&quot;&gt;# ...&lt;/span&gt;
+      &lt;span class=&quot;p-Indicator&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;save base image for bundle&lt;/span&gt;
+        &lt;span class=&quot;l-Scalar-Plain&quot;&gt;tags&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nl&quot;&gt;&amp;amp;bundlebase&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;sample-mojo-alien01-bundlebase:latest&lt;/span&gt;
+
+    &lt;span class=&quot;l-Scalar-Plain&quot;&gt;bundle&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+      &lt;span class=&quot;p-Indicator&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;from&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;*bundlebase&lt;/span&gt;
+      &lt;span class=&quot;c1&quot;&gt;# ...&lt;/span&gt;
+
+    &lt;span class=&quot;c1&quot;&gt;# ...&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;At least, now we can be sure of a few things:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;getting an alias wrong will make parsing complain loudly, so we’re
+protected from typos. This is pretty much what would happen with using
+constants in a program, instead of &lt;em&gt;magic values&lt;/em&gt;;&lt;/li&gt;
+  &lt;li&gt;changing the name of the base image is now a piece of cake: just do it
+in one place and you’re all set.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;You don’t necessarily have to stop here anyway. &lt;a href=&quot;https://github.com/polettix/dibs&quot;&gt;dibs&lt;/a&gt;’s configuration
+file is not picky about the keys you use (hopefully this will not bite in
+the medium-long term), so why not place constants at the beginning?&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-yaml&quot; data-lang=&quot;yaml&quot;&gt;&lt;span class=&quot;l-Scalar-Plain&quot;&gt;constants&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;p-Indicator&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;nl&quot;&gt;&amp;amp;buildbase&lt;/span&gt;  &lt;span class=&quot;l-Scalar-Plain&quot;&gt;sample-mojo-alien01-buildbase:latest&lt;/span&gt;
+    &lt;span class=&quot;p-Indicator&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;nl&quot;&gt;&amp;amp;bundlebase&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;sample-mojo-alien01-bundlebase:latest&lt;/span&gt;
+
+&lt;span class=&quot;l-Scalar-Plain&quot;&gt;actions&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;# ...&lt;/span&gt;
+
+    &lt;span class=&quot;l-Scalar-Plain&quot;&gt;build-base&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+      &lt;span class=&quot;c1&quot;&gt;# ...&lt;/span&gt;
+      &lt;span class=&quot;p-Indicator&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;save base image for build&lt;/span&gt;
+        &lt;span class=&quot;l-Scalar-Plain&quot;&gt;tags&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;*buildbase&lt;/span&gt;
+
+    &lt;span class=&quot;l-Scalar-Plain&quot;&gt;build&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+      &lt;span class=&quot;p-Indicator&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;from&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;*buildbase&lt;/span&gt;
+      &lt;span class=&quot;c1&quot;&gt;# ...&lt;/span&gt;
+
+    &lt;span class=&quot;l-Scalar-Plain&quot;&gt;bundle-base&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+      &lt;span class=&quot;c1&quot;&gt;# ...&lt;/span&gt;
+      &lt;span class=&quot;p-Indicator&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;save base image for bundle&lt;/span&gt;
+        &lt;span class=&quot;l-Scalar-Plain&quot;&gt;tags&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;*bundlebase&lt;/span&gt;
+
+    &lt;span class=&quot;l-Scalar-Plain&quot;&gt;bundle&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+      &lt;span class=&quot;p-Indicator&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;from&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;*bundlebase&lt;/span&gt;
+      &lt;span class=&quot;c1&quot;&gt;# ...&lt;/span&gt;
+
+    &lt;span class=&quot;c1&quot;&gt;# ...&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;All in all, we’re just reusing some programming wisdom in structuring the
+names of our artifacts.&lt;/p&gt;
+
+&lt;h2 id=&quot;almost-anything-actually&quot;&gt;Almost Anything, Actually&lt;/h2&gt;
+
+&lt;p&gt;Nothing stops us from reusing other parts too, which leads us to yet
+another way to factor user creation out (in addition to what we saw last
+time):&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-yaml&quot; data-lang=&quot;yaml&quot;&gt;&lt;span class=&quot;l-Scalar-Plain&quot;&gt;constants&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;p-Indicator&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;nl&quot;&gt;&amp;amp;createuserscript&lt;/span&gt; &lt;span class=&quot;p-Indicator&quot;&gt;|&lt;/span&gt;
+        &lt;span class=&quot;no&quot;&gt;#!/bin/sh&lt;/span&gt;
+        &lt;span class=&quot;no&quot;&gt;set -e&lt;/span&gt;
+        &lt;span class=&quot;no&quot;&gt;exec &amp;gt;&amp;amp;2&lt;/span&gt;
+        &lt;span class=&quot;no&quot;&gt;adduser -D -h /app ada&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;# ...&lt;/span&gt;
+
+&lt;span class=&quot;l-Scalar-Plain&quot;&gt;actions&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;# ...&lt;/span&gt;
+
+    &lt;span class=&quot;l-Scalar-Plain&quot;&gt;build-base&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+      &lt;span class=&quot;p-Indicator&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;from&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;alpine 3.6&lt;/span&gt;
+      &lt;span class=&quot;p-Indicator&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;pack&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p-Indicator&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;run&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;*createuserscript&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;}&lt;/span&gt;
+      &lt;span class=&quot;c1&quot;&gt;# ...&lt;/span&gt;
+
+    &lt;span class=&quot;l-Scalar-Plain&quot;&gt;bundle-base&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+      &lt;span class=&quot;p-Indicator&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;from&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;alpine 3.6&lt;/span&gt;
+      &lt;span class=&quot;p-Indicator&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;pack&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p-Indicator&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;run&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;*createuserscript&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;}&lt;/span&gt;
+      &lt;span class=&quot;c1&quot;&gt;# ...&lt;/span&gt;
+
+    &lt;span class=&quot;c1&quot;&gt;# ...&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;So, anywhere you see space for factoring things out of the box, just do
+it!&lt;/p&gt;
+
+&lt;h2 id=&quot;enough-yamling&quot;&gt;Enough YAML’ing&lt;/h2&gt;
+
+&lt;p&gt;Well, we’re at the end of this post. Release early, release often! Let me
+know in the comments what’s not clear, or pretty much anything else that
+makes sense for this article!&lt;/p&gt;
+
+
+    &lt;p&gt;&lt;a href=&quot;/dibs-yaml-reuse/&quot;&gt;Dibs - YAML Reuse&lt;/a&gt; was originally published by Flavio Poletti at &lt;a href=&quot;&quot;&gt;PolettiX!&lt;/a&gt; on March 03, 2019.&lt;/p&gt;
+  </content>
+</entry>
 
 
   
@@ -7209,336 +7395,6 @@ remotise web/someproject upstream&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;That’s all folks!&lt;/p&gt;
 
     &lt;p&gt;&lt;a href=&quot;/git-remote-repository/&quot;&gt;Set up a remote git repository&lt;/a&gt; was originally published by Flavio Poletti at &lt;a href=&quot;&quot;&gt;PolettiX!&lt;/a&gt; on November 06, 2013.&lt;/p&gt;
-  </content>
-</entry>
-
-
-  
-
-<entry>
-  <title type="html"><![CDATA[RRDtool - Sparse Notes]]></title>
-  <link rel="alternate" type="text/html" href="/rrdtool/" />
-  <id>/rrdtool</id>
-  <published>2013-11-02T00:00:00+01:00</published>
-  <updated>2013-11-02T00:00:00+01:00</updated>
-  <author>
-    <name>Flavio Poletti</name>
-    <uri></uri>
-    <email>flavio@polettix.it</email>
-  </author>
-  <content type="html">
-    &lt;p&gt;&lt;a href=&quot;http://oss.oetiker.ch/rrdtool/index.en.html&quot;&gt;RRDtool&lt;/a&gt; is a wonderful tool for collecting and graphing data.&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;RRDtool is the OpenSource industry standard, high performance data logging
-  and graphing system for time series data. RRDtool can be easily integrated
-  in shell scripts, perl, python, ruby, lua or tcl applications.&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;Take a look at the website for additional information… and read on for
-some things that I find useful.&lt;/p&gt;
-
-&lt;h2 id=&quot;data-collection&quot;&gt;Data collection&lt;/h2&gt;
-
-&lt;p&gt;Data are collected into the database and fetched from it. The collection is
-split into two parts: how they are read, and how they are stored.&lt;/p&gt;
-
-&lt;p&gt;Reading of data is specified through the description of a &lt;em&gt;Data Source&lt;/em&gt;, or
-&lt;code&gt;DS&lt;/code&gt;. See the docs about &lt;a href=&quot;http://oss.oetiker.ch/rrdtool/doc/rrdcreate.en.html&quot;&gt;rrdtool create&lt;/a&gt; for the details, but it’s useful
-to know that:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;strong&gt;GAUGE&lt;/strong&gt;s are inputs that can go up and down. Like a temperature, the
-voltage at some pin or the amount of money in a bank account.&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;COUNTER&lt;/strong&gt; is for meters that can only increase, like e.g. the number of
-times that you a light turns on, the quantity of bits that enter an interface
-or that the sun rises in the morning.&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;DERIVE&lt;/strong&gt; can be used for the same kind of data that a GAUGE is for, but
-focuses on the difference with respect to the previous read instead of the
-absolute value. This can be useful e.g. if you want to track an increase or
-decrease rate for a quantity. The docs page about &lt;a href=&quot;http://oss.oetiker.ch/rrdtool/doc/rrdcreate.en.html&quot;&gt;rrdtool create&lt;/a&gt; also has
-additional remarks about the relation between DERIVE and COUNTER, so give it
-a try if you’re having trouble with your COUNTERs.&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;ABSOLUTE&lt;/strong&gt; is for counters that get reset upon reading. So, each time
-you read the value you reset the counter, do you?&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;RRDtool is mostly interested into rates, so all of the above are actually
-translated into a rate, except for GAUGEs that are stored as-is (so that
-you can track things that actually have little to do with rates). If you
-want to graph the stock market, use GAUGE.&lt;/p&gt;
-
-&lt;h2 id=&quot;times&quot;&gt;Times&lt;/h2&gt;
-
-&lt;p&gt;Time handling in RRDtool is quite interesting. It is assumed that you will
-feed a new set of values every &lt;em&gt;step&lt;/em&gt;, where the step is specified
-in seconds. The default is 300, so you’re supposed to feed a new set of
-values every 5 minutes, but of course you can set what you see fit.&lt;/p&gt;
-
-&lt;p&gt;The relevant concepts for times in RRDtool are:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;strong&gt;step&lt;/strong&gt;, i.e. the length of the time range&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;start&lt;/strong&gt;, i.e. when a time range starts&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;end&lt;/strong&gt;, i.e. when a time range ends&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;You can set a start time when you create a database, but the &lt;em&gt;real&lt;/em&gt; start
-time will be set depending on the step - in particular, as an integer
-multiple of the step.&lt;/p&gt;
-
-&lt;p&gt;It’s useful to think the line of time as a sequence of time intervals:
-interval 1, interval 2, …, interval N. The real start is 0, corresponding
-to when the epoch starts (January 1st, 1970), but time is actually a
-sequence of intervals and not of points.&lt;/p&gt;
-
-&lt;p&gt;Values stored in the database are always referred to one interval, not to
-a point in time.&lt;/p&gt;
-
-&lt;p&gt;So, what do start and end mean actually? They are used as ways to specify
-the intervals we are interested into. Each is first framed into one
-interval, then the sequence of intervals from the start’s to the end’s
-(included) are considered.&lt;/p&gt;
-
-&lt;p&gt;When we specify a point in time that separates two intervals, it is
-assigned to the following one. So, if the step is equal to 60 and start
-is 600 (separating the two intervals 540-600 and 600-660), the interval
-considered is 600-660. This is the same as saying that intervals are
-closed on the left and open on the right.&lt;/p&gt;
-
-&lt;p&gt;Intervals are represented with the end time of the interval. so, in the
-example above, if you specify start as 600, the related interval that
-you will get first is the one marked with 660.&lt;/p&gt;
-
-&lt;p&gt;Example: consider a database with a step of 60 seconds and capable of
-collecting up to three values. The start time has to be “quite high” to
-avoid incurring in some &lt;em&gt;do what I mean&lt;/em&gt; behaviour of RRDtool.&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nv&quot;&gt;start&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;600000000
-&lt;span class=&quot;nv&quot;&gt;items&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;3
-&lt;span class=&quot;nv&quot;&gt;step&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;60
-
-rrdtool create test.rrd &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
-   --step &lt;span class=&quot;nv&quot;&gt;$step&lt;/span&gt; &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
-   --start &lt;span class=&quot;nv&quot;&gt;$start&lt;/span&gt; &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
-   DS:testdata:GAUGE:120:U:U &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
-   RRA:MAX:0.5:1:&lt;span class=&quot;nv&quot;&gt;$items&lt;/span&gt;
-
-&lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; i in &lt;span class=&quot;m&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;2&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;3&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
-   &lt;span class=&quot;nb&quot;&gt;time&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;$((&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$start&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$i&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$step&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;))&lt;/span&gt;
-   rrdtool update test.rrd &lt;span class=&quot;nv&quot;&gt;$time&lt;/span&gt;:&lt;span class=&quot;nv&quot;&gt;$i&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;
-
-&lt;span class=&quot;nv&quot;&gt;end&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;$(&lt;/span&gt;rrdtool last test.rrd&lt;span class=&quot;k&quot;&gt;)&lt;/span&gt;
-
-rrdtool fetch test.rrd MAX --start&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$start&lt;/span&gt; --end&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;start+180&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;The output is:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt; 600000060: 1.0000000000e+00
- 600000120: 2.0000000000e+00
- 600000180: 3.0000000000e+00
- 600000240: -nan
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;which shows how both start, end and the marker for an interval are chosen
-according to what described above.&lt;/p&gt;
-
-&lt;p&gt;As an additional note, it has to be considered that real intervals might be
-compound of multiples of the configured step. For example, if you have a
-round robin archive (RRA) that aggregates 5 values with a step of 60, each
-data point actually refers to 300 seconds (5 minutes). When this RRA is
-accessed, the relevant start and stops will yield time intervals that align
-to a 300-seconds chunking of the time line starting from the origin of the
-epochs.&lt;/p&gt;
-
-&lt;h2 id=&quot;getting-the-right-data&quot;&gt;Getting the right data&lt;/h2&gt;
-
-&lt;p&gt;If you want to be sure to get the right data out of an RRD database, you
-have to ensure some things:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;you know which round robin archive you’re looking at&lt;/li&gt;
-  &lt;li&gt;you know how many data points to ask&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;RRDtool will try to give you the best available data, but e.g. if you have
-fine grained data for the last week and you ask for data in the last ten
-days, you’ll hit a different RRA (if available).&lt;/p&gt;
-
-&lt;p&gt;To get exactly all the data in a RRA you can do as follows (assuming the
-database file is &lt;code&gt;test.rrd&lt;/code&gt;):&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;
-    &lt;p&gt;run &lt;code&gt;rrdtool info test.rrd&lt;/code&gt; to get the relevant data. You
-will find something like this:&lt;/p&gt;
-
-    &lt;pre&gt;&lt;code&gt;filename = &quot;test.rrd&quot;
-rrd_version = &quot;0003&quot;
-step = 60
-last_update = 600018000
-header_size = 736
-ds[testdata].index = 0
-ds[testdata].type = &quot;GAUGE&quot;
-ds[testdata].minimal_heartbeat = 120
-ds[testdata].min = NaN
-ds[testdata].max = NaN
-ds[testdata].last_ds = &quot;300&quot;
-ds[testdata].value = 0.0000000000e+00
-ds[testdata].unknown_sec = 0
-rra[0].cf = &quot;MAX&quot;
-rra[0].rows = 300
-rra[0].cur_row = 157
-rra[0].pdp_per_row = 1
-rra[0].xff = 5.0000000000e-01
-rra[0].cdp_prep[0].value = NaN
-rra[0].cdp_prep[0].unknown_datapoints = 0
-rra[1].cf = &quot;MAX&quot;
-rra[1].rows = 300
-rra[1].cur_row = 66
-rra[1].pdp_per_row = 20
-rra[1].xff = 5.0000000000e-01
-rra[1].cdp_prep[0].value = -inf
-rra[1].cdp_prep[0].unknown_datapoints = 0
-&lt;/code&gt;&lt;/pre&gt;
-  &lt;/li&gt;
-  &lt;li&gt;detect the RRA - there might be many in a database, so pick your
-favourite. We will assume that you want to focus on &lt;code&gt;rra[1]&lt;/code&gt; in the
-example above;&lt;/li&gt;
-  &lt;li&gt;
-    &lt;p&gt;identify the following basic variables:&lt;/p&gt;
-
-    &lt;ul&gt;
-      &lt;li&gt;&lt;code&gt;step&lt;/code&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;code&gt;last_update&lt;/code&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;code&gt;pdp_per_row&lt;/code&gt; (&lt;code&gt;rra[1].pdp_per_row&lt;/code&gt; in the example)&lt;/li&gt;
-      &lt;li&gt;&lt;code&gt;rows&lt;/code&gt; (&lt;code&gt;rra[1].rows&lt;/code&gt; in the example)&lt;/li&gt;
-    &lt;/ul&gt;
-  &lt;/li&gt;
-  &lt;li&gt;calculate the RRA interval length as &lt;code&gt;superstep = step * pdp_per_row&lt;/code&gt;&lt;/li&gt;
-  &lt;li&gt;calculate the end time of the last interval with meaningful data as
-&lt;code&gt;real_end = last_update % superstep&lt;/code&gt; (&lt;code&gt;%&lt;/code&gt; representing the modulus
-function)&lt;/li&gt;
-  &lt;li&gt;consider &lt;code&gt;start = real_end - superstep * rows + 1&lt;/code&gt; and
-&lt;code&gt;end = real_end - 1&lt;/code&gt;. The addition/subtraction of one second is to be
-sure to fall &lt;em&gt;inside&lt;/em&gt; an interval instead of being at one border, just
-to avoid surprises (this is actually needed for end only)&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;You can then consider &lt;code&gt;start&lt;/code&gt;, &lt;code&gt;end&lt;/code&gt; and &lt;code&gt;superstep&lt;/code&gt; for usage in
-&lt;a href=&quot;http://oss.oetiker.ch/rrdtool/doc/rrdfetch.en.html&quot;&gt;rrdtool fetch&lt;/a&gt; (respectively for &lt;code&gt;--start&lt;/code&gt;, &lt;code&gt;--end&lt;/code&gt; and &lt;code&gt;--resolution&lt;/code&gt;)
-and in &lt;a href=&quot;http://oss.oetiker.ch/rrdtool/doc/rrdgraph.en.html&quot;&gt;rrdtool graph&lt;/a&gt; (respectively for &lt;code&gt;--start&lt;/code&gt;, &lt;code&gt;--end&lt;/code&gt; and &lt;code&gt;--step&lt;/code&gt;).&lt;/p&gt;
-
-&lt;p&gt;The above is implemented in the following Perl program
-&lt;code&gt;get-full-interval.pl&lt;/code&gt;:&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-perl&quot; data-lang=&quot;perl&quot;&gt;&lt;span class=&quot;c1&quot;&gt;#!/usr/bin/env perl&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;use&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;strict&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;use&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;warnings&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;use&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;English&lt;/span&gt; &lt;span class=&quot;sx&quot;&gt;qw&amp;lt; -no_match_vars &amp;gt;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;use&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;List::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Util&lt;/span&gt; &lt;span class=&quot;sx&quot;&gt;qw&amp;lt; reduce &amp;gt;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;use&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;Data::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;Dumper&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-
-&lt;span class=&quot;k&quot;&gt;use&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;RRDs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-
-&lt;span class=&quot;nv&quot;&gt;$OUTPUT_AUTOFLUSH&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;my&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$db&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$rra_id&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;@ARGV&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;my&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$info&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;rrd_info&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$db&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-
-&lt;span class=&quot;k&quot;&gt;my&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$step&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$info&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;step&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;my&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$last&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$info&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;last_update&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
-
-&lt;span class=&quot;k&quot;&gt;my&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$rra&lt;/span&gt;       &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$info&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rra&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}[&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$rra_id&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;my&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$superstep&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$step&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$rra&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;pdp_per_row&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
-
-&lt;span class=&quot;k&quot;&gt;my&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$real_end&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$last&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$last&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;%&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;superstep&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;my&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$end&lt;/span&gt;      &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$real_end&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;my&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$start&lt;/span&gt;    &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$real_end&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$superstep&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$rra&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;rows&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;})&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-
-&lt;span class=&quot;k&quot;&gt;print&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;quot;$start $end $superstep $rra-&amp;gt;{rows}\n&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-
-&lt;span class=&quot;k&quot;&gt;sub &lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;rrd_info&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-   &lt;span class=&quot;k&quot;&gt;my&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$db&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;@_&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-   &lt;span class=&quot;k&quot;&gt;my&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$raw&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;RRDs::&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;info&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$db&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-   &lt;span class=&quot;k&quot;&gt;my&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;%retval&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-
-   &lt;span class=&quot;k&quot;&gt;while&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;my&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$key&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$value&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;each&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;%$raw&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-      &lt;span class=&quot;k&quot;&gt;my&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$ref&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;path_to_pointer&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;%retval&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;name_to_path&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$key&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;));&lt;/span&gt;
-      &lt;span class=&quot;nv&quot;&gt;$$ref&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$value&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-   &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-
-   &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;%retval&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;## end sub rrd_info&lt;/span&gt;
-
-&lt;span class=&quot;k&quot;&gt;sub &lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;name_to_path&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-   &lt;span class=&quot;k&quot;&gt;my&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;@_&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-   &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;map&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-      &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;my&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$id&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;sr&quot;&gt;m{^(.+?)\[(.+)\]$}mxs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-         &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$name&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=~&lt;/span&gt; &lt;span class=&quot;sr&quot;&gt;m{^(?:rra|cdp_prep)$}mxs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;?&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$id&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$id&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-      &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-      &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-         &lt;span class=&quot;nv&quot;&gt;$_&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-      &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-   &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;split&lt;/span&gt; &lt;span class=&quot;sr&quot;&gt;/\./&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;## end sub name_to_path&lt;/span&gt;
-
-&lt;span class=&quot;k&quot;&gt;sub &lt;/span&gt;&lt;span class=&quot;nf&quot;&gt;path_to_pointer&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;    &lt;span class=&quot;c1&quot;&gt;# see http://www.perlmonks.org/?node_id=443584&lt;/span&gt;
-   &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;reduce&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;sub &lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;ref&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$b&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;?&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$$a&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$b&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]])&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$$a&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;-&amp;gt;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$b&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;})&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;
-      &lt;span class=&quot;o&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;shift&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;@_&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;Call this program as:&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;get-full-interval.pl test.rrd 1&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;where the first parameter is the name of the RRD database and the second
-parametrs is the identifier of the RRA you are interested into. The program
-will output, in order, the following parameters:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;value for &lt;code&gt;--start&lt;/code&gt;&lt;/li&gt;
-  &lt;li&gt;value for &lt;code&gt;--end&lt;/code&gt;&lt;/li&gt;
-  &lt;li&gt;the length of the interval (to be used as &lt;code&gt;--step&lt;/code&gt; or &lt;code&gt;--resolution&lt;/code&gt;
-where these parameters make sense)&lt;/li&gt;
-  &lt;li&gt;the number of data points you will get (useful for setting the right
-&lt;code&gt;--width&lt;/code&gt; if you want to produce a graph)&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&quot;graphing-a-whole-database&quot;&gt;Graphing a whole database&lt;/h2&gt;
-
-&lt;p&gt;The following program produces a graph for each variable and each RRA you
-have in your database, according to the hints provided in the previous
-section:&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;c&quot;&gt;#!/bin/bash&lt;/span&gt;
-
-&lt;span class=&quot;nv&quot;&gt;db&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$1&lt;/span&gt;
-&lt;span class=&quot;nv&quot;&gt;root&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;$(&lt;/span&gt;basename &lt;span class=&quot;s2&quot;&gt;&amp;quot;$db&amp;quot;&lt;/span&gt; .rrd&lt;span class=&quot;k&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;nv&quot;&gt;variables&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;$(&lt;/span&gt;rrdtool info &lt;span class=&quot;s2&quot;&gt;&amp;quot;$db&amp;quot;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;|&lt;/span&gt; sed -n &lt;span class=&quot;s1&quot;&gt;&amp;#39;s/^ds\[\(.*\)\]\.index.*/\1/p&amp;#39;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;)&lt;/span&gt;
-rrdtool info &lt;span class=&quot;s2&quot;&gt;&amp;quot;$db&amp;quot;&lt;/span&gt; &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;|&lt;/span&gt; sed -n &lt;span class=&quot;s1&quot;&gt;&amp;#39;s/^rra\[\(.*\)\]\.cf.*&amp;quot;\(.*\)&amp;quot;$/\1 \2/p&amp;#39;&lt;/span&gt; &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;while&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;read &lt;/span&gt;rra cf &lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
-      ./get-full-interval.pl &lt;span class=&quot;s2&quot;&gt;&amp;quot;$db&amp;quot;&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;$rra&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;
-         &lt;span class=&quot;nb&quot;&gt;read &lt;/span&gt;start end step rows
-         &lt;span class=&quot;k&quot;&gt;for&lt;/span&gt; variable in &lt;span class=&quot;nv&quot;&gt;$variables&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;do&lt;/span&gt;
-            rrdtool graph &lt;span class=&quot;s2&quot;&gt;&amp;quot;$root-$variable-$rra-$cf.png&amp;quot;&lt;/span&gt; &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
-               --start &lt;span class=&quot;nv&quot;&gt;$start&lt;/span&gt; &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
-               --end &lt;span class=&quot;nv&quot;&gt;$end&lt;/span&gt; &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
-               --step &lt;span class=&quot;nv&quot;&gt;$step&lt;/span&gt; &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
-               --width &lt;span class=&quot;nv&quot;&gt;$rows&lt;/span&gt; &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
-               --disable-rrdtool-tag &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
-               &lt;span class=&quot;s2&quot;&gt;&amp;quot;DEF:v=$db:$variable:$cf&amp;quot;&lt;/span&gt; &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
-               LINE1:v#000
-         &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;
-      &lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-   &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;Of course this is one graph per variable without any fancy bell or
-whistle… start from &lt;a href=&quot;http://oss.oetiker.ch/rrdtool/doc/rrdgraph.en.html&quot;&gt;rrdtool graph&lt;/a&gt; to learn all the masters’ tricks!&lt;/p&gt;
-
-
-    &lt;p&gt;&lt;a href=&quot;/rrdtool/&quot;&gt;RRDtool - Sparse Notes&lt;/a&gt; was originally published by Flavio Poletti at &lt;a href=&quot;&quot;&gt;PolettiX!&lt;/a&gt; on November 02, 2013.&lt;/p&gt;
   </content>
 </entry>
 
