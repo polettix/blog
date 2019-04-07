@@ -176,7 +176,7 @@ know in the comments what's not clear, or pretty much anything else that
 makes sense for this article!
 
 
-[dibs-1]: hi-from-dibs
+[dibs-1]: /hi-from-dibs
 [dibs]: https://github.com/polettix/dibs
 [YAML]: https://yaml.org/
 [YAML::XS]: https://metacpan.org/pod/distribution/YAML-LibYAML/lib/YAML/XS.pod
