@@ -1,0 +1,477 @@
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if (IE 7)&!(IEMobile)]><html class="no-js lt-ie9 lt-ie8" lang="en"><![endif]-->
+<!--[if (IE 8)&!(IEMobile)]><html class="no-js lt-ie9" lang="en"><![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"><!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<title>Dibs - Meet The Packs &#8211; PolettiX!</title>
+<meta name="description" content="This is the first post about dibs (first here and second
+here) and it should be clear by now that the main goal of Dibs
+(at least “over” using a plain Dockerfile) is reuse. This time we take
+an introductory look at packs, which per-se allow easily reusing stuff
+in a slightly less copy &amp; paste way; we will see in a future installment
+how this can be further leveraged for a more modern way of sharing and
+reusing things.
+
+">
+<meta name="keywords" content="">
+
+
+
+<!-- Twitter Cards -->
+<meta name="twitter:title" content="Dibs - Meet The Packs">
+<meta name="twitter:description" content="This is the first post about dibs (first here and second
+here) and it should be clear by now that the main goal of Dibs
+(at least “over” using a plain Dockerfile) is reuse. This time we take
+an introductory look at packs, which per-se allow easily reusing stuff
+in a slightly less copy &amp; paste way; we will see in a future installment
+how this can be further leveraged for a more modern way of sharing and
+reusing things.
+
+">
+<meta name="twitter:site" content="@polettix">
+<meta name="twitter:creator" content="@polettix">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="/images/kakadu-pellicani.jpg">
+
+<!-- Open Graph -->
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Dibs - Meet The Packs">
+<meta property="og:description" content="This is the first post about dibs (first here and second
+here) and it should be clear by now that the main goal of Dibs
+(at least “over” using a plain Dockerfile) is reuse. This time we take
+an introductory look at packs, which per-se allow easily reusing stuff
+in a slightly less copy &amp; paste way; we will see in a future installment
+how this can be further leveraged for a more modern way of sharing and
+reusing things.
+
+">
+<meta property="og:url" content="/dibs-meet-the-packs/">
+<meta property="og:site_name" content="PolettiX!">
+
+
+
+
+
+<link rel="canonical" href="/dibs-meet-the-packs/">
+<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="PolettiX! Feed">
+
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+
+<meta http-equiv="cleartype" content="on">
+
+<!-- HTML5 Shiv and Media Query Support -->
+<!--[if lt IE 9]>
+	<script src="/assets/js/vendor/html5shiv.min.js"></script>
+	<script src="/assets/js/vendor/respond.min.js"></script>
+<![endif]-->
+
+<!-- Modernizr -->
+<script src="/assets/js/vendor/modernizr-2.7.1.custom.min.js"></script>
+
+<link href='//fonts.googleapis.com/css?family=PT+Sans+Narrow:400,700%7CPT+Serif:400,700,400italic' rel='stylesheet' type='text/css'>
+
+<!-- Icons -->
+<!-- 16x16 -->
+<link rel="shortcut icon" href="/favicon.ico?whatever">
+<!-- 32x32 -->
+<link rel="shortcut icon" href="/favicon.png?whatever">
+<!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
+<link rel="apple-touch-icon-precomposed" href="/images/apple-touch-icon-precomposed.png">
+<!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="/images/apple-touch-icon-72x72-precomposed.png">
+<!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="/images/apple-touch-icon-114x114-precomposed.png">
+<!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/images/apple-touch-icon-144x144-precomposed.png">
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+</head>
+
+<body class="post">
+
+<!--[if lt IE 9]><div class="browser-upgrade alert alert-info">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</div><![endif]-->
+
+<div class="navigation-wrapper">
+	<div class="site-name">
+		<a href="/">PolettiX!</a>
+	</div><!-- /.site-name -->
+	<div class="top-navigation">
+		<nav role="navigation" id="site-nav" class="nav">
+		    <ul>
+		        
+				    
+				        
+				    
+				    <li><a href="/about/" >About</a></li>
+				
+				    
+				        
+				    
+				    <li><a href="/posts/" >Posts</a></li>
+				
+		    </ul>
+		</nav>
+	</div><!-- /.top-navigation -->
+</div><!-- /.navigation-wrapper -->
+
+
+  <div class="image-wrap">
+  <img src=
+    
+      "/images/kakadu-pellicani.jpg"
+    
+  alt="Dibs - Meet The Packs feature image">
+  
+    <span class="image-credit"><a href="https://en.wikipedia.org/wiki/Kakadu_National_Park">Pellicani al Kakadu National Park, Australia</a></span>
+  
+  </div><!-- /.image-wrap -->
+
+
+<div id="main" role="main">
+  <div class="article-author-side">
+    
+
+
+<div itemscope itemtype="http://schema.org/Person">
+
+
+	<img src="/images/flavio-self-color.png" class="bio-photo" alt="Flavio Poletti bio photo">
+
+
+  <h3 itemprop="name">Flavio Poletti</h3>
+  <p>Irreducible Perler.</p>
+  <a href="mailto:flavio@polettix.it" class="author-social" target="_blank"><i class="fa fa-fw fa-envelope-square"></i>Email</a>
+  <a href="http://comics.polettix.it/" class="author-social" target="_blank"><i class="fa fa-fw fa-pencil"></i> Comics</a>
+  <a href="http://twitter.com/polettix" class="author-social" target="_blank"><i class="fa fa-fw fa-twitter-square"></i> Twitter</a>
+  
+  
+  <a href="http://linkedin.com/in/flaviopoletti" class="author-social" target="_blank"><i class="fa fa-fw fa-linkedin-square"></i> LinkedIn</a>
+  
+  
+  <a href="https://metacpan.org/author/polettix" class="author-social" target="_blank"><i class="fa fa-fw fa-th-large"></i> MetaCPAN</a>
+  <a href="http://github.com/polettix" class="author-social" target="_blank"><i class="fa fa-fw fa-github"></i> Github</a>
+  <a href="http://stackoverflow.com/users/3865403/polettix" class="author-social" target="_blank"><i class="fa fa-fw fa-stack-overflow"></i> Stackoverflow</a>
+  
+  
+  <a href="http://www.pinterest.com/polettix" class="author-social" target="_blank"><i class="fa fa-fw fa-pinterest"></i> Pinterest</a>
+  
+  
+  
+  
+  
+  
+</div>
+
+  </div>
+  <article class="post">
+    <div class="headline-wrap">
+      
+        <h1><a href="/dibs-meet-the-packs/" rel="bookmark" title="Dibs - Meet The Packs">Dibs - Meet The Packs</a></h1>
+      
+    </div><!--/ .headline-wrap -->
+    <div class="article-wrap">
+      <p>This is the first post about <a href="https://github.com/polettix/dibs">dibs</a> (<a href="/hi-from-dibs">first here</a> and <a href="/dibs-yaml-reuse">second
+here</a>) and it should be clear by now that the main goal of Dibs
+(at least “over” using a plain Dockerfile) is <em>reuse</em>. This time we take
+an introductory look at <em>packs</em>, which per-se allow easily reusing stuff
+in a slightly less <em>copy &amp; paste</em> way; we will see in a future installment
+how this can be further leveraged for a more <em>modern</em> way of sharing and
+reusing things.</p>
+
+<h2 id="table-of-contents">Table of Contents</h2>
+
+<ul id="markdown-toc">
+  <li><a href="#table-of-contents" id="markdown-toc-table-of-contents">Table of Contents</a></li>
+  <li><a href="#first-look-at-packs" id="markdown-toc-first-look-at-packs">First Look At Packs</a></li>
+  <li><a href="#a-library-of-packs" id="markdown-toc-a-library-of-packs">A Library Of Packs</a></li>
+  <li><a href="#args-making-packs-more-reusable" id="markdown-toc-args-making-packs-more-reusable"><code>args</code>: Making Packs More Reusable</a></li>
+  <li><a href="#and-of-course-environment-variables" id="markdown-toc-and-of-course-environment-variables">… And, Of Course, Environment Variables</a></li>
+  <li><a href="#enough-for-now" id="markdown-toc-enough-for-now">Enough For Now</a></li>
+</ul>
+
+<h2 id="first-look-at-packs">First Look At Packs</h2>
+
+<p>We already looked at packs, e.g. in our <a href="/hi-from-dibs">first article</a> we can find
+this:</p>
+
+<div class="highlight"><pre><code class="language-yaml" data-lang="yaml"><span class="l-Scalar-Plain">actions</span><span class="p-Indicator">:</span>
+<span class="c1"># ...</span>
+   <span class="l-Scalar-Plain">build</span><span class="p-Indicator">:</span>
+      <span class="c1"># ...</span>
+      <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">name</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">build</span>
+        <span class="l-Scalar-Plain">pack</span><span class="p-Indicator">:</span>
+           <span class="l-Scalar-Plain">run</span><span class="p-Indicator">:</span> <span class="p-Indicator">|</span>
+              <span class="no">#!/bin/sh</span>
+              <span class="no">set -e</span>
+              <span class="no">exec &gt;&amp;2</span>
+              <span class="no">apk --no-cache add build-base wget perl perl-dev</span>
+              <span class="no">adduser -D -h /app ada</span>
+              <span class="no">wget -O /bin/cpanm --no-check-certificate https://cpanmin.us/</span>
+              <span class="no">chmod +x /bin/cpanm</span>
+              <span class="no">cat &gt;/tmp/as-ada.sh &lt;&lt;&#39;END&#39;</span>
+              <span class="no">cd /app</span>
+              <span class="no">cp -R /tmp/src/* .</span>
+              <span class="no">cpanm -l local --notest --installdeps .</span>
+              <span class="no">END</span>
+              <span class="no">chmod +x /tmp/as-ada.sh</span>
+              <span class="no">su - ada /tmp/as-ada.sh</span>
+              <span class="no">cp -a /app /tmp/cache</span></code></pre></div>
+
+<p>It turns out that a <em>sketch</em> action (any sketch action!) needs a <em>pack</em> to
+know what should be factually done inside the container. Hence, you will
+always see something like this:</p>
+
+<div class="highlight"><pre><code class="language-yaml" data-lang="yaml"><span class="l-Scalar-Plain">actions</span><span class="p-Indicator">:</span>
+<span class="c1"># ...</span>
+   <span class="l-Scalar-Plain">some-sketch-action</span><span class="p-Indicator">:</span>
+      <span class="l-Scalar-Plain">pack</span><span class="p-Indicator">:</span> <span class="c1"># ... whatever defines the pack</span>
+      <span class="c1"># ...</span></code></pre></div>
+
+<p>The example above with the <code>run</code> section was just possibly the simpler
+kind of <em>pack</em>, that is one whose implementation is fit directly inside
+Dibs’s configuration file. There can be more, of course.</p>
+
+<h2 id="a-library-of-packs">A Library Of Packs</h2>
+
+<p>The next “simple” place where you can put a <em>pack</em> is an executable
+program (be it a shell script of anything that you can run inside the
+target container). Where should you place this file eventually? There are
+a few options, but for the moment we will play it easy and opt for the
+<code>pack</code> sub-directory of the project directory.</p>
+
+<p>Evolving our previous example, we can fit the shell script in a file
+inside <code>pack</code>, e.g. <code>pack/kickoff.sh</code>:</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="c">#!/bin/sh</span>
+<span class="nb">set</span> -e
+<span class="nb">exec</span> &gt;<span class="p">&amp;</span>2
+apk --no-cache add build-base wget perl perl-dev
+adduser -D -h /app ada
+wget -O /bin/cpanm --no-check-certificate https://cpanmin.us/
+chmod +x /bin/cpanm
+cat &gt;/tmp/as-ada.sh <span class="s">&lt;&lt;&#39;END&#39;</span>
+<span class="s">cd /app</span>
+<span class="s">cp -R /tmp/src/* .</span>
+<span class="s">cpanm -l local --notest --installdeps .</span>
+<span class="s">END</span>
+chmod +x /tmp/as-ada.sh
+su - ada /tmp/as-ada.sh
+cp -a /app /tmp/cache</code></pre></div>
+
+<p>Then, we change the configuration file to use it:</p>
+
+<div class="highlight"><pre><code class="language-yaml" data-lang="yaml"><span class="l-Scalar-Plain">actions</span><span class="p-Indicator">:</span>
+<span class="c1"># ...</span>
+   <span class="l-Scalar-Plain">build</span><span class="p-Indicator">:</span>
+      <span class="c1"># ...</span>
+      <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">name</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">build</span>
+        <span class="l-Scalar-Plain">pack</span><span class="p-Indicator">:</span>
+            <span class="l-Scalar-Plain">project</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">kickoff.sh</span></code></pre></div>
+
+<p>The same script might be reused multiple times across the same
+configuration file. We already learned to use YAML variables to avoid
+repetition, but there’s a semantic way to do this as well, i.e. put
+definition of <em>packs</em> inside a <code>packs</code> section at the top level, like
+this:</p>
+
+<div class="highlight"><pre><code class="language-yaml" data-lang="yaml"><span class="l-Scalar-Plain">packs</span><span class="p-Indicator">:</span>
+   <span class="l-Scalar-Plain">kickoff</span><span class="p-Indicator">:</span> <span class="c1"># we choose the &quot;explicit&quot; way, it&#39;s the same as above</span>
+      <span class="l-Scalar-Plain">type</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">project</span>
+      <span class="l-Scalar-Plain">path</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">kickoff.sh</span>
+<span class="l-Scalar-Plain">actions</span><span class="p-Indicator">:</span>
+<span class="c1"># ...</span>
+   <span class="l-Scalar-Plain">build</span><span class="p-Indicator">:</span>
+      <span class="c1"># ...</span>
+      <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">name</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">build</span>
+        <span class="l-Scalar-Plain">pack</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">kickoff</span>    <span class="c1"># same name inside &quot;packs&quot; above</span></code></pre></div>
+
+<p>In this way, you can save your scripts as standalone files and manage
+(e.g. edit, track, etc.) individually with little effort to eventually
+call them during container build-up.</p>
+
+<h2 id="args-making-packs-more-reusable"><code>args</code>: Making Packs More Reusable</h2>
+
+<p>A program that only does one thing in the same way might become dull very
+quickly and leave you the temptation to copy and paste to get something
+slightly different. Dibs actively wants you to stop this waste!</p>
+
+<p>When you call a program in a pack, you can also pass arguments that will
+appear as command-line arguments to the program itself. As an example,
+save this as <code>pack/alpine-packs.sh</code>:</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="c">#!/bin/sh</span>
+<span class="nb">set</span> -e
+<span class="nb">exec</span> &gt;<span class="p">&amp;</span>2
+apk --no-cache add <span class="s2">&quot;$@&quot;</span></code></pre></div>
+
+<p>Now you can have this kind of definition:</p>
+
+<div class="highlight"><pre><code class="language-yaml" data-lang="yaml"><span class="l-Scalar-Plain">packs</span><span class="p-Indicator">:</span>
+   <span class="l-Scalar-Plain">alpine_packs</span><span class="p-Indicator">:</span>
+      <span class="l-Scalar-Plain">type</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">project</span>
+      <span class="l-Scalar-Plain">path</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">alpine-packs.sh</span>
+<span class="l-Scalar-Plain">actions</span><span class="p-Indicator">:</span>
+<span class="c1"># ...</span>
+   <span class="l-Scalar-Plain">build</span><span class="p-Indicator">:</span>
+      <span class="c1"># ...</span>
+      <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">name</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">Install OS packs</span>
+        <span class="l-Scalar-Plain">pack</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">alpine_packs</span>
+        <span class="l-Scalar-Plain">args</span><span class="p-Indicator">:</span>
+           <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">build-base</span>
+           <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">wget</span>
+           <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">perl</span>
+           <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">perl-dev</span>
+   <span class="c1"># ...</span>
+   <span class="l-Scalar-Plain">bundle</span><span class="p-Indicator">:</span>
+      <span class="c1"># ...</span>
+      <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">name</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">Install OS packs</span>
+        <span class="l-Scalar-Plain">pack</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">alpine_packs</span>
+        <span class="l-Scalar-Plain">args</span><span class="p-Indicator">:</span>
+           <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">perl</span></code></pre></div>
+
+<h2 id="and-of-course-environment-variables">… And, Of Course, Environment Variables</h2>
+
+<p>Command-line arguments via options <code>args</code> are not the only way to tell
+your programs about behaving differently. Another way would be defining
+environment variables instead, via the <code>env</code> key. The following example
+transforms the one in the previous section to use an environment variable
+with the list of space-separated packages to install.</p>
+
+<p>Save this as <code>pack/alpine-packs-env.sh</code>:</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="c">#!/bin/sh</span>
+<span class="nb">set</span> -e
+<span class="nb">exec</span> &gt;<span class="p">&amp;</span>2
+<span class="c"># CAUTION: no quotes around expansion of ALPINE_PACKAGES</span>
+apk --no-cache add <span class="nv">$ALPINE_PACKAGES</span></code></pre></div>
+
+<p>Now you can have this kind of definition:</p>
+
+<div class="highlight"><pre><code class="language-yaml" data-lang="yaml"><span class="l-Scalar-Plain">packs</span><span class="p-Indicator">:</span>
+   <span class="l-Scalar-Plain">alpine_packs_via_environment</span><span class="p-Indicator">:</span>
+      <span class="l-Scalar-Plain">type</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">project</span>
+      <span class="l-Scalar-Plain">path</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">alpine-packs-env.sh</span>
+<span class="l-Scalar-Plain">actions</span><span class="p-Indicator">:</span>
+<span class="c1"># ...</span>
+   <span class="l-Scalar-Plain">build</span><span class="p-Indicator">:</span>
+      <span class="c1"># ...</span>
+      <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">name</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">Install OS packs</span>
+        <span class="l-Scalar-Plain">pack</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">alpine_packs_via_environment</span>
+        <span class="l-Scalar-Plain">env</span><span class="p-Indicator">:</span>
+           <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">ALPINE_PACKAGES</span><span class="p-Indicator">:</span> <span class="s">&#39;build-base</span><span class="nv"> </span><span class="s">wget</span><span class="nv"> </span><span class="s">perl</span><span class="nv"> </span><span class="s">perl-dev&#39;</span>
+   <span class="c1"># ...</span>
+   <span class="l-Scalar-Plain">bundle</span><span class="p-Indicator">:</span>
+      <span class="c1"># ...</span>
+      <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">name</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">Install OS packs</span>
+        <span class="l-Scalar-Plain">pack</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">alpine_packs_via_environment</span>
+        <span class="l-Scalar-Plain">env</span><span class="p-Indicator">:</span>
+           <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">ALPINE_PACKAGES</span><span class="p-Indicator">:</span> <span class="s">&#39;perl&#39;</span></code></pre></div>
+
+<h2 id="enough-for-now">Enough For Now</h2>
+
+<p>Today we learned:</p>
+
+<ul>
+  <li>you can place your programs (e.g. scripts) in standalone files inside
+the project tree and avoid bloating your configuration file</li>
+  <li>it is very, very easy to use these outside-placed programs from
+<em>sketches</em></li>
+  <li>you have at least a couple ways to make these programs generic, i.e.
+either make them accept command-line arguments, or work based on
+environment variables.</li>
+</ul>
+
+<p>There’s more than this… but it’s enough for now. As usual, let me know
+what you think in the comments.</p>
+
+
+      <hr />
+      <footer role="contentinfo">
+        <div class="social-share">
+  <h4>Share on</h4>
+  <ul>
+    <li>
+      <a href="https://twitter.com/intent/tweet?text=/dibs-meet-the-packs/" class="twitter" title="Share on Twitter"><i class="fa fa-twitter"></i><span> Twitter</span></a>
+    </li>
+    <li>
+      <a href="https://www.facebook.com/sharer/sharer.php?u=/dibs-meet-the-packs/" class="facebook" title="Share on Facebook"><i class="fa fa-facebook"></i><span> Facebook</span></a>
+    </li>
+    <li>
+      <a href="https://plus.google.com/share?url=/dibs-meet-the-packs/" class="google-plus" title="Share on Google Plus"><i class="fa fa-google-plus"></i><span> Google+</span></a>
+    </li>
+  </ul>
+</div><!-- /.social-share -->
+        <p class="byline"><strong>Dibs - Meet The Packs</strong> was published on <time datetime="2019-04-07T00:00:00+02:00">April 07, 2019</time>.</p>
+      </footer>
+    </div><!-- /.article-wrap -->
+  
+    <section id="disqus_thread"></section><!-- /#disqus_thread -->
+  
+  </article>
+</div><!-- /#main -->
+
+<div class="footer-wrap">
+  <div class="related-articles">
+  <h4>You might also enjoy <small class="pull-right">(<a href="/posts/">View all posts</a>)</small></h4>
+    <ul>
+    
+      <li><a href="/dibs-yaml-reuse/" title="Dibs - YAML Reuse">Dibs - YAML Reuse</a></li>
+    
+      <li><a href="/hi-from-dibs/" title="Hi from dibs!">Hi from dibs!</a></li>
+    
+      <li><a href="/invent-stories/" title="Invent Stories">Invent Stories</a></li>
+    
+    </ul>
+    <hr />
+  </div><!-- /.related-articles -->
+  <footer>
+    
+
+<span>&copy; 2019 Flavio Poletti. Powered by <a href="http://jekyllrb.com" rel="nofollow">Jekyll</a> using the <a href="http://mademistakes.com/minimal-mistakes/" rel="nofollow">Minimal Mistakes</a> theme.</span>
+
+  </footer>
+</div><!-- /.footer-wrap -->
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script src="/assets/js/scripts.min.js"></script>
+
+
+  
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'polettix'; // required: replace example with your forum shortname
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = '//' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+
+</body>
+</html>

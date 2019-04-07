@@ -4,13 +4,247 @@
 <generator uri="https://github.com/jekyll/jekyll">Jekyll</generator>
 <link rel="self" type="application/atom+xml" href="/feed.xml" />
 <link rel="alternate" type="text/html" href="" />
-<updated>2019-03-03T00:53:37+01:00</updated>
+<updated>2019-04-07T19:26:22+02:00</updated>
 <id>/</id>
 <author>
   <name>Flavio Poletti</name>
   <uri>/</uri>
   <email>flavio@polettix.it</email>
 </author>
+
+
+  
+
+<entry>
+  <title type="html"><![CDATA[Dibs - Meet The Packs]]></title>
+  <link rel="alternate" type="text/html" href="/dibs-meet-the-packs/" />
+  <id>/dibs-meet-the-packs</id>
+  <published>2019-04-07T00:00:00+02:00</published>
+  <updated>2019-04-07T00:00:00+02:00</updated>
+  <author>
+    <name>Flavio Poletti</name>
+    <uri></uri>
+    <email>flavio@polettix.it</email>
+  </author>
+  <content type="html">
+    &lt;p&gt;This is the first post about &lt;a href=&quot;https://github.com/polettix/dibs&quot;&gt;dibs&lt;/a&gt; (&lt;a href=&quot;/hi-from-dibs&quot;&gt;first here&lt;/a&gt; and &lt;a href=&quot;/dibs-yaml-reuse&quot;&gt;second
+here&lt;/a&gt;) and it should be clear by now that the main goal of Dibs
+(at least “over” using a plain Dockerfile) is &lt;em&gt;reuse&lt;/em&gt;. This time we take
+an introductory look at &lt;em&gt;packs&lt;/em&gt;, which per-se allow easily reusing stuff
+in a slightly less &lt;em&gt;copy &amp;amp; paste&lt;/em&gt; way; we will see in a future installment
+how this can be further leveraged for a more &lt;em&gt;modern&lt;/em&gt; way of sharing and
+reusing things.&lt;/p&gt;
+
+&lt;h2 id=&quot;table-of-contents&quot;&gt;Table of Contents&lt;/h2&gt;
+
+&lt;ul id=&quot;markdown-toc&quot;&gt;
+  &lt;li&gt;&lt;a href=&quot;#table-of-contents&quot; id=&quot;markdown-toc-table-of-contents&quot;&gt;Table of Contents&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#first-look-at-packs&quot; id=&quot;markdown-toc-first-look-at-packs&quot;&gt;First Look At Packs&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#a-library-of-packs&quot; id=&quot;markdown-toc-a-library-of-packs&quot;&gt;A Library Of Packs&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#args-making-packs-more-reusable&quot; id=&quot;markdown-toc-args-making-packs-more-reusable&quot;&gt;&lt;code&gt;args&lt;/code&gt;: Making Packs More Reusable&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#and-of-course-environment-variables&quot; id=&quot;markdown-toc-and-of-course-environment-variables&quot;&gt;… And, Of Course, Environment Variables&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#enough-for-now&quot; id=&quot;markdown-toc-enough-for-now&quot;&gt;Enough For Now&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;first-look-at-packs&quot;&gt;First Look At Packs&lt;/h2&gt;
+
+&lt;p&gt;We already looked at packs, e.g. in our &lt;a href=&quot;/hi-from-dibs&quot;&gt;first article&lt;/a&gt; we can find
+this:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-yaml&quot; data-lang=&quot;yaml&quot;&gt;&lt;span class=&quot;l-Scalar-Plain&quot;&gt;actions&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# ...&lt;/span&gt;
+   &lt;span class=&quot;l-Scalar-Plain&quot;&gt;build&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+      &lt;span class=&quot;c1&quot;&gt;# ...&lt;/span&gt;
+      &lt;span class=&quot;p-Indicator&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;build&lt;/span&gt;
+        &lt;span class=&quot;l-Scalar-Plain&quot;&gt;pack&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+           &lt;span class=&quot;l-Scalar-Plain&quot;&gt;run&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p-Indicator&quot;&gt;|&lt;/span&gt;
+              &lt;span class=&quot;no&quot;&gt;#!/bin/sh&lt;/span&gt;
+              &lt;span class=&quot;no&quot;&gt;set -e&lt;/span&gt;
+              &lt;span class=&quot;no&quot;&gt;exec &amp;gt;&amp;amp;2&lt;/span&gt;
+              &lt;span class=&quot;no&quot;&gt;apk --no-cache add build-base wget perl perl-dev&lt;/span&gt;
+              &lt;span class=&quot;no&quot;&gt;adduser -D -h /app ada&lt;/span&gt;
+              &lt;span class=&quot;no&quot;&gt;wget -O /bin/cpanm --no-check-certificate https://cpanmin.us/&lt;/span&gt;
+              &lt;span class=&quot;no&quot;&gt;chmod +x /bin/cpanm&lt;/span&gt;
+              &lt;span class=&quot;no&quot;&gt;cat &amp;gt;/tmp/as-ada.sh &amp;lt;&amp;lt;&amp;#39;END&amp;#39;&lt;/span&gt;
+              &lt;span class=&quot;no&quot;&gt;cd /app&lt;/span&gt;
+              &lt;span class=&quot;no&quot;&gt;cp -R /tmp/src/* .&lt;/span&gt;
+              &lt;span class=&quot;no&quot;&gt;cpanm -l local --notest --installdeps .&lt;/span&gt;
+              &lt;span class=&quot;no&quot;&gt;END&lt;/span&gt;
+              &lt;span class=&quot;no&quot;&gt;chmod +x /tmp/as-ada.sh&lt;/span&gt;
+              &lt;span class=&quot;no&quot;&gt;su - ada /tmp/as-ada.sh&lt;/span&gt;
+              &lt;span class=&quot;no&quot;&gt;cp -a /app /tmp/cache&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;It turns out that a &lt;em&gt;sketch&lt;/em&gt; action (any sketch action!) needs a &lt;em&gt;pack&lt;/em&gt; to
+know what should be factually done inside the container. Hence, you will
+always see something like this:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-yaml&quot; data-lang=&quot;yaml&quot;&gt;&lt;span class=&quot;l-Scalar-Plain&quot;&gt;actions&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# ...&lt;/span&gt;
+   &lt;span class=&quot;l-Scalar-Plain&quot;&gt;some-sketch-action&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+      &lt;span class=&quot;l-Scalar-Plain&quot;&gt;pack&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;# ... whatever defines the pack&lt;/span&gt;
+      &lt;span class=&quot;c1&quot;&gt;# ...&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;The example above with the &lt;code&gt;run&lt;/code&gt; section was just possibly the simpler
+kind of &lt;em&gt;pack&lt;/em&gt;, that is one whose implementation is fit directly inside
+Dibs’s configuration file. There can be more, of course.&lt;/p&gt;
+
+&lt;h2 id=&quot;a-library-of-packs&quot;&gt;A Library Of Packs&lt;/h2&gt;
+
+&lt;p&gt;The next “simple” place where you can put a &lt;em&gt;pack&lt;/em&gt; is an executable
+program (be it a shell script of anything that you can run inside the
+target container). Where should you place this file eventually? There are
+a few options, but for the moment we will play it easy and opt for the
+&lt;code&gt;pack&lt;/code&gt; sub-directory of the project directory.&lt;/p&gt;
+
+&lt;p&gt;Evolving our previous example, we can fit the shell script in a file
+inside &lt;code&gt;pack&lt;/code&gt;, e.g. &lt;code&gt;pack/kickoff.sh&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;c&quot;&gt;#!/bin/sh&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;set&lt;/span&gt; -e
+&lt;span class=&quot;nb&quot;&gt;exec&lt;/span&gt; &amp;gt;&lt;span class=&quot;p&quot;&gt;&amp;amp;&lt;/span&gt;2
+apk --no-cache add build-base wget perl perl-dev
+adduser -D -h /app ada
+wget -O /bin/cpanm --no-check-certificate https://cpanmin.us/
+chmod +x /bin/cpanm
+cat &amp;gt;/tmp/as-ada.sh &lt;span class=&quot;s&quot;&gt;&amp;lt;&amp;lt;&amp;#39;END&amp;#39;&lt;/span&gt;
+&lt;span class=&quot;s&quot;&gt;cd /app&lt;/span&gt;
+&lt;span class=&quot;s&quot;&gt;cp -R /tmp/src/* .&lt;/span&gt;
+&lt;span class=&quot;s&quot;&gt;cpanm -l local --notest --installdeps .&lt;/span&gt;
+&lt;span class=&quot;s&quot;&gt;END&lt;/span&gt;
+chmod +x /tmp/as-ada.sh
+su - ada /tmp/as-ada.sh
+cp -a /app /tmp/cache&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Then, we change the configuration file to use it:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-yaml&quot; data-lang=&quot;yaml&quot;&gt;&lt;span class=&quot;l-Scalar-Plain&quot;&gt;actions&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# ...&lt;/span&gt;
+   &lt;span class=&quot;l-Scalar-Plain&quot;&gt;build&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+      &lt;span class=&quot;c1&quot;&gt;# ...&lt;/span&gt;
+      &lt;span class=&quot;p-Indicator&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;build&lt;/span&gt;
+        &lt;span class=&quot;l-Scalar-Plain&quot;&gt;pack&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+            &lt;span class=&quot;l-Scalar-Plain&quot;&gt;project&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;kickoff.sh&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;The same script might be reused multiple times across the same
+configuration file. We already learned to use YAML variables to avoid
+repetition, but there’s a semantic way to do this as well, i.e. put
+definition of &lt;em&gt;packs&lt;/em&gt; inside a &lt;code&gt;packs&lt;/code&gt; section at the top level, like
+this:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-yaml&quot; data-lang=&quot;yaml&quot;&gt;&lt;span class=&quot;l-Scalar-Plain&quot;&gt;packs&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+   &lt;span class=&quot;l-Scalar-Plain&quot;&gt;kickoff&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;# we choose the &amp;quot;explicit&amp;quot; way, it&amp;#39;s the same as above&lt;/span&gt;
+      &lt;span class=&quot;l-Scalar-Plain&quot;&gt;type&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;project&lt;/span&gt;
+      &lt;span class=&quot;l-Scalar-Plain&quot;&gt;path&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;kickoff.sh&lt;/span&gt;
+&lt;span class=&quot;l-Scalar-Plain&quot;&gt;actions&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# ...&lt;/span&gt;
+   &lt;span class=&quot;l-Scalar-Plain&quot;&gt;build&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+      &lt;span class=&quot;c1&quot;&gt;# ...&lt;/span&gt;
+      &lt;span class=&quot;p-Indicator&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;build&lt;/span&gt;
+        &lt;span class=&quot;l-Scalar-Plain&quot;&gt;pack&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;kickoff&lt;/span&gt;    &lt;span class=&quot;c1&quot;&gt;# same name inside &amp;quot;packs&amp;quot; above&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;In this way, you can save your scripts as standalone files and manage
+(e.g. edit, track, etc.) individually with little effort to eventually
+call them during container build-up.&lt;/p&gt;
+
+&lt;h2 id=&quot;args-making-packs-more-reusable&quot;&gt;&lt;code&gt;args&lt;/code&gt;: Making Packs More Reusable&lt;/h2&gt;
+
+&lt;p&gt;A program that only does one thing in the same way might become dull very
+quickly and leave you the temptation to copy and paste to get something
+slightly different. Dibs actively wants you to stop this waste!&lt;/p&gt;
+
+&lt;p&gt;When you call a program in a pack, you can also pass arguments that will
+appear as command-line arguments to the program itself. As an example,
+save this as &lt;code&gt;pack/alpine-packs.sh&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;c&quot;&gt;#!/bin/sh&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;set&lt;/span&gt; -e
+&lt;span class=&quot;nb&quot;&gt;exec&lt;/span&gt; &amp;gt;&lt;span class=&quot;p&quot;&gt;&amp;amp;&lt;/span&gt;2
+apk --no-cache add &lt;span class=&quot;s2&quot;&gt;&amp;quot;$@&amp;quot;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Now you can have this kind of definition:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-yaml&quot; data-lang=&quot;yaml&quot;&gt;&lt;span class=&quot;l-Scalar-Plain&quot;&gt;packs&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+   &lt;span class=&quot;l-Scalar-Plain&quot;&gt;alpine_packs&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+      &lt;span class=&quot;l-Scalar-Plain&quot;&gt;type&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;project&lt;/span&gt;
+      &lt;span class=&quot;l-Scalar-Plain&quot;&gt;path&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;alpine-packs.sh&lt;/span&gt;
+&lt;span class=&quot;l-Scalar-Plain&quot;&gt;actions&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# ...&lt;/span&gt;
+   &lt;span class=&quot;l-Scalar-Plain&quot;&gt;build&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+      &lt;span class=&quot;c1&quot;&gt;# ...&lt;/span&gt;
+      &lt;span class=&quot;p-Indicator&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;Install OS packs&lt;/span&gt;
+        &lt;span class=&quot;l-Scalar-Plain&quot;&gt;pack&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;alpine_packs&lt;/span&gt;
+        &lt;span class=&quot;l-Scalar-Plain&quot;&gt;args&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+           &lt;span class=&quot;p-Indicator&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;build-base&lt;/span&gt;
+           &lt;span class=&quot;p-Indicator&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;wget&lt;/span&gt;
+           &lt;span class=&quot;p-Indicator&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;perl&lt;/span&gt;
+           &lt;span class=&quot;p-Indicator&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;perl-dev&lt;/span&gt;
+   &lt;span class=&quot;c1&quot;&gt;# ...&lt;/span&gt;
+   &lt;span class=&quot;l-Scalar-Plain&quot;&gt;bundle&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+      &lt;span class=&quot;c1&quot;&gt;# ...&lt;/span&gt;
+      &lt;span class=&quot;p-Indicator&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;Install OS packs&lt;/span&gt;
+        &lt;span class=&quot;l-Scalar-Plain&quot;&gt;pack&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;alpine_packs&lt;/span&gt;
+        &lt;span class=&quot;l-Scalar-Plain&quot;&gt;args&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+           &lt;span class=&quot;p-Indicator&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;perl&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;and-of-course-environment-variables&quot;&gt;… And, Of Course, Environment Variables&lt;/h2&gt;
+
+&lt;p&gt;Command-line arguments via options &lt;code&gt;args&lt;/code&gt; are not the only way to tell
+your programs about behaving differently. Another way would be defining
+environment variables instead, via the &lt;code&gt;env&lt;/code&gt; key. The following example
+transforms the one in the previous section to use an environment variable
+with the list of space-separated packages to install.&lt;/p&gt;
+
+&lt;p&gt;Save this as &lt;code&gt;pack/alpine-packs-env.sh&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;c&quot;&gt;#!/bin/sh&lt;/span&gt;
+&lt;span class=&quot;nb&quot;&gt;set&lt;/span&gt; -e
+&lt;span class=&quot;nb&quot;&gt;exec&lt;/span&gt; &amp;gt;&lt;span class=&quot;p&quot;&gt;&amp;amp;&lt;/span&gt;2
+&lt;span class=&quot;c&quot;&gt;# CAUTION: no quotes around expansion of ALPINE_PACKAGES&lt;/span&gt;
+apk --no-cache add &lt;span class=&quot;nv&quot;&gt;$ALPINE_PACKAGES&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Now you can have this kind of definition:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-yaml&quot; data-lang=&quot;yaml&quot;&gt;&lt;span class=&quot;l-Scalar-Plain&quot;&gt;packs&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+   &lt;span class=&quot;l-Scalar-Plain&quot;&gt;alpine_packs_via_environment&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+      &lt;span class=&quot;l-Scalar-Plain&quot;&gt;type&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;project&lt;/span&gt;
+      &lt;span class=&quot;l-Scalar-Plain&quot;&gt;path&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;alpine-packs-env.sh&lt;/span&gt;
+&lt;span class=&quot;l-Scalar-Plain&quot;&gt;actions&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;# ...&lt;/span&gt;
+   &lt;span class=&quot;l-Scalar-Plain&quot;&gt;build&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+      &lt;span class=&quot;c1&quot;&gt;# ...&lt;/span&gt;
+      &lt;span class=&quot;p-Indicator&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;Install OS packs&lt;/span&gt;
+        &lt;span class=&quot;l-Scalar-Plain&quot;&gt;pack&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;alpine_packs_via_environment&lt;/span&gt;
+        &lt;span class=&quot;l-Scalar-Plain&quot;&gt;env&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+           &lt;span class=&quot;p-Indicator&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;ALPINE_PACKAGES&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;build-base&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;wget&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;perl&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt; &lt;/span&gt;&lt;span class=&quot;s&quot;&gt;perl-dev&amp;#39;&lt;/span&gt;
+   &lt;span class=&quot;c1&quot;&gt;# ...&lt;/span&gt;
+   &lt;span class=&quot;l-Scalar-Plain&quot;&gt;bundle&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+      &lt;span class=&quot;c1&quot;&gt;# ...&lt;/span&gt;
+      &lt;span class=&quot;p-Indicator&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;Install OS packs&lt;/span&gt;
+        &lt;span class=&quot;l-Scalar-Plain&quot;&gt;pack&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;alpine_packs_via_environment&lt;/span&gt;
+        &lt;span class=&quot;l-Scalar-Plain&quot;&gt;env&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+           &lt;span class=&quot;p-Indicator&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;ALPINE_PACKAGES&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;perl&amp;#39;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;enough-for-now&quot;&gt;Enough For Now&lt;/h2&gt;
+
+&lt;p&gt;Today we learned:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;you can place your programs (e.g. scripts) in standalone files inside
+the project tree and avoid bloating your configuration file&lt;/li&gt;
+  &lt;li&gt;it is very, very easy to use these outside-placed programs from
+&lt;em&gt;sketches&lt;/em&gt;&lt;/li&gt;
+  &lt;li&gt;you have at least a couple ways to make these programs generic, i.e.
+either make them accept command-line arguments, or work based on
+environment variables.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;There’s more than this… but it’s enough for now. As usual, let me know
+what you think in the comments.&lt;/p&gt;
+
+
+    &lt;p&gt;&lt;a href=&quot;/dibs-meet-the-packs/&quot;&gt;Dibs - Meet The Packs&lt;/a&gt; was originally published by Flavio Poletti at &lt;a href=&quot;&quot;&gt;PolettiX!&lt;/a&gt; on April 07, 2019.&lt;/p&gt;
+  </content>
+</entry>
 
 
   
@@ -27,7 +261,7 @@
     <email>flavio@polettix.it</email>
   </author>
   <content type="html">
-    &lt;p&gt;In our &lt;a href=&quot;hi-from-dibs&quot;&gt;first post&lt;/a&gt; about &lt;a href=&quot;https://github.com/polettix/dibs&quot;&gt;dibs&lt;/a&gt; we saw how to use it as
+    &lt;p&gt;In our &lt;a href=&quot;/hi-from-dibs&quot;&gt;first post&lt;/a&gt; about &lt;a href=&quot;https://github.com/polettix/dibs&quot;&gt;dibs&lt;/a&gt; we saw how to use it as
 a different kind of multistage Dockerfile. While I already prefer it this
 way (all the &lt;code&gt;&amp;amp;&amp;amp;&lt;/code&gt;s quickly annoy me), a lot revolves around reuse.&lt;/p&gt;
 
@@ -63,7 +297,7 @@ leverage it liberally.&lt;/p&gt;
 
 &lt;h2 id=&quot;constants&quot;&gt;Constants&lt;/h2&gt;
 
-&lt;p&gt;Let’s start from an example coming from the &lt;a href=&quot;hi-from-dibs&quot;&gt;first post&lt;/a&gt;:&lt;/p&gt;
+&lt;p&gt;Let’s start from an example coming from the &lt;a href=&quot;/hi-from-dibs&quot;&gt;first post&lt;/a&gt;:&lt;/p&gt;
 
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-yaml&quot; data-lang=&quot;yaml&quot;&gt;&lt;span class=&quot;l-Scalar-Plain&quot;&gt;actions&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
     &lt;span class=&quot;c1&quot;&gt;# ...&lt;/span&gt;
@@ -7339,62 +7573,6 @@ rm &lt;span class=&quot;s2&quot;&gt;&amp;quot;$TORRENTFILE&amp;quot;&lt;/span&gt
 
 
     &lt;p&gt;&lt;a href=&quot;/bittorrent/&quot;&gt;BitTorrent for personal file sharing&lt;/a&gt; was originally published by Flavio Poletti at &lt;a href=&quot;&quot;&gt;PolettiX!&lt;/a&gt; on December 10, 2013.&lt;/p&gt;
-  </content>
-</entry>
-
-
-  
-
-<entry>
-  <title type="html"><![CDATA[Set up a remote git repository]]></title>
-  <link rel="alternate" type="text/html" href="/git-remote-repository/" />
-  <id>/git-remote-repository</id>
-  <published>2013-11-06T00:00:00+01:00</published>
-  <updated>2013-11-06T00:00:00+01:00</updated>
-  <author>
-    <name>Flavio Poletti</name>
-    <uri></uri>
-    <email>flavio@polettix.it</email>
-  </author>
-  <content type="html">
-    &lt;p&gt;I sometimes happen to start a local repository that then I want to
-replicate on my server, here’s what I use.&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;c&quot;&gt;#!/bin/bash&lt;/span&gt;
-
-&lt;span class=&quot;nv&quot;&gt;basedirname&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;$(&lt;/span&gt;basename &lt;span class=&quot;s2&quot;&gt;&amp;quot;$PWD&amp;quot;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;nv&quot;&gt;repository&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;:-&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;perl/$basedirname&amp;quot;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt;
-&lt;span class=&quot;nv&quot;&gt;remote&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;:-&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;origin&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;}&lt;/span&gt;
-
-&lt;span class=&quot;nv&quot;&gt;remote_hostname&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;example.com
-&lt;span class=&quot;nv&quot;&gt;remote_base&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;ssh://user@$remote_hostname/path/to/git&amp;quot;&lt;/span&gt;
-
-ssh &lt;span class=&quot;s2&quot;&gt;&amp;quot;$remote_hostname&amp;quot;&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;&lt;/span&gt;
-&lt;span class=&quot;s2&quot;&gt;      cd git &amp;amp;&amp;amp;&lt;/span&gt;
-&lt;span class=&quot;s2&quot;&gt;      mkdir -p &amp;#39;$repository&amp;#39; &amp;amp;&amp;amp;&lt;/span&gt;
-&lt;span class=&quot;s2&quot;&gt;      cd &amp;#39;$repository&amp;#39; &amp;amp;&amp;amp;&lt;/span&gt;
-&lt;span class=&quot;s2&quot;&gt;      git init --bare&lt;/span&gt;
-&lt;span class=&quot;s2&quot;&gt;   &amp;quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt;
-   git remote add &lt;span class=&quot;s2&quot;&gt;&amp;quot;$remote&amp;quot;&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;$remote_base/$repository&amp;quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt;
-   git push -u --all origin&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;I call this script &lt;code&gt;remotise&lt;/code&gt;. When I want to set up the remote
-repository, I hop into the relevant repository for the directory and issue:&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; /path/to/project
-
-&lt;span class=&quot;c&quot;&gt;# Option 1: DWIM&lt;/span&gt;
-remotise
-
-&lt;span class=&quot;c&quot;&gt;# Option 2: set the path in the repository (I don&amp;#39;t do Perl only)&lt;/span&gt;
-remotise web/someproject
-
-&lt;span class=&quot;c&quot;&gt;# Option 3, set the name of the repository (shown by git memo) as well:&lt;/span&gt;
-remotise web/someproject upstream&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;That’s all folks!&lt;/p&gt;
-
-    &lt;p&gt;&lt;a href=&quot;/git-remote-repository/&quot;&gt;Set up a remote git repository&lt;/a&gt; was originally published by Flavio Poletti at &lt;a href=&quot;&quot;&gt;PolettiX!&lt;/a&gt; on November 06, 2013.&lt;/p&gt;
   </content>
 </entry>
 
