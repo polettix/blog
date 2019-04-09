@@ -4,13 +4,215 @@
 <generator uri="https://github.com/jekyll/jekyll">Jekyll</generator>
 <link rel="self" type="application/atom+xml" href="/feed.xml" />
 <link rel="alternate" type="text/html" href="" />
-<updated>2019-04-07T19:26:22+02:00</updated>
+<updated>2019-04-10T00:26:07+02:00</updated>
 <id>/</id>
 <author>
   <name>Flavio Poletti</name>
   <uri>/</uri>
   <email>flavio@polettix.it</email>
 </author>
+
+
+  
+
+<entry>
+  <title type="html"><![CDATA[Dibs - Remote Packs]]></title>
+  <link rel="alternate" type="text/html" href="/dibs-remote-packs/" />
+  <id>/dibs-remote-packs</id>
+  <published>2019-04-09T00:00:00+02:00</published>
+  <updated>2019-04-09T00:00:00+02:00</updated>
+  <author>
+    <name>Flavio Poletti</name>
+    <uri></uri>
+    <email>flavio@polettix.it</email>
+  </author>
+  <content type="html">
+    &lt;p&gt;Did you think that &lt;a href=&quot;/dibs-meet-the-packs&quot;&gt;the previous post on Dibs packs&lt;/a&gt; had all there
+is to know about packs? Surely not!&lt;/p&gt;
+
+&lt;h2 id=&quot;table-of-contents&quot;&gt;Table of Contents&lt;/h2&gt;
+
+&lt;ul id=&quot;markdown-toc&quot;&gt;
+  &lt;li&gt;&lt;a href=&quot;#table-of-contents&quot; id=&quot;markdown-toc-table-of-contents&quot;&gt;Table of Contents&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#where-is-my-pack&quot; id=&quot;markdown-toc-where-is-my-pack&quot;&gt;Where Is My Pack?&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#a-pack-can-contain-things&quot; id=&quot;markdown-toc-a-pack-can-contain-things&quot;&gt;A Pack Can Contain Things&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#remote-packs-git&quot; id=&quot;markdown-toc-remote-packs-git&quot;&gt;Remote Packs: Git&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#which-way-should-i-use&quot; id=&quot;markdown-toc-which-way-should-i-use&quot;&gt;Which Way Should I Use?&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#thats-all-for-now&quot; id=&quot;markdown-toc-thats-all-for-now&quot;&gt;That’s All For Now!&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;where-is-my-pack&quot;&gt;Where Is My Pack?&lt;/h2&gt;
+
+&lt;p&gt;We already know that packs are very useful to collect programs that will be
+executed within containers and eventually shape the container image that we aim
+to. As a matter of fact, packs are a little more generic than that, allowing to
+store &lt;em&gt;something&lt;/em&gt; that can become useful at a later point - but we will not
+talk about this here.&lt;/p&gt;
+
+&lt;p&gt;We also know that there is &lt;em&gt;natural&lt;/em&gt; place where we can place packs, i.e. the
+&lt;code&gt;pack&lt;/code&gt; sub-directory. But it’s not the only place, as you might already have
+guessed.&lt;/p&gt;
+
+&lt;p&gt;We already saw how to define a pack in the &lt;code&gt;packs&lt;/code&gt; section of the
+configuration file:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-yaml&quot; data-lang=&quot;yaml&quot;&gt;&lt;span class=&quot;l-Scalar-Plain&quot;&gt;packs&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+   &lt;span class=&quot;l-Scalar-Plain&quot;&gt;kickoff&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;# we choose the &amp;quot;explicit&amp;quot; way, it&amp;#39;s the same as above&lt;/span&gt;
+      &lt;span class=&quot;l-Scalar-Plain&quot;&gt;type&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;project&lt;/span&gt;
+      &lt;span class=&quot;l-Scalar-Plain&quot;&gt;path&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;kickoff.sh&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;The &lt;code&gt;type&lt;/code&gt; can be any of…&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;code&gt;project&lt;/code&gt;, to indicate that the &lt;code&gt;path&lt;/code&gt; is relative to the &lt;code&gt;pack&lt;/code&gt;
+sub-directory of the project;&lt;/li&gt;
+  &lt;li&gt;&lt;code&gt;inside&lt;/code&gt;, to indicate that &lt;code&gt;path&lt;/code&gt; refers to the inside of the container
+(i.e. it’s already in the base container image, somewhere in the file
+system)&lt;/li&gt;
+  &lt;li&gt;&lt;code&gt;src&lt;/code&gt;, to indicate that the &lt;code&gt;path&lt;/code&gt; refers to the &lt;code&gt;src&lt;/code&gt; sub-directory. We
+still have to talk about this sub-directory, but suffices to say that
+it’s meant to contain the code that you want to package in the container
+image.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Still not the whole story, but it’s a good start.&lt;/p&gt;
+
+&lt;h2 id=&quot;a-pack-can-contain-things&quot;&gt;A Pack Can Contain Things&lt;/h2&gt;
+
+&lt;p&gt;It might seem at this point that sharing packs across different projects
+would involve a lot of copying scripts around: still better than lenghty
+&lt;code&gt;RUN&lt;/code&gt; sections, but probably not that much.&lt;/p&gt;
+
+&lt;p&gt;A pack, anyway, need not be a single file and can be a whole directory. As
+an example, you might put a few (possibly related) scripts and files in a
+sub-sub-directory &lt;code&gt;pack/my-scripts&lt;/code&gt; of the project directory, and define
+the associated pack as follows:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-yaml&quot; data-lang=&quot;yaml&quot;&gt;&lt;span class=&quot;l-Scalar-Plain&quot;&gt;packs&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+   &lt;span class=&quot;l-Scalar-Plain&quot;&gt;my_scripts&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+      &lt;span class=&quot;l-Scalar-Plain&quot;&gt;type&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;project&lt;/span&gt;
+      &lt;span class=&quot;l-Scalar-Plain&quot;&gt;base&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;my-scripts&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Note that we’re using &lt;code&gt;base&lt;/code&gt; now. Then, suppose we have two scripts
+&lt;code&gt;first.sh&lt;/code&gt; and &lt;code&gt;second.sh&lt;/code&gt; inside, and we want to call them in two
+strokes:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-yaml&quot; data-lang=&quot;yaml&quot;&gt;&lt;span class=&quot;l-Scalar-Plain&quot;&gt;actions&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;# ...&lt;/span&gt;
+    &lt;span class=&quot;p-Indicator&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;call first&lt;/span&gt;
+      &lt;span class=&quot;l-Scalar-Plain&quot;&gt;pack&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;my_scripts&lt;/span&gt;
+      &lt;span class=&quot;l-Scalar-Plain&quot;&gt;path&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;first.sh&lt;/span&gt;
+      &lt;span class=&quot;c1&quot;&gt;# ...&lt;/span&gt;
+    &lt;span class=&quot;p-Indicator&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;call second&lt;/span&gt;
+      &lt;span class=&quot;l-Scalar-Plain&quot;&gt;pack&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;my_scripts&lt;/span&gt;
+      &lt;span class=&quot;l-Scalar-Plain&quot;&gt;path&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;second.sh&lt;/span&gt;
+      &lt;span class=&quot;c1&quot;&gt;# ...&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;This makes very easy to group common programs/scripts e.g. in a &lt;code&gt;git&lt;/code&gt;
+repository and then reuse it easily across different projects:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;$MY_PROJECT/pack&amp;quot;&lt;/span&gt;
+&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;git clone &lt;span class=&quot;s2&quot;&gt;&amp;quot;$URL_OF_GIT_REPO&amp;quot;&lt;/span&gt; my-scripts&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;remote-packs-git&quot;&gt;Remote Packs: Git&lt;/h2&gt;
+
+&lt;p&gt;It turned out that sharing pack programs in a git repository was too
+useful to be left to manual intervention, which is why there are
+additional ways to define a pack, among which the &lt;code&gt;type: git&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-yaml&quot; data-lang=&quot;yaml&quot;&gt;&lt;span class=&quot;l-Scalar-Plain&quot;&gt;packs&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+   &lt;span class=&quot;l-Scalar-Plain&quot;&gt;basic&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+      &lt;span class=&quot;l-Scalar-Plain&quot;&gt;type&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;   &lt;span class=&quot;l-Scalar-Plain&quot;&gt;git&lt;/span&gt;
+      &lt;span class=&quot;l-Scalar-Plain&quot;&gt;origin&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;https://github.com/polettix/dibspack-basic.git&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;The above repository contains a few useful scripts that will hopefully
+help you shape your containers for a Perl program (there is a program
+inside that leverages either &lt;code&gt;cpanm&lt;/code&gt; or &lt;code&gt;carton&lt;/code&gt; to do the heavylifting).&lt;/p&gt;
+
+&lt;p&gt;If you want, you can also be very precise as to what you want to checkout
+from the git repository, by specifying an explicit &lt;code&gt;ref&lt;/code&gt; or putting it as
+a URI fragment:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-yaml&quot; data-lang=&quot;yaml&quot;&gt;&lt;span class=&quot;l-Scalar-Plain&quot;&gt;packs&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+   &lt;span class=&quot;c1&quot;&gt;# The following packs are equivalent!&lt;/span&gt;
+   &lt;span class=&quot;l-Scalar-Plain&quot;&gt;basic1&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+      &lt;span class=&quot;l-Scalar-Plain&quot;&gt;type&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;   &lt;span class=&quot;l-Scalar-Plain&quot;&gt;git&lt;/span&gt;
+      &lt;span class=&quot;l-Scalar-Plain&quot;&gt;origin&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;https://github.com/polettix/dibspack-basic.git#746699a&lt;/span&gt;
+
+   &lt;span class=&quot;l-Scalar-Plain&quot;&gt;basic2&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+      &lt;span class=&quot;l-Scalar-Plain&quot;&gt;type&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;   &lt;span class=&quot;l-Scalar-Plain&quot;&gt;git&lt;/span&gt;
+      &lt;span class=&quot;l-Scalar-Plain&quot;&gt;origin&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;https://github.com/polettix/dibspack-basic.git&lt;/span&gt;
+      &lt;span class=&quot;l-Scalar-Plain&quot;&gt;ref&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;    &lt;span class=&quot;l-Scalar-Plain&quot;&gt;746699a&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;The repository will be cloned/fetched/checked out as requested and then
+any &lt;code&gt;path&lt;/code&gt; will be relative to its base directory. So the following
+stroke:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-yaml&quot; data-lang=&quot;yaml&quot;&gt;&lt;span class=&quot;l-Scalar-Plain&quot;&gt;actions&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;# ...&lt;/span&gt;
+    &lt;span class=&quot;p-Indicator&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;install Perl stuff&lt;/span&gt;
+      &lt;span class=&quot;l-Scalar-Plain&quot;&gt;pack&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;basic&lt;/span&gt;
+      &lt;span class=&quot;l-Scalar-Plain&quot;&gt;path&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;perl/build&lt;/span&gt;
+      &lt;span class=&quot;c1&quot;&gt;# ...&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;will end up calling &lt;a href=&quot;https://github.com/polettix/dibspack-basic/blob/master/perl/build&quot;&gt;this build program&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;If you’re wondering… yes, the idea came from &lt;a href=&quot;https://github.com/polettix/heroku-buildpack-perl-procfile&quot;&gt;the buildpack for
+heroku&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h2 id=&quot;which-way-should-i-use&quot;&gt;Which Way Should I Use?&lt;/h2&gt;
+
+&lt;p&gt;Both techniques are fine for sharing programs across different projects.
+The automatic clone/checkout has simplicity and ease of reproduction as
+a pro, allowing to use &lt;code&gt;dibs.yaml&lt;/code&gt; to define what’s needed and letting
+&lt;code&gt;dibs&lt;/code&gt; figure out the rest; on the other hand, using explicit checkouts in
+the &lt;code&gt;pack&lt;/code&gt; directory gives you full control, which is probably very useful
+while you’re developing and/or debugging a pack.&lt;/p&gt;
+
+&lt;p&gt;You might even want to go both ways, e.g. using a YAML alias:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-yaml&quot; data-lang=&quot;yaml&quot;&gt;&lt;span class=&quot;l-Scalar-Plain&quot;&gt;packs&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+   &lt;span class=&quot;c1&quot;&gt;# This a local clone of the remote git repo, managed manually&lt;/span&gt;
+   &lt;span class=&quot;l-Scalar-Plain&quot;&gt;local&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+      &lt;span class=&quot;l-Scalar-Plain&quot;&gt;type&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;project&lt;/span&gt;
+      &lt;span class=&quot;l-Scalar-Plain&quot;&gt;base&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;dibspacks-basic&lt;/span&gt;
+
+   &lt;span class=&quot;c1&quot;&gt;# Same repo, but managed by dibs automatically&lt;/span&gt;
+   &lt;span class=&quot;l-Scalar-Plain&quot;&gt;remote&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nl&quot;&gt;&amp;amp;basic&lt;/span&gt;
+      &lt;span class=&quot;l-Scalar-Plain&quot;&gt;type&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;   &lt;span class=&quot;l-Scalar-Plain&quot;&gt;git&lt;/span&gt;
+      &lt;span class=&quot;l-Scalar-Plain&quot;&gt;origin&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;https://github.com/polettix/dibspack-basic.git&lt;/span&gt;
+
+&lt;span class=&quot;l-Scalar-Plain&quot;&gt;actions&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;# ...&lt;/span&gt;
+    &lt;span class=&quot;p-Indicator&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;install Perl stuff&lt;/span&gt;
+      &lt;span class=&quot;l-Scalar-Plain&quot;&gt;pack&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;*basic&lt;/span&gt;
+      &lt;span class=&quot;l-Scalar-Plain&quot;&gt;path&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;perl/build&lt;/span&gt;
+      &lt;span class=&quot;c1&quot;&gt;# ...&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;In the example above, &lt;code&gt;basic&lt;/code&gt; is an alias for the hash associated to
+&lt;code&gt;remote&lt;/code&gt;, but the alias definition can be easily moved up to &lt;code&gt;local&lt;/code&gt; and
+the strokes pointing to it would start using the local checkout, where you
+might be messing around to do troubleshooting and/or enhancements.&lt;/p&gt;
+
+&lt;h2 id=&quot;thats-all-for-now&quot;&gt;That’s All For Now!&lt;/h2&gt;
+
+&lt;p&gt;Again, we’re at the end of the short story. Today we learned that:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;packs can represent directories where we can then choose a program using
+the &lt;code&gt;path&lt;/code&gt; key in the stroke definition&lt;/li&gt;
+  &lt;li&gt;the pack &lt;code&gt;type: git&lt;/code&gt; can come very handy to centralize a set of common
+packs and streamline reuse across different projects&lt;/li&gt;
+  &lt;li&gt;you should definitely check out &lt;a href=&quot;https://github.com/polettix/dibspack-basic&quot;&gt;dibspack-basic&lt;/a&gt; because it can come
+handy to build your Perl-based (and more!) containers.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Comment below!&lt;/p&gt;
+
+
+    &lt;p&gt;&lt;a href=&quot;/dibs-remote-packs/&quot;&gt;Dibs - Remote Packs&lt;/a&gt; was originally published by Flavio Poletti at &lt;a href=&quot;&quot;&gt;PolettiX!&lt;/a&gt; on April 09, 2019.&lt;/p&gt;
+  </content>
+</entry>
 
 
   
@@ -7396,183 +7598,6 @@ very wrong in the execution of the script, because the script will live
 in the &lt;code&gt;master&lt;/code&gt; branch but it might be unavailable in branch &lt;code&gt;gh-pages&lt;/code&gt;.&lt;/p&gt;
 
     &lt;p&gt;&lt;a href=&quot;/github-pages/&quot;&gt;GitHub Pages&lt;/a&gt; was originally published by Flavio Poletti at &lt;a href=&quot;&quot;&gt;PolettiX!&lt;/a&gt; on February 04, 2015.&lt;/p&gt;
-  </content>
-</entry>
-
-
-  
-
-<entry>
-  <title type="html"><![CDATA[BitTorrent for personal file sharing]]></title>
-  <link rel="alternate" type="text/html" href="/bittorrent/" />
-  <id>/bittorrent</id>
-  <published>2013-12-10T00:00:00+01:00</published>
-  <updated>2013-12-10T00:00:00+01:00</updated>
-  <author>
-    <name>Flavio Poletti</name>
-    <uri></uri>
-    <email>flavio@polettix.it</email>
-  </author>
-  <content type="html">
-    &lt;p&gt;I sometimes what to transfer a file from A to B and this file might be big.
-Like a Virtual Machine Image around 20 GB.&lt;/p&gt;
-
-&lt;p&gt;I discovered that BitTorrent can be quite powerful and robust for the file
-transfer, but unfortunately there is not too much information around as to
-set up a “personal” file sharing chain.&lt;/p&gt;
-
-&lt;p&gt;One of the things that seem to be available are the DHT or &lt;em&gt;trackerless&lt;/em&gt;
-torrents. Well, I did not manage to make one work, so I had to revert to a
-more irritating method of setting up a tracker. Here’s how… without
-using uTorrent, that is not freely available in Linux.&lt;/p&gt;
-
-&lt;p&gt;The steps are quite simple:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;set up a Tracker&lt;/li&gt;
-  &lt;li&gt;generate a torrent file&lt;/li&gt;
-  &lt;li&gt;start a BitTorrent client where the file to transfer is, using the
-torrent file to load it&lt;/li&gt;
-  &lt;li&gt;send the torrent file to the recipient and start another BitTorrent
-client with it.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;We will see all of them step by step.&lt;/p&gt;
-
-&lt;h2 id=&quot;tools&quot;&gt;Tools&lt;/h2&gt;
-
-&lt;p&gt;We will use the &lt;em&gt;standard&lt;/em&gt; BitTorrent client:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;a href=&quot;http://bittorrent.cvs.sourceforge.net/viewvc/bittorrent/?view=tar&quot;&gt;tarball&lt;/a&gt; from SourceForge&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;/assets/files/bittorrent-20150201.tar.gz&quot;&gt;a snapshot of the above&lt;/a&gt; taken on February 1st, 2015&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Unpack the whole thing and get into the BitTorrent directory. We’ll call
-the directory you are into &lt;code&gt;$BT&lt;/code&gt;.&lt;/p&gt;
-
-&lt;h2 id=&quot;tracker-set-up&quot;&gt;Tracker Set-Up&lt;/h2&gt;
-
-&lt;p&gt;The tracker is a server program that helps… tracking the download of the
-different chunks by the interested clients. It acts as a very minimal web
-server that only accepts &lt;code&gt;GET&lt;/code&gt; requests to a specific URI and with a
-specific command line. You will not have to worry about this.&lt;/p&gt;
-
-&lt;p&gt;You have to choose a port where your tracker will listen. We will just
-select 12345 for our example, so you only have to start the tracker:&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;$BT&amp;quot;&lt;/span&gt;
-&lt;span class=&quot;nv&quot;&gt;port&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;12345
-./bttrack.py --port &lt;span class=&quot;nv&quot;&gt;$port&lt;/span&gt; --dfile dfile-&lt;span class=&quot;nv&quot;&gt;$port&lt;/span&gt; &amp;gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;log-$port.log&amp;quot;&lt;/span&gt; 2&amp;gt;&lt;span class=&quot;p&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;&amp;#39;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;&amp;amp;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;This will start a Tracker in the background, listening on all the
-interfaces at the port of your choice. The related URI is the following:
-&lt;code&gt;http://your-server:12345/announce/&lt;/code&gt;.&lt;/p&gt;
-
-&lt;p&gt;Of course, we are assuming that the Tracker can be reached through port
-12345 of server &lt;code&gt;your-server&lt;/code&gt;… adjust according to your environment!&lt;/p&gt;
-
-&lt;h2 id=&quot;torrent-file-creation&quot;&gt;Torrent File Creation&lt;/h2&gt;
-
-&lt;p&gt;You don’t necessarily have a running Tracker to generate the torrent file,
-but you will need one anyway… There are only a few really important
-things to generate the torrent file: the Tracker’s URI and the file to
-transfer. The command is pretty straightforward:&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;./btmakemetafile.py inputfile.ext http://your-server:12345/announce &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
-    --target mystuff.torrent&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;h2 id=&quot;bittorrent-client-server-side&quot;&gt;BitTorrent Client, &lt;em&gt;Server&lt;/em&gt;-side&lt;/h2&gt;
-
-&lt;p&gt;This is quite easy… but with a twist. The client on the server will be
-installed in the same host as the tracker, and this is a problem because the
-server &lt;em&gt;normally&lt;/em&gt; relies upon the connection details (IP address) to
-figure out where the peer is. In this case, it’s highly likely that you would
-get some local address! Luckily there’s a parameter around this: &lt;code&gt;--ip&lt;/code&gt;.&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;./btdownloadheadless.py --ip &lt;span class=&quot;nv&quot;&gt;$visible_ip&lt;/span&gt; --minport &lt;span class=&quot;m&quot;&gt;54321&lt;/span&gt; --maxport &lt;span class=&quot;m&quot;&gt;54321&lt;/span&gt; &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
-     &lt;span class=&quot;s2&quot;&gt;&amp;quot;$torrentpath&amp;quot;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;As said, you should set &lt;code&gt;$visible_ip&lt;/code&gt; to some address of the
-serving machine that can be reached by the intended peer.&lt;/p&gt;
-
-&lt;p&gt;You will have to start this command from the place where your file is,
-otherwise this instance will try to download the relevant file instead of
-seeding it.&lt;/p&gt;
-
-&lt;p&gt;The &lt;code&gt;$torrenpath&lt;/code&gt; is supposed to carry the path to the torrent
-file generated in the previous step.&lt;/p&gt;
-
-&lt;p&gt;As you can see, we also chose to stick to a single port. This is important
-later for setting up rules in the firewall.&lt;/p&gt;
-
-&lt;h2 id=&quot;bittorrent-client-client-side&quot;&gt;BitTorrent Client, &lt;em&gt;Client&lt;/em&gt;-side&lt;/h2&gt;
-
-&lt;p&gt;Here comes finally when you can download the torrent from the
-destination. All you have to do is to send the torrent file (that is
-way more compact!) to the recipient, and tell them to use their favourite
-BitTorrent client to download it. Voilà!&lt;/p&gt;
-
-&lt;h2 id=&quot;dont-forget-the-firewall&quot;&gt;Don’t Forget the Firewall!&lt;/h2&gt;
-
-&lt;p&gt;If you are using some firewall you will have to ensure that the ports
-are open. Most probably, the firewall will be iptables, in which case:&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;c&quot;&gt;# this is for the Tracker&lt;/span&gt;
-sudo iptables -A INPUT -p tcp -m tcp --dport &lt;span class=&quot;m&quot;&gt;12345&lt;/span&gt; -j ACCEPT
-
-&lt;span class=&quot;c&quot;&gt;# this is for the Client&lt;/span&gt;
-sudo iptables -A INPUT -p tcp -m tcp --dport &lt;span class=&quot;m&quot;&gt;54321&lt;/span&gt; -j ACCEPT&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;h2 id=&quot;packing-it-all&quot;&gt;Packing it all&lt;/h2&gt;
-
-&lt;p&gt;The following script can be executed on the host where you will be
-serving the file. You can provide a port for the tracker, or let it
-get one for you. It assumes that the following port is free as well,
-and assigns it to the client (yes, not &lt;em&gt;that&lt;/em&gt; robust).&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;c&quot;&gt;#!/bin/bash&lt;/span&gt;
-
-&lt;span class=&quot;nv&quot;&gt;filename&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$1&lt;/span&gt;
-&lt;span class=&quot;nv&quot;&gt;port&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;:-$(&lt;/span&gt;perl -e &lt;span class=&quot;s1&quot;&gt;&amp;#39;print int(50000 + rand 15000)&amp;#39;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;)}&lt;/span&gt;
-&lt;span class=&quot;nv&quot;&gt;hostname&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;:-$(&lt;/span&gt;hostname&lt;span class=&quot;k&quot;&gt;)}&lt;/span&gt;
-&lt;span class=&quot;nv&quot;&gt;ip&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;${&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;4&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;:-$(&lt;/span&gt;dig &lt;span class=&quot;s2&quot;&gt;&amp;quot;$hostname&amp;quot;&lt;/span&gt; +short&lt;span class=&quot;k&quot;&gt;)}&lt;/span&gt;
-&lt;span class=&quot;nv&quot;&gt;CLIENTPORT&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;$((&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$port&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;))&lt;/span&gt;
-&lt;span class=&quot;nv&quot;&gt;BINDIR&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;$(&lt;/span&gt;dirname &lt;span class=&quot;s2&quot;&gt;&amp;quot;$0&amp;quot;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;nv&quot;&gt;BINDIR&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;$(&lt;/span&gt;readlink -f &lt;span class=&quot;s2&quot;&gt;&amp;quot;$BINDIR&amp;quot;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;nv&quot;&gt;BTTRACK&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;$BINDIR/bttrack.py&amp;quot;&lt;/span&gt;
-&lt;span class=&quot;nv&quot;&gt;BTCLIENT&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;$BINDIR/btdownloadheadless.py&amp;quot;&lt;/span&gt;
-&lt;span class=&quot;nv&quot;&gt;BTTORRENTCREATOR&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;$BINDIR/btmakemetafile.py&amp;quot;&lt;/span&gt;
-&lt;span class=&quot;nv&quot;&gt;TORRENTFILE&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;$(basename &amp;quot;&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$filename&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;)-$port.torrent&amp;quot;&lt;/span&gt;
-
-&lt;span class=&quot;c&quot;&gt;# Create torrent file&lt;/span&gt;
-&lt;span class=&quot;s2&quot;&gt;&amp;quot;$BTTORRENTCREATOR&amp;quot;&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;$filename&amp;quot;&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;http://$hostname:$port/announce&amp;quot;&lt;/span&gt; &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
-   --target &lt;span class=&quot;s2&quot;&gt;&amp;quot;$TORRENTFILE&amp;quot;&lt;/span&gt;
-&lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;created: $TORRENTFILE&amp;quot;&lt;/span&gt;
-
-&lt;span class=&quot;c&quot;&gt;# Start tracker, save pid for later&lt;/span&gt;
-&lt;span class=&quot;s2&quot;&gt;&amp;quot;$BTTRACK&amp;quot;&lt;/span&gt; --port &lt;span class=&quot;nv&quot;&gt;$port&lt;/span&gt; --dfile dfile-&lt;span class=&quot;nv&quot;&gt;$port&lt;/span&gt; &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
-   &amp;gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;tracker-$port.log&amp;quot;&lt;/span&gt; 2&amp;gt;&lt;span class=&quot;p&quot;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&quot;m&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&amp;lt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;&amp;#39;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;&amp;amp;&lt;/span&gt;
-&lt;span class=&quot;nv&quot;&gt;PID&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$!&lt;/span&gt;
-
-&lt;span class=&quot;c&quot;&gt;# Open ports. The client is blocking, so this has to be done before&lt;/span&gt;
-sudo iptables -A INPUT -p tcp -m tcp --dport &lt;span class=&quot;nv&quot;&gt;$port&lt;/span&gt; -j ACCEPT
-sudo iptables -A INPUT -p tcp -m tcp --dport &lt;span class=&quot;nv&quot;&gt;$CLIENTPORT&lt;/span&gt; -j ACCEPT
-
-&lt;span class=&quot;c&quot;&gt;# Start client&lt;/span&gt;
-&lt;span class=&quot;s2&quot;&gt;&amp;quot;$BTCLIENT&amp;quot;&lt;/span&gt; --ip &lt;span class=&quot;s2&quot;&gt;&amp;quot;${ip:-$hostname}&amp;quot;&lt;/span&gt; &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
-   --minport &lt;span class=&quot;nv&quot;&gt;$CLIENTPORT&lt;/span&gt; &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
-   --maxport &lt;span class=&quot;nv&quot;&gt;$CLIENTPORT&lt;/span&gt; &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
-   &lt;span class=&quot;s2&quot;&gt;&amp;quot;$TORRENTFILE&amp;quot;&lt;/span&gt; &amp;gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;client-$CLIENTPORT.log&amp;quot;&lt;/span&gt; 2&amp;gt;&lt;span class=&quot;p&quot;&gt;&amp;amp;&lt;/span&gt;
-
-&lt;span class=&quot;c&quot;&gt;# When client is interrupted, clean all up&lt;/span&gt;
-sudo iptables -D INPUT -p tcp -m tcp --dport &lt;span class=&quot;nv&quot;&gt;$port&lt;/span&gt; -j ACCEPT
-sudo iptables -D INPUT -p tcp -m tcp --dport &lt;span class=&quot;nv&quot;&gt;$CLIENTPORT&lt;/span&gt; -j ACCEPT
-&lt;span class=&quot;nb&quot;&gt;kill&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;$PID&amp;quot;&lt;/span&gt;
-rm &lt;span class=&quot;s2&quot;&gt;&amp;quot;$TORRENTFILE&amp;quot;&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;dfile-$port&amp;quot;&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;client-$CLIENTPORT.log&amp;quot;&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;tracker-$port.log&amp;quot;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-
-    &lt;p&gt;&lt;a href=&quot;/bittorrent/&quot;&gt;BitTorrent for personal file sharing&lt;/a&gt; was originally published by Flavio Poletti at &lt;a href=&quot;&quot;&gt;PolettiX!&lt;/a&gt; on December 10, 2013.&lt;/p&gt;
   </content>
 </entry>
 
