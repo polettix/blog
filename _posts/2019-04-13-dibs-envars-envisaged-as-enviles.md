@@ -16,6 +16,7 @@ the rescue, but this comes at a cost: whenever you define an environment
 variable when calling Docker, and save the container, it's there to remain
 (unless overridden, of course). Do we really need this?
 
+> Curious about the whole Dibs Saga? See a [list of all posts on dibs](/dibs-saga).
 
 ## Table of Contents
 

@@ -18,6 +18,8 @@ important. If you're not, you probably don't care!
 There Is More Than One Way To Reuse It, anyway! In this post we will start
 from YAML, with more to come in future posts.
 
+> Curious about the whole Dibs Saga? See a [list of all posts on dibs](/dibs-saga).
+
 ## Table of Contents
 
 - TOC

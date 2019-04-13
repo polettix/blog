@@ -12,6 +12,8 @@ comments: true
 Did you think that [the previous post on Dibs packs][dibs-3] had all there
 is to know about packs? Surely not!
 
+> Curious about the whole Dibs Saga? See a [list of all posts on dibs](/dibs-saga).
+
 ## Table of Contents
 
 - TOC

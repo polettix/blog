@@ -14,6 +14,8 @@ very, very bluntly... it is what I use instead of `docker build` lately.
 It already comes with documentation and many frills, but we will start
 very slow and explore features in a series of posts. Buckle up!
 
+> Curious about the whole Dibs Saga? See a [list of all posts on dibs](/dibs-saga).
+
 ## Table of Contents
 
 - TOC

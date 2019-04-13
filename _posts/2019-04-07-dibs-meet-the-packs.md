@@ -17,6 +17,8 @@ in a slightly less *copy & paste* way; we will see in a future installment
 how this can be further leveraged for a more *modern* way of sharing and
 reusing things.
 
+> Curious about the whole Dibs Saga? See a [list of all posts on dibs](/dibs-saga).
+
 ## Table of Contents
 
 - TOC
