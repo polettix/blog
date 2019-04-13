@@ -9,7 +9,7 @@ encoding: 'utf-8'
 twitter_username: polettix
 github_username:  polettix
 timezone: 'Europe/Rome'
-
+logo: polettix.png
 
 # Jekyll configuration
 
