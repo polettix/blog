@@ -4,13 +4,241 @@
 <generator uri="https://github.com/jekyll/jekyll">Jekyll</generator>
 <link rel="self" type="application/atom+xml" href="/feed.xml" />
 <link rel="alternate" type="text/html" href="" />
-<updated>2019-04-13T16:13:46+02:00</updated>
+<updated>2019-04-13T17:54:16+02:00</updated>
 <id>/</id>
 <author>
   <name>Flavio Poletti</name>
   <uri>/</uri>
   <email>flavio@polettix.it</email>
 </author>
+
+
+  
+
+<entry>
+  <title type="html"><![CDATA[Dibs - Envars Envisaged As Enviles]]></title>
+  <link rel="alternate" type="text/html" href="/dibs-envars-envisaged-as-enviles/" />
+  <id>/dibs-envars-envisaged-as-enviles</id>
+  <published>2019-04-13T00:00:00+02:00</published>
+  <updated>2019-04-13T00:00:00+02:00</updated>
+  <author>
+    <name>Flavio Poletti</name>
+    <uri></uri>
+    <email>flavio@polettix.it</email>
+  </author>
+  <content type="html">
+    &lt;p&gt;In a previous post (&lt;a href=&quot;/dibs-meet-the-packs&quot;&gt;meet the packs&lt;/a&gt;) we saw that there’s more
+than one way to make your packs generic and avoid the dreaded
+copy-and-paste syndrome. In particular, environment variables can come to
+the rescue, but this comes at a cost: whenever you define an environment
+variable when calling Docker, and save the container, it’s there to remain
+(unless overridden, of course). Do we really need this?&lt;/p&gt;
+
+&lt;h2 id=&quot;table-of-contents&quot;&gt;Table of Contents&lt;/h2&gt;
+
+&lt;ul id=&quot;markdown-toc&quot;&gt;
+  &lt;li&gt;&lt;a href=&quot;#table-of-contents&quot; id=&quot;markdown-toc-table-of-contents&quot;&gt;Table of Contents&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#environment-over-arguments&quot; id=&quot;markdown-toc-environment-over-arguments&quot;&gt;Environment Over Arguments&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#so-how-to-avoid-pollution&quot; id=&quot;markdown-toc-so-how-to-avoid-pollution&quot;&gt;So How To Avoid Pollution?&lt;/a&gt;    &lt;ul&gt;
+      &lt;li&gt;&lt;a href=&quot;#where-are-my-enviles&quot; id=&quot;markdown-toc-where-are-my-enviles&quot;&gt;Where Are My Enviles?&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#wasnt-lazyness-a-virtue&quot; id=&quot;markdown-toc-wasnt-lazyness-a-virtue&quot;&gt;Wasn’t Lazyness A Virtue?&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#notable-enviles&quot; id=&quot;markdown-toc-notable-enviles&quot;&gt;Notable Enviles&lt;/a&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;#wrap-up&quot; id=&quot;markdown-toc-wrap-up&quot;&gt;Wrap Up&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;environment-over-arguments&quot;&gt;Environment Over Arguments&lt;/h2&gt;
+
+&lt;p&gt;The simple answer might just be that if we don’t want to pollute the
+environment, we just don’t do it. This was probably a bad joke, I promise
+that I didn’t mean that.&lt;/p&gt;
+
+&lt;p&gt;Sometimes environment variables are superior to command line arguments
+because they can be draw directly from the calling environment itself. As
+an example, consider the following fragment:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-yaml&quot; data-lang=&quot;yaml&quot;&gt;&lt;span class=&quot;l-Scalar-Plain&quot;&gt;packs&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;l-Scalar-Plain&quot;&gt;example&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;l-Scalar-Plain&quot;&gt;run&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p-Indicator&quot;&gt;|&lt;/span&gt;
+      &lt;span class=&quot;no&quot;&gt;#!/bin/sh&lt;/span&gt;
+      &lt;span class=&quot;no&quot;&gt;exec &amp;gt;&amp;amp;2&lt;/span&gt;
+      &lt;span class=&quot;no&quot;&gt;printf &amp;#39;%s\n&amp;#39; &amp;quot;Hello $WORLD! Happy $HOLIDAY!&amp;quot;&lt;/span&gt;
+&lt;span class=&quot;l-Scalar-Plain&quot;&gt;actions&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;# ...&lt;/span&gt;
+  &lt;span class=&quot;l-Scalar-Plain&quot;&gt;override&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;l-Scalar-Plain&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;call scripts with overridden environment&lt;/span&gt;
+    &lt;span class=&quot;l-Scalar-Plain&quot;&gt;pack&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;example&lt;/span&gt;
+    &lt;span class=&quot;l-Scalar-Plain&quot;&gt;env&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+      &lt;span class=&quot;p-Indicator&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;WORLD&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;You&lt;/span&gt;
+      &lt;span class=&quot;p-Indicator&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;HOLIDAY&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;Easter&lt;/span&gt;
+
+  &lt;span class=&quot;l-Scalar-Plain&quot;&gt;get-from-outside&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;l-Scalar-Plain&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;call scripts with overridden environment&lt;/span&gt;
+    &lt;span class=&quot;l-Scalar-Plain&quot;&gt;pack&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;example&lt;/span&gt;
+    &lt;span class=&quot;l-Scalar-Plain&quot;&gt;env&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+      &lt;span class=&quot;p-Indicator&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;WORLD&lt;/span&gt;
+      &lt;span class=&quot;p-Indicator&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;HOLIDAY&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;When &lt;code&gt;override&lt;/code&gt; is called, it’s just like we say in the previous article:
+environment variables are set and the string &lt;code&gt;Hello You! Happy Easter!&lt;/code&gt; is
+printed out.&lt;/p&gt;
+
+&lt;p&gt;On the other hand, when &lt;code&gt;get-from-outside&lt;/code&gt; is executed, the &lt;code&gt;WORLD&lt;/code&gt; and
+&lt;code&gt;HOLIDAY&lt;/code&gt; values are taken from the environment as seen by the process
+that is running &lt;code&gt;dibs&lt;/code&gt; itself, so you can put whatever you want:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nv&quot;&gt;$ WORLD&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;Everyone &lt;span class=&quot;nv&quot;&gt;HOLIDAY&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;New Year&amp;#39;&lt;/span&gt; dibs ...&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;so-how-to-avoid-pollution&quot;&gt;So How To Avoid Pollution?&lt;/h2&gt;
+
+&lt;p&gt;There are a host ways to avoid polluting the container’s environment, and
+we will discover them in due time: functions to put environment variables
+in the argument list, saving stuff in files, etc.&lt;/p&gt;
+
+&lt;p&gt;BUT.&lt;/p&gt;
+
+&lt;p&gt;If you think that taking stuff from the environment calling &lt;code&gt;dibs&lt;/code&gt; is too
+neat to ditch away, you’re in good company because I do as well. This is
+why &lt;em&gt;enviles&lt;/em&gt; exist: the ease of &lt;em&gt;env&lt;/em&gt;ironment variables, but bottled into
+f&lt;em&gt;iles&lt;/em&gt; that are 100% biodegradable and leave no trace in the environment.
+In the definition of the stroke, just change &lt;code&gt;env&lt;/code&gt; into &lt;code&gt;envile&lt;/code&gt; and
+you’re done:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-yaml&quot; data-lang=&quot;yaml&quot;&gt;&lt;span class=&quot;l-Scalar-Plain&quot;&gt;packs&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;c1&quot;&gt;# ... stay tuned for how to use enviles! ...&lt;/span&gt;
+
+&lt;span class=&quot;l-Scalar-Plain&quot;&gt;actions&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;c1&quot;&gt;# ...&lt;/span&gt;
+  &lt;span class=&quot;l-Scalar-Plain&quot;&gt;override&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;l-Scalar-Plain&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;call scripts with overridden environment&lt;/span&gt;
+    &lt;span class=&quot;l-Scalar-Plain&quot;&gt;pack&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;example&lt;/span&gt;
+    &lt;span class=&quot;l-Scalar-Plain&quot;&gt;envile&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+      &lt;span class=&quot;p-Indicator&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;WORLD&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;You&lt;/span&gt;
+      &lt;span class=&quot;p-Indicator&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;HOLIDAY&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;Easter&lt;/span&gt;
+
+  &lt;span class=&quot;l-Scalar-Plain&quot;&gt;get-from-outside&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;l-Scalar-Plain&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;call scripts with overridden environment&lt;/span&gt;
+    &lt;span class=&quot;l-Scalar-Plain&quot;&gt;pack&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;example&lt;/span&gt;
+    &lt;span class=&quot;l-Scalar-Plain&quot;&gt;envile&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+      &lt;span class=&quot;p-Indicator&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;WORLD&lt;/span&gt;
+      &lt;span class=&quot;p-Indicator&quot;&gt;-&lt;/span&gt; &lt;span class=&quot;l-Scalar-Plain&quot;&gt;HOLIDAY&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;It works exactly as before: defines a &lt;strong&gt;key&lt;/strong&gt;-&lt;strong&gt;value&lt;/strong&gt; pair, optionally
+taking it from the calling environment (in the case of
+&lt;code&gt;get-from-outside&lt;/code&gt;). The result is that a file named after the &lt;strong&gt;key&lt;/strong&gt; is
+saved, holding the &lt;strong&gt;value&lt;/strong&gt; as the file’s content.&lt;/p&gt;
+
+&lt;p&gt;This means, of course, changing a bit our script to take this into
+account, but let’s proceed with order.&lt;/p&gt;
+
+&lt;h3 id=&quot;where-are-my-enviles&quot;&gt;Where Are My Enviles?&lt;/h3&gt;
+
+&lt;p&gt;First of all: where does the container find the enviles? Turns out they
+are in the simplest place possible: the current working directory. In
+other terms, when &lt;code&gt;dibs&lt;/code&gt; calls the container, it creates a directory with
+all the enviles inside, mounts it inside the container and then runs it
+setting that directory as the working directory.&lt;/p&gt;
+
+&lt;p&gt;Hence, for example, the script to print out the message might be changed
+as follows:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-yaml&quot; data-lang=&quot;yaml&quot;&gt;&lt;span class=&quot;l-Scalar-Plain&quot;&gt;packs&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;l-Scalar-Plain&quot;&gt;example&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;l-Scalar-Plain&quot;&gt;run&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p-Indicator&quot;&gt;|&lt;/span&gt;
+      &lt;span class=&quot;no&quot;&gt;#!/bin/sh&lt;/span&gt;
+      &lt;span class=&quot;no&quot;&gt;exec &amp;gt;&amp;amp;2&lt;/span&gt;
+      &lt;span class=&quot;no&quot;&gt;WORLD=&amp;quot;$(cat WORLD)&amp;quot;&lt;/span&gt;
+      &lt;span class=&quot;no&quot;&gt;HOLIDAY=&amp;quot;$(cat HOLIDAY)&amp;quot;&lt;/span&gt;
+      &lt;span class=&quot;no&quot;&gt;printf &amp;#39;%s\n&amp;#39; &amp;quot;Hello $WORLD! Happy $HOLIDAY!&amp;quot;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;At this point, if you think it’s important, it’s safe to also export those
+variables in the environment: they will not be written in the stone of the
+new container image layer.&lt;/p&gt;
+
+&lt;h3 id=&quot;wasnt-lazyness-a-virtue&quot;&gt;Wasn’t Lazyness A Virtue?&lt;/h3&gt;
+
+&lt;p&gt;If you’re lazy - or you’re in the mood for it - you can export all enviles
+in the environment using the provided shell script &lt;code&gt;export-enviles.sh&lt;/code&gt;,
+again in the current directory. So our example turns to this:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-yaml&quot; data-lang=&quot;yaml&quot;&gt;&lt;span class=&quot;l-Scalar-Plain&quot;&gt;packs&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+  &lt;span class=&quot;l-Scalar-Plain&quot;&gt;example&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt;
+    &lt;span class=&quot;l-Scalar-Plain&quot;&gt;run&lt;/span&gt;&lt;span class=&quot;p-Indicator&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p-Indicator&quot;&gt;|&lt;/span&gt;
+      &lt;span class=&quot;no&quot;&gt;#!/bin/sh&lt;/span&gt;
+      &lt;span class=&quot;no&quot;&gt;exec &amp;gt;&amp;amp;2&lt;/span&gt;
+      &lt;span class=&quot;no&quot;&gt;. export-enviles.sh&lt;/span&gt;
+      &lt;span class=&quot;no&quot;&gt;printf &amp;#39;%s\n&amp;#39; &amp;quot;Hello $WORLD! Happy $HOLIDAY!&amp;quot;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;It’s important that you &lt;em&gt;source&lt;/em&gt; the script and don’t execute it…
+otherwise you’ll be exporting in a sub-process and will not get the
+variables!&lt;/p&gt;
+
+&lt;p&gt;The trick above works for any number of enviles, so it’s a reasonable
+addition to your shell scripts if you want to go the envile route.&lt;/p&gt;
+
+&lt;h2 id=&quot;notable-enviles&quot;&gt;Notable Enviles&lt;/h2&gt;
+
+&lt;p&gt;It turns out that Dibs itself uses enviles to provide some dibs-specific
+information to the programs that run in containers, should they need it.
+Hopefully the list is going to grow, but as of this post you should at
+least find the following:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;running info&lt;/strong&gt;: some info about the current run, like:
+    &lt;ul&gt;
+      &lt;li&gt;&lt;code&gt;DIBS_ID&lt;/code&gt;: and identifier for the run of dibs;&lt;/li&gt;
+      &lt;li&gt;&lt;code&gt;DIBS_STROKE_NAME&lt;/code&gt;: the name assigned to the stroke that is running;&lt;/li&gt;
+      &lt;li&gt;&lt;code&gt;DIBS_DATE&lt;/code&gt;: the date of execution of this run of dibs;&lt;/li&gt;
+      &lt;li&gt;&lt;code&gt;DIBS_TIME&lt;/code&gt;: the time of executiom of this run of dibs;&lt;/li&gt;
+      &lt;li&gt;&lt;code&gt;DIBS_EPOCH&lt;/code&gt;: the Unix epoch of execution of this run of dibs.&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;directories&lt;/strong&gt;: as we will see, Dibs relies on a few directories that
+are mounted from the host filesystem into the container’s filesystem to
+bridge the two worlds. The exact position of each of these directories
+is available in the associated envile:
+    &lt;ul&gt;
+      &lt;li&gt;&lt;code&gt;DIBS_DIR_SRC&lt;/code&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;code&gt;DIBS_DIR_CACHE&lt;/code&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;code&gt;DIBS_DIR_ENVILE&lt;/code&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;code&gt;DIBS_DIR_ENVIRON&lt;/code&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;code&gt;DIBS_DIR_PACK_DYNAMIC&lt;/code&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;code&gt;DIBS_DIR_PACK_STATIC&lt;/code&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&quot;wrap-up&quot;&gt;Wrap Up&lt;/h2&gt;
+
+&lt;p&gt;This should be all you need to know about enviles, let’s recap:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Dibs provides an easy way to set environment variables passed in
+a &lt;em&gt;stroke&lt;/em&gt;, either setting them directly in the configuration file
+&lt;code&gt;dibs.yaml&lt;/code&gt; or getting from the surrounding environment (i.e. the
+environment as seen by the &lt;code&gt;dibs&lt;/code&gt; process);&lt;/li&gt;
+  &lt;li&gt;passing environment variables in a Docker container’s execution is going
+to permanently write that environment variable in the container image
+layer, which might not always be what you want/need;&lt;/li&gt;
+  &lt;li&gt;enviles provide a way around this, allowing you to effortlessly pass
+environment variables as files which can be later read in your program;&lt;/li&gt;
+  &lt;li&gt;as an added bonus, if your program is a shell script there’s even a way
+to export all enviles in the environment, requiring a single line
+addition to a script that would normally work with environment
+varieables;&lt;/li&gt;
+  &lt;li&gt;Dibs also sets some enviles to provide information that your programs
+might find useful, e.g. a run identifier (which you might include in
+a version tag, for example) or the position of different directories in
+the container’s filesystem.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Comments below, until next time have fun!&lt;/p&gt;
+
+
+    &lt;p&gt;&lt;a href=&quot;/dibs-envars-envisaged-as-enviles/&quot;&gt;Dibs - Envars Envisaged As Enviles&lt;/a&gt; was originally published by Flavio Poletti at &lt;a href=&quot;&quot;&gt;PolettiX!&lt;/a&gt; on April 13, 2019.&lt;/p&gt;
+  </content>
+</entry>
 
 
   
@@ -7380,224 +7608,6 @@ ln -s distro/application-2.0 application
 Miskovic!&lt;/p&gt;
 
     &lt;p&gt;&lt;a href=&quot;/parachuting-perl/&quot;&gt;Parachuting Perl&lt;/a&gt; was originally published by Flavio Poletti at &lt;a href=&quot;&quot;&gt;PolettiX!&lt;/a&gt; on February 07, 2015.&lt;/p&gt;
-  </content>
-</entry>
-
-
-  
-
-<entry>
-  <title type="html"><![CDATA[GitHub Pages]]></title>
-  <link rel="alternate" type="text/html" href="/github-pages/" />
-  <id>/github-pages</id>
-  <published>2015-02-04T00:00:00+01:00</published>
-  <updated>2015-02-04T00:00:00+01:00</updated>
-  <author>
-    <name>Flavio Poletti</name>
-    <uri></uri>
-    <email>flavio@polettix.it</email>
-  </author>
-  <content type="html">
-    &lt;p&gt;I recently decided that I should probably write more. &lt;a href=&quot;https://pages.github.com/&quot;&gt;GitHub Pages&lt;/a&gt;
-is a good place where to store what I write.&lt;/p&gt;
-
-&lt;h2 id=&quot;what-is-github-pages&quot;&gt;What Is GitHub Pages&lt;/h2&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://pages.github.com/&quot;&gt;GitHub Pages&lt;/a&gt; is a service provided by GitHub to host… pages. It is
-a great way to add a website to a project hosted on GitHub, and also
-quite simple to do by using git. The idea is that you create a
-dedicated &lt;em&gt;branch&lt;/em&gt; in your project repository, called &lt;code&gt;gh-pages&lt;/code&gt;, and
-put the website there. GitHub is then smart enough to take the contents
-from that branch and expose them on the Internet at the right address.&lt;/p&gt;
-
-&lt;p&gt;If your nickname on GitHub is &lt;code&gt;mynick&lt;/code&gt;, and the project is called
-&lt;code&gt;myproject&lt;/code&gt;, then:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;the project will be at &lt;code&gt;https://github.com/mynick/myproject&lt;/code&gt;&lt;/li&gt;
-  &lt;li&gt;its pages will be at &lt;code&gt;http://mynick.github.io/myproject&lt;/code&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;For example, my repository for the &lt;a href=&quot;https://github.com/polettix/Graphics-Potrace&quot;&gt;Potrace&lt;/a&gt; Perl bindings has:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;project repository at address
-&lt;a href=&quot;https://github.com/polettix/Graphics-Potrace&quot;&gt;&lt;code&gt;https://github.com/polettix/Graphics-Potrace&lt;/code&gt;&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;its associated page(s) at address
-&lt;a href=&quot;http://polettix.github.io/Graphics-Potrace&quot;&gt;&lt;code&gt;http://polettix.github.io/Graphics-Potrace&lt;/code&gt;&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&quot;project-or-userassociation&quot;&gt;Project or User/Association?&lt;/h2&gt;
-
-&lt;p&gt;What written above is fine for projects hosted on GitHub. As a matter
-of fact, there is also a &lt;em&gt;standardized&lt;/em&gt; way to have similar pages for
-a user or an organization.&lt;/p&gt;
-
-&lt;p&gt;There is a slight inconsistency in how the thing is handled though:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;it still relies on a GitHub project - good&lt;/li&gt;
-  &lt;li&gt;the GitHub project MUST have a specific name, e.g.
-&lt;code&gt;mynick.github.io&lt;/code&gt; - still good&lt;/li&gt;
-  &lt;li&gt;the pages are hosted in the &lt;code&gt;master&lt;/code&gt; branch instead of
-&lt;code&gt;gh-pages&lt;/code&gt; - this is a bummer!&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&quot;blog&quot;&gt;Blog?&lt;/h2&gt;
-
-&lt;p&gt;With the tools above - especially considering the pages for a user
-or an association - it is easy to think about hosting a blog on GitHub.
-We will assume that it is hosted as a project by itself, not the one
-for the user/association above (although you can easily tweak the
-instructions below to make it happen).&lt;/p&gt;
-
-&lt;p&gt;The basic idea is that keeping a blog’s pages is too cumbersome to
-be done manually. You will probably want to provide a consistent look,
-with all headers, navigation, sides, footers… all the bells and
-whistles.&lt;/p&gt;
-
-&lt;p&gt;One of the best approaches to take is to use some blog
-generation system - we’ll use &lt;a href=&quot;http://jekyllrb.com/&quot;&gt;Jekyll&lt;/a&gt; here - so that we can concentrate
-on writing the stuff, and let the system do the heavy lifting to generate
-the final pages. Hence, it makes sense to consider the blog from two
-points of view:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;the generating system where you put your articles in&lt;/li&gt;
-  &lt;li&gt;the final generated site&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;This fits perfectly with GitHub: you can keep the generating system
-as &lt;em&gt;the project&lt;/em&gt;, and its associated GitHub Pages as the real blog that
-is served on the Internet.&lt;/p&gt;
-
-&lt;h2 id=&quot;lets-start&quot;&gt;Let’s Start!&lt;/h2&gt;
-
-&lt;p&gt;I set up my blog infrastructure using &lt;a href=&quot;http://jekyllrb.com/&quot;&gt;Jekyll&lt;/a&gt;. After installing it,
-create your new blog like this:&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;jekyll new myblog
-&lt;span class=&quot;nb&quot;&gt;cd &lt;/span&gt;myblog
-git init
-git add .
-git commit -m &lt;span class=&quot;s1&quot;&gt;&amp;#39;initial import&amp;#39;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;Now you have your local repository for the blog. At this point, you
-are ready for creating a new repository in GitHub (let’s call it
-&lt;code&gt;myblog&lt;/code&gt; in user &lt;code&gt;mynick&lt;/code&gt;) and tie them up:&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;git remote add origin git@github.com:mynick/myblog.git
-git push -u origin master&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;It’s time to start generating pages at this point. Depending on how
-you installed &lt;a href=&quot;http://jekyllrb.com/&quot;&gt;Jekyll&lt;/a&gt; or whatever different, you might have to use
-&lt;code&gt;bundle&lt;/code&gt;, which is what we will assume here:&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;bundle &lt;span class=&quot;nb&quot;&gt;exec &lt;/span&gt;jekyll build&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;Now the generated stuff will live inside the &lt;code&gt;_site&lt;/code&gt; subdirectory. This
-should be already included inside the &lt;code&gt;.gitignore&lt;/code&gt; file generated by
-Jekyll automatically, but in case it’s a good moment for doing this.&lt;/p&gt;
-
-&lt;p&gt;The suggestion is that the &lt;code&gt;master&lt;/code&gt; and &lt;code&gt;gh-pages&lt;/code&gt; branches are really
-separated from one another. Again, there might be many ways to do this,
-I’m just providing you one here:&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;git checkout master
-git checkout --orphan gh-pages
-git rm -rf .&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;At this point you should still have the &lt;code&gt;_site&lt;/code&gt; directory lying around,
-and this is where the real contents of your site actually are. A basic
-strategy can be to just copy the contents of that directory inside the
-root directory of the repository:&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;tar cf - -C _sites . &lt;span class=&quot;p&quot;&gt;|&lt;/span&gt; tar xvf -
-git add .
-git commit -m &lt;span class=&quot;s1&quot;&gt;&amp;#39;gh-pages initial import&amp;#39;&lt;/span&gt;
-git push origin gh-pages:gh-pages&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;There you go, your blog is online!&lt;/p&gt;
-
-&lt;h2 id=&quot;routine-workflow&quot;&gt;Routine Workflow&lt;/h2&gt;
-
-&lt;p&gt;What’s the workflow from now on? You will normally work in the &lt;code&gt;master&lt;/code&gt;
-branch - we set all this up for this reason, actually - and will switch
-on the &lt;code&gt;gh-pages&lt;/code&gt; branch only when needed.&lt;/p&gt;
-
-&lt;p&gt;Adding posts or pages in Jekyll is quite easy and there is plenty of
-documentation. When you’re done, make sure you are in the &lt;code&gt;master&lt;/code&gt;
-branch and that changes are committed, otherwise you will not be able
-to switch to the &lt;code&gt;gh-pages&lt;/code&gt; branch later on. It’s OK to have files that
-are not yet onboarded in GitHub though, &lt;code&gt;git&lt;/code&gt; will not complain about
-them.&lt;/p&gt;
-
-&lt;p&gt;At this point, you have to follow these steps:&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;bundle &lt;span class=&quot;nb&quot;&gt;exec &lt;/span&gt;jekyll build
-git checkout gh-pages
-tar cf - -C _sites . &lt;span class=&quot;p&quot;&gt;|&lt;/span&gt; tar xvf -
-git add .
-git commit -m &lt;span class=&quot;k&quot;&gt;$(&lt;/span&gt;date &lt;span class=&quot;s1&quot;&gt;&amp;#39;+blog status at %Y%m%d-%H%M%S&amp;#39;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;)&lt;/span&gt;
-git push origin gh-pages:gh-pages
-git checkout master&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;The copy using &lt;code&gt;tar&lt;/code&gt; is effective although not completely correct. In
-particular, it will not take into consideration things that you &lt;em&gt;delete&lt;/em&gt;,
-because all items will be added to what is already saved and committed.
-In general this should not be a problem though, because you will mostly
-be adding things, will you not?&lt;/p&gt;
-
-&lt;p&gt;A better strategy is to use &lt;code&gt;git ls-files&lt;/code&gt; to list all files and remove
-most of them before doing the copy with &lt;code&gt;tar&lt;/code&gt;. We should not get rid of
-all of them though, because some might be important for the generic
-&lt;em&gt;management&lt;/em&gt; of the pages (e.g. the &lt;code&gt;.gitignore&lt;/code&gt; file). We will assume
-that there are no files with spaces, so this will work:&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;bundle &lt;span class=&quot;nb&quot;&gt;exec &lt;/span&gt;jekyll build
-git checkout gh-pages
-rm &lt;span class=&quot;k&quot;&gt;$(&lt;/span&gt;git ls-files &lt;span class=&quot;p&quot;&gt;|&lt;/span&gt; grep -v &lt;span class=&quot;s1&quot;&gt;&amp;#39;^\.gitignore$&amp;#39;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;)&lt;/span&gt;
-tar cf - -C _sites . &lt;span class=&quot;p&quot;&gt;|&lt;/span&gt; tar xvf -
-git add .
-git commit -m &lt;span class=&quot;k&quot;&gt;$(&lt;/span&gt;date &lt;span class=&quot;s1&quot;&gt;&amp;#39;+blog status at %Y%m%d-%H%M%S&amp;#39;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;)&lt;/span&gt;
-git push origin gh-pages:gh-pages
-git checkout master&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;I eventually put the commands above in &lt;code&gt;publish.sh&lt;/code&gt; file:&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;c&quot;&gt;#!/bin/bash&lt;/span&gt;
-&lt;span class=&quot;nv&quot;&gt;MYDIR&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;$(&lt;/span&gt;dirname &lt;span class=&quot;s2&quot;&gt;&amp;quot;$0&amp;quot;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;nv&quot;&gt;FULLME&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;$(&lt;/span&gt;readlink -f &lt;span class=&quot;s2&quot;&gt;&amp;quot;$0&amp;quot;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;nv&quot;&gt;BAREME&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;$(&lt;/span&gt;basename &lt;span class=&quot;s2&quot;&gt;&amp;quot;$0&amp;quot;&lt;/span&gt;&lt;span class=&quot;k&quot;&gt;)&lt;/span&gt;
-
-die&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-   &lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;$*&amp;quot;&lt;/span&gt; &amp;gt;&lt;span class=&quot;p&quot;&gt;&amp;amp;&lt;/span&gt;2
-   &lt;span class=&quot;nb&quot;&gt;exit &lt;/span&gt;1
-&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-
-main&lt;span class=&quot;o&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
-   &lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;$MYDIR&amp;quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;||&lt;/span&gt; die &lt;span class=&quot;s2&quot;&gt;&amp;quot;unable to go in $MYDIR&amp;quot;&lt;/span&gt;
-   &lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; .. &lt;span class=&quot;o&quot;&gt;||&lt;/span&gt; die &lt;span class=&quot;s2&quot;&gt;&amp;quot;unable to go in parent directory of $MYDIR&amp;quot;&lt;/span&gt;
-   &lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;in $PWD now&amp;quot;&lt;/span&gt;
-
-   git checkout master &lt;span class=&quot;o&quot;&gt;||&lt;/span&gt; die &lt;span class=&quot;s1&quot;&gt;&amp;#39;unable to switch to master&amp;#39;&lt;/span&gt;
-   bundle &lt;span class=&quot;nb&quot;&gt;exec &lt;/span&gt;jekyll build &lt;span class=&quot;o&quot;&gt;||&lt;/span&gt; die &lt;span class=&quot;s2&quot;&gt;&amp;quot;unable to update contents&amp;quot;&lt;/span&gt;
-   git checkout gh-pages &lt;span class=&quot;o&quot;&gt;||&lt;/span&gt; die &lt;span class=&quot;s1&quot;&gt;&amp;#39;unable to switch to gh-pages&amp;#39;&lt;/span&gt;
-   tar cf - -C _site . &lt;span class=&quot;p&quot;&gt;|&lt;/span&gt; tar xvf - &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
-   &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; git add . &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
-   &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; git commit -m &lt;span class=&quot;s2&quot;&gt;&amp;quot;$(date &amp;#39;+update at %Y%m%d-%H%M%S&amp;#39;)&amp;quot;&lt;/span&gt; &lt;span class=&quot;se&quot;&gt;\&lt;/span&gt;
-   &lt;span class=&quot;o&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; git push origin gh-pages
-   git checkout master &lt;span class=&quot;o&quot;&gt;||&lt;/span&gt; die &lt;span class=&quot;s1&quot;&gt;&amp;#39;unable to switch to master&amp;#39;&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-
-main&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;I’m not an expert on this, but it’s very probable that without resorting to
-the trick of defining a function &lt;code&gt;main&lt;/code&gt; and calling it, things might go
-very wrong in the execution of the script, because the script will live
-in the &lt;code&gt;master&lt;/code&gt; branch but it might be unavailable in branch &lt;code&gt;gh-pages&lt;/code&gt;.&lt;/p&gt;
-
-    &lt;p&gt;&lt;a href=&quot;/github-pages/&quot;&gt;GitHub Pages&lt;/a&gt; was originally published by Flavio Poletti at &lt;a href=&quot;&quot;&gt;PolettiX!&lt;/a&gt; on February 04, 2015.&lt;/p&gt;
   </content>
 </entry>
 

@@ -1,0 +1,470 @@
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if (IE 7)&!(IEMobile)]><html class="no-js lt-ie9 lt-ie8" lang="en"><![endif]-->
+<!--[if (IE 8)&!(IEMobile)]><html class="no-js lt-ie9" lang="en"><![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"><!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<title>Dibs - Envars Envisaged As Enviles &#8211; PolettiX!</title>
+<meta name="description" content="In a previous post (meet the packs) we saw that there’s more
+than one way to make your packs generic and avoid the dreaded
+copy-and-paste syndrome. In particular, environment variables can come to
+the rescue, but this comes at a cost: whenever you define an environment
+variable when calling Docker, and save the container, it’s there to remain
+(unless overridden, of course). Do we really need this?
+
+">
+<meta name="keywords" content="">
+
+
+
+<!-- Twitter Cards -->
+<meta name="twitter:title" content="Dibs - Envars Envisaged As Enviles">
+<meta name="twitter:description" content="In a previous post (meet the packs) we saw that there’s more
+than one way to make your packs generic and avoid the dreaded
+copy-and-paste syndrome. In particular, environment variables can come to
+the rescue, but this comes at a cost: whenever you define an environment
+variable when calling Docker, and save the container, it’s there to remain
+(unless overridden, of course). Do we really need this?
+
+">
+<meta name="twitter:site" content="@polettix">
+<meta name="twitter:creator" content="@polettix">
+
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="/images/yellow-river.jpg">
+
+<!-- Open Graph -->
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Dibs - Envars Envisaged As Enviles">
+<meta property="og:description" content="In a previous post (meet the packs) we saw that there’s more
+than one way to make your packs generic and avoid the dreaded
+copy-and-paste syndrome. In particular, environment variables can come to
+the rescue, but this comes at a cost: whenever you define an environment
+variable when calling Docker, and save the container, it’s there to remain
+(unless overridden, of course). Do we really need this?
+
+">
+<meta property="og:url" content="/dibs-envars-envisaged-as-enviles/">
+<meta property="og:site_name" content="PolettiX!">
+
+
+
+
+
+<link rel="canonical" href="/dibs-envars-envisaged-as-enviles/">
+<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="PolettiX! Feed">
+
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+
+<meta http-equiv="cleartype" content="on">
+
+<!-- HTML5 Shiv and Media Query Support -->
+<!--[if lt IE 9]>
+	<script src="/assets/js/vendor/html5shiv.min.js"></script>
+	<script src="/assets/js/vendor/respond.min.js"></script>
+<![endif]-->
+
+<!-- Modernizr -->
+<script src="/assets/js/vendor/modernizr-2.7.1.custom.min.js"></script>
+
+<link href='//fonts.googleapis.com/css?family=PT+Sans+Narrow:400,700%7CPT+Serif:400,700,400italic' rel='stylesheet' type='text/css'>
+
+<!-- Icons -->
+<!-- 16x16 -->
+<link rel="shortcut icon" href="/favicon.ico?whatever">
+<!-- 32x32 -->
+<link rel="shortcut icon" href="/favicon.png?whatever">
+<!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
+<link rel="apple-touch-icon-precomposed" href="/images/apple-touch-icon-precomposed.png">
+<!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="/images/apple-touch-icon-72x72-precomposed.png">
+<!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="/images/apple-touch-icon-114x114-precomposed.png">
+<!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/images/apple-touch-icon-144x144-precomposed.png">
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+</head>
+
+<body class="post">
+
+<!--[if lt IE 9]><div class="browser-upgrade alert alert-info">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</div><![endif]-->
+
+<div class="navigation-wrapper">
+	<div class="site-name">
+		<!-- a href="/">PolettiX!</a -->
+      <a href="/"><img style="height: 1.2em" src="/images/polettix.png" alt="PolettiX!"></a>
+	</div><!-- /.site-name -->
+	<div class="top-navigation">
+		<nav role="navigation" id="site-nav" class="nav">
+		    <ul>
+		        
+				    
+				        
+				    
+				    <li><a href="/about/" >About</a></li>
+				
+				    
+				        
+				    
+				    <li><a href="/posts/" >Posts</a></li>
+				
+		    </ul>
+		</nav>
+	</div><!-- /.top-navigation -->
+</div><!-- /.navigation-wrapper -->
+
+
+
+  <div class="image-wrap">
+  <img src=
+    
+      "/images/yellow-river.jpg"
+    
+  alt="Dibs - Envars Envisaged As Enviles feature image">
+  
+    <span class="image-credit"><a href="https://en.wikipedia.org/wiki/Kakadu_National_Park">Yellow Water al Kakadu National Park, Australia</a></span>
+  
+  </div><!-- /.image-wrap -->
+
+
+<div id="main" role="main">
+  <div class="article-author-side">
+    
+
+
+<div itemscope itemtype="http://schema.org/Person">
+
+
+	<img src="/images/flavio-self-color.png" class="bio-photo" alt="Flavio Poletti bio photo">
+
+
+  <h3 itemprop="name">Flavio Poletti</h3>
+  <p>Irreducible Perler.</p>
+  <a href="mailto:flavio@polettix.it" class="author-social" target="_blank"><i class="fa fa-fw fa-envelope-square"></i>Email</a>
+  <a href="http://comics.polettix.it/" class="author-social" target="_blank"><i class="fa fa-fw fa-pencil"></i> Comics</a>
+  <a href="http://twitter.com/polettix" class="author-social" target="_blank"><i class="fa fa-fw fa-twitter-square"></i> Twitter</a>
+  
+  
+  <a href="http://linkedin.com/in/flaviopoletti" class="author-social" target="_blank"><i class="fa fa-fw fa-linkedin-square"></i> LinkedIn</a>
+  
+  
+  <a href="https://metacpan.org/author/polettix" class="author-social" target="_blank"><i class="fa fa-fw fa-th-large"></i> MetaCPAN</a>
+  <a href="http://github.com/polettix" class="author-social" target="_blank"><i class="fa fa-fw fa-github"></i> Github</a>
+  <a href="http://stackoverflow.com/users/3865403/polettix" class="author-social" target="_blank"><i class="fa fa-fw fa-stack-overflow"></i> Stackoverflow</a>
+  
+  
+  <a href="http://www.pinterest.com/polettix" class="author-social" target="_blank"><i class="fa fa-fw fa-pinterest"></i> Pinterest</a>
+  
+  
+  
+  
+  
+  
+</div>
+
+  </div>
+  <article class="post">
+    <div class="headline-wrap">
+      
+        <h1><a href="/dibs-envars-envisaged-as-enviles/" rel="bookmark" title="Dibs - Envars Envisaged As Enviles">Dibs - Envars Envisaged As Enviles</a></h1>
+      
+    </div><!--/ .headline-wrap -->
+    <div class="article-wrap">
+      <p>In a previous post (<a href="/dibs-meet-the-packs">meet the packs</a>) we saw that there’s more
+than one way to make your packs generic and avoid the dreaded
+copy-and-paste syndrome. In particular, environment variables can come to
+the rescue, but this comes at a cost: whenever you define an environment
+variable when calling Docker, and save the container, it’s there to remain
+(unless overridden, of course). Do we really need this?</p>
+
+<h2 id="table-of-contents">Table of Contents</h2>
+
+<ul id="markdown-toc">
+  <li><a href="#table-of-contents" id="markdown-toc-table-of-contents">Table of Contents</a></li>
+  <li><a href="#environment-over-arguments" id="markdown-toc-environment-over-arguments">Environment Over Arguments</a></li>
+  <li><a href="#so-how-to-avoid-pollution" id="markdown-toc-so-how-to-avoid-pollution">So How To Avoid Pollution?</a>    <ul>
+      <li><a href="#where-are-my-enviles" id="markdown-toc-where-are-my-enviles">Where Are My Enviles?</a></li>
+      <li><a href="#wasnt-lazyness-a-virtue" id="markdown-toc-wasnt-lazyness-a-virtue">Wasn’t Lazyness A Virtue?</a></li>
+    </ul>
+  </li>
+  <li><a href="#notable-enviles" id="markdown-toc-notable-enviles">Notable Enviles</a></li>
+  <li><a href="#wrap-up" id="markdown-toc-wrap-up">Wrap Up</a></li>
+</ul>
+
+<h2 id="environment-over-arguments">Environment Over Arguments</h2>
+
+<p>The simple answer might just be that if we don’t want to pollute the
+environment, we just don’t do it. This was probably a bad joke, I promise
+that I didn’t mean that.</p>
+
+<p>Sometimes environment variables are superior to command line arguments
+because they can be draw directly from the calling environment itself. As
+an example, consider the following fragment:</p>
+
+<div class="highlight"><pre><code class="language-yaml" data-lang="yaml"><span class="l-Scalar-Plain">packs</span><span class="p-Indicator">:</span>
+  <span class="l-Scalar-Plain">example</span><span class="p-Indicator">:</span>
+    <span class="l-Scalar-Plain">run</span><span class="p-Indicator">:</span> <span class="p-Indicator">|</span>
+      <span class="no">#!/bin/sh</span>
+      <span class="no">exec &gt;&amp;2</span>
+      <span class="no">printf &#39;%s\n&#39; &quot;Hello $WORLD! Happy $HOLIDAY!&quot;</span>
+<span class="l-Scalar-Plain">actions</span><span class="p-Indicator">:</span>
+  <span class="c1"># ...</span>
+  <span class="l-Scalar-Plain">override</span><span class="p-Indicator">:</span>
+    <span class="l-Scalar-Plain">name</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">call scripts with overridden environment</span>
+    <span class="l-Scalar-Plain">pack</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">example</span>
+    <span class="l-Scalar-Plain">env</span><span class="p-Indicator">:</span>
+      <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">WORLD</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">You</span>
+      <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">HOLIDAY</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">Easter</span>
+
+  <span class="l-Scalar-Plain">get-from-outside</span><span class="p-Indicator">:</span>
+    <span class="l-Scalar-Plain">name</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">call scripts with overridden environment</span>
+    <span class="l-Scalar-Plain">pack</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">example</span>
+    <span class="l-Scalar-Plain">env</span><span class="p-Indicator">:</span>
+      <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">WORLD</span>
+      <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">HOLIDAY</span></code></pre></div>
+
+<p>When <code>override</code> is called, it’s just like we say in the previous article:
+environment variables are set and the string <code>Hello You! Happy Easter!</code> is
+printed out.</p>
+
+<p>On the other hand, when <code>get-from-outside</code> is executed, the <code>WORLD</code> and
+<code>HOLIDAY</code> values are taken from the environment as seen by the process
+that is running <code>dibs</code> itself, so you can put whatever you want:</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ WORLD</span><span class="o">=</span>Everyone <span class="nv">HOLIDAY</span><span class="o">=</span><span class="s1">&#39;New Year&#39;</span> dibs ...</code></pre></div>
+
+<h2 id="so-how-to-avoid-pollution">So How To Avoid Pollution?</h2>
+
+<p>There are a host ways to avoid polluting the container’s environment, and
+we will discover them in due time: functions to put environment variables
+in the argument list, saving stuff in files, etc.</p>
+
+<p>BUT.</p>
+
+<p>If you think that taking stuff from the environment calling <code>dibs</code> is too
+neat to ditch away, you’re in good company because I do as well. This is
+why <em>enviles</em> exist: the ease of <em>env</em>ironment variables, but bottled into
+f<em>iles</em> that are 100% biodegradable and leave no trace in the environment.
+In the definition of the stroke, just change <code>env</code> into <code>envile</code> and
+you’re done:</p>
+
+<div class="highlight"><pre><code class="language-yaml" data-lang="yaml"><span class="l-Scalar-Plain">packs</span><span class="p-Indicator">:</span>
+    <span class="c1"># ... stay tuned for how to use enviles! ...</span>
+
+<span class="l-Scalar-Plain">actions</span><span class="p-Indicator">:</span>
+  <span class="c1"># ...</span>
+  <span class="l-Scalar-Plain">override</span><span class="p-Indicator">:</span>
+    <span class="l-Scalar-Plain">name</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">call scripts with overridden environment</span>
+    <span class="l-Scalar-Plain">pack</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">example</span>
+    <span class="l-Scalar-Plain">envile</span><span class="p-Indicator">:</span>
+      <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">WORLD</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">You</span>
+      <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">HOLIDAY</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">Easter</span>
+
+  <span class="l-Scalar-Plain">get-from-outside</span><span class="p-Indicator">:</span>
+    <span class="l-Scalar-Plain">name</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">call scripts with overridden environment</span>
+    <span class="l-Scalar-Plain">pack</span><span class="p-Indicator">:</span> <span class="l-Scalar-Plain">example</span>
+    <span class="l-Scalar-Plain">envile</span><span class="p-Indicator">:</span>
+      <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">WORLD</span>
+      <span class="p-Indicator">-</span> <span class="l-Scalar-Plain">HOLIDAY</span></code></pre></div>
+
+<p>It works exactly as before: defines a <strong>key</strong>-<strong>value</strong> pair, optionally
+taking it from the calling environment (in the case of
+<code>get-from-outside</code>). The result is that a file named after the <strong>key</strong> is
+saved, holding the <strong>value</strong> as the file’s content.</p>
+
+<p>This means, of course, changing a bit our script to take this into
+account, but let’s proceed with order.</p>
+
+<h3 id="where-are-my-enviles">Where Are My Enviles?</h3>
+
+<p>First of all: where does the container find the enviles? Turns out they
+are in the simplest place possible: the current working directory. In
+other terms, when <code>dibs</code> calls the container, it creates a directory with
+all the enviles inside, mounts it inside the container and then runs it
+setting that directory as the working directory.</p>
+
+<p>Hence, for example, the script to print out the message might be changed
+as follows:</p>
+
+<div class="highlight"><pre><code class="language-yaml" data-lang="yaml"><span class="l-Scalar-Plain">packs</span><span class="p-Indicator">:</span>
+  <span class="l-Scalar-Plain">example</span><span class="p-Indicator">:</span>
+    <span class="l-Scalar-Plain">run</span><span class="p-Indicator">:</span> <span class="p-Indicator">|</span>
+      <span class="no">#!/bin/sh</span>
+      <span class="no">exec &gt;&amp;2</span>
+      <span class="no">WORLD=&quot;$(cat WORLD)&quot;</span>
+      <span class="no">HOLIDAY=&quot;$(cat HOLIDAY)&quot;</span>
+      <span class="no">printf &#39;%s\n&#39; &quot;Hello $WORLD! Happy $HOLIDAY!&quot;</span></code></pre></div>
+
+<p>At this point, if you think it’s important, it’s safe to also export those
+variables in the environment: they will not be written in the stone of the
+new container image layer.</p>
+
+<h3 id="wasnt-lazyness-a-virtue">Wasn’t Lazyness A Virtue?</h3>
+
+<p>If you’re lazy - or you’re in the mood for it - you can export all enviles
+in the environment using the provided shell script <code>export-enviles.sh</code>,
+again in the current directory. So our example turns to this:</p>
+
+<div class="highlight"><pre><code class="language-yaml" data-lang="yaml"><span class="l-Scalar-Plain">packs</span><span class="p-Indicator">:</span>
+  <span class="l-Scalar-Plain">example</span><span class="p-Indicator">:</span>
+    <span class="l-Scalar-Plain">run</span><span class="p-Indicator">:</span> <span class="p-Indicator">|</span>
+      <span class="no">#!/bin/sh</span>
+      <span class="no">exec &gt;&amp;2</span>
+      <span class="no">. export-enviles.sh</span>
+      <span class="no">printf &#39;%s\n&#39; &quot;Hello $WORLD! Happy $HOLIDAY!&quot;</span></code></pre></div>
+
+<p>It’s important that you <em>source</em> the script and don’t execute it…
+otherwise you’ll be exporting in a sub-process and will not get the
+variables!</p>
+
+<p>The trick above works for any number of enviles, so it’s a reasonable
+addition to your shell scripts if you want to go the envile route.</p>
+
+<h2 id="notable-enviles">Notable Enviles</h2>
+
+<p>It turns out that Dibs itself uses enviles to provide some dibs-specific
+information to the programs that run in containers, should they need it.
+Hopefully the list is going to grow, but as of this post you should at
+least find the following:</p>
+
+<ul>
+  <li><strong>running info</strong>: some info about the current run, like:
+    <ul>
+      <li><code>DIBS_ID</code>: and identifier for the run of dibs;</li>
+      <li><code>DIBS_STROKE_NAME</code>: the name assigned to the stroke that is running;</li>
+      <li><code>DIBS_DATE</code>: the date of execution of this run of dibs;</li>
+      <li><code>DIBS_TIME</code>: the time of executiom of this run of dibs;</li>
+      <li><code>DIBS_EPOCH</code>: the Unix epoch of execution of this run of dibs.</li>
+    </ul>
+  </li>
+  <li><strong>directories</strong>: as we will see, Dibs relies on a few directories that
+are mounted from the host filesystem into the container’s filesystem to
+bridge the two worlds. The exact position of each of these directories
+is available in the associated envile:
+    <ul>
+      <li><code>DIBS_DIR_SRC</code></li>
+      <li><code>DIBS_DIR_CACHE</code></li>
+      <li><code>DIBS_DIR_ENVILE</code></li>
+      <li><code>DIBS_DIR_ENVIRON</code></li>
+      <li><code>DIBS_DIR_PACK_DYNAMIC</code></li>
+      <li><code>DIBS_DIR_PACK_STATIC</code></li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="wrap-up">Wrap Up</h2>
+
+<p>This should be all you need to know about enviles, let’s recap:</p>
+
+<ul>
+  <li>Dibs provides an easy way to set environment variables passed in
+a <em>stroke</em>, either setting them directly in the configuration file
+<code>dibs.yaml</code> or getting from the surrounding environment (i.e. the
+environment as seen by the <code>dibs</code> process);</li>
+  <li>passing environment variables in a Docker container’s execution is going
+to permanently write that environment variable in the container image
+layer, which might not always be what you want/need;</li>
+  <li>enviles provide a way around this, allowing you to effortlessly pass
+environment variables as files which can be later read in your program;</li>
+  <li>as an added bonus, if your program is a shell script there’s even a way
+to export all enviles in the environment, requiring a single line
+addition to a script that would normally work with environment
+varieables;</li>
+  <li>Dibs also sets some enviles to provide information that your programs
+might find useful, e.g. a run identifier (which you might include in
+a version tag, for example) or the position of different directories in
+the container’s filesystem.</li>
+</ul>
+
+<p>Comments below, until next time have fun!</p>
+
+
+      <hr />
+      <footer role="contentinfo">
+        <div class="social-share">
+  <h4>Share on</h4>
+  <ul>
+    <li>
+      <a href="https://twitter.com/intent/tweet?text=/dibs-envars-envisaged-as-enviles/" class="twitter" title="Share on Twitter"><i class="fa fa-twitter"></i><span> Twitter</span></a>
+    </li>
+    <li>
+      <a href="https://www.facebook.com/sharer/sharer.php?u=/dibs-envars-envisaged-as-enviles/" class="facebook" title="Share on Facebook"><i class="fa fa-facebook"></i><span> Facebook</span></a>
+    </li>
+    <li>
+      <a href="https://plus.google.com/share?url=/dibs-envars-envisaged-as-enviles/" class="google-plus" title="Share on Google Plus"><i class="fa fa-google-plus"></i><span> Google+</span></a>
+    </li>
+  </ul>
+</div><!-- /.social-share -->
+        <p class="byline"><strong>Dibs - Envars Envisaged As Enviles</strong> was published on <time datetime="2019-04-13T00:00:00+02:00">April 13, 2019</time>.</p>
+      </footer>
+    </div><!-- /.article-wrap -->
+  
+    <section id="disqus_thread"></section><!-- /#disqus_thread -->
+  
+  </article>
+</div><!-- /#main -->
+
+<div class="footer-wrap">
+  <div class="related-articles">
+  <h4>You might also enjoy <small class="pull-right">(<a href="/posts/">View all posts</a>)</small></h4>
+    <ul>
+    
+      <li><a href="/dibs-remote-packs/" title="Dibs - Remote Packs">Dibs - Remote Packs</a></li>
+    
+      <li><a href="/dibs-meet-the-packs/" title="Dibs - Meet The Packs">Dibs - Meet The Packs</a></li>
+    
+      <li><a href="/dibs-yaml-reuse/" title="Dibs - YAML Reuse">Dibs - YAML Reuse</a></li>
+    
+    </ul>
+    <hr />
+  </div><!-- /.related-articles -->
+  <footer>
+    
+
+<span>&copy; 2019 Flavio Poletti. Powered by <a href="http://jekyllrb.com" rel="nofollow">Jekyll</a> using the <a href="http://mademistakes.com/minimal-mistakes/" rel="nofollow">Minimal Mistakes</a> theme.</span>
+
+  </footer>
+</div><!-- /.footer-wrap -->
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script src="/assets/js/scripts.min.js"></script>
+
+
+  
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'polettix'; // required: replace example with your forum shortname
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = '//' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+    }());
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+
+</body>
+</html>
