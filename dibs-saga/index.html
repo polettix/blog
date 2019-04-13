@@ -5,9 +5,9 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en"><!--<![endif]-->
 <head>
 <meta charset="utf-8">
-<title>local::lib for distributions &#8211; PolettiX!</title>
-<meta name="description" content="local::lib is a love-it-or-hate-it module, with the additional feature
-that you don’t get the hate-it part.
+<title>Dibs Saga &#8211; PolettiX!</title>
+<meta name="description" content="This is the whole Dibs saga, although it might evolve in time! Latest
+posts are at the bottom.
 
 ">
 <meta name="keywords" content="">
@@ -15,33 +15,33 @@ that you don’t get the hate-it part.
 
 
 <!-- Twitter Cards -->
-<meta name="twitter:title" content="local::lib for distributions">
-<meta name="twitter:description" content="local::lib is a love-it-or-hate-it module, with the additional feature
-that you don’t get the hate-it part.
+<meta name="twitter:title" content="Dibs Saga">
+<meta name="twitter:description" content="This is the whole Dibs saga, although it might evolve in time! Latest
+posts are at the bottom.
 
 ">
 <meta name="twitter:site" content="@polettix">
 <meta name="twitter:creator" content="@polettix">
 
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="/images/tramonto.jpg">
+<meta name="twitter:image" content="/images/yellow-river.jpg">
 
 <!-- Open Graph -->
 <meta property="og:locale" content="en_US">
 <meta property="og:type" content="article">
-<meta property="og:title" content="local::lib for distributions">
-<meta property="og:description" content="local::lib is a love-it-or-hate-it module, with the additional feature
-that you don’t get the hate-it part.
+<meta property="og:title" content="Dibs Saga">
+<meta property="og:description" content="This is the whole Dibs saga, although it might evolve in time! Latest
+posts are at the bottom.
 
 ">
-<meta property="og:url" content="/local-lib-for-distributions/">
+<meta property="og:url" content="/dibs-saga/">
 <meta property="og:site_name" content="PolettiX!">
 
 
 
 
 
-<link rel="canonical" href="/local-lib-for-distributions/">
+<link rel="canonical" href="/dibs-saga/">
 <link href="/feed.xml" type="application/atom+xml" rel="alternate" title="PolettiX! Feed">
 
 <!-- http://t.co/dKP3o1e -->
@@ -116,11 +116,11 @@ that you don’t get the hate-it part.
   <div class="image-wrap">
   <img src=
     
-      "/images/tramonto.jpg"
+      "/images/yellow-river.jpg"
     
-  alt="local::lib for distributions feature image">
+  alt="Dibs Saga feature image">
   
-    <span class="image-credit"><a href="https://en.wikipedia.org/wiki/Australia">Tramonto in Australia</a></span>
+    <span class="image-credit"><a href="https://en.wikipedia.org/wiki/Kakadu_National_Park">Yellow Water al Kakadu National Park, Australia</a></span>
   
   </div><!-- /.image-wrap -->
 
@@ -164,64 +164,21 @@ that you don’t get the hate-it part.
   <article class="post">
     <div class="headline-wrap">
       
-        <h1><a href="/local-lib-for-distributions/" rel="bookmark" title="local::lib for distributions">local::lib for distributions</a></h1>
+        <h1><a href="/dibs-saga/" rel="bookmark" title="Dibs Saga">Dibs Saga</a></h1>
       
     </div><!--/ .headline-wrap -->
     <div class="article-wrap">
-      <p><a href="https://metacpan.org/pod/local::lib">local::lib</a> is a love-it-or-hate-it module, with the additional feature
-that you don’t get the hate-it part.</p>
+      <p>This is the whole Dibs saga, although it might evolve in time! Latest
+posts are at the bottom.</p>
 
-<p>Recently, I had to develop a script to do a couple of HTTP redirections.
-I headed towards CPAN, quickly found that <a href="https://metacpan.org/pod/HTTP::Server::Simple">HTTP::Server::Simple</a> (and in
-particular <a href="https://metacpan.org/pod/HTTP::Server::Simple::CGI">HTTP::Server::Simple::CGI</a>) and in some twenty minutes I had a
-working prototype. Forget that I changed my mind a couple of times
-before having what I eventually used for my test…</p>
+<ul>
+  <li><a href="/hi-from-dibs">Hi from dibs</a></li>
+  <li><a href="/dibs-yaml-reuse">YAML Reuse</a></li>
+  <li><a href="/dibs-meet-the-packs">Meet The Packs</a></li>
+  <li><a href="/dibs-remote-packs">Remote Packs</a></li>
+  <li><a href="/dibs-envars-envisaged-as-enviles">Envars Envisaged As Enviles</a></li>
+</ul>
 
-<p>Now, I knew I had to go into an environment that could possibly prevent
-me from using my machine to perform the test. As a matter of fact, I
-didn’t know whether I could use the program anywhere, let alone know
-what kind of Perl environment I would have found. Nightmare!</p>
-
-<p>Luckily enough, it turned out that I only needed modules that do not
-require compilation. I love Pure Perl modules! So now I had the problem
-to bundle all the needed non-core modules in a way that was convenient
-to deliver. This is where <a href="https://metacpan.org/pod/local::lib">local::lib</a> really saved the day,
-and in particular its <code>--self-contained</code> option. Well - yes -
-I’ve seen options that were commented way better… but at least the
-only reference in the synopsis made me curious enough to discover that
-it was hitting the nail right in the head.</p>
-
-<p>On my machine I have my own compiled Perl version to tinker with, so I
-installed <a href="https://metacpan.org/pod/local::lib">local::lib</a> without the need to bootstrap anything. At this
-point, all I had to do was something along these lines:</p>
-
-<div class="highlight"><pre><code class="language-text" data-lang="text">shell$ perl -MCPAN -Mlocal::lib=--self-contained,my_lib -e &#39;CPAN::install($_) for @ARGV&#39; HTTP::Server::Simple URI Log::Log4perl</code></pre></div>
-
-<p>Yes… I’m quite fond of <code>Log::Log4perl</code>, but that’s another story.</p>
-
-<p>The installation above went smooth and installed all the modules, and
-their needed <em>non-core</em> dependencies, under the directory tree starting
-from <code>my_lib</code>. I checked that there were actually no compiled components
-- dependencies could play some trick - and I verified that I had been
-lucky. Yay!</p>
-
-<p>The directory structure you end up with is more or less the following:</p>
-
-<div class="highlight"><pre><code class="language-text" data-lang="text">my_lib/bin
-my_lib/lib/perl5/...
-my_lib/man</code></pre></div>
-
-<p>I didn’t need either the bin or the man subdirectory, so I just moved
-the contents <code>my_lib/lib/perl5</code> into a <code>lib</code> subdirectory, removed what
-remained of <code>my_lib</code> and… that’s it! Well, wait a minute, I had to
-make a slight change to the code as well:</p>
-
-<div class="highlight"><pre><code class="language-text" data-lang="text">#...
-use FindBin;
-use lib $FindBin::Bin;</code></pre></div>
-
-<p>OK, now <em>that’s it</em>! The funny part? I was actually able to use my
-laptop, so I didn’t need anything of this…</p>
 
       <hr />
       <footer role="contentinfo">
@@ -229,17 +186,17 @@ laptop, so I didn’t need anything of this…</p>
   <h4>Share on</h4>
   <ul>
     <li>
-      <a href="https://twitter.com/intent/tweet?text=/local-lib-for-distributions/" class="twitter" title="Share on Twitter"><i class="fa fa-twitter"></i><span> Twitter</span></a>
+      <a href="https://twitter.com/intent/tweet?text=/dibs-saga/" class="twitter" title="Share on Twitter"><i class="fa fa-twitter"></i><span> Twitter</span></a>
     </li>
     <li>
-      <a href="https://www.facebook.com/sharer/sharer.php?u=/local-lib-for-distributions/" class="facebook" title="Share on Facebook"><i class="fa fa-facebook"></i><span> Facebook</span></a>
+      <a href="https://www.facebook.com/sharer/sharer.php?u=/dibs-saga/" class="facebook" title="Share on Facebook"><i class="fa fa-facebook"></i><span> Facebook</span></a>
     </li>
     <li>
-      <a href="https://plus.google.com/share?url=/local-lib-for-distributions/" class="google-plus" title="Share on Google Plus"><i class="fa fa-google-plus"></i><span> Google+</span></a>
+      <a href="https://plus.google.com/share?url=/dibs-saga/" class="google-plus" title="Share on Google Plus"><i class="fa fa-google-plus"></i><span> Google+</span></a>
     </li>
   </ul>
 </div><!-- /.social-share -->
-        <p class="byline"><strong>local::lib for distributions</strong> was published on <time datetime="2010-07-30T00:00:00+02:00">July 30, 2010</time>.</p>
+        <p class="byline"><strong>Dibs Saga</strong> was published on <time datetime="2019-04-13T00:00:00+02:00">April 13, 2019</time>.</p>
       </footer>
     </div><!-- /.article-wrap -->
   
@@ -251,11 +208,11 @@ laptop, so I didn’t need anything of this…</p>
   <h4>You might also enjoy <small class="pull-right">(<a href="/posts/">View all posts</a>)</small></h4>
     <ul>
     
-      <li><a href="/dibs-saga/" title="Dibs Saga">Dibs Saga</a></li>
-    
       <li><a href="/dibs-envars-envisaged-as-enviles/" title="Dibs - Envars Envisaged As Enviles">Dibs - Envars Envisaged As Enviles</a></li>
     
       <li><a href="/dibs-remote-packs/" title="Dibs - Remote Packs">Dibs - Remote Packs</a></li>
+    
+      <li><a href="/dibs-meet-the-packs/" title="Dibs - Meet The Packs">Dibs - Meet The Packs</a></li>
     
     </ul>
     <hr />
