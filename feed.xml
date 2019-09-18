@@ -4,7 +4,7 @@
 <generator uri="https://github.com/jekyll/jekyll">Jekyll</generator>
 <link rel="self" type="application/atom+xml" href="/feed.xml" />
 <link rel="alternate" type="text/html" href="" />
-<updated>2019-04-13T18:33:56+02:00</updated>
+<updated>2019-09-18T22:56:44+02:00</updated>
 <id>/</id>
 <author>
   <name>Flavio Poletti</name>
@@ -1948,8 +1948,8 @@ some time in the future.&lt;/p&gt;
     &lt;/ul&gt;
   &lt;/li&gt;
   &lt;li&gt;&lt;a href=&quot;#finite-fields-of-order-psupnsup&quot; id=&quot;markdown-toc-finite-fields-of-order-psupnsup&quot;&gt;Finite Fields of Order p&lt;sup&gt;n&lt;/sup&gt;&lt;/a&gt;    &lt;ul&gt;
-      &lt;li&gt;&lt;a href=&quot;#simple-case-n--1&quot; id=&quot;markdown-toc-simple-case-n--1&quot;&gt;Simple case: &lt;code&gt;n = 1&lt;/code&gt;&lt;/a&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;a href=&quot;#field-extension-case-n--1&quot; id=&quot;markdown-toc-field-extension-case-n--1&quot;&gt;Field extension case: &lt;code&gt;n &amp;gt; 1&lt;/code&gt;&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#simple-case-n--1&quot; id=&quot;markdown-toc-simple-case-n--1&quot;&gt;Simple case: \(n = 1\)&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href=&quot;#field-extension-case-n--1&quot; id=&quot;markdown-toc-field-extension-case-n--1&quot;&gt;Field extension case: \(n &amp;gt; 1\)&lt;/a&gt;&lt;/li&gt;
       &lt;li&gt;&lt;a href=&quot;#irreducible-polynomials&quot; id=&quot;markdown-toc-irreducible-polynomials&quot;&gt;Irreducible Polynomials&lt;/a&gt;&lt;/li&gt;
     &lt;/ul&gt;
   &lt;/li&gt;
@@ -1960,10 +1960,11 @@ some time in the future.&lt;/p&gt;
 
 &lt;h2 id=&quot;whats-the-game-about&quot;&gt;What’s the Game About?&lt;/h2&gt;
 
-&lt;p&gt;Dobble provides a set of 55 cards, each with exactly 8 pictures on it. The
-cards are round, so that there is no “preferred” way of orienting them;
-additionally, pictures are printed in random(ish?) orientation and size,
-again to avoid providing a preferred orientation for the cards.&lt;/p&gt;
+&lt;p&gt;Dobble provides a set of \(55\) cards, each with exactly \(8\)
+pictures on it. The cards are round, so that there is no “preferred” way
+of orienting them; additionally, pictures are printed in random(ish?)
+orientation and size, again to avoid providing a preferred orientation for
+the cards.&lt;/p&gt;
 
 &lt;p&gt;The one true fact you know about the deck is: whatever pair of cards you
 take, there is always &lt;em&gt;exactly&lt;/em&gt; one picture that is present in both. No
@@ -1976,35 +1977,37 @@ matching picture between two cards.&lt;/p&gt;
 
 &lt;h2 id=&quot;how-to-design-it&quot;&gt;How to Design It?&lt;/h2&gt;
 
-&lt;p&gt;If each card had 54 pictures on it, it would probably be a trivial task to
-design the full stack of cards: just take all possible pairs of cards and
-decide a new picture for the pair. This would involve a non-trivial amount
-of pictures, because all possible pairs are the following:&lt;/p&gt;
+&lt;p&gt;If each card had \(54\) pictures on it, it would probably be a trivial
+task to design the full stack of cards: just take all possible pairs of
+cards and decide a new picture for the pair. This would involve
+a non-trivial amount of pictures, because all possible pairs are the
+following:&lt;/p&gt;
 
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;54 pairs with card A =  #1 and card B = #2..#55
 53 pairs with card A =  #2 and card B = #3..#55
 ...
  1  pair with card A = #54 and card B = #55&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-&lt;p&gt;for a total number of &lt;code&gt;(54 + 1) * 54 / 2 = 1485&lt;/code&gt; pairs/pictures.&lt;/p&gt;
+&lt;p&gt;for a total number of \((54 + 1) * 54 / 2 = 1485\) pairs/pictures.&lt;/p&gt;
 
-&lt;p&gt;Luckily for the players, each card only has exactly 8 pictures on it (try
-to imagine to find the right matching picture out of 54 pictures on each
-card!) but this makes things much more difficult for the designer, because
-pictures have to be properly reused across cards in order to guarantee the
-&lt;em&gt;one true fact&lt;/em&gt; about the card deck. Here is where maths come to rescue!&lt;/p&gt;
+&lt;p&gt;Luckily for the players, each card only has exactly \(8\) pictures on it
+(try to imagine to find the right matching picture out of \(54\)
+pictures on each card!) but this makes things much more difficult for the
+designer, because pictures have to be properly reused across cards in
+order to guarantee the &lt;em&gt;one true fact&lt;/em&gt; about the card deck. Here is where
+maths come to rescue!&lt;/p&gt;
 
 &lt;h2 id=&quot;mathematical-pointers&quot;&gt;Mathematical Pointers&lt;/h2&gt;
 
 &lt;p&gt;The Dobble deck design can be framed within a much wider set of problems
 named &lt;a href=&quot;https://en.wikipedia.org/wiki/Block_design&quot;&gt;block design&lt;/a&gt;. Well, actually a &lt;a href=&quot;https://en.wikipedia.org/wiki/Block_design#Generalization:_t-designs&quot;&gt;t-design&lt;/a&gt;. Well,
-actually a &lt;a href=&quot;https://en.wikipedia.org/wiki/Steiner_system&quot;&gt;Steiner system&lt;/a&gt; with parameters &lt;em&gt;S(2, 8, 57)&lt;/em&gt;,
-meaning:&lt;/p&gt;
+actually a &lt;a href=&quot;https://en.wikipedia.org/wiki/Steiner_system&quot;&gt;Steiner system&lt;/a&gt; with parameters \(S(2, 8,
+57)\), meaning:&lt;/p&gt;
 
 &lt;ul&gt;
-  &lt;li&gt;there are 57 different pictures, from which&lt;/li&gt;
-  &lt;li&gt;we form cards (&lt;em&gt;blocks&lt;/em&gt;) of 8 pictures each, with the constraint that&lt;/li&gt;
-  &lt;li&gt;any two pictures are contained in exactly one card (&lt;em&gt;block&lt;/em&gt;).&lt;/li&gt;
+  &lt;li&gt;there are \(57\) different pictures, from which…&lt;/li&gt;
+  &lt;li&gt;we form cards (&lt;em&gt;blocks&lt;/em&gt;) of \(8\) pictures each, with the constraint that…&lt;/li&gt;
+  &lt;li&gt;any \(2\) pictures are contained in exactly one card (&lt;em&gt;block&lt;/em&gt;).&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;p&gt;Wait… what? The last constraint is not the &lt;em&gt;one true fact&lt;/em&gt; we discussed
@@ -2020,37 +2023,38 @@ practical.&lt;/p&gt;
 
 &lt;p&gt;Let’s attack the problem from a different perspective and think about
 &lt;a href=&quot;http://mathworld.wolfram.com/ProjectivePlane.html&quot;&gt;finite projective planes&lt;/a&gt; (PP in the following). They are
-mathematical objects associated to an integer &lt;em&gt;order&lt;/em&gt; value &lt;code&gt;n&lt;/code&gt;, comprised
-of primitives called &lt;em&gt;point&lt;/em&gt;s and &lt;em&gt;line&lt;/em&gt;s (collections of points):&lt;/p&gt;
+mathematical objects associated to an integer &lt;em&gt;order&lt;/em&gt; value \(n\),
+comprised of primitives called &lt;em&gt;point&lt;/em&gt;s and &lt;em&gt;line&lt;/em&gt;s (collections of
+points):&lt;/p&gt;
 
 &lt;ul&gt;
   &lt;li&gt;any two &lt;em&gt;point&lt;/em&gt;s belong to exactly one &lt;em&gt;line&lt;/em&gt;&lt;/li&gt;
   &lt;li&gt;any two &lt;em&gt;line&lt;/em&gt;s intersect at exactly one &lt;em&gt;point&lt;/em&gt;, meaning that have
 exactly one &lt;em&gt;point&lt;/em&gt; in common&lt;/li&gt;
-  &lt;li&gt;there are exactly &lt;code&gt;n + 1&lt;/code&gt; &lt;em&gt;line&lt;/em&gt;s intersecting at any &lt;em&gt;point&lt;/em&gt;&lt;/li&gt;
-  &lt;li&gt;there are exactly &lt;code&gt;n + 1&lt;/code&gt; &lt;em&gt;point&lt;/em&gt;s belonging to any &lt;em&gt;line&lt;/em&gt;&lt;/li&gt;
+  &lt;li&gt;there are exactly \(n + 1\) &lt;em&gt;line&lt;/em&gt;s intersecting at any &lt;em&gt;point&lt;/em&gt;&lt;/li&gt;
+  &lt;li&gt;there are exactly \(n + 1\) &lt;em&gt;point&lt;/em&gt;s belonging to any &lt;em&gt;line&lt;/em&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;p&gt;You might spot that there is a duality in the properties above: try to
 swap &lt;em&gt;line&lt;/em&gt; for &lt;em&gt;point&lt;/em&gt; and &lt;em&gt;belongs to&lt;/em&gt; with &lt;em&gt;intersect at&lt;/em&gt; and you
 basically have the same properties again!&lt;/p&gt;
 
-&lt;p&gt;Another property of a PP of order &lt;code&gt;n&lt;/code&gt; is that it contains exactly:&lt;/p&gt;
+&lt;p&gt;Another property of a PP of order \(n\) is that it contains exactly:&lt;/p&gt;
 
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;n^2 + n + 1&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;n^2 + n + 1&lt;/script&gt;
 
 &lt;p&gt;&lt;em&gt;point&lt;/em&gt;s and the same amount of &lt;em&gt;line&lt;/em&gt;s (thanks to the duality above).&lt;/p&gt;
 
 &lt;p&gt;Of course Steiner systems and Projective Planes are old friends, because
-a PP of order &lt;code&gt;n&lt;/code&gt; is “just” a Steiner system &lt;em&gt;S(2, n+1, n^2 + n + 1)&lt;/em&gt;,
-thus implying for Dobble that:&lt;/p&gt;
+a PP of order \(n\) is “just” a Steiner system \(S(2, n+1, n^2
++ n + 1)\), thus implying for Dobble that:&lt;/p&gt;
 
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;n = 7
-n + 1 = 8
-n^2 + n + 1 = 57&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;n = 7 \\
+n + 1 = 8 \\
+n^2 + n + 1 = 57&lt;/script&gt;
 
-&lt;p&gt;going back to what we said earlier: Dobble is a Steiner system &lt;em&gt;S(2, 8,
-57)&lt;/em&gt;. It’s also interesting to note that Dobble is actually missing two
+&lt;p&gt;going back to what we said earlier: Dobble is a Steiner system \(S(2, 8,
+57)\). It’s also interesting to note that Dobble is actually missing two
 possible cards.&lt;/p&gt;
 
 &lt;p&gt;Why involve PPs anyway? Well… for me it’s a bit easier to understand and
@@ -2059,9 +2063,9 @@ explain, that’s it.&lt;/p&gt;
 &lt;h2 id=&quot;lets-start-simple&quot;&gt;Let’s Start Simple&lt;/h2&gt;
 
 &lt;p&gt;There is one “bare bones” Projective Plane called the &lt;a href=&quot;https://en.wikipedia.org/wiki/Fano_plane&quot;&gt;Fano Plane&lt;/a&gt;,
-that is of order &lt;code&gt;n = 2&lt;/code&gt;. It’s like a stripped down version of Dobble,
-with “just” &lt;code&gt;7 = 4 + 2 + 1&lt;/code&gt; pictures and (at most) 7 cards. A graphical
-representation of the Fano Plane is in the following picture:&lt;/p&gt;
+that is of order \(n = 2\). It’s like a stripped down version of Dobble,
+with “just” \(7 = 4 + 2 + 1\) pictures and (at most) \(7\) cards.
+A graphical representation of the Fano Plane is in the following picture:&lt;/p&gt;
 
 &lt;p&gt;&lt;img src=&quot;/images/some-maths-for-dobble/fano-plane.png&quot; alt=&quot;Fano Plane&quot; /&gt;&lt;/p&gt;
 
@@ -2081,17 +2085,17 @@ address! We &lt;em&gt;just&lt;/em&gt; have to expand things a bit…&lt;/p&gt;
 following:&lt;/p&gt;
 
 &lt;ul&gt;
-  &lt;li&gt;orders &lt;code&gt;n = p^k&lt;/code&gt;, where &lt;code&gt;p&lt;/code&gt; is a prime number and &lt;code&gt;k&lt;/code&gt; is any positive
-integer are always possible;&lt;/li&gt;
+  &lt;li&gt;orders \(n = p^k\), where \(p\) is a prime number and \(k\) is any
+positive integer are always possible;&lt;/li&gt;
   &lt;li&gt;anything else is conjectured to be impossible.&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;p&gt;We will restrict to what we know and call “allowed” only orders that are
 a positive power of a prime number, like in the first bullet.&lt;/p&gt;
 
-&lt;p&gt;The Dobble’s case is &lt;code&gt;n = 7^1&lt;/code&gt; so it’s definitely possible, yielding 57
-pictures and 57 cards (of which only 55 are included in the game’s deck,
-as anticipated).&lt;/p&gt;
+&lt;p&gt;The Dobble’s case is \(n = 7^1\) so it’s definitely possible, yielding
+\(57\) pictures and \(57\) cards (of which only 55 are included in the
+game’s deck, as anticipated).&lt;/p&gt;
 
 &lt;p&gt;The logical steps for building a design of any allowed order are the
 following:&lt;/p&gt;
@@ -2108,12 +2112,12 @@ at it.&lt;/p&gt;
 &lt;h3 id=&quot;points-in-homogeneous-coordinates&quot;&gt;Points in Homogeneous Coordinates&lt;/h3&gt;
 
 &lt;p&gt;Points in a plane are usually represented with two &lt;em&gt;Cartesian&lt;/em&gt;
-coordinates: &lt;code&gt;x&lt;/code&gt; and &lt;code&gt;y&lt;/code&gt;. This representation goes under the general name
-of &lt;em&gt;affine plane&lt;/em&gt;. In this plane, it is impossible to represent the point
-where two or more parallel lines intersect (the “point at infinite”).
-Additionally, it is also impossible to represent the line formed by all
-such intersections for different directions, i.e. the “line at
-infinite”.&lt;/p&gt;
+coordinates: \(x\) and \(y\). This representation goes under the
+general name of &lt;em&gt;affine plane&lt;/em&gt;. In this plane, it is impossible to
+represent the point where two or more parallel lines intersect (the “point
+at infinite”). Additionally, it is also impossible to represent the line
+formed by all such intersections for different directions, i.e. the “line
+at infinite”.&lt;/p&gt;
 
 &lt;p&gt;As we saw, &lt;em&gt;projective planes&lt;/em&gt; require that every pair of &lt;em&gt;line&lt;/em&gt;s
 intersect exactly at one point. Hence, we need a more powerful
@@ -2123,26 +2127,27 @@ infinite” and the resulting &lt;em&gt;line&lt;/em&gt;.&lt;/p&gt;
 &lt;p&gt;At the expense of one additional coordinate it is indeed possible to
 represent also these additional points and the additional line, in
 a system that is called &lt;a href=&quot;https://en.wikipedia.org/wiki/Homogeneous_coordinates&quot;&gt;homogeneous coordinates&lt;/a&gt; where each &lt;em&gt;point&lt;/em&gt;
-is represented by three coordinates &lt;code&gt;(X, Y, Z)&lt;/code&gt; ruled as follows:&lt;/p&gt;
+is represented by three coordinates \((X, Y, Z)\) ruled as follows:&lt;/p&gt;
 
 &lt;ul&gt;
-  &lt;li&gt;any of &lt;code&gt;X&lt;/code&gt;, &lt;code&gt;Y&lt;/code&gt; and &lt;code&gt;Z&lt;/code&gt; MUST be different from &lt;code&gt;0&lt;/code&gt;, i.e. the triplet
-&lt;code&gt;(0, 0, 0)&lt;/code&gt; is NOT valid&lt;/li&gt;
-  &lt;li&gt;any &lt;em&gt;point&lt;/em&gt; &lt;code&gt;(x, y)&lt;/code&gt; in the Cartesian representation of the affine plane
-is mapped onto &lt;em&gt;any triplet&lt;/em&gt; &lt;code&gt;(Z*x, Z*y, Z)&lt;/code&gt; with &lt;code&gt;Z&lt;/code&gt; different from &lt;code&gt;0&lt;/code&gt;.
-Conversely, &lt;em&gt;any triplet&lt;/em&gt; &lt;code&gt;(X, Y, Z)&lt;/code&gt; with &lt;code&gt;Z&lt;/code&gt; diffent from &lt;code&gt;0&lt;/code&gt; maps back
-to &lt;code&gt;(X/Z, Y/Z)&lt;/code&gt;;&lt;/li&gt;
-  &lt;li&gt;any triplet &lt;code&gt;(X, Y, 0)&lt;/code&gt; is a “point at infinite” and represents the
-intersection of all parallel lines of type &lt;code&gt;Y*x - X*y = c&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;any of \(X\), \(Y\) and \(Z\) MUST be different from \(0\), i.e.
+the triplet \((0, 0, 0)\) is NOT valid&lt;/li&gt;
+  &lt;li&gt;a (finite) &lt;em&gt;point&lt;/em&gt; \((x, y)\) in the Cartesian representation of the
+affine plane is mapped onto &lt;em&gt;any triplet&lt;/em&gt; \((Z\cdot x, Z\cdot y,
+Z)\) with \(Z \ne 0\). Conversely, &lt;em&gt;any triplet&lt;/em&gt; \((X, Y, Z)\) with
+\(Z \ne 0\) maps back to \((X/Z, Y/Z)\);&lt;/li&gt;
+  &lt;li&gt;any triplet \((X, Y, 0)\) is a “point at infinite” and represents the
+intersection of all parallel lines of type \(Y\cdot x - X\cdot
+y = c\).&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;p&gt;The interesting thing is that we are not necessarily restricted to using
 real numbers for coordinates: any field will do, including finite fields.
 (Why fields, anyway? We need the division operation by non-zero to be
-valid, so fieds are a very useful choice). Let’s take Z&lt;sub&gt;2&lt;/sub&gt; for
+valid, so fieds are a very useful choice). Let’s take ((Z_2\) for
 example, i.e. the field whose two elements are the rest classes in the
-integer division by 2: &lt;code&gt;0&lt;/code&gt; and &lt;code&gt;1&lt;/code&gt;. It’s easy to build up all possible
-triplets, actually as easy as counting in binary:&lt;/p&gt;
+integer division by \(2\): &lt;code&gt;0&lt;/code&gt; and &lt;code&gt;1&lt;/code&gt;. It’s easy to build up all
+possible triplets, actually as easy as counting in binary:&lt;/p&gt;
 
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;0 0 0 &amp;lt;- ruled out, invalid triplet in the homogeneous representation
 0 0 1 &amp;lt;- &amp;quot;origin&amp;quot;, maps to (0, 0) in the affine plane
@@ -2158,11 +2163,11 @@ this ring a bell? Sure it does, it’s the same number of points in the Fano
 plane!&lt;/p&gt;
 
 &lt;p&gt;Things can get trickier with finite fields of higher orders though, as we
-can see in the following example in Z&lt;sub&gt;3&lt;/sub&gt;. We have to remember
-that homogeneous coordinates with different components might map back to
-the same point in the affine plane, so we have to only consider the
-classes of &lt;em&gt;different&lt;/em&gt; coordinates and avoid duplicates that can be
-obtained by scaling already considered ones:&lt;/p&gt;
+can see in the following example in \(Z_3\). We have to remember that
+homogeneous coordinates with different components might map back to the
+same point in the affine plane, so we have to only consider the classes of
+&lt;em&gt;different&lt;/em&gt; coordinates and avoid duplicates that can be obtained by
+scaling already considered ones:&lt;/p&gt;
 
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;0 0 0 &amp;lt;- ruled out, invalid homogeneous triplet
 0 0 1
@@ -2192,11 +2197,11 @@ obtained by scaling already considered ones:&lt;/p&gt;
 2 2 1 &amp;lt;- ruled out, (1 1 2) * 2
 2 2 2 &amp;lt;- ruled out, (1 1 1) * 2&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-&lt;p&gt;Out of the initial &lt;code&gt;3^3 = 27&lt;/code&gt; candidates, only 13 survived, so it’s
-actually a bit more difficult than to simply count and remove the first
-triplet. Note that this is exactly the number of points we were expecting,
-because of the formula we saw before: &lt;code&gt;3^2 + 3 + 1 = 13&lt;/code&gt;. The distinct
-points are the following in homogeneous coordinates:&lt;/p&gt;
+&lt;p&gt;Out of the initial \(3^3 = 27\) candidates, only \(13\) survived, so
+it’s actually a bit more difficult than to simply count and remove the
+first triplet. Note that this is exactly the number of points we were
+expecting, because of the formula we saw before: \(3^2 + 3 + 1 = 13\).
+The distinct points are the following in homogeneous coordinates:&lt;/p&gt;
 
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;0.  0 0 1
 1.  0 1 0
@@ -2214,7 +2219,7 @@ points are the following in homogeneous coordinates:&lt;/p&gt;
 
 &lt;p&gt;It turns out that there is a simple algoritm for generating all “distinct”
 homogeneous triplets: just start counting and jump all elements whose
-leftmost non-zero element is different from 1.&lt;/p&gt;
+leftmost non-\(0\) element is different from \(1\).&lt;/p&gt;
 
 &lt;h3 id=&quot;lines-in-homogeneous-coordinates&quot;&gt;Lines in Homogeneous Coordinates&lt;/h3&gt;
 
@@ -2222,27 +2227,27 @@ leftmost non-zero element is different from 1.&lt;/p&gt;
 generic line in the affine plane can be expressed with the following
 equation:&lt;/p&gt;
 
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;a * x + b * y + c = 0&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;a \cdot x + b \cdot y + c = 0&lt;/script&gt;
 
 &lt;p&gt;This equation can be easily multiplied by any non-zero constant, so
-assuming that &lt;code&gt;Z&lt;/code&gt; is different from &lt;code&gt;0&lt;/code&gt; and remembering the relations of
-&lt;code&gt;x&lt;/code&gt; with &lt;code&gt;X&lt;/code&gt; and &lt;code&gt;y&lt;/code&gt; with &lt;code&gt;Y&lt;/code&gt;:&lt;/p&gt;
+assuming that \(Z\) is different from \(0\) and remembering the
+relations of \(x\) with \(X\) and \(y\) with \(Y\):&lt;/p&gt;
 
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;a * X + b * Y + c * Z = 0&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;a \cdot X + b \cdot Y + c \cdot Z = 0&lt;/script&gt;
 
-&lt;p&gt;Hence, a line can be expressed by three values &lt;code&gt;a&lt;/code&gt;, &lt;code&gt;b&lt;/code&gt; and &lt;code&gt;c&lt;/code&gt;, with the
-usual rule that any of the three MUST be different from zero. As a matter
-of fact, it’s yet another place where we see &lt;em&gt;duality&lt;/em&gt; at work, because
-the equation might see the roles of a &lt;em&gt;line&lt;/em&gt;’s parameter swapped with the
-&lt;em&gt;point&lt;/em&gt;’s parameters without change in its meaning.&lt;/p&gt;
+&lt;p&gt;Hence, a line can be expressed by three values \(a\), \(b\) and
+\(c\), with the usual rule that any of the three MUST be different from
+zero. As a matter of fact, it’s yet another place where we see &lt;em&gt;duality&lt;/em&gt;
+at work, because the equation might see the roles of a &lt;em&gt;line&lt;/em&gt;’s parameter
+swapped with the &lt;em&gt;point&lt;/em&gt;’s parameters without change in its meaning.&lt;/p&gt;
 
 &lt;p&gt;It’s interesting how the equation for a &lt;em&gt;line&lt;/em&gt; shows how to find &lt;em&gt;point&lt;/em&gt;s
-belonging to the line: it suffices to find all triples &lt;code&gt;(X, Y, Z)&lt;/code&gt; that
-are “orthogonal” to the &lt;em&gt;line&lt;/em&gt;’s triple &lt;code&gt;(a, b, c)&lt;/code&gt;. Then, by duality, we
-can also immediately find all lines through a point… because it’s the
-same equation!&lt;/p&gt;
+belonging to the line: it suffices to find all triples \(((X, Y, Z)\)
+that are “orthogonal” to the &lt;em&gt;line&lt;/em&gt;’s triple \((a, b, c)\). Then, by
+duality, we can also immediately find all lines through a point… because
+it’s the same equation!&lt;/p&gt;
 
-&lt;p&gt;Let’s see what happens with the example based on Z&lt;sub&gt;2&lt;/sub&gt;:&lt;/p&gt;
+&lt;p&gt;Let’s see what happens with the example based on \(Z_2\):&lt;/p&gt;
 
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;Line   Homog.   Points in Line (homogen.     Point
 Id     repr.    representation)              Ids
@@ -2254,7 +2259,7 @@ Id     repr.    representation)              Ids
 5   -&amp;gt; 1 1 0 -&amp;gt; (0 0 1), (1 1 0), (1 1 1) -&amp;gt; 0, 5, 6
 6   -&amp;gt; 1 1 1 -&amp;gt; (1 1 0), (1 0 1), (0 1 1) -&amp;gt; 5, 4, 2&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-&lt;p&gt;We can do the same for Z&lt;sub&gt;3&lt;/sub&gt; of course:&lt;/p&gt;
+&lt;p&gt;We can do the same for \(Z_3\) of course:&lt;/p&gt;
 
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;Line                                                  Point Ids
 Id
@@ -2280,8 +2285,8 @@ any “allowed” order:&lt;/p&gt;
 &lt;ul&gt;
   &lt;li&gt;build a field of that order. This field always exists:
     &lt;ul&gt;
-      &lt;li&gt;if the order is a prime number &lt;code&gt;p&lt;/code&gt;, then the field is simply
-Z&lt;sub&gt;p&lt;/sub&gt;, i.e. the field of rest classes modulo &lt;code&gt;p&lt;/code&gt;;&lt;/li&gt;
+      &lt;li&gt;if the order is a prime number \(p\), then the field is simply
+\(Z_p\), i.e. the field of rest classes modulo \(p\);&lt;/li&gt;
       &lt;li&gt;otherwise, it can be build as a &lt;a href=&quot;https://en.wikipedia.org/wiki/Galois_extension&quot;&gt;Galois Extension&lt;/a&gt;. More on
 this later, stay tuned!&lt;/li&gt;
     &lt;/ul&gt;
@@ -2291,11 +2296,11 @@ this later, stay tuned!&lt;/li&gt;
 done with the trick of “first non-zero element must be 1” saw before&lt;/p&gt;
   &lt;/li&gt;
   &lt;li&gt;for each triplet, find all triplets that are “orthogonal” to it. For
-example, if the starting triplet is &lt;code&gt;(X, Y, Z)&lt;/code&gt;, find all triplets
-&lt;code&gt;(a, b, c)&lt;/code&gt; that satisfy the following equation:&lt;/li&gt;
+example, if the starting triplet is \((X, Y, Z)\), find all triplets
+\((a, b, c)\) that satisfy the following equation:&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;a * X + b * Y + c * Z = 0&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;a \cdot X + b \cdot Y + c \cdot Z = 0&lt;/script&gt;
 
 &lt;ul&gt;
   &lt;li&gt;associate an identifier to each triplet, and output the identifier of
@@ -2335,20 +2340,21 @@ zero, otherwise, again, we would violate the trick. On the other hand,
 if the previous coordinate is not zero then it will be a one, so it’s OK
 to consider all elements in the field&lt;/li&gt;
   &lt;li&gt;the right-most coordinate MUST be one if the previous ones are both
-zero, because the triple &lt;code&gt;(0, 0, 0)&lt;/code&gt; is not valid in homogeneous
+zero, because the triple \((0, 0, 0)\) is not valid in homogeneous
 coordinates. Otherwise, any element in the field will do.&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;p&gt;This formulation also allows us to calculate how many points we will
-generate. Assuming that there are &lt;code&gt;n&lt;/code&gt; elements in the field:&lt;/p&gt;
+generate. Assuming that there are \(n\) elements in the field:&lt;/p&gt;
 
 &lt;ul&gt;
-  &lt;li&gt;&lt;code&gt;1&lt;/code&gt; for &lt;code&gt;(0, 0, 1)&lt;/code&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;code&gt;n&lt;/code&gt; for &lt;code&gt;(0, 1, k)&lt;/code&gt; (&lt;code&gt;k&lt;/code&gt; from &lt;code&gt;0&lt;/code&gt; to &lt;code&gt;n - 1&lt;/code&gt;)&lt;/li&gt;
-  &lt;li&gt;&lt;code&gt;n^2&lt;/code&gt; for &lt;code&gt;(1, j, k)&lt;/code&gt; (both &lt;code&gt;j&lt;/code&gt; and &lt;code&gt;k&lt;/code&gt; from 0 to &lt;code&gt;n - 1&lt;/code&gt;)&lt;/li&gt;
+  &lt;li&gt;\(1\) for \((0, 0, 1)\)&lt;/li&gt;
+  &lt;li&gt;\(n\) for \((0, 1, k)\) (\(k\) from \(0\) to \(n - 1\))&lt;/li&gt;
+  &lt;li&gt;\(n^2\) for \((1, j, k)\) (both \(j\) and \(k\) from \(0\) to
+\(n - 1)\)&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;which is, again, the formula we saw earlier: &lt;code&gt;n^2 + n + 1&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;which is, again, the formula we saw earlier: \(n^2 + n + 1\).&lt;/p&gt;
 
 &lt;p&gt;Now we are ready to build lines by finding orthogonal triplets. We
 leverage on the same triplets as we found in &lt;code&gt;@points&lt;/code&gt; because of duality:&lt;/p&gt;
@@ -2376,7 +2382,8 @@ points belonging to the line. We can easily print them:&lt;/p&gt;
 &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
 &lt;span class=&quot;n&quot;&gt;print_aoa&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;\&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;@lines&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-&lt;p&gt;The full script can be found &lt;a href=&quot;https://github.com/polettix/Math-GF/blob/master/eg/pg2&quot;&gt;here&lt;/a&gt;. Sample run with order 2:&lt;/p&gt;
+&lt;p&gt;The full script can be found &lt;a href=&quot;https://github.com/polettix/Math-GF/blob/master/eg/pg2&quot;&gt;here&lt;/a&gt;. Sample run with order
+\(2\):&lt;/p&gt;
 
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;0. (1, 3, 5)
 1. (0, 3, 4)
@@ -2389,10 +2396,10 @@ points belonging to the line. We can easily print them:&lt;/p&gt;
 &lt;p&gt;How to use it for a deck of cards in the game? Simple:&lt;/p&gt;
 
 &lt;ul&gt;
-  &lt;li&gt;take your &lt;code&gt;n^2 + n + 1&lt;/code&gt; (7 in the example) blank cards and line them up
-in front of view. The left-most will be at index 0, then 1, 2, and so
-on&lt;/li&gt;
-  &lt;li&gt;take your &lt;code&gt;n^2 + n + 1&lt;/code&gt; (7 in the example) pictures and do the same,
+  &lt;li&gt;take your \(n^2 + n + 1\) (7 in the example) blank cards and line them
+up in front of view. The left-most will be at index &lt;code&gt;0&lt;/code&gt;, then &lt;code&gt;1&lt;/code&gt;, &lt;code&gt;2&lt;/code&gt;,
+and so on&lt;/li&gt;
+  &lt;li&gt;take your \(n^2 + n + 1\) (7 in the example) pictures and do the same,
 again each will get an integer identifier&lt;/li&gt;
   &lt;li&gt;read the output of the script in either of the following ways:
     &lt;ul&gt;
@@ -2406,37 +2413,36 @@ again each will get an integer identifier&lt;/li&gt;
 
 &lt;p&gt;One last bit that was left out from the previous section is building
 a finite field of a specific order. It turns out that such fields only
-exist for orders p&lt;sup&gt;n&lt;/sup&gt;, with &lt;code&gt;p&lt;/code&gt; prime and &lt;code&gt;n&lt;/code&gt; positive integer
-(e.g. see &lt;a href=&quot;https://en.wikipedia.org/wiki/Finite_field#Existence_and_uniqueness&quot;&gt;here&lt;/a&gt;).&lt;/p&gt;
+exist for orders \(p^n\), with \(p\) prime and \(n\) positive
+integer (e.g. see &lt;a href=&quot;https://en.wikipedia.org/wiki/Finite_field#Existence_and_uniqueness&quot;&gt;here&lt;/a&gt;).&lt;/p&gt;
 
-&lt;h3 id=&quot;simple-case-n--1&quot;&gt;Simple case: &lt;code&gt;n = 1&lt;/code&gt;&lt;/h3&gt;
+&lt;h3 id=&quot;simple-case-n--1&quot;&gt;Simple case: \(n = 1\)&lt;/h3&gt;
 
-&lt;p&gt;In case &lt;code&gt;n = 1&lt;/code&gt;, the field can be simply Z&lt;sub&gt;p&lt;/sub&gt;, i.e. the field of
-all rest classes modulo &lt;code&gt;p&lt;/code&gt;, under the “usual” sum and multiplication of
-such rest classes:&lt;/p&gt;
+&lt;p&gt;In case \(n = 1\), the field can be simply \(Z_p\), i.e. the field of
+all rest classes modulo \(p\), under the “usual” sum and multiplication
+of such rest classes:&lt;/p&gt;
 
 &lt;ul&gt;
-  &lt;li&gt;sum: take the sum, then calculate the rest modulo &lt;code&gt;p&lt;/code&gt;&lt;/li&gt;
-  &lt;li&gt;multiplicaiton: take the product, then calculate the rest modulo &lt;code&gt;p&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;sum: take the sum, then calculate the rest modulo \(p\)&lt;/li&gt;
+  &lt;li&gt;multiplicaiton: take the product, then calculate the rest modulo \(p\)&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;With &lt;code&gt;p&lt;/code&gt; prime, the set of rest classes and the operations above will give
-you a field. For Dobble this would be sufficient because its order
+&lt;p&gt;With \(p\) prime, the set of rest classes and the operations above will
+give you a field. For Dobble this would be sufficient because its order
 - 7 - is indeed a prime number.&lt;/p&gt;
 
-&lt;h3 id=&quot;field-extension-case-n--1&quot;&gt;Field extension case: &lt;code&gt;n &amp;gt; 1&lt;/code&gt;&lt;/h3&gt;
+&lt;h3 id=&quot;field-extension-case-n--1&quot;&gt;Field extension case: \(n &amp;gt; 1\)&lt;/h3&gt;
 
 &lt;p&gt;What if we want a slightly more difficult variant, e.g. of order 4 (which
-is 2&lt;sup&gt;3&lt;/sup&gt;, so it’s “allowed”)? Rest classes will not help us in
-this case because the set of rest classes and the operations above do not
-form a field (e.g. in Z&lt;sub&gt;4&lt;/sub&gt; classes 2&lt;sub&gt;4&lt;/sub&gt; multiplied by
-itself yields 0&lt;sub&gt;4&lt;/sub&gt;, so it is a &lt;em&gt;divisor of zero&lt;/em&gt; which is not
-allowed in a field).&lt;/p&gt;
+is \(2^2\), so it’s “allowed”)? Rest classes will not help us in this
+case because the set of rest classes and the operations above do not form
+a field (e.g. in \(Z_4\), class \(2_4\) multiplied by itself yields
+\(0_4\), so it is a &lt;em&gt;divisor of zero&lt;/em&gt; which is not allowed in a field).&lt;/p&gt;
 
 &lt;p&gt;What we can build in this case is a so-called &lt;em&gt;field extension&lt;/em&gt;. The idea
-is to leverage the field resulting from Z&lt;sub&gt;p&lt;/sub&gt; to build an
-extension over it that accounts for its power &lt;code&gt;n&lt;/code&gt;. The intuition to do
-this is both mindbending and ingenuous.&lt;/p&gt;
+is to leverage the field resulting from \(Z_p\) to build an extension
+over it that accounts for its power \(n\). The intuition to do this is
+both mindbending and ingenuous.&lt;/p&gt;
 
 &lt;p&gt;What is a field? It is a set of elements with two operations defined over
 those elements, an &lt;em&gt;addition&lt;/em&gt; and a &lt;em&gt;multiplication&lt;/em&gt;, that have some
@@ -2464,12 +2470,12 @@ places around, e.g. &lt;a href=&quot;http://math.ucdenver.edu/~wcherowi/courses/
 Salomone&lt;/a&gt;) and avoid spoilering too much about a story involving
 polynomials, multiplications and divisions by &lt;em&gt;irreducible&lt;/em&gt; polynomials,
 to go directly to what we need to do to build a finite field of order
-p&lt;sup&gt;n&lt;/sup&gt;:&lt;/p&gt;
+\(p^n\):&lt;/p&gt;
 
 &lt;ul&gt;
-  &lt;li&gt;start from field Z&lt;sub&gt;p&lt;/sub&gt;&lt;/li&gt;
-  &lt;li&gt;generate all polynomials of degree up to &lt;code&gt;n - 1&lt;/code&gt; over that field, assign
-an identifier to each of them&lt;/li&gt;
+  &lt;li&gt;start from field \(Z_p\)&lt;/li&gt;
+  &lt;li&gt;generate all polynomials of degree up to \(n - 1\) over that field,
+assign an identifier to each of them&lt;/li&gt;
   &lt;li&gt;generate the additive table for the extension field
 like this:&lt;/li&gt;
 &lt;/ul&gt;
@@ -2494,8 +2500,8 @@ together with finding the rest in the division by it:&lt;/p&gt;
 
     &lt;ul&gt;
       &lt;li&gt;
-        &lt;p&gt;find an &lt;a href=&quot;https://en.wikipedia.org/wiki/Irreducible_polynomial&quot;&gt;irreducible polynomial&lt;/a&gt; of degree &lt;code&gt;n&lt;/code&gt; over that
-field (more on this later)&lt;/p&gt;
+        &lt;p&gt;find an &lt;a href=&quot;https://en.wikipedia.org/wiki/Irreducible_polynomial&quot;&gt;irreducible polynomial&lt;/a&gt; of degree \(n\) over
+that field (more on this later)&lt;/p&gt;
       &lt;/li&gt;
       &lt;li&gt;
         &lt;p&gt;generate the multiplicative table like this:&lt;/p&gt;
@@ -2520,11 +2526,11 @@ idC &amp;lt;- polyC
 =&amp;gt; idA &amp;quot;*&amp;quot; idB = idC&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;As an example, let’s generate &lt;code&gt;GF(4)&lt;/code&gt;, i.e. the extension of degree 2 of
-Z&lt;sub&gt;2&lt;/sub&gt;:&lt;/p&gt;
+\(Z_2\):&lt;/p&gt;
 
 &lt;ul&gt;
-  &lt;li&gt;field: Z&lt;sub&gt;2&lt;/sub&gt;, elements are &lt;code&gt;0&lt;/code&gt; and &lt;code&gt;1&lt;/code&gt;&lt;/li&gt;
-  &lt;li&gt;all polynomials of degree up to &lt;code&gt;2 - 1 = 1&lt;/code&gt;:&lt;/li&gt;
+  &lt;li&gt;field: \(Z_2\), elements are &lt;code&gt;0&lt;/code&gt; and &lt;code&gt;1&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;all polynomials of degree up to \(2 - 1 = 1\):&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;Id   Polynomial
@@ -2535,7 +2541,7 @@ Z&lt;sub&gt;2&lt;/sub&gt;:&lt;/p&gt;
 
 &lt;ul&gt;
   &lt;li&gt;additive table (symmetric, also remember that operations are done modulo
-2, so &lt;code&gt;1 + 1 = 0&lt;/code&gt;):&lt;/li&gt;
+2, so \(1 + 1 = 0\)):&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;Ids           Polynomials             Id
@@ -2556,10 +2562,10 @@ Z&lt;sub&gt;2&lt;/sub&gt;:&lt;/p&gt;
 &lt;ul&gt;
   &lt;li&gt;irreducible polynomials of degree 2:
     &lt;ul&gt;
-      &lt;li&gt;&lt;code&gt;x^2&lt;/code&gt;     is not irreducible because it can be divided by &lt;code&gt;x&lt;/code&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;code&gt;x^2 + 1&lt;/code&gt; is not irreducible because it can be divided by &lt;code&gt;x + 1&lt;/code&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;code&gt;x^2 + x&lt;/code&gt; is not irreducible because it can be divided by &lt;code&gt;x&lt;/code&gt;&lt;/li&gt;
-      &lt;li&gt;&lt;strong&gt;&lt;code&gt;x^2 + x + 1&lt;/code&gt; is irreducible, OK!&lt;/strong&gt;&lt;/li&gt;
+      &lt;li&gt;\(x^2\)     is not irreducible because it can be divided by \(x\)&lt;/li&gt;
+      &lt;li&gt;\(x^2 + 1\) is not irreducible because it can be divided by \(x + 1\)&lt;/li&gt;
+      &lt;li&gt;\(x^2 + x\) is not irreducible because it can be divided by \(x\)&lt;/li&gt;
+      &lt;li&gt;&lt;strong&gt;\(x^2 + x + 1\) is irreducible, OK!&lt;/strong&gt;&lt;/li&gt;
     &lt;/ul&gt;
   &lt;/li&gt;
   &lt;li&gt;multiplicative table (symmetric):&lt;/li&gt;
@@ -2580,7 +2586,7 @@ Z&lt;sub&gt;2&lt;/sub&gt;:&lt;/p&gt;
 
 (3 &amp;quot;*&amp;quot; 3) --&amp;gt; ((1 + x) * (1 + x)) % (x^2 + x + 1) = x --&amp;gt; 2&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-&lt;p&gt;Summarizing, our finite field of 4 elements is the following:&lt;/p&gt;
+&lt;p&gt;Summarizing, our finite field of \(4\) elements is the following:&lt;/p&gt;
 
 &lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;elements (identifiers): {0, 1, 2, 3}
 
@@ -2627,6 +2633,7 @@ Salomone&lt;/a&gt; on YouTube.&lt;/p&gt;
 
 &lt;ul&gt;
   &lt;li&gt;&lt;code&gt;2018-01-08&lt;/code&gt; Cosmetics, better detail how to use output from script&lt;/li&gt;
+  &lt;li&gt;&lt;code&gt;2019-09-18&lt;/code&gt; Turn most equations to &lt;a href=&quot;https://www.mathjax.org/&quot;&gt;MathJax&lt;/a&gt;-rendered equations&lt;/li&gt;
 &lt;/ul&gt;
 
 
