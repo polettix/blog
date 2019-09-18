@@ -20,10 +20,11 @@ some time in the future.
 
 ## What's the Game About?
 
-Dobble provides a set of 55 cards, each with exactly 8 pictures on it. The
-cards are round, so that there is no "preferred" way of orienting them;
-additionally, pictures are printed in random(ish?) orientation and size,
-again to avoid providing a preferred orientation for the cards.
+Dobble provides a set of \\(55\\) cards, each with exactly \\(8\\)
+pictures on it. The cards are round, so that there is no "preferred" way
+of orienting them; additionally, pictures are printed in random(ish?)
+orientation and size, again to avoid providing a preferred orientation for
+the cards.
 
 The one true fact you know about the deck is: whatever pair of cards you
 take, there is always *exactly* one picture that is present in both. No
@@ -36,10 +37,11 @@ matching picture between two cards.
 
 ## How to Design It?
 
-If each card had 54 pictures on it, it would probably be a trivial task to
-design the full stack of cards: just take all possible pairs of cards and
-decide a new picture for the pair. This would involve a non-trivial amount
-of pictures, because all possible pairs are the following:
+If each card had \\(54\\) pictures on it, it would probably be a trivial
+task to design the full stack of cards: just take all possible pairs of
+cards and decide a new picture for the pair. This would involve
+a non-trivial amount of pictures, because all possible pairs are the
+following:
 
 {% highlight text %}
 54 pairs with card A =  #1 and card B = #2..#55
@@ -48,24 +50,25 @@ of pictures, because all possible pairs are the following:
  1  pair with card A = #54 and card B = #55
 {% endhighlight %}
 
-for a total number of `(54 + 1) * 54 / 2 = 1485` pairs/pictures.
+for a total number of \\((54 + 1) * 54 / 2 = 1485\\) pairs/pictures.
 
-Luckily for the players, each card only has exactly 8 pictures on it (try
-to imagine to find the right matching picture out of 54 pictures on each
-card!) but this makes things much more difficult for the designer, because
-pictures have to be properly reused across cards in order to guarantee the
-*one true fact* about the card deck. Here is where maths come to rescue!
+Luckily for the players, each card only has exactly \\(8\\) pictures on it
+(try to imagine to find the right matching picture out of \\(54\\)
+pictures on each card!) but this makes things much more difficult for the
+designer, because pictures have to be properly reused across cards in
+order to guarantee the *one true fact* about the card deck. Here is where
+maths come to rescue!
 
 ## Mathematical Pointers
 
 The Dobble deck design can be framed within a much wider set of problems
 named [block design][block-design]. Well, actually a [t-design][]. Well,
-actually a [Steiner system][steiner-system] with parameters *S(2, 8, 57)*,
-meaning:
+actually a [Steiner system][steiner-system] with parameters \\(S(2, 8,
+57)\\), meaning:
 
-* there are 57 different pictures, from which
-* we form cards (*blocks*) of 8 pictures each, with the constraint that
-* any two pictures are contained in exactly one card (*block*).
+* there are \\(57\\) different pictures, from which...
+* we form cards (*blocks*) of \\(8\\) pictures each, with the constraint that...
+* any \\(2\\) pictures are contained in exactly one card (*block*).
 
 Wait... what? The last constraint is not the *one true fact* we discussed
 earlier. As a matter of fact it is, because if the last constraint didn't
@@ -80,39 +83,37 @@ practical.
 
 Let's attack the problem from a different perspective and think about
 [finite projective planes][pp] (PP in the following). They are
-mathematical objects associated to an integer *order* value `n`, comprised
-of primitives called *point*s and *line*s (collections of points):
+mathematical objects associated to an integer *order* value \\(n\\),
+comprised of primitives called *point*s and *line*s (collections of
+points):
 
 - any two *point*s belong to exactly one *line*
 - any two *line*s intersect at exactly one *point*, meaning that have
   exactly one *point* in common
-- there are exactly `n + 1` *line*s intersecting at any *point*
-- there are exactly `n + 1` *point*s belonging to any *line*
+- there are exactly \\(n + 1\\) *line*s intersecting at any *point*
+- there are exactly \\(n + 1\\) *point*s belonging to any *line*
 
 You might spot that there is a duality in the properties above: try to
 swap *line* for *point* and *belongs to* with *intersect at* and you
 basically have the same properties again!
 
-Another property of a PP of order `n` is that it contains exactly:
+Another property of a PP of order \\(n\\) is that it contains exactly:
 
-{% highlight text %}
-n^2 + n + 1
-{% endhighlight %}
+$$ n^2 + n + 1 $$
     
 *point*s and the same amount of *line*s (thanks to the duality above).
 
 Of course Steiner systems and Projective Planes are old friends, because
-a PP of order `n` is "just" a Steiner system *S(2, n+1, n^2 + n + 1)*,
-thus implying for Dobble that:
+a PP of order \\(n\\) is "just" a Steiner system \\(S(2, n+1, n^2
++ n + 1)\\), thus implying for Dobble that:
 
-{% highlight text %}
-n = 7
-n + 1 = 8
-n^2 + n + 1 = 57
-{% endhighlight %}
+$$n = 7 \\
+n + 1 = 8 \\
+n^2 + n + 1 = 57$$
 
-going back to what we said earlier: Dobble is a Steiner system *S(2, 8,
-57)*. It's also interesting to note that Dobble is actually missing two
+
+going back to what we said earlier: Dobble is a Steiner system \\(S(2, 8,
+57)\\). It's also interesting to note that Dobble is actually missing two
 possible cards.
 
 Why involve PPs anyway? Well... for me it's a bit easier to understand and
@@ -121,9 +122,9 @@ explain, that's it.
 ## Let's Start Simple
 
 There is one "bare bones" Projective Plane called the [Fano Plane][fp],
-that is of order `n = 2`. It's like a stripped down version of Dobble,
-with "just" `7 = 4 + 2 + 1` pictures and (at most) 7 cards. A graphical
-representation of the Fano Plane is in the following picture:
+that is of order \\(n = 2\\). It's like a stripped down version of Dobble,
+with "just" \\(7 = 4 + 2 + 1\\) pictures and (at most) \\(7\\) cards.
+A graphical representation of the Fano Plane is in the following picture:
 
 ![Fano Plane](/images/some-maths-for-dobble/fano-plane.png)
 
@@ -142,16 +143,16 @@ address! We *just* have to expand things a bit...
 The current knowledge about projective planes is more or less the
 following:
 
-- orders `n = p^k`, where `p` is a prime number and `k` is any positive
-  integer are always possible;
+- orders \\(n = p^k\\), where \\(p\\) is a prime number and \\(k\\) is any
+  positive integer are always possible;
 - anything else is conjectured to be impossible.
 
 We will restrict to what we know and call "allowed" only orders that are
 a positive power of a prime number, like in the first bullet.
 
-The Dobble's case is `n = 7^1` so it's definitely possible, yielding 57
-pictures and 57 cards (of which only 55 are included in the game's deck,
-as anticipated).
+The Dobble's case is \\(n = 7^1\\) so it's definitely possible, yielding
+\\(57\\) pictures and \\(57\\) cards (of which only 55 are included in the
+game's deck, as anticipated).
 
 The logical steps for building a design of any allowed order are the
 following:
@@ -166,12 +167,12 @@ at it.
 ### Points in Homogeneous Coordinates
 
 Points in a plane are usually represented with two *Cartesian*
-coordinates: `x` and `y`. This representation goes under the general name
-of *affine plane*. In this plane, it is impossible to represent the point
-where two or more parallel lines intersect (the "point at infinite").
-Additionally, it is also impossible to represent the line formed by all
-such intersections for different directions, i.e. the "line at
-infinite".
+coordinates: \\(x\\) and \\(y\\). This representation goes under the
+general name of *affine plane*. In this plane, it is impossible to
+represent the point where two or more parallel lines intersect (the "point
+at infinite"). Additionally, it is also impossible to represent the line
+formed by all such intersections for different directions, i.e. the "line
+at infinite".
 
 As we saw, *projective planes* require that every pair of *line*s
 intersect exactly at one point. Hence, we need a more powerful
@@ -181,24 +182,25 @@ infinite" and the resulting *line*.
 At the expense of one additional coordinate it is indeed possible to
 represent also these additional points and the additional line, in
 a system that is called [homogeneous coordinates][hc] where each *point*
-is represented by three coordinates `(X, Y, Z)` ruled as follows:
+is represented by three coordinates \\((X, Y, Z)\\) ruled as follows:
 
-- any of `X`, `Y` and `Z` MUST be different from `0`, i.e. the triplet
-  `(0, 0, 0)` is NOT valid
-- any *point* `(x, y)` in the Cartesian representation of the affine plane
-  is mapped onto *any triplet* `(Z*x, Z*y, Z)` with `Z` different from `0`.
-  Conversely, *any triplet* `(X, Y, Z)` with `Z` diffent from `0` maps back
-  to `(X/Z, Y/Z)`;
-- any triplet `(X, Y, 0)` is a "point at infinite" and represents the
-  intersection of all parallel lines of type `Y*x - X*y = c`
+- any of \\(X\\), \\(Y\\) and \\(Z\\) MUST be different from \\(0\\), i.e.
+  the triplet \\((0, 0, 0)\\) is NOT valid
+- a (finite) *point* \\((x, y)\\) in the Cartesian representation of the
+  affine plane is mapped onto *any triplet* \\((Z\cdot x, Z\cdot y,
+  Z)\\) with \\(Z \ne 0\\). Conversely, *any triplet* \\((X, Y, Z)\\) with
+  \\(Z \ne 0\\) maps back to \\((X/Z, Y/Z)\\);
+- any triplet \\((X, Y, 0)\\) is a "point at infinite" and represents the
+  intersection of all parallel lines of type \\(Y\cdot x - X\cdot
+  y = c\\).
 
 The interesting thing is that we are not necessarily restricted to using
 real numbers for coordinates: any field will do, including finite fields.
 (Why fields, anyway? We need the division operation by non-zero to be
-valid, so fieds are a very useful choice). Let's take Z<sub>2</sub> for
+valid, so fieds are a very useful choice). Let's take \((Z_2\\) for
 example, i.e. the field whose two elements are the rest classes in the
-integer division by 2: `0` and `1`. It's easy to build up all possible
-triplets, actually as easy as counting in binary:
+integer division by \\(2\\): `0` and `1`. It's easy to build up all
+possible triplets, actually as easy as counting in binary:
 
 {% highlight text %}
 0 0 0 <- ruled out, invalid triplet in the homogeneous representation
@@ -216,11 +218,11 @@ this ring a bell? Sure it does, it's the same number of points in the Fano
 plane!
 
 Things can get trickier with finite fields of higher orders though, as we
-can see in the following example in Z<sub>3</sub>. We have to remember
-that homogeneous coordinates with different components might map back to
-the same point in the affine plane, so we have to only consider the
-classes of *different* coordinates and avoid duplicates that can be
-obtained by scaling already considered ones:
+can see in the following example in \\(Z_3\\). We have to remember that
+homogeneous coordinates with different components might map back to the
+same point in the affine plane, so we have to only consider the classes of
+*different* coordinates and avoid duplicates that can be obtained by
+scaling already considered ones:
 
 {% highlight text %}
 0 0 0 <- ruled out, invalid homogeneous triplet
@@ -252,11 +254,11 @@ obtained by scaling already considered ones:
 2 2 2 <- ruled out, (1 1 1) * 2
 {% endhighlight %}
 
-Out of the initial `3^3 = 27` candidates, only 13 survived, so it's
-actually a bit more difficult than to simply count and remove the first
-triplet. Note that this is exactly the number of points we were expecting,
-because of the formula we saw before: `3^2 + 3 + 1 = 13`. The distinct
-points are the following in homogeneous coordinates:
+Out of the initial \\(3^3 = 27\\) candidates, only \\(13\\) survived, so
+it's actually a bit more difficult than to simply count and remove the
+first triplet. Note that this is exactly the number of points we were
+expecting, because of the formula we saw before: \\(3^2 + 3 + 1 = 13\\).
+The distinct points are the following in homogeneous coordinates:
 
 {% highlight text %}
 0.  0 0 1
@@ -276,7 +278,7 @@ points are the following in homogeneous coordinates:
 
 It turns out that there is a simple algoritm for generating all "distinct"
 homogeneous triplets: just start counting and jump all elements whose
-leftmost non-zero element is different from 1.
+leftmost non-\\(0\\) element is different from \\(1\\).
 
 ### Lines in Homogeneous Coordinates
 
@@ -284,31 +286,27 @@ The same reasoning done for *point*s can be repeated for *line*s. The
 generic line in the affine plane can be expressed with the following
 equation:
 
-{% highlight text %}
-    a * x + b * y + c = 0
-{% endhighlight %}
+$$a \cdot x + b \cdot y + c = 0$$
 
 This equation can be easily multiplied by any non-zero constant, so
-assuming that `Z` is different from `0` and remembering the relations of
-`x` with `X` and `y` with `Y`:
+assuming that \\(Z\\) is different from \\(0\\) and remembering the
+relations of \\(x\\) with \\(X\\) and \\(y\\) with \\(Y\\):
 
-{% highlight text %}
-    a * X + b * Y + c * Z = 0
-{% endhighlight %}
+$$a \cdot X + b \cdot Y + c \cdot Z = 0$$
 
-Hence, a line can be expressed by three values `a`, `b` and `c`, with the
-usual rule that any of the three MUST be different from zero. As a matter
-of fact, it's yet another place where we see *duality* at work, because
-the equation might see the roles of a *line*'s parameter swapped with the
-*point*'s parameters without change in its meaning.
+Hence, a line can be expressed by three values \\(a\\), \\(b\\) and
+\\(c\\), with the usual rule that any of the three MUST be different from
+zero. As a matter of fact, it's yet another place where we see *duality*
+at work, because the equation might see the roles of a *line*'s parameter
+swapped with the *point*'s parameters without change in its meaning.
 
 It's interesting how the equation for a *line* shows how to find *point*s
-belonging to the line: it suffices to find all triples `(X, Y, Z)` that
-are "orthogonal" to the *line*'s triple `(a, b, c)`. Then, by duality, we
-can also immediately find all lines through a point... because it's the
-same equation!
+belonging to the line: it suffices to find all triples \\(((X, Y, Z)\\)
+that are "orthogonal" to the *line*'s triple \\((a, b, c)\\). Then, by
+duality, we can also immediately find all lines through a point... because
+it's the same equation!
 
-Let's see what happens with the example based on Z<sub>2</sub>:
+Let's see what happens with the example based on \\(Z_2\\):
 
 {% highlight text %}
 Line   Homog.   Points in Line (homogen.     Point
@@ -322,7 +320,7 @@ Id     repr.    representation)              Ids
 6   -> 1 1 1 -> (1 1 0), (1 0 1), (0 1 1) -> 5, 4, 2
 {% endhighlight %}
 
-We can do the same for Z<sub>3</sub> of course:
+We can do the same for \\(Z_3\\) of course:
 
 {% highlight text %}
 Line                                                  Point Ids
@@ -349,8 +347,8 @@ So, now we have a complete algorithm for finding out projective planes of
 any "allowed" order:
 
 - build a field of that order. This field always exists:
-    - if the order is a prime number `p`, then the field is simply
-      Z<sub>p</sub>, i.e. the field of rest classes modulo `p`;
+    - if the order is a prime number \\(p\\), then the field is simply
+      \\(Z_p\\), i.e. the field of rest classes modulo \\(p\\);
     - otherwise, it can be build as a [Galois Extension][galext]. More on
       this later, stay tuned!
 
@@ -358,12 +356,10 @@ any "allowed" order:
   done with the trick of "first non-zero element must be 1" saw before
 
 - for each triplet, find all triplets that are "orthogonal" to it. For
-  example, if the starting triplet is `(X, Y, Z)`, find all triplets
-  `(a, b, c)` that satisfy the following equation:
+  example, if the starting triplet is \\((X, Y, Z)\\), find all triplets
+  \\((a, b, c)\\) that satisfy the following equation:
 
-{% highlight text %}
-a * X + b * Y + c * Z = 0
-{% endhighlight %}
+$$a \cdot X + b \cdot Y + c \cdot Z = 0$$
 
 - associate an identifier to each triplet, and output the identifier of
   each one together with the identifiers of the triplets orthogonal to
@@ -404,17 +400,18 @@ coding of our "trick":
   if the previous coordinate is not zero then it will be a one, so it's OK
   to consider all elements in the field
 - the right-most coordinate MUST be one if the previous ones are both
-  zero, because the triple `(0, 0, 0)` is not valid in homogeneous
+  zero, because the triple \\((0, 0, 0)\\) is not valid in homogeneous
   coordinates. Otherwise, any element in the field will do.
 
 This formulation also allows us to calculate how many points we will
-generate. Assuming that there are `n` elements in the field:
+generate. Assuming that there are \\(n\\) elements in the field:
 
-- `1` for `(0, 0, 1)`
-- `n` for `(0, 1, k)` (`k` from `0` to `n - 1`)
-- `n^2` for `(1, j, k)` (both `j` and `k` from 0 to `n - 1`)
+- \\(1\\) for \\((0, 0, 1)\\)
+- \\(n\\) for \\((0, 1, k)\\) (\\(k\\) from \\(0\\) to \\(n - 1\\))
+- \\(n^2\\) for \\((1, j, k)\\) (both \\(j\\) and \\(k\\) from \\(0\\) to
+  \\(n - 1)\\)
 
-which is, again, the formula we saw earlier: `n^2 + n + 1`.
+which is, again, the formula we saw earlier: \\(n^2 + n + 1\\).
 
 Now we are ready to build lines by finding orthogonal triplets. We
 leverage on the same triplets as we found in `@points` because of duality:
@@ -446,7 +443,8 @@ sub print_aoa {
 print_aoa(\@lines);
 {% endhighlight %}
 
-The full script can be found [here][pg2-script]. Sample run with order 2:
+The full script can be found [here][pg2-script]. Sample run with order
+\\(2\\):
 
 {% highlight text %}
 0. (1, 3, 5)
@@ -460,10 +458,10 @@ The full script can be found [here][pg2-script]. Sample run with order 2:
 
 How to use it for a deck of cards in the game? Simple:
 
-- take your `n^2 + n + 1` (7 in the example) blank cards and line them up
-  in front of view. The left-most will be at index 0, then 1, 2, and so
-  on
-- take your `n^2 + n + 1` (7 in the example) pictures and do the same,
+- take your \\(n^2 + n + 1\\) (7 in the example) blank cards and line them
+  up in front of view. The left-most will be at index `0`, then `1`, `2`,
+  and so on
+- take your \\(n^2 + n + 1\\) (7 in the example) pictures and do the same,
   again each will get an integer identifier
 - read the output of the script in either of the following ways:
     - *Fill card `0` with images `1`, `3` and `5`*, or
@@ -474,35 +472,34 @@ How to use it for a deck of cards in the game? Simple:
 
 One last bit that was left out from the previous section is building
 a finite field of a specific order. It turns out that such fields only
-exist for orders p<sup>n</sup>, with `p` prime and `n` positive integer
-(e.g. see [here][ff]).
+exist for orders \\(p^n\\), with \\(p\\) prime and \\(n\\) positive
+integer (e.g. see [here][ff]).
 
-### Simple case: `n = 1`
+### Simple case: \\(n = 1\\)
 
-In case `n = 1`, the field can be simply Z<sub>p</sub>, i.e. the field of
-all rest classes modulo `p`, under the "usual" sum and multiplication of
-such rest classes:
+In case \\(n = 1\\), the field can be simply \\(Z_p\\), i.e. the field of
+all rest classes modulo \\(p\\), under the "usual" sum and multiplication
+of such rest classes:
 
-- sum: take the sum, then calculate the rest modulo `p`
-- multiplicaiton: take the product, then calculate the rest modulo `p`
+- sum: take the sum, then calculate the rest modulo \\(p\\)
+- multiplicaiton: take the product, then calculate the rest modulo \\(p\\)
 
-With `p` prime, the set of rest classes and the operations above will give
-you a field. For Dobble this would be sufficient because its order
+With \\(p\\) prime, the set of rest classes and the operations above will
+give you a field. For Dobble this would be sufficient because its order
 - 7 - is indeed a prime number.
 
-### Field extension case: `n > 1`
+### Field extension case: \\(n > 1\\)
 
 What if we want a slightly more difficult variant, e.g. of order 4 (which
-is 2<sup>3</sup>, so it's "allowed")? Rest classes will not help us in
-this case because the set of rest classes and the operations above do not
-form a field (e.g. in Z<sub>4</sub> classes 2<sub>4</sub> multiplied by
-itself yields 0<sub>4</sub>, so it is a *divisor of zero* which is not
-allowed in a field).
+is \\(2^2\\), so it's "allowed")? Rest classes will not help us in this
+case because the set of rest classes and the operations above do not form
+a field (e.g. in \\(Z_4\\), class \\(2_4\\) multiplied by itself yields
+\\(0_4\\), so it is a *divisor of zero* which is not allowed in a field).
 
 What we can build in this case is a so-called *field extension*. The idea
-is to leverage the field resulting from Z<sub>p</sub> to build an
-extension over it that accounts for its power `n`. The intuition to do
-this is both mindbending and ingenuous.
+is to leverage the field resulting from \\(Z_p\\) to build an extension
+over it that accounts for its power \\(n\\). The intuition to do this is
+both mindbending and ingenuous.
 
 What is a field? It is a set of elements with two operations defined over
 those elements, an *addition* and a *multiplication*, that have some
@@ -528,11 +525,11 @@ places around, e.g. [here][finflds] or in the excellent courses by [Mattew
 Salomone][salomone]) and avoid spoilering too much about a story involving
 polynomials, multiplications and divisions by *irreducible* polynomials,
 to go directly to what we need to do to build a finite field of order
-p<sup>n</sup>:
+\\(p^n\\):
 
-- start from field Z<sub>p</sub>
-- generate all polynomials of degree up to `n - 1` over that field, assign
-  an identifier to each of them
+- start from field \\(Z_p\\)
+- generate all polynomials of degree up to \\(n - 1\\) over that field,
+  assign an identifier to each of them
 - generate the additive table for the extension field
   like this:
 
@@ -555,8 +552,8 @@ idC <- polyC
   value. This is where the *irreducible* polynomial gets into play,
   together with finding the rest in the division by it:
 
-    - find an [irreducible polynomial][irredux] of degree `n` over that
-      field (more on this later)
+    - find an [irreducible polynomial][irredux] of degree \\(n\\) over
+      that field (more on this later)
 
     - generate the multiplicative table like this:
 
@@ -578,10 +575,10 @@ idC <- polyC
 {% endhighlight %}
 
 As an example, let's generate `GF(4)`, i.e. the extension of degree 2 of
-Z<sub>2</sub>:
+\\(Z_2\\):
 
-- field: Z<sub>2</sub>, elements are `0` and `1`
-- all polynomials of degree up to `2 - 1 = 1`:
+- field: \\(Z_2\\), elements are `0` and `1`
+- all polynomials of degree up to \\(2 - 1 = 1\\):
 
 {% highlight text %}
 Id   Polynomial
@@ -592,7 +589,7 @@ Id   Polynomial
 {% endhighlight %}
 
 - additive table (symmetric, also remember that operations are done modulo
-  2, so `1 + 1 = 0`):
+  2, so \\(1 + 1 = 0\\)):
 
 {% highlight text %}
 Ids           Polynomials             Id
@@ -612,10 +609,10 @@ Ids           Polynomials             Id
 {% endhighlight %}
 
 - irreducible polynomials of degree 2:
-    - `x^2`     is not irreducible because it can be divided by `x`
-    - `x^2 + 1` is not irreducible because it can be divided by `x + 1`
-    - `x^2 + x` is not irreducible because it can be divided by `x`
-    - **`x^2 + x + 1` is irreducible, OK!**
+    - \\(x^2\\)     is not irreducible because it can be divided by \\(x\\)
+    - \\(x^2 + 1\\) is not irreducible because it can be divided by \\(x + 1\\)
+    - \\(x^2 + x\\) is not irreducible because it can be divided by \\(x\\)
+    - **\\(x^2 + x + 1\\) is irreducible, OK!**
 
 - multiplicative table (symmetric):
 
@@ -636,7 +633,7 @@ Ids           Polynomials                                 Id
 (3 "*" 3) --> ((1 + x) * (1 + x)) % (x^2 + x + 1) = x --> 2
 {% endhighlight %}
 
-Summarizing, our finite field of 4 elements is the following:
+Summarizing, our finite field of \\(4\\) elements is the following:
 
 {% highlight text %}
 elements (identifiers): {0, 1, 2, 3}
@@ -684,6 +681,7 @@ The icons used in the example on the Fano plane are from
 ## Updates
 
 - `2018-01-08` Cosmetics, better detail how to use output from script
+- `2019-09-18` Turn most equations to [MathJax][]-rendered equations
 
 [dobble]: https://boardgamegeek.com/boardgame/63268/spot-it
 [block-design]: https://en.wikipedia.org/wiki/Block_design
@@ -704,3 +702,4 @@ The icons used in the example on the Fano plane are from
 [irredux]: https://en.wikipedia.org/wiki/Irreducible_polynomial
 [math-gf-irredux]: https://github.com/polettix/Math-GF/blob/master/lib/Math/GF.pm#L141
 [iconmonstr]: https://iconmonstr.com/
+[MathJax]: https://www.mathjax.org/
